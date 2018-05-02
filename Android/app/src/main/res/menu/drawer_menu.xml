@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+      android:id="@id/home"
+      android:title="@string/home"/>
+  <item
+      android:id="@+id/report_error"
+      android:title="@string/feedback"/>
+  <item
+      android:id="@+id/privacy"
+      android:title="@string/privacy_link"/>
+  <item
+      android:id="@+id/tos"
+      android:title="@string/tos_link"/>
+  <item
+      android:id="@+id/source_code"
+      android:title="@string/source_code"/>
+</menu>

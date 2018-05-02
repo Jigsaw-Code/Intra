@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Each DOH server is defined by a domain (which is shown to the user) and a URL (which is
+  the actual DOH endpoint).  However, Google DNS uses a pre-standardization version of DOH, and
+  has additional bootstrap optimizations beyond standard URL connection.  We indicate this special
+  case by leaving the URL blank. -->
+  <string name="domain0" translatable="false">dns.google.com</string>
+  <string name="url0" translatable="false"></string>
+  <string name="domain1" translatable="false">cloudflare-dns.com</string>
+  <string name="url1" translatable="false">https://cloudflare-dns.com/dns-query</string>
+  <string-array name="domains">
+    <item>@string/domain0</item>
+    <item>@string/domain1</item>
+  </string-array>
+  <string-array name="urls">
+    <item>@string/url0</item>
+    <item>@string/url1</item>
+  </string-array>
+</resources>

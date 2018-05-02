@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "80496146927",
+    "firebase_url": "https://jigsaw-dns-protection.firebaseio.com",
+    "project_id": "jigsaw-dns-protection",
+    "storage_bucket": "jigsaw-dns-protection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80496146927:android:e92bfb17e27640f0",
+        "android_client_info": {
+          "package_name": "app.intra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "80496146927-85roh68ingqilf3ea2g9lhh8uf5rgv85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzbuaavnJeTtLPIYOgEvCk4R1sgCsfaxc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="app.intra.MainActivity">
+
+  <android.support.constraint.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/graph_backdrop"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:alpha="0.4"
+        android:scaleType="fitXY"
+        android:src="@drawable/gradient_backdrop"
+        android:tint="@color/accent_good"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"/>
+
+    <TextView
+        android:id="@+id/indicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:layout_marginRight="128dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Your DNS queries are protected"/>
+
+    <ToggleButton
+        android:id="@+id/dns_switch"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="16dp"
+        android:textOff="@string/enable_protection"
+        android:textOn="@string/disable_protection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indicator"/>
+
+    <app.intra.util.HistoryGraph
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"/>
+  </android.support.constraint.ConstraintLayout>
+
+  <View
+      android:layout_width="fill_parent"
+      android:layout_height="2dip"
+      android:layout_marginBottom="16dp"
+      android:background="#FF000000"/>
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:text="@string/system_details"
+      android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"/>
+
+  <android.support.constraint.ConstraintLayout
+      android:id="@+id/system_details"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:visibility="visible">
+
+    <LinearLayout
+        android:id="@+id/lifetime_queries_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/qpm_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:tint="@color/accent_good"
+          app:srcCompat="@drawable/ic_dns"
+          tools:ignore="ContentDescription"/>
+
+      <TextView
+          android:id="@+id/numRequests"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"
+          tools:text="10,000"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minLines="2"
+          android:text="@string/num_requests"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/qpm_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lifetime_queries_box"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:tint="@color/accent_good"
+          app:srcCompat="@drawable/ic_trending_up_black_24dp"
+          tools:ignore="ContentDescription"/>
+
+      <TextView
+          android:id="@+id/qpm"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"
+          app:layout_constraintStart_toEndOf="@+id/numRequests"
+          tools:text="75"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minLines="2"
+          android:text="@string/queries_per_minute"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/numRequestsLabel"
+          app:layout_constraintTop_toBottomOf="@+id/qpm"/>
+    </LinearLayout>
+
+    <!-- TODO: Add a constraint.Barrier here once ConstraintLayout-1.1.0 is stable. -->
+    <LinearLayout
+        android:id="@+id/protocol_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/server_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lifetime_queries_box">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:tint="@color/accent_good"
+          app:srcCompat="@drawable/ic_lock_black_24dp"
+          tools:ignore="ContentDescription"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="https"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minLines="2"
+          android:text="@string/transport_label"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/server_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/protocol_box"
+        app:layout_constraintTop_toBottomOf="@+id/qpm_box">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:tint="@color/accent_good"
+          app:srcCompat="@drawable/ic_server"
+          tools:ignore="ContentDescription"/>
+
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/server"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:ellipsize="none"
+            android:scrollbars="horizontal"
+            android:singleLine="true"
+            android:textIsSelectable="true"
+            android:text="dns.google.com"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_weight="0"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            app:srcCompat="@drawable/expander"/>
+      </LinearLayout>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minLines="2"
+          android:text="@string/server_label"/>
+    </LinearLayout>
+  </android.support.constraint.ConstraintLayout>
+
+  <android.support.constraint.ConstraintLayout
+      android:id="@+id/insecure_system_details"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/insecure_protocol_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/insecure_server_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:tint="@color/accent_bad"
+          app:srcCompat="@drawable/ic_lock_open_black_24dp"
+          tools:ignore="ContentDescription"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="dns"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minLines="2"
+          android:text="@string/insecure_transport_label"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/insecure_server_box"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/insecure_protocol_box"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:tint="@color/accent_bad"
+          app:srcCompat="@drawable/ic_server"
+          tools:ignore="ContentDescription"/>
+
+      <TextView
+          android:id="@+id/insecure_server_value"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="none"
+          android:scrollbars="horizontal"
+          android:singleLine="true"
+          android:text="@string/unknown_server"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"
+          android:textIsSelectable="true"
+          tools:text="very:long:addr:goes:here"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minLines="2"
+          android:text="@string/insecure_server_label"/>
+    </LinearLayout>
+  </android.support.constraint.ConstraintLayout>
+
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="2dip"
+      android:layout_marginBottom="16dp"
+      android:layout_marginTop="16dp"
+      android:background="#FF000000"/>
+
+  <CheckBox
+      android:id="@+id/show_history"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:checked="false"
+      android:text="@string/show_history"/>
+
+</LinearLayout>

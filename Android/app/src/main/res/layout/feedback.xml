@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:paddingLeft="?dialogPreferredPadding"
+    android:paddingRight="?dialogPreferredPadding"
+    android:paddingTop="?dialogPreferredPadding"
+    android:paddingBottom="?dialogPreferredPadding"
+    android:background="@drawable/gradient_backdrop"
+    android:backgroundTint="@color/accent_bad">
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/before_feedback"
+      android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+
+  <EditText
+      android:id="@+id/feedbackContent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/feedback_hint"
+      android:inputType="textCapSentences|textMultiLine|textLongMessage"
+      android:minLines="2"
+      android:selectAllOnFocus="true"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/after_feedback"/>
+  <Button
+      android:id="@+id/feedbackButton"
+      android:text="@string/submit_feedback"
+      android:layout_gravity="end"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+</LinearLayout>

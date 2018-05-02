@@ -1,0 +1,32 @@
+allprojects {
+    // The app and tests do not depend on any non-Google servers (e.g. jcenter, mavenCentral).
+    repositories {
+        google()
+    }
+}
+
+buildscript {
+    repositories {
+        google()
+        // The Firebase plugins and their many dependencies are only available at jcenter,
+        // so we mirror them locally.
+        maven {
+            url 'firebase-repo'
+        }
+        // However, miscellaneous remaining build-setup dependencies (especially transitive
+        // dependencies of com.android.tools.build:gradle) are still only available at jcenter
+        // and are not mirrored.
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+
+        // For Firebase Analytics
+        classpath 'com.google.gms:google-services:3.1.2'
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

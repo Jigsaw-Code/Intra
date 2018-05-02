@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>byte-buddy-parent</artifactId>
+        <groupId>net.bytebuddy</groupId>
+        <version>1.7.9</version>
+    </parent>
+
+    <artifactId>byte-buddy-agent</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <bytebuddy.agent>net.bytebuddy.agent.Installer</bytebuddy.agent>
+        <attach.package.sun>com.sun.tools.attach</attach.package.sun>
+        <attach.package.ibm>com.ibm.tools.attach</attach.package.ibm>
+        <version.unixsocket>2.0.4</version.unixsocket>
+    </properties>
+
+    <name>Byte Buddy Java agent</name>
+    <description>The Byte Buddy Java agent allows to access the JVM's HotSwap feature.</description>
+
+    <!--
+      The Unix socket dependency can be excluded safely. Byte Buddy will safely discover the
+      non-availability and not use the corresponding virtual machine implementation. The
+      implementation requires Java 7+ and is deactivated on Java 6 VMs.
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>com.kohlschutter.junixsocket</groupId>
+            <artifactId>junixsocket-native-common</artifactId>
+            <version>${version.unixsocket}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy-agent</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>extras</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Create manifest file which is required for creating an OSGi bundle. -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>${version.plugin.jar}</version>
+                        <configuration>
+                            <archive>
+                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <!-- Specify OSGi packaging and agent manifest headers. -->
+                    <plugin>
+                        <groupId>org.apache.felix</groupId>
+                        <artifactId>maven-bundle-plugin</artifactId>
+                        <version>${version.plugin.bundle}</version>
+                        <executions>
+                            <execution>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>manifest</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <instructions>
+                                <Premain-Class>${bytebuddy.agent}</Premain-Class>
+                                <Agent-Class>${bytebuddy.agent}</Agent-Class>
+                                <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                                <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                                <Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
+                                <Import-Package>
+                                    ${attach.package.sun};resolution:="optional",
+                                    ${attach.package.ibm};resolution:="optional"
+                                </Import-Package>
+                                <Export-Package>
+                                    net.bytebuddy.agent
+                                </Export-Package>
+                                <Automatic-Module-Name>${project.groupId}.agent</Automatic-Module-Name>
+                            </instructions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

@@ -1,0 +1,9 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <!-- Customizations go here. -->
+    <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+    <item name="android:textColorLink">?android:textColorPrimary</item>
+  </style>
+</resources>

@@ -1,0 +1,142 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="app_name" translatable="false">Intra</string>
+
+  <!-- Headline for the welcome screen. -->
+  <string name="about_headline">Honest and secure DNS</string>
+
+  <!-- Text for the welcome screen. -->
+  <string name="about_text">Intra protects your DNS
+        queries by routing them over a secure HTTPS connection. This reduces the chance that you will be sent to the wrong site, or have your browsing blocked or observed.</string>
+
+  <!-- Privacy text for the welcome screen. -->
+  <string name="privacy_text">By default, your queries will be routed to
+        <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
+        (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>).
+        You can also choose to use <a href="https://cloudflare-dns.com">Cloudflare</a>
+        (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>).</string>
+
+  <!-- Button label to exit the welcome screen. -->
+  <string name="accept">Get Started</string>
+
+  <!-- Hint for blind users to access the menu. -->
+  <string name="drawer_open">Open navigation drawer</string>
+
+  <!-- Hint for blind users to leave the menu. -->
+  <string name="drawer_close">Close navigation drawer</string>
+
+  <!-- Menu label to return to the app's main screen. -->
+  <string name="home">Home</string>
+
+  <!-- Menu entry for sending error reports and complaints to the developers. -->
+  <string name="feedback">Submit Feedback</string>
+
+  <!-- Link to the privacy policy -->
+  <string name="privacy_link">Privacy Policy</string>
+
+  <!-- Link to the terms of service -->
+  <string name="tos_link">Terms of Service</string>
+
+  <!-- Link to the source code for this app -->
+  <string name="source_code">Source Code</string>
+
+  <!-- Jigsaw credits. "Jigsaw" is not translatable. -->
+  <string name="short_credits_text">Intra is an experimental open source project by <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+
+  <!-- Credits to contributing parties. "Jigsaw" is not translatable. -->
+  <string name="credits_text">Intra was made by <a href="https://jigsaw.google.com">Jigsaw</a>. IP locations are based on data from DB-IP.com.</string>
+
+  <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
+  protected", with the word "protected" highlighted in a reassuring color. -->
+  <string name="dns_on"><![CDATA[Your DNS queries are
+        <font color=\"#%06X\">protected</font>]]></string>
+
+  <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
+  exposed", with the word "exposed" highlighted in a scary color. -->
+  <string name="dns_off"><![CDATA[Your DNS queries are <font color=\"#%06X\">exposed</font>]]>
+    </string>
+
+  <!-- This text appears on a button to enable DNS protection functionality -->
+  <string name="enable_protection">enable protection</string>
+
+  <!-- This text appears on a button to disable DNS protection functionality -->
+  <string name="disable_protection">disable</string>
+
+  <!-- This is the title of a section containing information on the system configuration and
+  status. -->
+  <string name="system_details">System details</string>
+
+  <!-- This text appears under the number of queries protected so far. -->
+  <string name="num_requests">Lifetime queries</string>
+
+  <!-- This text appears under the number of queries protected in the past minute. -->
+  <string name="queries_per_minute">Recent queries</string>
+
+  <!-- This text appears under the name of the secure protocol currently in use.  Currently, that
+   is always "https".-->
+  <string name="transport_label">Encrypted transport</string>
+
+  <!-- This text appears under the name of the insecure protocol currently in use.  Currently,
+  that is always "dns".-->
+  <string name="insecure_transport_label">Unencrypted transport</string>
+
+  <!-- This text appears under the name of the secure server currently in use.  Currently, that
+   is always "dns.google.com".-->
+  <string name="server_label">Secure DNS server</string>
+
+  <!-- This text appears under the name of the insecure server currently in use. -->
+  <string name="insecure_server_label">Network-provided DNS server</string>
+
+  <!-- This is a placeholder, used when the server address is unknown -->
+  <string name="unknown_server">(unknown server)</string>
+
+  <!-- This label appears next to a checkbox.  When the box is checked, recent queries will start
+  being shown. -->
+  <string name="show_history">Show recent queries</string>
+
+  <!-- This text appears under the domain name for which a DNS query was issued. -->
+  <string name="query_label">Query</string>
+
+  <!-- This text appears under the type of query that was issued ("A" or "AAAA"). -->
+  <string name="type_label">Type</string>
+
+  <!-- This text appears under a measurement of network latency, like "923 ms". -->
+  <string name="latency_label">Latency</string>
+
+  <!-- This text appears under a two-letter ISO country code, indicating the country where the
+  DNS resolver is located. -->
+  <string name="resolver_label">Resolver location</string>
+
+  <!-- This text appears under a two-letter ISO country code, indicating the country where the
+  resolved domain's IP address is located. -->
+  <string name="destination_label">Destination server</string>
+
+  <!-- Template for forming latency strings. -->
+  <string name="latency_ms" translatable="false"><xliff:g example="29" id="time">%d</xliff:g> ms</string>
+
+  <!-- Text that appears above the feedback text entry field. -->
+  <string name="before_feedback">Help us improve Intra! Intra is an early-stage product and we need your help to make it better.  Tell us what\'s
+        working, and what\'s not.  Thanks!</string>
+
+  <!-- Hint that appears in the text field where the user will type their complaint or error. -->
+  <string name="feedback_hint">Your feedback</string>
+
+  <!-- Text that appears after the feedback text entry field, warning users not to include
+  personally identifying information that could violate their privacy. -->
+  <string name="after_feedback">This information will be sent to the Intra
+        team.  Please do not include any personal information in your feedback.</string>
+
+  <!-- Text on the button to submit feedback. -->
+  <string name="submit_feedback">Submit</string>
+
+  <!-- Status indicator text shown in a persistent notification. -->
+  <string name="notification_title">DNS protection is active</string>
+
+  <!-- Indicates what will happen if the user taps the notification. -->
+  <string name="notification_content">Tap to change DNS protection setting</string>
+
+  <!-- Description of the notification, as shown in the system's advanced notifications settings
+  page. -->
+  <string name="channel_name">DNS Protection Active Notification</string>
+  <string name="channel_description">This notification appears while DNS protection is active.
+    </string>
+</resources>
