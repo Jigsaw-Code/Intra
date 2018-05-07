@@ -139,4 +139,12 @@
   <string name="channel_name">DNS Protection Active Notification</string>
   <string name="channel_description">This notification appears while DNS protection is active.
     </string>
+
+  <!-- Status indicator text shown in a warning notification. -->
+  <string name="warning_title">Warning: Intra has been deactivated</string>
+
+  <!-- Description of the notification, as shown in the system's advanced notifications settings
+  page. -->
+  <string name="warning_channel_name">Warning</string>
+  <string name="warning_channel_description">Shown when Intra has encountered a problem.</string>
 </resources>

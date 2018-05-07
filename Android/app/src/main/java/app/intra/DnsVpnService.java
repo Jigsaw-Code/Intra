@@ -328,6 +328,38 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     FirebaseCrash.report(new Error("onRevoke"));
     stopDnsResolver();
     stopSelf();
+
+    // Show revocation warning
+    Notification.Builder builder;
+    NotificationManager notificationManager =
+        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      CharSequence name = getString(R.string.warning_channel_name);
+      String description = getString(R.string.warning_channel_description);
+      int importance = NotificationManager.IMPORTANCE_HIGH;
+      NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+      channel.setDescription(description);
+
+      notificationManager.createNotificationChannel(channel);
+      builder = new Notification.Builder(this, CHANNEL_ID);
+    } else {
+      builder = new Notification.Builder(this);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        // Only available in API >= 16.  Deprecated in API 26.
+        builder = builder.setPriority(Notification.PRIORITY_MAX);
+      }
+    }
+
+    PendingIntent mainActivityIntent = PendingIntent.getActivity(
+        this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+    builder.setSmallIcon(R.drawable.ic_status_bar)
+        .setContentTitle(getResources().getText(R.string.warning_title))
+        .setContentText(getResources().getText(R.string.notification_content))
+        .setFullScreenIntent(mainActivityIntent, true)  // Open the main UI if possible.
+        .setAutoCancel(true);
+
+    notificationManager.notify(0, builder.getNotification());
   }
 
   @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
