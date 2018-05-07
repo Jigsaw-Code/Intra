@@ -15,6 +15,8 @@ limitations under the License.
 */
 package app.intra.util;
 
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import app.intra.DnsVpnServiceState;
 import app.intra.R;
 
@@ -193,6 +195,13 @@ public class HistoryGraph extends View {
     }
 
     // Queue up the next animation frame.
-    postInvalidateOnAnimation();
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+      // Redraw the UI at its preferred update frequency.
+      postInvalidateOnAnimation();
+    } else {
+      // postInvalidateOnAnimation is only available in Jelly Bean and higher.  On older devices,
+      // update every RESOLUTION_MS (currently 10 FPS, which is choppy but good enough).
+      postInvalidateDelayed(RESOLUTION_MS);
+    }
   }
 }
