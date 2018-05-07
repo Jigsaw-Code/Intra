@@ -19,9 +19,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 
+import android.util.Log;
 import app.intra.util.DiversitySampler;
 import app.intra.util.DualStackResult;
 
+import com.google.firebase.crash.FirebaseCrash;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,6 +46,7 @@ import okhttp3.Dns;
  */
 public class GoogleServerDatabase implements Dns {
 
+  private static final String LOG_TAG = "GoogleServerDatabase";
   private static final String EXTRA_SERVERS_V4_KEY = "extraServersV4";
   private static final String EXTRA_SERVERS_V6_KEY = "extraServersV6";
 
@@ -117,6 +120,10 @@ public class GoogleServerDatabase implements Dns {
    */
   private DualStackResult getPreferred() {
     Context context = DnsVpnServiceState.getInstance().getDnsVpnService();
+    if (context == null) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap started");
+      return new DualStackResult(new String[0], new String[0]);
+    }
     SharedPreferences settings = context.getSharedPreferences(MainActivity.class.getSimpleName(),
         Context.MODE_PRIVATE);
 
@@ -137,6 +144,10 @@ public class GoogleServerDatabase implements Dns {
 
     // Record them to disk so they can be prepended at the next startup.
     Context context = DnsVpnServiceState.getInstance().getDnsVpnService();
+    if (context == null) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap completed");
+      return;
+    }
     SharedPreferences settings =
         context.getSharedPreferences(MainActivity.class.getSimpleName(),
             Context.MODE_PRIVATE);
