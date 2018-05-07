@@ -67,15 +67,19 @@ public class DnsQueryTracker {
   }
 
   public int countQueriesSince(long startTime) {
-    // Linearly scan recent activity.  Due to the small scale (N ~ 300), a more efficient algorithm
-    // does not appear to be necessary.
-    int queries = 0;
-    for (long time : recentActivity) {
-      if (time > startTime) {
-        ++queries;
+    synchronized (this) {
+      // Linearly scan recent activity.  Due to the small scale (N ~ 300), a more efficient algorithm
+      // does not appear to be necessary.
+      int queries = recentActivity.size();
+      for (long time : recentActivity) {
+        if (time < startTime) {
+          --queries;
+        } else {
+          break;
+        }
       }
+      return queries;
     }
-    return queries;
   }
 
   public void setHistoryEnabled(boolean enabled) {
