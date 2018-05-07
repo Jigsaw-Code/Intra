@@ -286,14 +286,14 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     }
   }
 
-  private void startDnsResolver() {
-    if (dnsResolver == null) {
+  private synchronized void startDnsResolver() {
+    if (dnsResolver == null && serverConnection != null) {
       dnsResolver = new DnsResolverUdpToHttps(tunFd, serverConnection);
       dnsResolver.start();
     }
   }
 
-  private void stopDnsResolver() {
+  private synchronized void stopDnsResolver() {
     if (dnsResolver != null) {
       dnsResolver.interrupt();
       pingLocalDns(); // Try to wake up the resolver thread if it's blocked on a read() call.
@@ -302,7 +302,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   }
 
   @Override
-  public void onDestroy() {
+  public synchronized void onDestroy() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
     broadcastIntent(false);
 
@@ -311,6 +311,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     }
 
     syncNumRequests();
+    stopDnsResolver();
+    serverConnection = null;
 
     DnsVpnServiceState.getInstance().setDnsVpnService(null);
 
