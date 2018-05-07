@@ -140,4 +140,7 @@
     <string name="channel_name">Notificación de protección de DNS activada</string>
     <string name="channel_description">Esta notificación aparece cuando la protección de DNS está activada.
     </string>
+    <string name="warning_title">Aviso: Intra ha sido desactivado</string>
+    <string name="warning_channel_name">Aviso</string>
+    <string name="warning_channel_description">Mostrado cuando Intra ha encontrado un problema.</string>
 </resources>
