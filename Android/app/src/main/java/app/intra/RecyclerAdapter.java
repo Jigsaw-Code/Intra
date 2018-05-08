@@ -15,6 +15,9 @@ limitations under the License.
 */
 package app.intra;
 
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import app.intra.util.CountryMap;
 import app.intra.util.DnsPacket;
 import app.intra.util.DnsTransaction;
@@ -352,6 +355,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       assert viewType == TYPE_TRANSACTION;
       View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_row,
           parent, false);
+
+      // Workaround for lack of vector drawable background support in pre-Lollipop Android.
+      View expand = v.findViewById(R.id.expand);
+      // getDrawable automatically rasterizes vector drawables as needed on pre-Lollipop Android.
+      // See https://stackoverflow.com/questions/29041027/android-getresources-getdrawable-deprecated-api-22
+      Drawable expander = ContextCompat.getDrawable(activity, R.drawable.expander);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        // Only available in API 16+.
+        expand.setBackground(expander);
+      } else {
+        // Deprecated starting in API 16.
+        expand.setBackgroundDrawable(expander);
+      }
+
       return new TransactionViewHolder(v);
     }
   }

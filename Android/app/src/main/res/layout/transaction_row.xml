@@ -18,11 +18,14 @@
 
     <TextView
         android:id="@+id/flag"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:layout_margin="8dp"
         android:layout_weight="0"
+        android:layout_margin="8dp"
+        android:layout_gravity="start|center_vertical"
+        android:ellipsize="none"
+        android:minWidth="40dp"
+        android:singleLine="true"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         tools:text="🇩🇪"/>
@@ -52,6 +55,9 @@
         android:textColor="@color/accent_good"
         tools:text="17:54:11"/>
 
+    <!-- This button's background image is set by Java code as a workaround for lack of support
+    for vector background drawables on pre-Lollipop Android.  See
+    https://medium.com/@ferrand.d/can-you-and-should-you-use-vector-drawables-a-cheatsheet-32a2e1cc2ecf-->
     <ToggleButton
         android:id="@+id/expand"
         android:layout_width="24dp"
@@ -59,7 +65,6 @@
         android:layout_gravity="end|center_vertical"
         android:layout_margin="10dp"
         android:layout_weight="0"
-        android:background="@drawable/expander"
         android:textOff=""
         android:textOn=""/>
   </LinearLayout>
