@@ -1,0 +1,143 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Headline for the welcome screen. -->
+  <string name="about_headline">정직과 안전의 DNS</string>
+
+  <!-- Text for the welcome screen. -->
+  <string name="about_text">Intra는 당신의 DNS 쿼리를 보호하기 위해서 HTTPS 연결로 라우팅 해줍니다. 이것은 당신이 이상한 사이트로 넘어가지거나, 차단당하거나 감시당하는 경우를 줄여줍니다.</string>
+
+  <!-- Privacy text for the welcome screen. -->
+  <string name="privacy_text">기본값으로, 쿼리는
+        <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
+        (<a href="https://developers.google.com/speed/public-dns/privacy">개인정보 처리방침</a>)를 통해서 라우팅 됩니다.
+        또한 <a href="https://cloudflare-dns.com">Cloudflare</a>
+        (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">개인정보 처리방침</a>)를 선택할 수도 있습니다.</string>
+
+  <!-- Button label to exit the welcome screen. -->
+  <string name="accept">지금 시작하기</string>
+
+  <!-- Hint for blind users to access the menu. -->
+  <string name="drawer_open">탐색 창 열기</string>
+
+  <!-- Hint for blind users to leave the menu. -->
+  <string name="drawer_close">탐색 창 닫기</string>
+
+  <!-- Menu label to return to the app's main screen. -->
+  <string name="home">홈</string>
+
+  <!-- Menu entry for sending error reports and complaints to the developers. -->
+  <string name="feedback">피드백 보내기</string>
+
+  <!-- Link to the privacy policy -->
+  <string name="privacy_link">개인정보 처리방침</string>
+
+  <!-- Link to the terms of service -->
+  <string name="tos_link">이용 약관</string>
+
+  <!-- Link to the source code for this app -->
+  <string name="source_code">소스 코드</string>
+
+  <!-- Jigsaw credits. "Jigsaw" is not translatable. -->
+  <string name="short_credits_text">Intra는 <a href="https://jigsaw.google.com">Jigsaw</a>에서 만든 실험적인 오픈 소스 프로젝트입니다.</string>
+
+  <!-- Credits to contributing parties. "Jigsaw" is not translatable. -->
+  <string name="credits_text">Intra는 <a href="https://jigsaw.google.com">Jigsaw</a>에서 만들어졌습니다. IP 위치는 DB-IP.com에서 가져오는 데이터를 기반으로 합니다.</string>
+
+  <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
+  protected", with the word "protected" highlighted in a reassuring color. -->
+  <string name="dns_on"><![CDATA[기기 DNS 쿼리
+        <font color=\"#%06X\">보호됨</font>]]></string>
+
+  <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
+  exposed", with the word "exposed" highlighted in a scary color. -->
+  <string name="dns_off"><![CDATA[기기 DNS 쿼리 <font color=\"#%06X\">노출됨</font>]]>
+    </string>
+
+  <!-- This text appears on a button to enable DNS protection functionality -->
+  <string name="enable_protection">보호 활성화</string>
+
+  <!-- This text appears on a button to disable DNS protection functionality -->
+  <string name="disable_protection">비활성화</string>
+
+  <!-- This is the title of a section containing information on the system configuration and
+  status. -->
+  <string name="system_details">시스템 정보</string>
+
+  <!-- This text appears under the number of queries protected so far. -->
+  <string name="num_requests">모든 쿼리</string>
+
+  <!-- This text appears under the number of queries protected in the past minute. -->
+  <string name="queries_per_minute">최근 쿼리</string>
+
+  <!-- This text appears under the name of the secure protocol currently in use.  Currently, that
+   is always "https".-->
+  <string name="transport_label">암호화 통신</string>
+
+  <!-- This text appears under the name of the insecure protocol currently in use.  Currently,
+  that is always "dns".-->
+  <string name="insecure_transport_label">비암호화 통신</string>
+
+  <!-- This text appears under the name of the secure server currently in use.  Currently, that
+   is always "dns.google.com".-->
+  <string name="server_label">보안 DNS 서버</string>
+
+  <!-- This text appears under the name of the insecure server currently in use. -->
+  <string name="insecure_server_label">통신사 제공 DNS 서버</string>
+
+  <!-- This is a placeholder, used when the server address is unknown -->
+  <string name="unknown_server">(알 수 없음)</string>
+
+  <!-- This label appears next to a checkbox.  When the box is checked, recent queries will start
+  being shown. -->
+  <string name="show_history">최근 쿼리 보기</string>
+
+  <!-- This text appears under the domain name for which a DNS query was issued. -->
+  <string name="query_label">쿼리</string>
+
+  <!-- This text appears under the type of query that was issued ("A" or "AAAA"). -->
+  <string name="type_label">종류</string>
+
+  <!-- This text appears under a measurement of network latency, like "923 ms". -->
+  <string name="latency_label">지연</string>
+
+  <!-- This text appears under a two-letter ISO country code, indicating the country where the
+  DNS resolver is located. -->
+  <string name="resolver_label">리졸버 위치</string>
+
+  <!-- This text appears under a two-letter ISO country code, indicating the country where the
+  resolved domain's IP address is located. -->
+  <string name="destination_label">목적지 서버</string>
+
+  <!-- Text that appears above the feedback text entry field. -->
+  <string name="before_feedback">Intra를 발전시킬 수 있도록 도와주세요! Intra는 아직 초기 단계이며 여러분들의 도움을 필요로 합니다.  무엇이 작동하고, 무엇이 작동하지 않는지 영어로 알려주세요.  감사합니다!</string>
+
+  <!-- Hint that appears in the text field where the user will type their complaint or error. -->
+  <string name="feedback_hint">당신의 피드백</string>
+
+  <!-- Text that appears after the feedback text entry field, warning users not to include
+  personally identifying information that could violate their privacy. -->
+  <string name="after_feedback">이 정보는 Intra 팀으로 전송될
+        것입니다.  절대 개인 정보를 피드백 안에 넣지 마세요.</string>
+
+  <!-- Text on the button to submit feedback. -->
+  <string name="submit_feedback">제출</string>
+
+  <!-- Status indicator text shown in a persistent notification. -->
+  <string name="notification_title">DNS 보호가 활성화됨</string>
+
+  <!-- Indicates what will happen if the user taps the notification. -->
+  <string name="notification_content">눌러서 DNS 보호를 변경할 수 있음</string>
+
+  <!-- Description of the notification, as shown in the system's advanced notifications settings
+  page. -->
+  <string name="channel_name">DNS 보호 활성화 알림</string>
+  <string name="channel_description">이 알림은 DNS 보호가 활성화되었을 때 보입니다.
+    </string>
+
+  <!-- Status indicator text shown in a warning notification. -->
+  <string name="warning_title">경고: Intra가 비활성화됨</string>
+
+  <!-- Description of the notification, as shown in the system's advanced notifications settings
+  page. -->
+  <string name="warning_channel_name">경고</string>
+  <string name="warning_channel_description">Intra에 문제가 발생했을 때 표시됩니다.</string>
+</resources>
