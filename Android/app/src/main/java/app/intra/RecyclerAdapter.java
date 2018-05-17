@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.firebase.crash.FirebaseCrash;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ProtocolException;
@@ -79,7 +80,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     try {
       countryMap = new CountryMap(activity.getAssets());
     } catch (IOException e) {
-      countryMap = null;
+      FirebaseCrash.report(e);
     }
   }
 

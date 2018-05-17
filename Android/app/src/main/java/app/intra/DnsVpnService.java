@@ -280,9 +280,10 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
               zero, zero.length, 0, InetAddress.getByName(privateIpv4Address.router), 53);
       DatagramSocket datagramSocket = new DatagramSocket();
       datagramSocket.send(packet);
-    } catch (Exception e) {
-      FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to send UDP ping.");
-      FirebaseCrash.report(e);
+    } catch (IOException e) {
+      // An IOException likely means that the VPN has already been torn down, so there's no need for
+      // this ping.
+      FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to send UDP ping: " + e.getMessage());
     }
   }
 
@@ -311,7 +312,6 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     }
 
     syncNumRequests();
-    stopDnsResolver();
     serverConnection = null;
 
     DnsVpnServiceState.getInstance().setDnsVpnService(null);
@@ -320,6 +320,9 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     broadcastManager.unregisterReceiver(messageReceiver);
 
     stopForeground(true);
+    if (dnsResolver != null) {
+      signalStopService(false);
+    }
   }
 
   @Override
