@@ -17,7 +17,6 @@ package app.intra;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,13 +27,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public class WelcomePopup {
-
-  private static final String PREFS_NAME = "IntroState";
-  private static final String APPROVED_KEY = "approved";
-
   public static boolean shouldShow(Activity activity) {
-    SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
-    return !settings.getBoolean(APPROVED_KEY, false);
+    return !Preferences.getWelcomeApproved(activity);
   }
 
   public WelcomePopup(final MainActivity mainActivity) {
@@ -50,11 +44,7 @@ public class WelcomePopup {
     acceptButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        SharedPreferences settings = mainActivity.getSharedPreferences(PREFS_NAME,
-            0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(APPROVED_KEY, true);
-        editor.apply();
+        Preferences.setWelcomeApproved(mainActivity, true);
         popupWindow.dismiss();
       }
     });

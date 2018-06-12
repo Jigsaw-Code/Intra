@@ -16,7 +16,6 @@ limitations under the License.
 package app.intra;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 
 import android.util.Log;
@@ -47,8 +46,6 @@ import okhttp3.Dns;
 public class GoogleServerDatabase implements Dns {
 
   private static final String LOG_TAG = "GoogleServerDatabase";
-  private static final String EXTRA_SERVERS_V4_KEY = "extraServersV4";
-  private static final String EXTRA_SERVERS_V6_KEY = "extraServersV6";
 
   // Max number of these IP addresses, selected at random, to attempt before declaring failure.
   private static final int MAX_ATTEMPTS = 10;
@@ -124,11 +121,8 @@ public class GoogleServerDatabase implements Dns {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap started");
       return new DualStackResult(new String[0], new String[0]);
     }
-    SharedPreferences settings = context.getSharedPreferences(MainActivity.class.getSimpleName(),
-        Context.MODE_PRIVATE);
-
-    Set<String> v4set = settings.getStringSet(EXTRA_SERVERS_V4_KEY, new HashSet<String>());
-    Set<String> v6set = settings.getStringSet(EXTRA_SERVERS_V6_KEY, new HashSet<String>());
+    Set<String> v4set = Preferences.getExtraGoogleV4Servers(context);
+    Set<String> v6set = Preferences.getExtraGoogleV6Servers(context);
     String[] dummy = new String[0];
     return new DualStackResult(v4set.toArray(dummy), v6set.toArray(dummy));
   }
@@ -148,15 +142,7 @@ public class GoogleServerDatabase implements Dns {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap completed");
       return;
     }
-    SharedPreferences settings =
-        context.getSharedPreferences(MainActivity.class.getSimpleName(),
-            Context.MODE_PRIVATE);
-    SharedPreferences.Editor editor = settings.edit();
-
-    editor.putStringSet(EXTRA_SERVERS_V4_KEY,
-        new HashSet<String>(Arrays.asList(servers.getV4())));
-    editor.putStringSet(EXTRA_SERVERS_V6_KEY,
-        new HashSet<String>(Arrays.asList(servers.getV6())));
-    editor.apply();
+    Preferences.setExtraGoogleV4Servers(context, servers.getV4());
+    Preferences.setExtraGoogleV6Servers(context, servers.getV6());
   }
 }

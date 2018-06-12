@@ -20,7 +20,6 @@ package app.intra.util;
 public enum Names {
   BOOTSTRAP,
   BOOTSTRAP_FAILED,
-  DATA,
   DNS_STATUS,
   DROPPED,
   LATENCY,
@@ -28,5 +27,4 @@ public enum Names {
   RESOLVED,
   RESULT,
   TRANSACTION,
-  URL,
 }
