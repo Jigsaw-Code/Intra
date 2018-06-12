@@ -13,6 +13,7 @@ import java.util.Set;
  * written by separate components, and also helps to improve preference naming consistency.
  */
 public class Preferences {
+
   private static final String APPROVED_KEY = "approved";
   private static final String EXTRA_SERVERS_V4_KEY = "extraServersV4";
   private static final String EXTRA_SERVERS_V6_KEY = "extraServersV6";
@@ -37,7 +38,10 @@ public class Preferences {
 
   public static boolean setServerName(Context context, String name) {
     String oldName = getServerName(context);
-    if (name.equals(oldName)) {
+    if (name == null && oldName == null) {
+      return true;
+    }
+    if (name != null && name.equals(oldName)) {
       return true;
     }
     final List<String> knownNames =
@@ -72,7 +76,6 @@ public class Preferences {
 
   public static void setExtraGoogleV4Servers(Context context, String[] servers) {
     SharedPreferences.Editor editor = getSettings(context).edit();
-
     editor.putStringSet(EXTRA_SERVERS_V4_KEY,
         new HashSet<String>(Arrays.asList(servers)));
     editor.apply();
@@ -84,7 +87,6 @@ public class Preferences {
 
   public static void setExtraGoogleV6Servers(Context context, String[] servers) {
     SharedPreferences.Editor editor = getSettings(context).edit();
-
     editor.putStringSet(EXTRA_SERVERS_V6_KEY,
         new HashSet<String>(Arrays.asList(servers)));
     editor.apply();
