@@ -87,7 +87,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   @Override
   public synchronized int onStartCommand(Intent intent, int flags, int startId) {
-    url = intent.getStringExtra(Names.URL.name());
+    url = Preferences.getServerUrl(this);
     Log.i(LOG_TAG, String.format("Starting DNS VPN service, url=%s", url));
 
     if (networkManager != null) {

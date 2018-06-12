@@ -22,7 +22,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
@@ -71,8 +70,6 @@ import app.intra.util.Feedback;
 import app.intra.util.Names;
 
 import java.net.InetAddress;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.Timer;
@@ -81,8 +78,6 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
   private static final String LOG_TAG = "MainActivity";
-
-  private static final String SERVER_KEY = "server";
 
   private static final int REQUEST_CODE_PREPARE_VPN = 100;
   public static final int RESULT_OK = -1;
@@ -285,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     // Restore the chosen server name
     final TextView serverName = controlView.findViewById(R.id.server);
-    serverName.setText(getServerName());
+    serverName.setText(Preferences.getServerName(this));
 
     // Make the server control clickable
     final View serverBox = controlView.findViewById(R.id.server_box);
@@ -367,20 +362,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     super.onDestroy();
   }
 
-  private String getUrl(String domain) {
-    String[] domains = getResources().getStringArray(R.array.domains);
-    String[] urls = getResources().getStringArray(R.array.urls);
-    for (int i = 0; i < domains.length; ++i) {
-      if (domains[i].equals(domain)) {
-        return urls[i];
-      }
-    }
-    return null;
-  }
-
   private void startDnsVpnService() {
     Intent startServiceIntent = new Intent(this, DnsVpnService.class);
-    startServiceIntent.putExtra(Names.URL.name(), getUrl(getServerName()));
     startService(startServiceIntent);
     DnsVpnServiceState.getInstance().setDnsVpnServiceStarting();
   }
@@ -429,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     popup.setOnMenuItemClickListener(this);
     popup.inflate(R.menu.server);
     Menu menu = popup.getMenu();
-    String name = getServerName();
+    String name = Preferences.getServerName(this);
     for (int i = 0; i < menu.size(); ++i) {
       MenuItem item = menu.getItem(i);
       String title = item.getTitle().toString();
@@ -440,30 +423,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     popup.show();
   }
 
-  private String getServerName() {
-    SharedPreferences settings = getApplicationContext().getSharedPreferences(
-        MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
-
-    String defaultDomain = getResources().getStringArray(R.array.domains)[0];
-    return settings.getString(SERVER_KEY, defaultDomain);
-  }
-
   private boolean setServerName(String name) {
-    String oldName = getServerName();
-    if (name.equals(oldName)) {
-      return true;
-    }
-    final List<String> knownNames = Arrays.asList(getResources().getStringArray(R.array.domains));
-    if (!knownNames.contains(name)) {
+    if (!Preferences.setServerName(this, name)) {
       return false;
     }
-    SharedPreferences settings = getApplicationContext()
-        .getSharedPreferences(MainActivity.class.getSimpleName(), Context.MODE_PRIVATE);
-    SharedPreferences.Editor editor = settings.edit();
-
-    editor.putString(SERVER_KEY, name);
-    editor.apply();
-
     TextView serverName = controlView.findViewById(R.id.server);
     serverName.setText(name);
 
