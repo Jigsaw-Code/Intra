@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,16 @@
                 <action android:name="android.net.VpnService"/>
             </intent-filter>
         </service>
+
+        <receiver android:name="app.intra.AutoStarter" android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Uncomment the below line for network performance debug logging -->
         <!-- <meta-data android:name="firebase_performance_logcat_enabled" android:value="true" /> -->
     </application>

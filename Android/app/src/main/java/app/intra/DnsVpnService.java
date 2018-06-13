@@ -209,6 +209,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
     tunFd = establishVpn();
     if (tunFd == null) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to get TUN device");
       stopSelf();
       return;
     }
@@ -289,6 +290,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   private synchronized void startDnsResolver() {
     if (dnsResolver == null && serverConnection != null) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
       dnsResolver = new DnsResolverUdpToHttps(tunFd, serverConnection);
       dnsResolver.start();
     }
@@ -333,6 +335,9 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     FirebaseCrash.report(new Error("onRevoke"));
     stopDnsResolver();
     stopSelf();
+
+    // Disable autostart if VPN permission is revoked.
+    Preferences.setVpnEnabled(this, false);
 
     // Show revocation warning
     Notification.Builder builder;
