@@ -363,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
   }
 
   private void startDnsVpnService() {
+    Preferences.setVpnEnabled(this, true);
     Intent startServiceIntent = new Intent(this, DnsVpnService.class);
     startService(startServiceIntent);
     DnsVpnServiceState.getInstance().setDnsVpnServiceStarting();
@@ -378,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     if (dnsVpnService != null) {
       dnsVpnService.signalStopService(true /* user initiated */);
     }
+    Preferences.setVpnEnabled(this, false);
   }
 
   private Queue<DnsTransaction> getHistory() {

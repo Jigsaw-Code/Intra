@@ -79,6 +79,7 @@ public class DnsResolverUdpToHttps extends Thread {
   // In addition to reading DNS requests from the VPN interface and forwarding them via HTTPS, this
   // thread is responsible for maintaining a connected socket to Google's DNS-over-HTTPS API.
   public void run() {
+    FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Query thread starting");
     if (tunFd == null) {
       // This check is necessary due to a race, where the VPN has been closed and the device regains
       // network connectivity before the service stops. As a result the TUN file descriptor is null

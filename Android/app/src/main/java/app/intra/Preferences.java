@@ -15,6 +15,7 @@ import java.util.Set;
 public class Preferences {
 
   private static final String APPROVED_KEY = "approved";
+  private static final String ENABLED_KEY = "enabled";
   private static final String EXTRA_SERVERS_V4_KEY = "extraServersV4";
   private static final String EXTRA_SERVERS_V6_KEY = "extraServersV6";
   private static final String SERVER_KEY = "server";
@@ -29,9 +30,18 @@ public class Preferences {
     return context.getSharedPreferences(MAIN_PREFS_NAME, Context.MODE_PRIVATE);
   }
 
+  public static boolean getVpnEnabled(Context context) {
+    return getSettings(context).getBoolean(ENABLED_KEY, false);
+  }
+
+  public static void setVpnEnabled(Context context, boolean enabled) {
+    SharedPreferences.Editor editor = getSettings(context).edit();
+    editor.putBoolean(ENABLED_KEY, enabled);
+    editor.apply();
+  }
+
   public static String getServerName(Context context) {
     SharedPreferences settings = getSettings(context);
-
     String defaultDomain = context.getResources().getStringArray(R.array.domains)[0];
     return settings.getString(SERVER_KEY, defaultDomain);
   }
