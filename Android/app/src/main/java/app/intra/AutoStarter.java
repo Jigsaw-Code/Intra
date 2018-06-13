@@ -8,9 +8,8 @@ import android.util.Log;
 import com.google.firebase.crash.FirebaseCrash;
 
 /**
- * Broadcast receiver that runs on boot.
+ * Broadcast receiver that runs on boot, and also when the app is restarted due to an update.
  */
-
 public class AutoStarter extends BroadcastReceiver {
 
   private static String LOG_TAG = "AutoStarter";
