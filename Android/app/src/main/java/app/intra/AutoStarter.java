@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
+import android.os.Build;
 import android.util.Log;
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -30,7 +31,11 @@ public class AutoStarter extends BroadcastReceiver {
         return;
       }
       Intent startServiceIntent = new Intent(context, DnsVpnService.class);
-      context.startService(startServiceIntent);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.startForegroundService(startServiceIntent);
+      } else {
+        context.startService(startServiceIntent);
+      }
       DnsVpnServiceState.getInstance().setDnsVpnServiceStarting();
     }
   }
