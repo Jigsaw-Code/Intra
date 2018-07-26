@@ -97,6 +97,11 @@
     disable
   </string>
 
+  <string name="vpn_active"
+          description="Warning text shown on the main screen before the user starts Intra">
+    Intra has detected another VPN on your device.  That VPN will be disabled if you enable Intra.
+  </string>
+
   <string name="system_details"
           description="This is the title of a section containing information on the system configuration and
   status.">

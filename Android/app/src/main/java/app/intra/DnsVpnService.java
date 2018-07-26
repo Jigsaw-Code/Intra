@@ -24,7 +24,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.PeriodicSync;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -375,10 +374,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   @Override
   public void onRevoke() {
-    FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "VPN service revoked.");
-    // Revocation isn't intrinsically an error, but it can occur as a result of error conditions,
-    // and user-initiated revocation is expected to be extremely rare.
-    FirebaseCrash.report(new Error("onRevoke"));
+    FirebaseCrash.logcat(Log.WARN, LOG_TAG, "VPN service revoked.");
     stopDnsResolver();
     stopSelf();
 

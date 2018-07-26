@@ -27,9 +27,12 @@ import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -70,6 +73,9 @@ import app.intra.util.Feedback;
 import app.intra.util.Names;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.Timer;
@@ -367,6 +373,9 @@ public class MainActivity extends AppCompatActivity
   protected void onResume() {
     super.onResume();
     startAnimation();
+
+    // Refresh DNS status.  This is mostly to update the VPN warning message state.
+    setDnsStatus(isServiceRunning());
   }
 
   @Override
@@ -463,6 +472,34 @@ public class MainActivity extends AppCompatActivity
     return null;
   }
 
+  private boolean getVpnActive() {
+    ConnectivityManager connectivityManager =
+        (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      Network activeNetwork = connectivityManager.getActiveNetwork();
+      if (activeNetwork == null) {
+        return false;
+      }
+      NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
+      return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
+    }
+    // For pre-M versions, return true if there's any network whose name looks like a VPN.
+    try {
+      Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+      while (networkInterfaces.hasMoreElements()) {
+        NetworkInterface networkInterface = networkInterfaces.nextElement();
+        String name = networkInterface.getName();
+        if (networkInterface.isUp() && name != null &&
+            (name.startsWith("tun") || name.startsWith("pptp") || name.startsWith("l2tp"))) {
+          return true;
+        }
+      }
+    } catch (SocketException e) {
+      FirebaseCrash.report(e);
+    }
+    return false;
+  }
+
   @Override
   public void onActivityResult(int request, int result, Intent data) {
     if (request == REQUEST_CODE_PREPARE_VPN && result == RESULT_OK) {
@@ -485,10 +522,17 @@ public class MainActivity extends AppCompatActivity
     graph.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
 
     // Change indicator text
+    boolean vpnActive = !on && getVpnActive();
     final TextView indicatorText = controlView.findViewById(R.id.indicator);
     int colorId = on ? R.color.accent_good : R.color.accent_bad;
     int color = ContextCompat.getColor(this, colorId);
     int templateId = on ? R.string.dns_on : R.string.dns_off;
+    final TextView osStatusText = controlView.findViewById(R.id.os_status);
+    if (vpnActive) {
+      osStatusText.setText(R.string.vpn_active);
+    } else {
+      osStatusText.setText("");
+    }
     String template = getResources().getText(templateId).toString();
     // Html.fromHtml only supports RGB, not ARGB, so mask off the alpha byte.
     String html = String.format(template, color & 0xFFFFFF);
