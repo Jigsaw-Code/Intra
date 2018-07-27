@@ -4,6 +4,9 @@
       android:id="@id/home"
       android:title="@string/home"/>
   <item
+      android:id="@+id/settings"
+      android:title="@string/settings"/>
+  <item
       android:id="@+id/report_error"
       android:title="@string/feedback"/>
   <item

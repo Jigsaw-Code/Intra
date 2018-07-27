@@ -24,6 +24,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.net.NetworkInfo;
 import android.net.VpnService;
@@ -31,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -51,7 +54,8 @@ import app.intra.util.DnsTransaction;
 import app.intra.util.DnsQueryTracker;
 import app.intra.util.Names;
 
-public class DnsVpnService extends VpnService implements NetworkManager.NetworkListener {
+public class DnsVpnService extends VpnService implements NetworkManager.NetworkListener,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
   private static final String LOG_TAG = "DnsVpnService";
   private static final int SERVICE_ID = 1; // Only has to be unique within this app.
@@ -86,9 +90,23 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       };
 
   @Override
+  public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
+    if (PersistentState.APPS_KEY.equals(key) && tunFd != null) {
+      // Restart the VPN so the new app exclusion choices take effect immediately.
+      restartVpn();
+    }
+  }
+
+
+  @Override
   public synchronized int onStartCommand(Intent intent, int flags, int startId) {
-    url = Preferences.getServerUrl(this);
+    url = PersistentState.getServerUrl(this);
     Log.i(LOG_TAG, String.format("Starting DNS VPN service, url=%s", url));
+
+    // Registers this class as a listener for user preference changes.
+    PreferenceManager.getDefaultSharedPreferences(this).
+        registerOnSharedPreferenceChangeListener(this);
+
 
     if (networkManager != null) {
       if (serverConnection != null) {
@@ -218,6 +236,20 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     broadcastIntent(true);
   }
 
+  private synchronized void restartVpn() {
+    // Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
+    ParcelFileDescriptor oldTunFd = tunFd;
+    ParcelFileDescriptor newTunFd = establishVpn();
+    if (newTunFd == null) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Restart failed");
+      return;
+    }
+    stopDnsResolver();
+    closeVpnInterface();
+    tunFd = newTunFd;
+    startDnsResolver();
+  }
+
   @Override
   public void onCreate() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Creating DNS VPN service");
@@ -309,6 +341,9 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
     broadcastIntent(false);
 
+    PreferenceManager.getDefaultSharedPreferences(this).
+        unregisterOnSharedPreferenceChangeListener(this);
+
     if (networkManager != null) {
       networkManager.destroy();
     }
@@ -337,7 +372,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     stopSelf();
 
     // Disable autostart if VPN permission is revoked.
-    Preferences.setVpnEnabled(this, false);
+    PersistentState.setVpnEnabled(this, false);
 
     // Show revocation warning
     Notification.Builder builder;
@@ -402,12 +437,15 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
         builder = builder.setBlocking(true); // Only available in API >= 21
 
         try {
-          // Workaround for Play Store App Download bug:
-          // https://code.google.com/p/android/issues/detail?id=210305
+          // Workaround for any app incompatibility bugs.
+          for (String packageName : PersistentState.getExcludedPackages(this)) {
+            builder = builder.addDisallowedApplication(packageName);
+          }
+          // Play Store incompatibility is a known issue, so always exclude it.
           builder = builder.addDisallowedApplication("com.android.vending");
-        } catch (Exception e) {
+        } catch (PackageManager.NameNotFoundException e) {
           FirebaseCrash.report(e);
-          Log.e(LOG_TAG, "Failed to exclude Play Store", e);
+          Log.e(LOG_TAG, "Failed to exclude an app", e);
         }
       }
       tunFd = builder.establish();

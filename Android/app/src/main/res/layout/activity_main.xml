@@ -34,6 +34,11 @@
           android:id="@+id/frame_report"
           layout="@layout/feedback"
           android:visibility="gone"/>
+
+      <include
+          android:id="@+id/settings"
+          layout="@layout/placeholder"
+          android:visibility="gone"/>
     </FrameLayout>
   </LinearLayout>
 

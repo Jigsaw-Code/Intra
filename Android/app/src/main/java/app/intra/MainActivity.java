@@ -32,6 +32,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -137,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    // Export defaults into preferences.  See https://developer.android.com/guide/topics/ui/settings#Defaults
+    PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
     // Enable SVG support on very old versions of Android.
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
@@ -176,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
           case R.id.up:
           case R.id.home:
             chooseView(R.id.frame_main);
+            return true;
+          case R.id.settings:
+            chooseView(R.id.settings);
             return true;
           case R.id.report_error:
             chooseView(R.id.frame_report);
@@ -280,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     // Restore the chosen server name
     final TextView serverName = controlView.findViewById(R.id.server);
-    serverName.setText(Preferences.getServerName(this));
+    serverName.setText(PersistentState.getServerName(this));
 
     // Make the server control clickable
     final View serverBox = controlView.findViewById(R.id.server_box);
@@ -363,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
   }
 
   private void startDnsVpnService() {
-    Preferences.setVpnEnabled(this, true);
+    PersistentState.setVpnEnabled(this, true);
     Intent startServiceIntent = new Intent(this, DnsVpnService.class);
     startService(startServiceIntent);
     DnsVpnServiceState.getInstance().setDnsVpnServiceStarting();
@@ -379,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     if (dnsVpnService != null) {
       dnsVpnService.signalStopService(true /* user initiated */);
     }
-    Preferences.setVpnEnabled(this, false);
+    PersistentState.setVpnEnabled(this, false);
   }
 
   private Queue<DnsTransaction> getHistory() {
@@ -414,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     popup.setOnMenuItemClickListener(this);
     popup.inflate(R.menu.server);
     Menu menu = popup.getMenu();
-    String name = Preferences.getServerName(this);
+    String name = PersistentState.getServerName(this);
     for (int i = 0; i < menu.size(); ++i) {
       MenuItem item = menu.getItem(i);
       String title = item.getTitle().toString();
@@ -426,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
   }
 
   private boolean setServerName(String name) {
-    if (!Preferences.setServerName(this, name)) {
+    if (!PersistentState.setServerName(this, name)) {
       return false;
     }
     TextView serverName = controlView.findViewById(R.id.server);
@@ -551,11 +558,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     return home.getVisibility() == View.VISIBLE;
   }
 
+  private void showSettings() {
+    SettingsFragment fragment = new SettingsFragment();
+    fragment.updateInstalledApps(getApplicationContext().getPackageManager());
+
+    // Display the fragment in its designated location.
+    getSupportFragmentManager().beginTransaction()
+        .replace(R.id.settings, fragment)
+        .commit();
+  }
+
   private void chooseView(int id) {
     View home = findViewById(R.id.frame_main);
     View report = findViewById(R.id.frame_report);
+    View settings = findViewById(R.id.settings);
     home.setVisibility(View.GONE);
     report.setVisibility(View.GONE);
+    settings.setVisibility(View.GONE);
 
     View selected = findViewById(id);
     selected.setVisibility(View.VISIBLE);
@@ -564,6 +583,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     switch (id) {
       case R.id.frame_main:
         actionBar.setTitle(R.string.app_name);
+        break;
+      case R.id.settings:
+        actionBar.setTitle(R.string.settings);
+        showSettings();
         break;
       case R.id.frame_report:
         actionBar.setTitle(R.string.feedback);
