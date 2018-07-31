@@ -1,3 +1,18 @@
+/*
+Copyright 2018 Jigsaw Operations LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package app.intra;
 
 import android.content.pm.ApplicationInfo;
@@ -7,6 +22,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v14.preference.MultiSelectListPreference;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import java.util.ArrayList;
@@ -14,7 +31,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * UI Fragment for exposing the app preferences.
+ * UI Fragment for displaying user preferences.
+ * See https://developer.android.com/guide/topics/ui/settings#Fragment
+ *
+ * This class contains the special logic for the app exclusion setting, which does not require a
+ * custom UI.  The server selection preference requires a custom UI, so it has its own class.
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -57,7 +78,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     // Load the preferences from an XML resource
     addPreferencesFromResource(R.xml.preferences);
-    apps = (MultiSelectListPreference)findPreference("pref_apps");
+    apps = (MultiSelectListPreference)findPreference(PersistentState.APPS_KEY);
     // App exclusion relies on VpnService.Builder.addDisallowedApplication, which was added in L.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       apps.setEntries(labels.toArray(new String[0]));
@@ -65,6 +86,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     } else {
       apps.setEnabled(false);
       apps.setSummary(R.string.old_android);
+    }
+  }
+
+  @Override
+  public void onDisplayPreferenceDialog(Preference preference) {
+    if (preference instanceof ServerChooser) {
+      DialogFragment dialogFragment = ServerChooserFragment.newInstance(preference.getKey());
+      dialogFragment.setTargetFragment(this, 0);
+      dialogFragment.show(getFragmentManager(), null);
+    } else {
+      super.onDisplayPreferenceDialog(preference);
     }
   }
 

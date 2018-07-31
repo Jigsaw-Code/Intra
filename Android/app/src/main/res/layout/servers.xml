@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <RadioGroup
+            android:id="@+id/pref_server_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+        <RadioButton
+                android:id="@+id/pref_server_google"
+                android:text="@string/domain0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:minHeight="48dp"/>
+
+        <RadioButton
+                android:id="@+id/pref_server_cloudflare"
+                android:text="@string/domain1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:minHeight="48dp"/>
+
+        <RadioButton
+                android:id="@+id/pref_server_custom"
+                android:text="@string/server_choice_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:minHeight="48dp"/>
+
+        <EditText
+                android:id="@+id/custom_server_url"
+                android:hint="https://..."
+                style="@android:style/Widget.CompoundButton.RadioButton"
+                android:imeOptions="actionDone"
+                android:inputType="textFilter|textUri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:minHeight="48dp"/>
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:id="@+id/url_warning"
+              android:text="@string/server_choice_warning"
+              android:layout_marginStart="40dp"
+              android:layout_marginLeft="40dp"
+              android:layout_marginEnd="8dp"
+              android:layout_marginRight="8dp"
+              android:textColor="@color/accent_bad" android:visibility="invisible"/>
+    </RadioGroup>
+</ScrollView>

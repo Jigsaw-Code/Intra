@@ -1,13 +1,20 @@
 package app.intra;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import app.intra.util.Untemplate;
 
 /**
  * Static class representing on-disk storage of mutable state.  Collecting this all in one class
@@ -15,7 +22,10 @@ import java.util.Set;
  * written by separate components, and also helps to improve preference naming consistency.
  */
 public class PersistentState {
+  private static final String LOG_TAG = "PersistentState";
+
   public static final String APPS_KEY = "pref_apps";
+  public static final String URL_KEY = "pref_server_url";
 
   private static final String APPROVED_KEY = "approved";
   private static final String ENABLED_KEY = "enabled";
@@ -47,44 +57,70 @@ public class PersistentState {
     editor.apply();
   }
 
-  public static String getServerName(Context context) {
+  public static void syncLegacyState(Context context) {
+    // Copy the domain choice into the new URL setting, if necessary.
+    if (getServerUrl(context) != null) {
+      // New server URL is already populated
+      return;
+    }
+
+    // There is no URL setting, so read the legacy server name.
     SharedPreferences settings = getInternalState(context);
     String defaultDomain = context.getResources().getStringArray(R.array.domains)[0];
-    return settings.getString(SERVER_KEY, defaultDomain);
+    String domain = settings.getString(SERVER_KEY, defaultDomain);
+
+    if (domain == null) {
+      // Legacy setting is in the default state, so we can leave the new URL setting in the default
+      // state as well.
+      return;
+    }
+
+    // Get the corresponding URL.
+    String[] domains = context.getResources().getStringArray(R.array.domains);
+    String[] urls = context.getResources().getStringArray(R.array.urls);
+    String url = null;
+    for (int i = 0; i < domains.length; ++i) {
+      if (domains[i].equals(domain)) {
+        url = urls[i];
+        break;
+      }
+    }
+
+    if (url == null) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Legacy domain is unrecognized");
+      return;
+    }
+    setServerUrl(context, url);
   }
 
-  public static boolean setServerName(Context context, String name) {
-    String oldName = getServerName(context);
-    if (name == null && oldName == null) {
-      return true;
-    }
-    if (name != null && name.equals(oldName)) {
-      return true;
-    }
-    final List<String> knownNames =
-        Arrays.asList(context.getResources().getStringArray(R.array.domains));
-    if (!knownNames.contains(name)) {
-      return false;
-    }
-    SharedPreferences settings = getInternalState(context);
-    SharedPreferences.Editor editor = settings.edit();
-
-    editor.putString(SERVER_KEY, name);
+  // Apart from syncLegacyState() above, the URL is only set by the PreferenceScreen, not by Intra.
+  private static void setServerUrl(Context context, String url) {
+    SharedPreferences.Editor editor = getUserPreferences(context).edit();
+    editor.putString(URL_KEY, url);
     editor.apply();
-
-    return true;
   }
 
   public static String getServerUrl(Context context) {
-    String[] domains = context.getResources().getStringArray(R.array.domains);
-    String[] urls = context.getResources().getStringArray(R.array.urls);
-    String domain = getServerName(context);
-    for (int i = 0; i < domains.length; ++i) {
-      if (domains[i].equals(domain)) {
-        return urls[i];
-      }
+    String urlTemplate = getUserPreferences(context).getString(URL_KEY, null);
+    if (urlTemplate == null) {
+      return null;
     }
-    return null;
+    return Untemplate.strip(urlTemplate);
+  }
+
+  public static String getServerName(Context context) {
+    String url = getServerUrl(context);
+    if (url == null || url.isEmpty()) {
+      return context.getResources().getString(R.string.domain0);
+    }
+
+    try {
+      URL parsed = new URL(url);
+      return parsed.getHost();
+    } catch (MalformedURLException e) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Stored URL is corrupted");
+      return null;
+    }
   }
 
   public static Set<String> getExtraGoogleV4Servers(Context context) {
