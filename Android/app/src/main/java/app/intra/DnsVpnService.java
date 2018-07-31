@@ -24,6 +24,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.PeriodicSync;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -97,8 +98,24 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       // Restart the VPN so the new app exclusion choices take effect immediately.
       restartVpn();
     }
+    if (PersistentState.URL_KEY.equals(key)) {
+      url = PersistentState.getServerUrl(this);
+      spawnServerUpdate();
+    }
   }
 
+
+  private synchronized void spawnServerUpdate() {
+    if (networkManager != null && serverConnection != null) {
+      new Thread(
+          new Runnable() {
+            public void run() {
+              updateServerConnection();
+            }
+          }, "updateServerConnection-onStartCommand")
+          .start();
+    }
+  }
 
   @Override
   public synchronized int onStartCommand(Intent intent, int flags, int startId) {
@@ -111,15 +128,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
 
     if (networkManager != null) {
-      if (serverConnection != null) {
-        new Thread(
-                new Runnable() {
-                  public void run() {
-                    updateServerConnection();
-                  }
-                }, "updateServerConnection-onStartCommand")
-                .start();
-      }
+      spawnServerUpdate();
       return START_REDELIVER_INTENT;
     }
 

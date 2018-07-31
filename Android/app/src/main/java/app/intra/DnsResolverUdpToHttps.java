@@ -340,6 +340,7 @@ public class DnsResolverUdpToHttps extends Thread {
         outputStream.write(rawIpResponse);
       } catch (IOException e) {
         FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to write to VPN/TUN interface.");
+        FirebaseCrash.report(e);
         transaction.status = DnsTransaction.Status.INTERNAL_ERROR;
       }
 
