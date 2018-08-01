@@ -72,6 +72,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   private ServerConnection serverConnection = null;
   private String url = null;
 
+  private boolean shouldRestart = false;
+
   private FirebaseAnalytics firebaseAnalytics;
 
   private BroadcastReceiver messageReceiver =
@@ -236,18 +238,13 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     broadcastIntent(true);
   }
 
-  private synchronized void restartVpn() {
-    // Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
-    ParcelFileDescriptor oldTunFd = tunFd;
-    ParcelFileDescriptor newTunFd = establishVpn();
-    if (newTunFd == null) {
-      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Restart failed");
-      return;
-    }
-    stopDnsResolver();
-    closeVpnInterface();
-    tunFd = newTunFd;
-    startDnsResolver();
+  private void restartVpn() {
+    // TODO: Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
+
+    // Ask for a restart in onDestroy.
+    shouldRestart = true;
+    // Stop this service.
+    signalStopService(true);
   }
 
   @Override
@@ -359,6 +356,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     stopForeground(true);
     if (dnsResolver != null) {
       signalStopService(false);
+    }
+
+    if (shouldRestart) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Restarting from onDestroy");
+      startService(new Intent(this, DnsVpnService.class));
     }
   }
 
