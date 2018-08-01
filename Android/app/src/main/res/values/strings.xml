@@ -1,150 +1,231 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_name" translatable="false">Intra</string>
 
-  <!-- Headline for the welcome screen. -->
-  <string name="about_headline">Honest and secure DNS</string>
+  <string name="about_headline"
+          description="Headline for the welcome screen.">Honest and secure DNS</string>
 
-  <!-- Text for the welcome screen. -->
-  <string name="about_text">Intra protects your DNS
-        queries by routing them over a secure HTTPS connection. This reduces the chance that you will be sent to the wrong site, or have your browsing blocked or observed.</string>
+  <string name="about_text"
+          description="Text for the welcome screen.">
+    Intra protects your DNS queries by routing them over a secure HTTPS connection. This reduces the
+    chance that you will be sent to the wrong site, or have your browsing blocked or observed.
+  </string>
 
-  <!-- Privacy text for the welcome screen. -->
-  <string name="privacy_text">By default, your queries will be routed to
-        <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
-        (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>).
-        You can also choose to use <a href="https://cloudflare-dns.com">Cloudflare</a>
-        (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>).</string>
+  <string name="privacy_text"
+          description="Privacy text for the welcome screen.">
+    By default, your queries will be routed to
+    <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
+    (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>).
+    You can also choose to use <a href="https://cloudflare-dns.com">Cloudflare</a>
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>).
+  </string>
 
-  <!-- Button label to exit the welcome screen. -->
-  <string name="accept">Get Started</string>
+  <string name="accept"
+          description="Button label to exit the welcome screen.">
+    Get Started
+  </string>
 
-  <!-- Hint for blind users to access the menu. -->
-  <string name="drawer_open">Open navigation drawer</string>
+  <string name="drawer_open"
+          description="Hint for visually impaired users to access the menu.">
+    Open navigation drawer
+  </string>
 
-  <!-- Hint for blind users to leave the menu. -->
-  <string name="drawer_close">Close navigation drawer</string>
+  <string name="drawer_close"
+          description="Hint for visually impaired users to leave the menu.">
+    Close navigation drawer
+  </string>
 
-  <!-- Menu label to return to the app's main screen. -->
-  <string name="home">Home</string>
+  <string name="home"
+          description="Menu label to return to the app's main screen.">
+    Home
+  </string>
 
-  <!-- Menu entry for sending error reports and complaints to the developers. -->
-  <string name="feedback">Submit Feedback</string>
+  <string name="feedback"
+          description="Menu entry for sending error reports and complaints to the developers.">
+    Submit Feedback
+  </string>
 
-  <!-- Link to the privacy policy -->
-  <string name="privacy_link">Privacy Policy</string>
+  <string name="privacy_link"
+          description="Link to the privacy policy.">
+    Privacy Policy
+  </string>
 
-  <!-- Link to the terms of service -->
-  <string name="tos_link">Terms of Service</string>
+  <string name="tos_link"
+          description="Link to the terms of service.">
+    Terms of Service
+  </string>
 
-  <!-- Link to the source code for this app -->
-  <string name="source_code">Source Code</string>
+  <string name="source_code"
+          description="Link to the source code for this app.">
+    Source Code
+  </string>
 
-  <!-- Jigsaw credits. "Jigsaw" is not translatable. -->
-  <string name="short_credits_text">Intra is an experimental open source project by <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+  <string name="short_credits_text"
+          description="Jigsaw credits. 'Jigsaw' and 'Intra' are not translatable.">
+    Intra is an experimental open source project by <a href="https://jigsaw.google.com">Jigsaw</a>.
+  </string>
 
-  <!-- Credits to contributing parties. "Jigsaw" is not translatable. -->
-  <string name="credits_text">Intra was made by <a href="https://jigsaw.google.com">Jigsaw</a>. IP locations are based on data from DB-IP.com.</string>
+  <string name="credits_text"
+          description="Credits to contributing parties. 'Jigsaw' and 'Intra' are not translatable.">
+    Intra was made by <a href="https://jigsaw.google.com">Jigsaw</a>. IP locations are based on data
+    from DB-IP.com.
+  </string>
 
-  <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
-  protected", with the word "protected" highlighted in a reassuring color. -->
-  <string name="dns_on"><![CDATA[Your DNS queries are
-        <font color=\"#%06X\">protected</font>]]></string>
+  <string name="dns_on"
+          description="This is a large message at the top of the main screen.  It says 'Your DNS queries are
+      protected', with the word 'protected' highlighted in a reassuring color.">
+    <![CDATA[Your DNS queries are <font color=\"#%06X\">protected</font>]]>
+  </string>
 
-  <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
-  exposed", with the word "exposed" highlighted in a scary color. -->
-  <string name="dns_off"><![CDATA[Your DNS queries are <font color=\"#%06X\">exposed</font>]]>
-    </string>
+  <string name="dns_off"
+          description="This is a large message at the top of the main screen.  It says 'Your DNS queries are
+      exposed', with the word 'exposed' highlighted in a scary color.">
+    <![CDATA[Your DNS queries are <font color=\"#%06X\">exposed</font>]]>
+  </string>
 
-  <!-- This text appears on a button to enable DNS protection functionality -->
-  <string name="enable_protection">enable protection</string>
+  <string name="enable_protection"
+          description="This text appears on a button to enable DNS protection functionality.">
+    enable protection
+  </string>
 
-  <!-- This text appears on a button to disable DNS protection functionality -->
-  <string name="disable_protection">disable</string>
+  <string name="disable_protection"
+          description="This text appears on a button to disable DNS protection functionality.">
+    disable
+  </string>
 
-  <!-- This is the title of a section containing information on the system configuration and
-  status. -->
-  <string name="system_details">System details</string>
+  <string name="system_details"
+          description="This is the title of a section containing information on the system configuration and
+  status.">
+    System details
+  </string>
 
-  <!-- This text appears under the number of queries protected so far. -->
-  <string name="num_requests">Lifetime queries</string>
+  <string name="num_requests"
+          description="This text appears under the number of queries protected so far.">
+    Lifetime queries
+  </string>
 
-  <!-- This text appears under the number of queries protected in the past minute. -->
-  <string name="queries_per_minute">Recent queries</string>
+  <string name="queries_per_minute"
+          description="This text appears under the number of queries protected in the past minute.">
+    Recent queries
+  </string>
 
-  <!-- This text appears under the name of the secure protocol currently in use.  Currently, that
-   is always "https".-->
-  <string name="transport_label">Encrypted transport</string>
+  <string name="transport_label"
+          description="This text appears under the name of the secure protocol currently in use.  Currently, that
+   is always 'https'.">
+    Encrypted transport
+  </string>
 
-  <!-- This text appears under the name of the insecure protocol currently in use.  Currently,
-  that is always "dns".-->
-  <string name="insecure_transport_label">Unencrypted transport</string>
+  <string name="insecure_transport_label"
+          description="This text appears under the name of the insecure protocol currently in use.  Currently,
+  that is always 'dns'.">
+    Unencrypted transport
+  </string>
 
-  <!-- This text appears under the name of the secure server currently in use.  Currently, that
-   is always "dns.google.com".-->
-  <string name="server_label">Secure DNS server</string>
+  <string name="server_label"
+          description="This text appears under the domain name of the secure server currently in use, e.g. 'dns.google.com'.">
+    Secure DNS server
+  </string>
 
-  <!-- This text appears under the name of the insecure server currently in use. -->
-  <string name="insecure_server_label">Network-provided DNS server</string>
+  <string name="insecure_server_label"
+          description="This text appears under the name of the insecure server currently in use.">
+    Network-provided DNS server
+  </string>
 
-  <!-- This is a placeholder, used when the server address is unknown -->
-  <string name="unknown_server">(unknown server)</string>
+  <string name="unknown_server"
+          description="This is a placeholder, used when the server address is unknown.">
+    (unknown server)
+  </string>
 
-  <!-- This label appears next to a checkbox.  When the box is checked, recent queries will start
-  being shown. -->
-  <string name="show_history">Show recent queries</string>
+  <string name="show_history"
+          description="This label appears next to a checkbox.  When the box is checked, recent queries will start
+  being shown.">
+    Show recent queries
+  </string>
 
-  <!-- This text appears under the domain name for which a DNS query was issued. -->
-  <string name="query_label">Query</string>
+  <string name="query_label"
+          description="This text appears under the domain name for which a DNS query was issued.">
+    Query
+  </string>
 
-  <!-- This text appears under the type of query that was issued ("A" or "AAAA"). -->
-  <string name="type_label">Type</string>
+  <string name="type_label"
+          description="This text appears under the type of query that was issued ('A' or 'AAAA').">
+    Type
+  </string>
 
-  <!-- This text appears under a measurement of network latency, like "923 ms". -->
-  <string name="latency_label">Latency</string>
+  <string name="latency_label"
+          description="This text appears under a measurement of network latency, like '923 ms'.">
+    Latency
+  </string>
 
-  <!-- This text appears under a two-letter ISO country code, indicating the country where the
-  DNS resolver is located. -->
-  <string name="resolver_label">Resolver location</string>
+  <string name="resolver_label"
+          description="This text appears under a two-letter ISO country code, indicating the country where the
+  DNS resolver is located.">
+    Resolver location
+  </string>
 
-  <!-- This text appears under a two-letter ISO country code, indicating the country where the
-  resolved domain's IP address is located. -->
-  <string name="destination_label">Destination server</string>
+  <string name="destination_label"
+          description="This text appears under a two-letter ISO country code, indicating the country where the
+  resolved domain's IP address is located.">
+    Destination server
+  </string>
 
-  <!-- Template for forming latency strings. -->
-  <string name="latency_ms" translatable="false"><xliff:g example="29" id="time">%d</xliff:g> ms</string>
+  <string name="latency_ms" description="Template for forming latency strings.  Time is in milliseconds."
+          translatable="false">
+    <xliff:g example="29" id="time">%d</xliff:g> ms
+  </string>
 
-  <!-- Text that appears above the feedback text entry field. -->
-  <string name="before_feedback">Help us improve Intra! Intra is an early-stage product and we need your help to make it better.  Tell us what\'s
-        working, and what\'s not.  Thanks!</string>
+  <string name="before_feedback"
+          description="Text that appears above the feedback text entry field.">
+    Help us improve Intra! Intra is an early-stage product and we need your help to make it better.
+    Tell us what\'s working, and what\'s not.  Thanks!
+  </string>
 
-  <!-- Hint that appears in the text field where the user will type their complaint or error. -->
-  <string name="feedback_hint">Your feedback</string>
+  <string name="feedback_hint"
+          description="Hint that appears in the text field where the user will type their complaint or error.">
+    Your feedback
+  </string>
 
-  <!-- Text that appears after the feedback text entry field, warning users not to include
-  personally identifying information that could violate their privacy. -->
-  <string name="after_feedback">This information will be sent to the Intra
-        team.  Please do not include any personal information in your feedback.</string>
+  <string name="after_feedback"
+          description="Text that appears after the feedback text entry field, warning users not to include
+  personally identifying information that could violate their privacy.">
+    This information will be sent to the Intra team.  Please do not include any personal information
+    in your feedback.
+  </string>
 
-  <!-- Text on the button to submit feedback. -->
-  <string name="submit_feedback">Submit</string>
+  <string name="submit_feedback" description="Text on the button to submit feedback.">
+    Submit
+  </string>
 
-  <!-- Status indicator text shown in a persistent notification. -->
-  <string name="notification_title">DNS protection is active</string>
+  <string name="notification_title"
+          description="Status indicator text shown in a persistent notification.">
+    DNS protection is active
+  </string>
 
-  <!-- Indicates what will happen if the user taps the notification. -->
-  <string name="notification_content">Tap to change DNS protection setting</string>
+  <string name="notification_content"
+          description="Indicates what will happen if the user taps the notification.">
+    Tap to change DNS protection setting
+  </string>
 
-  <!-- Description of the notification, as shown in the system's advanced notifications settings
-  page. -->
-  <string name="channel_name">DNS Protection Active Notification</string>
-  <string name="channel_description">This notification appears while DNS protection is active.
-    </string>
+  <string name="channel_name"
+          description="Description of the notification, as shown in the system's advanced notifications settings
+  page.">
+    DNS Protection Active Notification
+  </string>
+  <string name="channel_description">
+    This notification appears while DNS protection is active.
+  </string>
 
-  <!-- Status indicator text shown in a warning notification. -->
-  <string name="warning_title">Warning: Intra has been deactivated</string>
+  <string name="warning_title" description="Status indicator text shown in a warning notification.">
+    Warning: Intra has been deactivated
+  </string>
 
-  <!-- Description of the notification, as shown in the system's advanced notifications settings
-  page. -->
-  <string name="warning_channel_name">Warning</string>
-  <string name="warning_channel_description">Shown when Intra has encountered a problem.</string>
+  <string name="warning_channel_name"
+          description="This is the name of the class of notifications that show warnings.  It's only
+  visible in the system's advanced notifications settings page.">
+    Warning
+  </string>
+  <string name="warning_channel_description"
+          description="This is the explanatory text describing the 'Warning' notification class.  It's
+  only visible in the system's advanced notifications settings page.">
+    Shown when Intra has encountered a problem.
+  </string>
 </resources>
