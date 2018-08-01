@@ -81,6 +81,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // Showing ourselves in the list of apps would be confusing and useless.
         continue;
       }
+      if (pm.getLaunchIntentForPackage(info.packageName) == null) {
+        // This is not an app that can actually be launched, so it's confusing to show it.
+        continue;
+      }
       entries.add(new Entry(info.loadLabel(pm).toString(), info.packageName));
     }
     Collections.sort(entries);
