@@ -436,7 +436,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
               .addDnsServer(privateIpv6Address.router);
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        builder = builder.setBlocking(true); // Only available in API >= 21
+        // Only available in API >= 21
+        builder = builder.setBlocking(true);
+        // Some WebRTC apps rely on the ability to bind to specific interfaces, which is only
+        // possible if we allow bypass.
+        builder = builder.allowBypass();
 
         try {
           // Workaround for any app incompatibility bugs.
