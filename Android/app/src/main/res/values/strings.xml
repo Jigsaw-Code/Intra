@@ -39,6 +39,11 @@
     Home
   </string>
 
+  <string name="settings"
+          description="Menu label to access the Settings page.">
+    Settings
+  </string>
+
   <string name="feedback"
           description="Menu entry for sending error reports and complaints to the developers.">
     Submit Feedback
@@ -171,6 +176,27 @@
   <string name="latency_ms" description="Template for forming latency strings.  Time is in milliseconds."
           translatable="false">
     <xliff:g example="29" id="time">%d</xliff:g> ms
+  </string>
+
+  <string name="excluded_apps"
+          description="Title of the 'Excluded apps' setting, which allows the user to select apps that will not use Intra.">
+    Excluded apps
+  </string>
+
+  <string name="excluded_apps_summary"
+          description="Summary of how the Excluded apps' setting works">
+    DNS queries from any selected apps will not go through Intra.  If an app appears to be
+    incompatible with Intra, you can add it here.
+  </string>
+
+  <string name="excluded_apps_title"
+          description="Title to appear over the 'Excluded apps' selection list.  Must be short.">
+    Mark apps to exclude from Intra
+  </string>
+
+  <string name="old_android"
+          description="Shown when a user-interface element requires a newer OS version">
+    This functionality is not available on your version of Android.
   </string>
 
   <string name="before_feedback"

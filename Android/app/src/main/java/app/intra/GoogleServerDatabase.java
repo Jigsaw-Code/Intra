@@ -30,7 +30,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -121,8 +120,8 @@ public class GoogleServerDatabase implements Dns {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap started");
       return new DualStackResult(new String[0], new String[0]);
     }
-    Set<String> v4set = Preferences.getExtraGoogleV4Servers(context);
-    Set<String> v6set = Preferences.getExtraGoogleV6Servers(context);
+    Set<String> v4set = PersistentState.getExtraGoogleV4Servers(context);
+    Set<String> v6set = PersistentState.getExtraGoogleV6Servers(context);
     String[] dummy = new String[0];
     return new DualStackResult(v4set.toArray(dummy), v6set.toArray(dummy));
   }
@@ -142,7 +141,7 @@ public class GoogleServerDatabase implements Dns {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap completed");
       return;
     }
-    Preferences.setExtraGoogleV4Servers(context, servers.getV4());
-    Preferences.setExtraGoogleV6Servers(context, servers.getV6());
+    PersistentState.setExtraGoogleV4Servers(context, servers.getV4());
+    PersistentState.setExtraGoogleV6Servers(context, servers.getV6());
   }
 }

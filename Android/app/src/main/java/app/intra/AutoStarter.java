@@ -23,7 +23,7 @@ public class AutoStarter extends BroadcastReceiver {
       FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Already running");
       return;
     }
-    if (Preferences.getVpnEnabled(context)) {
+    if (PersistentState.getVpnEnabled(context)) {
       FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Autostart enabled");
       if (VpnService.prepare(context) != null) {
         // prepare() returns a non-null intent if VPN permission has not been granted.

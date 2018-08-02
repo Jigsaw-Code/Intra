@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 public class WelcomePopup {
   public static boolean shouldShow(Activity activity) {
-    return !Preferences.getWelcomeApproved(activity);
+    return !PersistentState.getWelcomeApproved(activity);
   }
 
   public WelcomePopup(final MainActivity mainActivity) {
@@ -44,7 +44,7 @@ public class WelcomePopup {
     acceptButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Preferences.setWelcomeApproved(mainActivity, true);
+        PersistentState.setWelcomeApproved(mainActivity, true);
         popupWindow.dismiss();
       }
     });
