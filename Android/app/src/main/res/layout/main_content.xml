@@ -234,14 +234,6 @@
             android:text="dns.google.com"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical|end"
-            android:layout_weight="0"
-            android:adjustViewBounds="true"
-            android:scaleType="fitEnd"
-            app:srcCompat="@drawable/expander"/>
       </LinearLayout>
 
       <TextView
