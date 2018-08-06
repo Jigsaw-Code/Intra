@@ -128,14 +128,11 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         text = view.findViewById(R.id.custom_server_url);
         if (url == null || url.equals(getResources().getString(R.string.url0))) {
             buttons.check(R.id.pref_server_google);
-            text.setEnabled(false);
         } else if (url.equals(getResources().getString(R.string.url1))) {
             buttons.check(R.id.pref_server_cloudflare);
-            text.setEnabled(false);
         } else {
             buttons.check(R.id.pref_server_custom);
             text.setText(url);
-            text.setEnabled(true);
         }
         buttons.setOnCheckedChangeListener(this);
         text.addTextChangedListener(this);
@@ -151,6 +148,12 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         text.removeTextChangedListener(this);
         text.setOnEditorActionListener(null);
         buttons.setOnCheckedChangeListener(null);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        updateUI();
     }
 
     private void setValid(boolean valid) {
