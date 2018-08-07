@@ -224,6 +224,6 @@
         </codeStyleSettings>
       </value>
     </option>
-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="GoogleStyle" />
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Google Configuration Checker Style" />
   </component>
 </project>
