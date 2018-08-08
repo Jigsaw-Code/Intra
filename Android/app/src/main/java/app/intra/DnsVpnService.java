@@ -15,6 +15,9 @@ limitations under the License.
 */
 package app.intra;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -34,10 +37,8 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -50,8 +51,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import app.intra.util.DnsTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.util.DnsQueryTracker;
+import app.intra.util.DnsTransaction;
 import app.intra.util.Names;
 
 public class DnsVpnService extends VpnService implements NetworkManager.NetworkListener,

@@ -69,7 +69,7 @@
         android:textOn=""/>
   </LinearLayout>
 
-  <android.support.constraint.ConstraintLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/details"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -284,5 +284,5 @@
         app:layout_constraintStart_toEndOf="@id/response_icon"
         app:layout_constraintTop_toTopOf="@id/response_icon"
         tools:text="US (192.0.2.1)"/>
-  </android.support.constraint.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

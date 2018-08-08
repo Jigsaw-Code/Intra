@@ -15,21 +15,16 @@ limitations under the License.
 */
 package app.intra;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
-import app.intra.util.CountryMap;
-import app.intra.util.DnsPacket;
-import app.intra.util.DnsTransaction;
-
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.google.firebase.crash.FirebaseCrash;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ProtocolException;
@@ -39,6 +34,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import app.intra.util.CountryMap;
+import app.intra.util.DnsPacket;
+import app.intra.util.DnsTransaction;
 
 /**
  * The main screen of the app is implemented as a Recycler, allowing quasi-infinite scrolling.
