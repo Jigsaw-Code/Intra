@@ -40,8 +40,11 @@ import androidx.preference.PreferenceFragmentCompat;
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-  private List<String> labels;
-  private List<String> packageNames;
+  private static final String LABELS_KEY = "labels";
+  private static final String PACKAGENAMES_KEY = "packageNames";
+
+  private ArrayList<String> labels = null;
+  private ArrayList<String> packageNames = null;
   private MultiSelectListPreference apps = null;
 
   /**
@@ -76,7 +79,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   }
 
   @Override
+  public void onSaveInstanceState(Bundle savedInstanceState) {
+    savedInstanceState.putStringArrayList(LABELS_KEY, labels);
+    savedInstanceState.putStringArrayList(PACKAGENAMES_KEY, packageNames);
+  }
+
+  @Override
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    if (savedInstanceState != null) {
+      // Restore the app list state.
+      labels = savedInstanceState.getStringArrayList(LABELS_KEY);
+      packageNames = savedInstanceState.getStringArrayList(PACKAGENAMES_KEY);
+    }
+
     // Load the preferences from an XML resource
     addPreferencesFromResource(R.xml.preferences);
     apps = (MultiSelectListPreference)findPreference(PersistentState.APPS_KEY);

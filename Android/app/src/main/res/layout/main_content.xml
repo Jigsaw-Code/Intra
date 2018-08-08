@@ -72,8 +72,7 @@
     <app.intra.util.HistoryGraph
         android:id="@+id/graph"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"/>
+        android:layout_height="wrap_content"/>
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <View
@@ -169,7 +168,7 @@
           android:minLines="2"
           android:text="@string/queries_per_minute"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/numRequestsLabel"
+          app:layout_constraintStart_toEndOf="@+id/numRequests"
           app:layout_constraintTop_toBottomOf="@+id/qpm"/>
     </LinearLayout>
 

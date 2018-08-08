@@ -149,6 +149,34 @@ public class HistoryGraph extends View {
   }
 
   @Override
+  protected void onMeasure(int w, int h) {
+    int wMode = MeasureSpec.getMode(w);
+    int width;
+    if (wMode == MeasureSpec.AT_MOST || wMode == MeasureSpec.EXACTLY) {
+      // Always fill the whole width.
+      width = MeasureSpec.getSize(w);
+    } else {
+      width = getSuggestedMinimumWidth();
+    }
+
+    int hMode = MeasureSpec.getMode(h);
+    int height;
+    if (hMode == MeasureSpec.EXACTLY) {
+      // Nothing we can do about it.
+      height = MeasureSpec.getSize(h);
+    } else {
+      // Make the aspect ratio 1:1, but limit the height to fit on screen with some room to spare.
+      int screenHeight = getResources().getDisplayMetrics().heightPixels;
+      height = Math.min(width, (int)(0.8 * screenHeight));
+      if (hMode == MeasureSpec.AT_MOST) {
+        height = Math.min(height, MeasureSpec.getSize(h));
+      }
+    }
+
+    setMeasuredDimension(width, height);
+  }
+
+  @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     // Normally the coordinate system puts 0,0 at the top left.  This puts it at the bottom right,
