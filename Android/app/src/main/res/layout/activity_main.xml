@@ -42,39 +42,66 @@
     </FrameLayout>
   </LinearLayout>
 
-  <com.google.android.material.navigation.NavigationView
-      android:id="@+id/drawer"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_gravity="start"
-      android:fitsSystemWindows="true"
-      app:menu="@menu/drawer_menu">
+  <!-- The NavigationView class supports a header, but not a footer.  To produce the desired footer
+  behavior, we use an outer NavigationView that has no menu, but contains a scrollview that
+  holds a constraint chain: the real navigation view, a spacer, and the footer elements. -->
+  <app.intra.PadNavigationView
+          android:id="@+id/outer_drawer"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:fitsSystemWindows="true"
+          android:layout_gravity="start">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:orientation="vertical">
-      <TextView
-          android:id="@+id/credit_text_view"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="bottom"
-          android:layout_margin="16dp"
-          android:linksClickable="true"
-          android:text="@string/credits_text"
-          android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+    <androidx.core.widget.NestedScrollView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:scrollbars="vertical" android:fillViewport="true">
 
-      <ImageView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="bottom"
-          android:adjustViewBounds="true"
-          android:scaleType="fitEnd"
-          app:srcCompat="@drawable/logo_backdrop"/>
-    </LinearLayout>
+      <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                         android:layout_height="match_parent">
 
-  </com.google.android.material.navigation.NavigationView>
+        <com.google.android.material.navigation.NavigationView
+                android:id="@+id/drawer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical"
+                app:menu="@menu/drawer_menu"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/nav_space"/>
+
+        <Space
+                android:id="@+id/nav_space"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/drawer"
+                app:layout_constraintBottom_toTopOf="@id/credit_text_view"/>
+
+        <TextView
+                android:id="@+id/credit_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:linksClickable="true"
+                android:text="@string/credits_text"
+                app:layout_constraintTop_toBottomOf="@id/nav_space"
+                app:layout_constraintBottom_toTopOf="@id/nav_image"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+        <ImageView
+                android:id="@+id/nav_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/logo_backdrop"
+                tools:ignore="ContentDescription"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toBottomOf="@id/credit_text_view"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:adjustViewBounds="true"/>
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+  </app.intra.PadNavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
