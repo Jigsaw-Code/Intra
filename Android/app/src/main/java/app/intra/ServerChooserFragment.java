@@ -17,8 +17,6 @@ package app.intra;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.PreferenceDialogFragmentCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -31,6 +29,8 @@ import android.widget.TextView;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import app.intra.util.Untemplate;
 
 /**

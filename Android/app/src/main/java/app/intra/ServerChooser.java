@@ -19,12 +19,13 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v7.preference.DialogPreference;
 import android.util.AttributeSet;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
+
+import androidx.preference.DialogPreference;
 
 /**
  * A preference that opens a dialog, allowing the user to choose their preferred server from a list
@@ -68,8 +69,9 @@ public class ServerChooser extends DialogPreference {
   }
 
   @Override
-  protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-    setUrl(restorePersistedValue ? getPersistedString(url) : (String) defaultValue);
+  protected void onSetInitialValue(Object defaultValue) {
+    String storedUrl = getPersistedString(url);
+    setUrl(storedUrl != null ? storedUrl : (String) defaultValue);
   }
 
   @Override

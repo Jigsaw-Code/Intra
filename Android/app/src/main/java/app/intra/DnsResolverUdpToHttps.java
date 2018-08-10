@@ -15,21 +15,21 @@ limitations under the License.
 */
 package app.intra;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.content.Intent;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ProtocolException;
 import java.nio.ByteBuffer;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-import com.google.firebase.crash.FirebaseCrash;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.util.DnsMetadata;
 import app.intra.util.DnsPacket;
 import app.intra.util.DnsTransaction;
@@ -39,6 +39,9 @@ import app.intra.util.Ipv4Packet;
 import app.intra.util.Ipv6Packet;
 import app.intra.util.Names;
 import app.intra.util.UdpPacket;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 // Reads DNS requests over UDP from |tunFd|, forwards them to Google Public DNS through HTTPS and
 // writes them back to the tun interface. Takes ownership of the file descriptor.

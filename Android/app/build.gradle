@@ -14,8 +14,8 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "app.intra"
@@ -41,25 +41,25 @@ repositories {
 
 dependencies {
     // Third-party dependency: OkHttp3
-    compile fileTree(include: ['okhttp-3.9.1.jar', 'okio-1.13.0.jar'], dir: 'libs')
+    implementation fileTree(include: ['okhttp-3.9.1.jar', 'okio-1.13.0.jar'], dir: 'libs')
 
     // Third-party test dependencies.
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.json:json:20171018'
-    testCompile 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.json:json:20171018'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
 
     // UI libraries.
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:preference-v7:26.1.0'
-    compile 'com.android.support:preference-v14:26.1.0'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
+    implementation 'com.google.android.material:material:1.0.0-rc01'
+    implementation 'androidx.preference:preference:1.0.0-rc01'
+    implementation 'androidx.legacy:legacy-preference-v14:1.0.0-rc01'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0-rc01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
 
     // For Firebase Analytics, etc.
-    compile 'com.google.firebase:firebase-core:11.8.0'
-    compile 'com.google.firebase:firebase-perf:11.8.0'
-    compile 'com.google.firebase:firebase-crash:11.8.0'
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation 'com.google.firebase:firebase-perf:11.8.0'
+    implementation 'com.google.firebase:firebase-crash:11.8.0'
 }
 // For Firebase Analytics
 apply plugin: 'com.google.gms.google-services'
