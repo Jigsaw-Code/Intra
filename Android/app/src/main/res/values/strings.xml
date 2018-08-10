@@ -16,7 +16,8 @@
     <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
     (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>).
     You can also choose to use <a href="https://cloudflare-dns.com">Cloudflare</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>).
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>)
+    or any other DNS-over-HTTPS service.
   </string>
 
   <string name="accept"
