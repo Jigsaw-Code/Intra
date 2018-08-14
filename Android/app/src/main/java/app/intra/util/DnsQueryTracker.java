@@ -18,6 +18,8 @@ package app.intra.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -60,10 +62,8 @@ public class DnsQueryTracker {
     }
   }
 
-  public Queue<Long> getRecentActivity() {
-    synchronized (this) {
-      return new LinkedList<>(recentActivity);
-    }
+  public synchronized void readInto(DnsActivityReader reader) {
+    reader.read(Collections.unmodifiableCollection(recentActivity));
   }
 
   public int countQueriesSince(long startTime) {
@@ -124,7 +124,7 @@ public class DnsQueryTracker {
     }
   }
 
-  public void sync() {
+  public synchronized  void sync() {
     synchronized (this) {
       // Restore number of requests from storage, or 0 if it isn't defined yet.
       SharedPreferences settings =

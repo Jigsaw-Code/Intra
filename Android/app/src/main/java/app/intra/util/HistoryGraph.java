@@ -17,23 +17,21 @@ package app.intra.util;
 
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+
 import app.intra.DnsVpnServiceState;
 import app.intra.R;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader.TileMode;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import com.google.firebase.crash.FirebaseCrash;
-
-import java.util.Queue;
+import java.util.Arrays;
+import java.util.Collection;
 
 
 /**
@@ -41,9 +39,7 @@ import java.util.Queue;
  * rendered as a QPS graph using a gradually diffusing gaussian convolution, reflecting the idea
  * that the more recent an event is, the more we care about the fine temporal detail.
  */
-public class HistoryGraph extends View {
-
-  private static final String LOG_TAG = "HistoryGraph";
+public class HistoryGraph extends View implements DnsActivityReader {
 
   private static final int WINDOW_MS = 60 * 1000;  // Show the last minute of activity
   private static final int RESOLUTION_MS = 100;  // Compute the QPS curve with 100ms granularity.
@@ -57,9 +53,20 @@ public class HistoryGraph extends View {
   private Paint dataPaint;   // Paint for the QPS curve itself.
   private Paint pulsePaint;  // Paint for the radiating pulses that also serve as x-axis marks.
 
+  // Preallocate the curve to reduce garbage collection pressure.
+  private int range = WINDOW_MS / RESOLUTION_MS;
+  private float[] curve = new float[range];
+  private float[] lines = new float[(curve.length - 1) * 4];
+
+  // Indicate whether the current curve is all zero, which allows an optimization.
+  private boolean curveIsEmpty = true;
+
   // The peak value of the graph.  This value rises as needed, then falls to zero when the graph
   // is empty.
   private float max = 0;
+
+  // Value of SystemClock.elapsedRealtime() for the current frame.
+  private long now;
 
   public HistoryGraph(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -79,14 +86,24 @@ public class HistoryGraph extends View {
   }
 
   // Gaussian curve formula.  (Not normalized.)
-  private static float gaussian(float mu, float sigma, int x) {
-    float z = (x - mu) / sigma;
-    return ((float) Math.exp(-z * z)) / sigma;
+  private static float gaussian(float mu, float inverseSigma, int x) {
+    float z = (x - mu) * inverseSigma;
+    return ((float) Math.exp(-z * z)) * inverseSigma;
   }
 
-  private static float[] smoothCurve(int range, float[] events) {
-    float[] output = new float[range];
-    for (float e : events) {
+  @Override
+  public void read(Collection<Long> activity) {
+    // Reset the curve, and populate it if there are any events in the window.
+    curveIsEmpty = true;
+    float scale = 1.0f / RESOLUTION_MS;
+    for (long t : activity) {
+      long age = now - t;
+      if (age < 0) {
+        // Possible clock skew mishap.
+        continue;
+      }
+      float e = age * scale;
+
       // Diffusion equation: sigma grows as sqrt(time).
       // Add a constant to avoid dividing by zero.
       float sigma = (float) Math.sqrt(e + DATA_STROKE_WIDTH);
@@ -94,41 +111,31 @@ public class HistoryGraph extends View {
       // Optimization: truncate the Gaussian at +/- 2.7 sigma.  Beyond 2.7 sigma, a gaussian is less
       // than 1/1000 of its peak value, which is not visible on our graph.
       float support = 2.7f * sigma;
+      int right = (int) (e + support);
+      if (right > range) {
+        // This event is offscreen.
+        continue;
+      }
+      if (curveIsEmpty) {
+        curveIsEmpty = false;
+        Arrays.fill(curve, 0.0f);
+      }
       int left = Math.max(0, (int) (e - support));
-      int right = Math.min(range, (int) (e + support));
+      float inverseSigma = 1.0f / sigma;  // Optimization: only compute division once per event.
       for (int i = left; i < right; ++i) {
-        output[i] += gaussian(e, sigma, i);
+        curve[i] += gaussian(e, inverseSigma, i);
       }
     }
-    return output;
+
   }
 
-  // Returns a QPS curve to fill the window.  Not normalized. and raises this.max to the maximum
-  // value if necessary.
-  // If the curve is zero, max is reset to zero.
-  private float[] getQpsCurve(long now) {
-    Queue<Long> times = tracker.getRecentActivity();
-    float scale = 1.0f / RESOLUTION_MS;
-    float[] events = new float[times.size()];
-    int i = 0;
-    boolean empty = true;
-    for (long t : times) {
-      long age = now - t;
-      if (age < WINDOW_MS) {
-        empty = false;
-      }
-      events[i] = age * scale;
-      ++i;
-    }
-    if (empty) {
-      // Special case: there are no events in the window, so just return zero.
-      return new float[2];
-    }
-    int range = WINDOW_MS / RESOLUTION_MS;
-    return smoothCurve(range, events);
+  // Updates the curve contents or returns false if there are no contents.
+  private boolean updateCurve() {
+    tracker.readInto(this);
+    return !curveIsEmpty;
   }
 
-  private void updateMax(float[] curve) {
+  private void updateMax() {
     // Increase the maximum to fit the curve.
     float total = 0;
     for (float v : curve) {
@@ -145,7 +152,7 @@ public class HistoryGraph extends View {
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     int color = dataPaint.getColor();
     dataPaint.setShader(new LinearGradient(0, 0, w, 0,
-        color, Color.TRANSPARENT, TileMode.CLAMP));
+        color, color & 0x00FFFFFF, TileMode.CLAMP));
   }
 
   @Override
@@ -181,39 +188,49 @@ public class HistoryGraph extends View {
     super.onDraw(canvas);
     // Normally the coordinate system puts 0,0 at the top left.  This puts it at the bottom right,
     // with positive axes pointed up and left.
-    canvas.rotate(180, canvas.getWidth() / 2, canvas.getHeight() / 2);
+    canvas.rotate(180, getWidth() / 2, getHeight() / 2);
 
-    long now = SystemClock.elapsedRealtime();
-    float[] curve = getQpsCurve(now);
-    if (curve.length <= 1) {
-      FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Logic error in curve computation");
-      return;
-    }
-    updateMax(curve);
+    // Scale factors based on current window size.
+    float xoffset = (float) (getWidth()) * RIGHT_MARGIN_FRACTION;
+    float usableWidth = getWidth() - xoffset;
+    float yoffset = getHeight() * BOTTOM_MARGIN_FRACTION;
+    float usableHeight = getHeight() - (DATA_STROKE_WIDTH + yoffset);
 
-    // Convert the curve into lines in the appropriate scale, and draw it.
-    // |lines| has 4 values (x0, y0, x1, y1) for every interval in |curve|.
-    float[] lines = new float[(curve.length - 1) * 4];
-    float xoffset = (float) (canvas.getWidth()) * RIGHT_MARGIN_FRACTION;
-    float usableWidth = canvas.getWidth() - xoffset;
-    float xscale = usableWidth / (curve.length - 1);
-    float yoffset = canvas.getHeight() * BOTTOM_MARGIN_FRACTION;
-    float usableHeight = canvas.getHeight() - (DATA_STROKE_WIDTH + yoffset);
-    float yscale = max == 0 ? 0 : usableHeight / max;
-    for (int i = 1; i < curve.length; ++i) {
-      int j = (i - 1) * 4;
-      lines[j] = (i - 1) * xscale + xoffset;
-      lines[j + 1] = curve[i - 1] * yscale + yoffset;
-      lines[j + 2] = i * xscale + xoffset;
-      lines[j + 3] = curve[i] * yscale + yoffset;
+    now = SystemClock.elapsedRealtime();
+    float rightEndY;
+    if (updateCurve()) {
+      updateMax();
+
+      float xscale = usableWidth / (curve.length - 1);
+      float yscale = max == 0 ? 0 : usableHeight / max;
+
+      // Convert the curve into lines in the appropriate scale, and draw it.
+      // |lines| has 4 values (x0, y0, x1, y1) for every interval in |curve|.
+      // We use drawLines instead of drawPath for performance, even though it creates some visual
+      // artifacts.  See https://developer.android.com/topic/performance/vitals/render.
+      for (int i = 1; i < curve.length; ++i) {
+        int j = (i - 1) * 4;
+        lines[j] = (i - 1) * xscale + xoffset;
+        lines[j + 1] = curve[i - 1] * yscale + yoffset;
+        lines[j + 2] = i * xscale + xoffset;
+        lines[j + 3] = curve[i] * yscale + yoffset;
+      }
+      canvas.drawLines(lines, dataPaint);
+      rightEndY = lines[1];
+    } else {
+      max = 0;
+      // Draw a horizontal line at y = 0.
+      canvas.drawLine(xoffset, yoffset, xoffset + usableWidth, yoffset, dataPaint);
+      rightEndY = yoffset;
     }
-    canvas.drawLines(lines, dataPaint);
+
+    // Draw a circle at the right end of the line.
     float tagRadius = 2 * DATA_STROKE_WIDTH;
     float tagX = xoffset - tagRadius;
-    canvas.drawCircle(tagX, lines[1], tagRadius, dataPaint);
+    canvas.drawCircle(tagX, rightEndY, tagRadius, dataPaint);
 
     // Draw pulses at regular intervals, growing and fading with age.
-    float maxRadius = canvas.getWidth() - tagX;
+    float maxRadius = getWidth() - tagX;
     for (long age = now % PULSE_INTERVAL_MS; age < WINDOW_MS; age += PULSE_INTERVAL_MS) {
       float fraction = ((float) age) / WINDOW_MS;
       float radius = tagRadius + fraction * (maxRadius - tagRadius);
