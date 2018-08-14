@@ -173,4 +173,9 @@ public class GoogleServerConnection implements ServerConnection {
       return null;
     }
   }
+
+  @Override
+  public void reset() {
+    client.connectionPool().evictAll();
+  }
 }

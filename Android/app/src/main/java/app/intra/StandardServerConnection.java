@@ -112,4 +112,9 @@ public class StandardServerConnection implements ServerConnection {
   public String getUrl() {
     return url;
   }
+
+  @Override
+  public void reset() {
+    client.connectionPool().evictAll();
+  }
 }

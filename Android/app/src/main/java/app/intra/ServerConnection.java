@@ -37,4 +37,11 @@ public interface ServerConnection {
    * @return The URL identifying this ServerConnection.
    */
   String getUrl();
+
+  /**
+   * Reset the state of the connection.  Users can call this if they believe the connection has
+   * gotten into an invalid state.
+   * Workaround for https://github.com/square/okhttp/issues/3146
+   */
+  void reset();
 }
