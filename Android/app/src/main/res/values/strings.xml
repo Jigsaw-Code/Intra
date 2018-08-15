@@ -84,8 +84,18 @@
 
   <string name="dns_off"
           description="This is a large message at the top of the main screen.  It says 'Your DNS queries are
-      exposed', with the word 'exposed' highlighted in a scary color.">
+      exposed', with the word 'exposed' highlighted in a scary color.  'exposed' here means both 'visible to untrusted parties' and 'vulnerable to manipulation by untrusted parties'.">
     <![CDATA[Your DNS queries are <font color=\"#%06X\">exposed</font>]]>
+  </string>
+
+  <string name="dns_opportunistic"
+          description="This is similar to dns_off, but with the word 'exposed' replaced by 'vulnerable'.  This is shown when the user has weak protection that an attacker could disable.">
+    <![CDATA[Your DNS queries are <font color=\"#%06X\">vulnerable</font>]]>
+  </string>
+
+  <string name="dns_strict"
+          description="This is similar to dns_on, but the protection is being provided by the operating system, not by Intra.  It is not color-highlighted.">
+    Your DNS queries are OS-protected
   </string>
 
   <string name="enable_protection"
@@ -98,9 +108,14 @@
     disable
   </string>
 
-  <string name="vpn_active"
+  <string name="vpn_explanation"
           description="Warning text shown on the main screen before the user starts Intra">
     Intra has detected another VPN on your device.  That VPN will be disabled if you enable Intra.
+  </string>
+
+  <string name="dns_strict_explanation"
+          description="Explanation on the main screen for users who have Private DNS strict mode enabled at the OS level.">
+    Android Private DNS is enabled, so your DNS queries are protected by the operating system.  Enabling Intra will override this setting for some apps.
   </string>
 
   <string name="system_details"
