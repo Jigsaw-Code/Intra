@@ -438,9 +438,16 @@ public class MainActivity extends AppCompatActivity
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
   }
 
-  @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
   private boolean prepareVpnService() throws ActivityNotFoundException {
-    Intent prepareVpnIntent = VpnService.prepare(this);
+    Intent prepareVpnIntent = null;
+    try {
+       prepareVpnIntent = VpnService.prepare(this);
+    } catch (NullPointerException e) {
+      // This exception is not mentioned in the documentation, but it has been encountered by Intra
+      // users and also by other developers, e.g. https://stackoverflow.com/questions/45470113.
+      FirebaseCrash.report(e);
+      return false;
+    }
     if (prepareVpnIntent != null) {
       Log.i(LOG_TAG, "Prepare VPN with activity");
       startActivityForResult(prepareVpnIntent, REQUEST_CODE_PREPARE_VPN);
