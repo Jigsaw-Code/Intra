@@ -209,11 +209,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       if (countryMap == null) {
         return null;
       }
-      try {
-        return countryMap.getCountryCode(address);
-      } catch (IOException e) {
-        return null;
-      }
+      return countryMap.getCountryCode(address);
     }
 
     private String makeAddressPair(String countryCode, String ipAddress) {
