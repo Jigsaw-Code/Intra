@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra;
 
+import com.google.common.net.InternetDomainName;
 import com.google.firebase.crash.FirebaseCrash;
 
 import android.graphics.drawable.Drawable;
@@ -197,26 +198,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       expand.setChecked(expanded);
     }
 
-    // Convert an FQDN like "www.example.com." to a TLD + 1 like "example.com".
-    private String getTldPlus1(String fqdn) {
-      String[] labels = fqdn.split("\\.");
-      int i = labels.length - 1;
-      if (i < 0) {
-        return "";
-      }
-      String last = labels[i];
-      if (last.isEmpty()) {
-        // This is the expected case, where the fqdn is dot-terminated.
-        --i;
-        if (i < 0) {
-          return "";
-        }
-        last = labels[i];
-      }
-      if (i == 0) {
-        return last;
-      }
-      return labels[i - 1] + "." + last;
+    // Convert an FQDN like "www.example.co.uk." to an eTLD + 1 like "example.co.uk".
+    private String getETldPlus1(String fqdn) {
+      return InternetDomainName.from(fqdn).topPrivateDomain().toString();
     }
 
     // Return a two-letter ISO country code, or null if that fails.
@@ -239,7 +223,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void update(Transaction transaction) {
       DnsTransaction dnsTransaction = transaction.transaction;
       TextView hostnameView = transactionView.findViewById(R.id.hostname);
-      hostnameView.setText(getTldPlus1(dnsTransaction.name));
+      hostnameView.setText(getETldPlus1(dnsTransaction.name));
       TextView fqdnView = transactionView.findViewById(R.id.fqdn);
       fqdnView.setText(dnsTransaction.name);
 
