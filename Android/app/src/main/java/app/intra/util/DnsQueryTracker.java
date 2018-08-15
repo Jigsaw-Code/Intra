@@ -18,6 +18,8 @@ package app.intra.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -48,96 +50,81 @@ public class DnsQueryTracker {
     sync();
   }
 
-  public long getNumRequests() {
-    synchronized (this) {
-      return numRequests;
-    }
+  public synchronized long getNumRequests() {
+    return numRequests;
   }
 
-  public Queue<DnsTransaction> getRecentTransactions() {
-    synchronized (this) {
-      return new LinkedList<>(recentTransactions);
-    }
+  public synchronized Queue<DnsTransaction> getRecentTransactions() {
+    return new LinkedList<>(recentTransactions);
   }
 
-  public Queue<Long> getRecentActivity() {
-    synchronized (this) {
-      return new LinkedList<>(recentActivity);
-    }
+  public synchronized void readInto(DnsActivityReader reader) {
+    reader.read(Collections.unmodifiableCollection(recentActivity));
   }
 
-  public int countQueriesSince(long startTime) {
-    synchronized (this) {
-      // Linearly scan recent activity.  Due to the small scale (N ~ 300), a more efficient algorithm
-      // does not appear to be necessary.
-      int queries = recentActivity.size();
-      for (long time : recentActivity) {
-        if (time < startTime) {
-          --queries;
-        } else {
-          break;
-        }
+  public synchronized int countQueriesSince(long startTime) {
+    // Linearly scan recent activity.  Due to the small scale (N ~ 300), a more efficient algorithm
+    // does not appear to be necessary.
+    int queries = recentActivity.size();
+    for (long time : recentActivity) {
+      if (time < startTime) {
+        --queries;
+      } else {
+        break;
       }
-      return queries;
     }
+    return queries;
   }
 
-  public void setHistoryEnabled(boolean enabled) {
-    synchronized (this) {
-      historyEnabled = enabled;
-      if (!enabled) {
-        recentTransactions.clear();
-      }
+  public synchronized void setHistoryEnabled(boolean enabled) {
+    historyEnabled = enabled;
+    if (!enabled) {
+      recentTransactions.clear();
     }
   }
 
   public boolean isHistoryEnabled() {
-    synchronized (this) {
-      return historyEnabled;
+    // No synchronization needed because booleans are atomic in Java.
+    return historyEnabled;
+  }
+
+  public synchronized void recordTransaction(DnsTransaction transaction) {
+    // Increment request counter on each successful resolution
+    if (transaction.status == DnsTransaction.Status.COMPLETE) {
+      ++numRequests;
+
+      if (numRequests % HISTORY_SIZE == 0) {
+        // Avoid losing too many requests in case of an unclean shutdown, but also avoid
+        // excessive disk I/O from syncing the counter to disk after every request.
+        sync();
+      }
+    }
+
+    recentActivity.add(transaction.queryTime);
+    while (recentActivity.peek() + ACTIVITY_MEMORY_MS < transaction.queryTime) {
+      recentActivity.remove();
+    }
+
+    if (historyEnabled) {
+      recentTransactions.add(transaction);
+      if (recentTransactions.size() > HISTORY_SIZE) {
+        recentTransactions.remove();
+      }
     }
   }
 
-  public void recordTransaction(DnsTransaction transaction) {
-    synchronized (this) {
-      // Increment request counter on each successful resolution
-      if (transaction.status == DnsTransaction.Status.COMPLETE) {
-        ++numRequests;
-
-        if (numRequests % HISTORY_SIZE == 0) {
-          // Avoid losing too many requests in case of an unclean shutdown, but also avoid
-          // excessive disk I/O from syncing the counter to disk after every request.
-          sync();
-        }
-      }
-
-      recentActivity.add(transaction.queryTime);
-      while (recentActivity.peek() + ACTIVITY_MEMORY_MS < transaction.queryTime) {
-        recentActivity.remove();
-      }
-
-      if (historyEnabled) {
-        recentTransactions.add(transaction);
-        if (recentTransactions.size() > HISTORY_SIZE) {
-          recentTransactions.remove();
-        }
-      }
-    }
-  }
-
-  public void sync() {
-    synchronized (this) {
-      // Restore number of requests from storage, or 0 if it isn't defined yet.
-      SharedPreferences settings =
-          context.getSharedPreferences(DnsQueryTracker.class.getSimpleName(), MODE_PRIVATE);
-      long storedNumRequests = settings.getLong(NUM_REQUESTS, 0);
-      if (storedNumRequests >= numRequests) {
-        numRequests = storedNumRequests;
-      } else {
-        // Save the request counter.
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putLong(NUM_REQUESTS, numRequests);
-        editor.apply();
-      }
+  public synchronized void sync() {
+    // Restore number of requests from storage, or 0 if it isn't defined yet.
+    SharedPreferences settings =
+        context.getSharedPreferences(DnsQueryTracker.class.getSimpleName(), MODE_PRIVATE);
+    long storedNumRequests = settings.getLong(NUM_REQUESTS, 0);
+    if (storedNumRequests >= numRequests) {
+      numRequests = storedNumRequests;
+    } else {
+      // Save the request counter.
+      SharedPreferences.Editor editor = settings.edit();
+      editor.putLong(NUM_REQUESTS, numRequests);
+      editor.apply();
     }
   }
 
