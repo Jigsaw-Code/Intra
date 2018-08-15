@@ -111,8 +111,8 @@ public class HistoryGraph extends View implements DnsActivityReader {
       // Optimization: truncate the Gaussian at +/- 2.7 sigma.  Beyond 2.7 sigma, a gaussian is less
       // than 1/1000 of its peak value, which is not visible on our graph.
       float support = 2.7f * sigma;
-      int right = (int) (e + support);
-      if (right > range) {
+      int left = Math.max(0, (int) (e - support));
+      if (left > range) {
         // This event is offscreen.
         continue;
       }
@@ -120,7 +120,7 @@ public class HistoryGraph extends View implements DnsActivityReader {
         curveIsEmpty = false;
         Arrays.fill(curve, 0.0f);
       }
-      int left = Math.max(0, (int) (e - support));
+      int right = Math.min(range, (int) (e + support));
       float inverseSigma = 1.0f / sigma;  // Optimization: only compute division once per event.
       for (int i = left; i < right; ++i) {
         curve[i] += gaussian(e, inverseSigma, i);
