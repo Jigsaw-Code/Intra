@@ -55,10 +55,15 @@ public class CountryMap {
     return buffer.toByteArray();
   }
 
-  private static boolean lessEqual(byte[] a, byte[] b) {
-    for (int i = 0; i < a.length; ++i) {
-      int ai = a[i] & 0xFF;
-      int bi = b[i] & 0xFF;
+  /**
+   * Compares two arrays of equal length.  The first is an entry in a database, specified by the
+   * index of its first byte.  The second is a standalone array.
+   * @return The lexicographic comparison of the two arrays.
+   */
+  private static boolean lessEqual(byte[] db, int position, byte[] key) {
+    for (int i = 0; i < key.length; ++i) {
+      int ai = db[position + i] & 0xFF;
+      int bi = key[i] & 0xFF;
 
       if (ai < bi) {
         return true;
@@ -70,7 +75,7 @@ public class CountryMap {
     return true;
   }
 
-  public String getCountryCode(InetAddress address) throws IOException {
+  public String getCountryCode(InetAddress address) {
     byte[] key = address.getAddress();
     byte[] db = key.length == 4 ? v4db : v6db;
     int recordSize = key.length + COUNTRY_SIZE;
@@ -79,8 +84,7 @@ public class CountryMap {
     while (high - low > 1) {
       int mid = (low + high) / 2;
       int position = mid * recordSize;
-      byte[] v = Arrays.copyOfRange(db, position, position + key.length);
-      if (lessEqual(v, key)) {
+      if (lessEqual(db, position, key)) {
         low = mid;
       } else {
         high = mid;
