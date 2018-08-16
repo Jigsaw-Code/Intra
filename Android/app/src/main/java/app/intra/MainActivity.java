@@ -480,7 +480,11 @@ public class MainActivity extends AppCompatActivity
     return null;
   }
 
-  private enum PrivateDnsMode { NONE, OPPORTUNISTIC, STRICT };
+  private enum PrivateDnsMode {
+    NONE,  // The setting is "Off" or "Opportunistic", and the DNS connection is not using TLS.
+    UPGRADED,  // The setting is "Opportunistic", and the DNS connection has upgraded to TLS.
+    STRICT  // The setting is "Strict".
+  };
 
   private PrivateDnsMode getPrivateDnsMode() {
     if (Build.VERSION.SDK_INT < VERSION_CODES.P) {
@@ -498,7 +502,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     if (linkProperties.isPrivateDnsActive()) {
-      return PrivateDnsMode.OPPORTUNISTIC;
+      return PrivateDnsMode.UPGRADED;
     }
 
     return PrivateDnsMode.NONE;
@@ -567,8 +571,8 @@ public class MainActivity extends AppCompatActivity
       privateDnsMode = getPrivateDnsMode();
       if (privateDnsMode == PrivateDnsMode.STRICT) {
         templateId = R.string.dns_strict;
-      } else if (privateDnsMode == PrivateDnsMode.OPPORTUNISTIC) {
-        templateId = R.string.dns_opportunistic;
+      } else if (privateDnsMode == PrivateDnsMode.UPGRADED) {
+        templateId = R.string.dns_upgraded;
       } else {
         templateId = R.string.dns_off;
       }

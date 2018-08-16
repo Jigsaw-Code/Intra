@@ -88,7 +88,7 @@
     <![CDATA[Your DNS queries are <font color=\"#%06X\">exposed</font>]]>
   </string>
 
-  <string name="dns_opportunistic"
+  <string name="dns_upgraded"
           description="This is similar to dns_off, but with the word 'exposed' replaced by 'vulnerable'.  This is shown when the user has weak protection that an attacker could disable.">
     <![CDATA[Your DNS queries are <font color=\"#%06X\">vulnerable</font>]]>
   </string>
