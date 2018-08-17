@@ -332,7 +332,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // Convert an FQDN like "www.example.co.uk." to an eTLD + 1 like "example.co.uk".
     private String getETldPlus1(String fqdn) {
-      return InternetDomainName.from(fqdn).topPrivateDomain().toString();
+      try {
+        InternetDomainName name = InternetDomainName.from(fqdn);
+        try {
+          return name.topPrivateDomain().toString();
+        } catch (IllegalStateException e){
+          // The name doesn't end in a recognized TLD.  This can happen for randomly generated
+          // names, or when new TLDs are introduced.
+          List<String> parts = name.parts();
+          int size = parts.size();
+          if (size >= 2) {
+            return parts.get(size - 2) + "." + parts.get(size - 1);
+          } else if (size == 1) {
+            return parts.get(0);
+          } else {
+            // Empty input?
+            return fqdn;
+          }
+        }
+      } catch (IllegalArgumentException e) {
+        // If fqdn is not a valid domain name, InternetDomainName.from() will throw an
+        // exception.  Since this function is only for aesthetic purposes, we can
+        // return the input unmodified in this case.
+        return fqdn;
+      }
     }
 
     // Return a two-letter ISO country code, or null if that fails.
