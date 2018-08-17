@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ProtocolException;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -277,6 +278,10 @@ public class DnsResolverUdpToHttps extends Thread {
     public void onFailure(Call call, IOException e) {
       transaction.status = DnsTransaction.Status.SEND_FAIL;
       FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
+      if (e instanceof SocketTimeoutException) {
+        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
+        serverConnection.reset();
+      }
     }
 
     private void sendResult() {
