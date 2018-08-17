@@ -110,12 +110,14 @@
 
   <string name="vpn_explanation"
           description="Warning text shown on the main screen before the user starts Intra">
-    Intra has detected another VPN on your device.  That VPN will be disabled if you enable Intra.
+    Intra has detected another VPN on your device.  If you enable Intra, that VPN will be disabled,
+    and less of your network activity is likely to be protected.
   </string>
 
   <string name="dns_strict_explanation"
           description="Explanation on the main screen for users who have Private DNS strict mode enabled at the OS level.">
-    Android Private DNS is enabled, so your DNS queries are protected by the operating system.  Enabling Intra will override this setting for some apps.
+    Intra has detected that the Android Private DNS setting is enabled.  This means your DNS
+    queries are already protected, so there's no need to enable Intra.
   </string>
 
   <string name="system_details"
