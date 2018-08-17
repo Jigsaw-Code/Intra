@@ -457,7 +457,7 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
-  private String getSystemDnsServer() {
+  private LinkProperties getLinkProperties() {
     ConnectivityManager connectivityManager =
         (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -468,7 +468,15 @@ public class MainActivity extends AppCompatActivity
     if (activeNetwork == null) {
       return null;
     }
-    LinkProperties linkProperties = connectivityManager.getLinkProperties(activeNetwork);
+    return connectivityManager.getLinkProperties(activeNetwork);
+  }
+
+  private String getSystemDnsServer() {
+    if (Build.VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      // getDnsServers requires Lollipop or later.
+      return null;
+    }
+    LinkProperties linkProperties = getLinkProperties();
     if (linkProperties == null) {
       return null;
     }
@@ -477,6 +485,34 @@ public class MainActivity extends AppCompatActivity
       return address.getHostAddress();
     }
     return null;
+  }
+
+  private enum PrivateDnsMode {
+    NONE,  // The setting is "Off" or "Opportunistic", and the DNS connection is not using TLS.
+    UPGRADED,  // The setting is "Opportunistic", and the DNS connection has upgraded to TLS.
+    STRICT  // The setting is "Strict".
+  };
+
+  private PrivateDnsMode getPrivateDnsMode() {
+    if (Build.VERSION.SDK_INT < VERSION_CODES.P) {
+      // Private DNS was introduced in P.
+      return PrivateDnsMode.NONE;
+    }
+
+    LinkProperties linkProperties = getLinkProperties();
+    if (linkProperties == null) {
+      return PrivateDnsMode.NONE;
+    }
+
+    if (linkProperties.getPrivateDnsServerName() != null) {
+      return PrivateDnsMode.STRICT;
+    }
+
+    if (linkProperties.isPrivateDnsActive()) {
+      return PrivateDnsMode.UPGRADED;
+    }
+
+    return PrivateDnsMode.NONE;
   }
 
   private boolean getVpnActive() {
@@ -533,10 +569,27 @@ public class MainActivity extends AppCompatActivity
     final TextView indicatorText = controlView.findViewById(R.id.indicator);
     int colorId = on ? R.color.accent_good : R.color.accent_bad;
     int color = ContextCompat.getColor(this, colorId);
-    int templateId = on ? R.string.dns_on : R.string.dns_off;
+
+    PrivateDnsMode privateDnsMode = PrivateDnsMode.NONE;
+    int templateId;
+    if (on) {
+      templateId = R.string.dns_on;
+    } else {
+      privateDnsMode = getPrivateDnsMode();
+      if (privateDnsMode == PrivateDnsMode.STRICT) {
+        templateId = R.string.dns_strict;
+      } else if (privateDnsMode == PrivateDnsMode.UPGRADED) {
+        templateId = R.string.dns_upgraded;
+      } else {
+        templateId = R.string.dns_off;
+      }
+    }
+
     final TextView osStatusText = controlView.findViewById(R.id.os_status);
     if (vpnActive) {
-      osStatusText.setText(R.string.vpn_active);
+      osStatusText.setText(R.string.vpn_explanation);
+    } else if (privateDnsMode == PrivateDnsMode.STRICT) {
+      osStatusText.setText(R.string.dns_strict_explanation);
     } else {
       osStatusText.setText("");
     }
