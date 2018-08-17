@@ -95,7 +95,7 @@
 
   <string name="dns_strict"
           description="This is similar to dns_on, but the protection is being provided by the operating system, not by Intra.  It is not color-highlighted.">
-    Your DNS queries are OS-protected
+    Your DNS queries are protected by Android
   </string>
 
   <string name="enable_protection"
@@ -110,14 +110,14 @@
 
   <string name="vpn_explanation"
           description="Warning text shown on the main screen before the user starts Intra">
-    Intra has detected another VPN on your device.  If you enable Intra, that VPN will be disabled,
-    and less of your network activity is likely to be protected.
+    Intra has detected another VPN on your device.  If you enable Intra, that VPN will be disabled.
+    Intra is not as secure as a trusted VPN.
   </string>
 
   <string name="dns_strict_explanation"
           description="Explanation on the main screen for users who have Private DNS strict mode enabled at the OS level.">
     Intra has detected that the Android Private DNS setting is enabled.  This means your DNS
-    queries are already protected, so there's no need to enable Intra.
+    queries are already protected, so there\'s no need to enable Intra.
   </string>
 
   <string name="system_details"
