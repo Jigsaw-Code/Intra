@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.util.CountryMap;
@@ -100,8 +102,151 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   // Exposes a transaction row view to the Recycler.  This class is responsible for updating
   // the contents of the view to reflect the intended item.
-  public class TransactionViewHolder extends RecyclerView.ViewHolder implements View
+  public final class TransactionViewHolder extends RecyclerView.ViewHolder implements View
       .OnClickListener {
+
+    private Transaction transaction;
+
+    // Contents of the condensed view
+    private final TextView hostnameView;
+    private final TextView timeView;
+    private final TextView flagView;
+    private final ToggleButton expandButton;
+
+    // Contents of the expanded details view
+    private final View detailsView;
+    private final TextView fqdnView;
+    private final TextView typeView;
+    private final TextView latencyView;
+    private final TextView resolverView;
+    private final TextView responseView;
+
+    TransactionViewHolder(View v) {
+      super(v);
+
+      hostnameView = v.findViewById(R.id.hostname);
+      timeView = v.findViewById(R.id.response_time);
+      flagView = v.findViewById(R.id.flag);
+      expandButton = v.findViewById(R.id.expand);
+
+      expandButton.setOnClickListener(this);
+
+      detailsView = v.findViewById(R.id.details);
+      fqdnView = v.findViewById(R.id.fqdn);
+      typeView = v.findViewById(R.id.qtype);
+      latencyView = v.findViewById(R.id.latency_small);
+      resolverView = v.findViewById(R.id.resolver);
+      responseView = v.findViewById(R.id.response);
+
+    }
+
+    private void setExpanded(boolean expanded) {
+      detailsView.setVisibility(expanded ? View.VISIBLE : View.GONE);
+      expandButton.setChecked(expanded);
+
+      if (expanded) {
+        // Make sure the details are up to date.
+        fqdnView.setText(transaction.fqdn);
+        typeView.setText(transaction.typename);
+        latencyView.setText(transaction.latency);
+        resolverView.setText(transaction.resolver);
+        responseView.setText(transaction.response);
+      }
+    }
+
+    public void update(Transaction transaction) {
+      // This function can be run up to a dozen times while blocking rendering, so it needs to be
+      // as brief as possible.
+      this.transaction = transaction;
+      hostnameView.setText(transaction.hostname);
+      timeView.setText(transaction.time);
+      flagView.setText(transaction.flag);
+
+      setExpanded(transaction.expanded);
+    }
+
+    @Override
+    public void onClick(View view) {
+      int position = this.getAdapterPosition();
+      Transaction transaction = getItem(position);
+      transaction.expanded = !transaction.expanded;
+      notifyItemChanged(position);
+    }
+  }
+
+  // Class representing a view of a DnsTransaction.  Computing the value of all these strings can
+  // take over 10 ms, so this class ensures they're only computed once per transaction, instead of
+  // being recomputed every time a transaction row becomes visible during scrolling.
+  private final class Transaction {
+    // If true, the panel is expanded to show details.
+    boolean expanded = false;
+
+    // Human-readable representation of this transaction.
+    final String fqdn;      // Fully qualified domain name of the query
+    final String hostname;  // Truncated hostname for short display
+    final String time;      // The time of the response, e.g. 10:32:15
+    final String latency;   // The latency of the response, e.g. "150 ms"
+    final String typename;  // Typically "A" or "AAAA"
+    final String resolver;  // The resolver IP address and country code
+    final String response;  // The first response IP in the RRset, for an A or AAAA response.
+    final String flag;      // The flag of the response IP, as an emoji.
+
+    Transaction(@NonNull DnsTransaction transaction) {
+      fqdn = transaction.name;
+      hostname = getETldPlus1(transaction.name);
+
+      int hour = transaction.responseCalendar.get(Calendar.HOUR_OF_DAY);
+      int minute = transaction.responseCalendar.get(Calendar.MINUTE);
+      int second = transaction.responseCalendar.get(Calendar.SECOND);
+      time = String.format(Locale.ROOT, "%02d:%02d:%02d", hour, minute, second);
+
+      String template = activity.getResources().getString(R.string.latency_ms);
+      latency = String.format(template, transaction.responseTime - transaction.queryTime);
+
+      typename = getTypeName(transaction.type);
+
+      InetAddress serverAddress;
+      try {
+        serverAddress = InetAddress.getByName(transaction.serverIp);
+      } catch (UnknownHostException e) {
+        serverAddress = null;
+      }
+
+      if (serverAddress != null) {
+        @Nullable String countryCode = getCountryCode(serverAddress);
+        resolver = makeAddressPair(countryCode, serverAddress.getHostAddress());
+      } else {
+        resolver = transaction.serverIp;
+      }
+
+      if (transaction.status != DnsTransaction.Status.COMPLETE) {
+        response = transaction.status.name();
+        flag = "";
+      } else {
+        DnsPacket packet = null;
+        String err = null;
+        try {
+          packet = new DnsPacket(transaction.response);
+        } catch (ProtocolException e) {
+          err = e.getMessage();
+        }
+        if (packet != null) {
+          List<InetAddress> addresses = packet.getResponseAddresses();
+          if (addresses.size() > 0) {
+            InetAddress destination = addresses.get(0);
+            @Nullable String countryCode = getCountryCode(destination);
+            response = makeAddressPair(countryCode, destination.getHostAddress());
+            flag = getFlag(countryCode);
+          } else {
+            response = "NXDOMAIN";
+            flag = "";
+          }
+        } else {
+          response = err;
+          flag = "";
+        }
+      }
+    }
 
     private String getTypeName(int type) {
       // From https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4
@@ -168,7 +313,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     // Converts a two-character ISO country code into a flag emoji.
-    private String getFlag(String countryCode) {
+    private String getFlag(@Nullable String countryCode) {
+      if (countryCode == null) {
+        return "";
+      }
       // Flag emoji consist of two "regional indicator symbol letters", which are
       // Unicode characters that correspond to the English alphabet and are arranged in the same
       // order.  Therefore, to convert from a country code to a flag, we simply need to apply an
@@ -182,29 +330,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return new String(Character.toChars(firstHalf)) + new String(Character.toChars(secondHalf));
     }
 
-    public View transactionView;
-
-    public TransactionViewHolder(View v) {
-      super(v);
-      transactionView = v;
-      ToggleButton expand = (ToggleButton) transactionView.findViewById(R.id.expand);
-      expand.setOnClickListener(this);
-    }
-
-    private void setExpanded(boolean expanded) {
-      View details = transactionView.findViewById(R.id.details);
-      details.setVisibility(expanded ? View.VISIBLE : View.GONE);
-      ToggleButton expand = (ToggleButton) transactionView.findViewById(R.id.expand);
-      expand.setChecked(expanded);
-    }
-
     // Convert an FQDN like "www.example.co.uk." to an eTLD + 1 like "example.co.uk".
     private String getETldPlus1(String fqdn) {
       return InternetDomainName.from(fqdn).topPrivateDomain().toString();
     }
 
     // Return a two-letter ISO country code, or null if that fails.
-    private String getCountryCode(InetAddress address) {
+    private @Nullable String getCountryCode(InetAddress address) {
       activateCountryMap();
       if (countryMap == null) {
         return null;
@@ -212,88 +344,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return countryMap.getCountryCode(address);
     }
 
-    private String makeAddressPair(String countryCode, String ipAddress) {
+    private String makeAddressPair(@Nullable String countryCode, String ipAddress) {
+      if (countryCode == null) {
+        return ipAddress;
+      }
       return String.format("%s (%s)", countryCode, ipAddress);
-    }
-
-    public void update(Transaction transaction) {
-      DnsTransaction dnsTransaction = transaction.transaction;
-      TextView hostnameView = transactionView.findViewById(R.id.hostname);
-      hostnameView.setText(getETldPlus1(dnsTransaction.name));
-      TextView fqdnView = transactionView.findViewById(R.id.fqdn);
-      fqdnView.setText(dnsTransaction.name);
-
-      TextView timeView = transactionView.findViewById(R.id.response_time);
-      int hour = dnsTransaction.responseCalendar.get(Calendar.HOUR_OF_DAY);
-      int minute = dnsTransaction.responseCalendar.get(Calendar.MINUTE);
-      int second = dnsTransaction.responseCalendar.get(Calendar.SECOND);
-      timeView.setText(String.format(Locale.ROOT, "%02d:%02d:%02d", hour, minute, second));
-
-      TextView latencyView = transactionView.findViewById(R.id.latency_small);
-      String template = activity.getResources().getString(R.string.latency_ms);
-      latencyView.setText(String.format(template,
-          dnsTransaction.responseTime - dnsTransaction.queryTime));
-
-      TextView typeView = transactionView.findViewById(R.id.qtype);
-      typeView.setText(getTypeName(dnsTransaction.type));
-
-      TextView resolverView = transactionView.findViewById(R.id.resolver);
-      resolverView.setText("");
-      try {
-        InetAddress serverAddress = InetAddress.getByName(dnsTransaction.serverIp);
-        String countryCode = getCountryCode(serverAddress);
-        if (countryCode != null) {
-          resolverView.setText(makeAddressPair(countryCode, serverAddress.getHostAddress()));
-        } else {
-          resolverView.setText(dnsTransaction.serverIp);
-        }
-      } catch (UnknownHostException e) {
-        resolverView.setText(dnsTransaction.serverIp);
-      }
-
-      TextView responseView = transactionView.findViewById(R.id.response);
-      TextView flagView = transactionView.findViewById(R.id.flag);
-      flagView.setText("");
-      if (dnsTransaction.status != DnsTransaction.Status.COMPLETE) {
-        responseView.setText(dnsTransaction.status.name());
-      } else {
-        try {
-          DnsPacket packet = new DnsPacket(dnsTransaction.response);
-          List<InetAddress> addresses = packet.getResponseAddresses();
-          if (addresses.size() > 0) {
-            InetAddress destination = addresses.get(0);
-            String countryCode = getCountryCode(destination);
-            if (countryCode != null) {
-              responseView.setText(makeAddressPair(countryCode, destination.getHostAddress()));
-              flagView.setText(getFlag(countryCode));
-            }
-          } else {
-            responseView.setText("NXDOMAIN");
-          }
-        } catch (ProtocolException e) {
-          responseView.setText(e.getMessage());
-        }
-      }
-
-      setExpanded(transaction.expanded);
-    }
-
-    @Override
-    public void onClick(View view) {
-      int position = this.getAdapterPosition();
-      Transaction transaction = getItem(position);
-      transaction.expanded = !transaction.expanded;
-      notifyItemChanged(position);
-    }
-  }
-
-  private class Transaction {
-
-    final DnsTransaction transaction;
-    boolean expanded = false;
-
-    public Transaction(DnsTransaction transaction) {
-      this.transaction = transaction;
     }
   }
 
