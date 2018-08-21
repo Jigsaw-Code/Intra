@@ -1,146 +1,68 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Headline for the welcome screen. -->
-    <string name="about_headline">DNS Seguro y Honesto</string>
-
-    <!-- Text for the welcome screen. -->
-    <string name="about_text">Intra protege tus consultas de DNS, enviándolas a través de una conexión segura de HTTPS.
-        Esto reduce la posibilidad de que seas dirigido/a al sitio equivocado, o que tu navegación sea bloqueada o monitoreada.
-    </string>
-
-    <!-- Privacy text for the welcome screen. -->
-    <string name="privacy_text">Tus consultas serán enviadas por defecto a
-        <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
-        (<a href="https://developers.google.com/speed/public-dns/privacy">Política de Privacidad</a>).
-        También puedes utilizar <a href="https://cloudflare-dns.com">Cloudflare</a>
-        (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Política de Privacidad</a>).</string>
-
-    <!-- Button label to exit the welcome screen. -->
-    <string name="accept">Comenzar</string>
-
-    <!-- Hint for blind users to access the menu. -->
-    <string name="drawer_open">Abre el panel de navegación</string>
-
-    <!-- Hint for blind users to leave the menu. -->
-    <string name="drawer_close">Cierra el panel de navegación</string>
-
-    <!-- Menu label to return to the app's main screen. -->
-    <string name="home">Inicio</string>
-
-    <!-- Menu entry for sending error reports and complaints to the developers. -->
-    <string name="feedback">Enviar Comentarios</string>
-
-    <!-- Link to the privacy policy -->
-    <string name="privacy_link">Política de Privacidad</string>
-
-    <!-- Link to the terms of service -->
-    <string name="tos_link">Términos y Condiciones</string>
-
-    <!-- Link to the source code for this app -->
-    <string name="source_code">Código Fuente</string>
-
-    <!-- Jigsaw credits. "Jigsaw" is not translatable. -->
-    <string name="short_credits_text">Intra es un proyecto experimental de código abierto,
-        desarrollado por <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
-
-    <!-- Credits to contributing parties. "Jigsaw" is not translatable. -->
-    <string name="credits_text">Intra fue desarrollado por
-            <a href="https://jigsaw.google.com">Jigsaw</a>, con la ayuda de Google.
-            Las ubicaciones de las direcciones IP están basadas en información de DB-IP.com.
-        </string>
-
-    <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
-    protected", with the word "protected" highlighted in a reassuring color. -->
-    <string name="dns_on"><![CDATA[Tus consultas de DNS están
-        <font color=\"#%06X\">protegidas</font>]]></string>
-
-    <!-- This is a large message at the top of the main screen.  It says "Your DNS queries are
-    exposed", with the word "exposed" highlighted in a scary color. -->
-    <string name="dns_off"><![CDATA[Tus consultas de DNS están <font color=\"#%06X\">expuestas</font>]]>
-    </string>
-
-    <!-- This text appears on a button to enable DNS protection functionality -->
-    <string name="enable_protection">habilitar protección</string>
-
-    <!-- This text appears on a button to disable DNS protection functionality -->
-    <string name="disable_protection">deshabilitar</string>
-
-    <!-- This is the title of a section containing information on the system configuration and
-    status. -->
-    <string name="system_details">Detalles del sistema</string>
-
-    <!-- This text appears under the number of queries protected so far. -->
-    <string name="num_requests">Consultas totales</string>
-
-    <!-- This text appears under the number of queries protected in the past minute. -->
-    <string name="queries_per_minute">Consultas recientes</string>
-
-    <!-- This text appears under the name of the secure protocol currently in use.  Currently, that
-     is always "https".-->
-    <string name="transport_label">Transporte encriptado</string>
-
-    <!-- This text appears under the name of the insecure protocol currently in use.  Currently,
-    that is always "dns".-->
-    <string name="insecure_transport_label">Transporte no encriptado</string>
-
-    <!-- This text appears under the name of the secure server currently in use.  Currently, that
-     is always "dns.google.com".-->
-    <string name="server_label">Servidor DNS seguro</string>
-
-    <!-- This text appears under the name of the insecure server currently in use. -->
-    <string name="insecure_server_label">Servidor DNS de la red</string>
-
-    <!-- This is a placeholder, used when the server address is unknown -->
-    <string name="unknown_server">(servidor desconocido)</string>
-
-    <!-- This label appears next to a checkbox.  When the box is checked, recent queries will start
-    being shown. -->
-    <string name="show_history">Mostrar consultas recientes</string>
-
-    <!-- This text appears under the domain name for which a DNS query was issued. -->
-    <string name="query_label">Consulta</string>
-
-    <!-- This text appears under the type of query that was issued ("A" or "AAAA"). -->
-    <string name="type_label">Tipo</string>
-
-    <!-- This text appears under a measurement of network latency, like "923 ms". -->
-    <string name="latency_label">Latencia</string>
-
-    <!-- This text appears under a two-letter ISO country code, indicating the country where the
-    DNS resolver is located. -->
-    <string name="resolver_label">Ubicación del servidor DNS</string>
-
-    <!-- This text appears under a two-letter ISO country code, indicating the country where the
-    resolved domain's IP address is located. -->
-    <string name="destination_label">Servidor de destino</string>
-
-    <!-- Text that appears above the feedback text entry field. -->
-    <string name="before_feedback">¡Ayúdanos a mejorar Intra!
+  <string name="about_headline">DNS seguro y honesto</string>
+  <string name="about_text">Intra protege tus consultas de DNS enviándolas a través de una conexión segura de HTTPS.
+        Esto reduce la posibilidad de que se te redirija al sitio equivocado o que tu navegación sea bloqueada o monitorizada.</string>
+  <string name="privacy_text">De manera predeterminada, tus consultas se enviarán a
+    <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
+    (<a href="https://developers.google.com/speed/public-dns/privacy">política de privacidad</a>).
+    También puedes usar <a href="https://cloudflare-dns.com">Cloudflare</a>
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">política de privacidad</a>)
+    o cualquier otro servicio de DNS sobre HTTPS.</string>
+  <string name="accept">Comenzar</string>
+  <string name="drawer_open">Abre el panel de navegación</string>
+  <string name="drawer_close">Cierra el panel de navegación</string>
+  <string name="home">Inicio</string>
+  <string name="settings">Ajustes</string>
+  <string name="feedback">Enviar comentarios</string>
+  <string name="privacy_link">Política de privacidad</string>
+  <string name="tos_link">Condiciones de uso</string>
+  <string name="source_code">Código fuente</string>
+  <string name="short_credits_text">Intra es un proyecto experimental de código abierto desarrollado por <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+  <string name="credits_text">Intra ha sido desarrollado por
+            <a href="https://jigsaw.google.com">Jigsaw</a> con la ayuda de Google.
+            Las ubicaciones de las direcciones IP están basadas en información de DB-IP.com.</string>
+  <string name="dns_on">Tus consultas de DNS están &lt;font color=\"#%06X\"&gt;protegidas&lt;/font&gt;</string>
+  <string name="dns_off">Tus consultas de DNS están &lt;font color=\"#%06X\"&gt;expuestas&lt;/font&gt;</string>
+  <string name="dns_upgraded">Tus consultas de DNS son &lt;font color=\"#%06X\"&gt;vulnerables&lt;/font&gt;</string>
+  <string name="dns_strict">Tus consultas de DNS están protegidas por Android</string>
+  <string name="enable_protection">habilitar protección</string>
+  <string name="disable_protection">deshabilitar</string>
+  <string name="vpn_explanation">Intra ha detectado otra VPN en tu dispositivo. Si habilitas Intra, esa VPN se inhabilitará.
+    Intra no es tan seguro como una VPN de confianza.</string>
+  <string name="dns_strict_explanation">Intra ha detectado que el ajuste DNS privado de Android está habilitado. Esto significa que tus consultas de DNS ya están protegidas, por lo que no es necesario habilitar Intra.</string>
+  <string name="system_details">Detalles del sistema</string>
+  <string name="num_requests">Consultas totales</string>
+  <string name="queries_per_minute">Consultas recientes</string>
+  <string name="transport_label">Transporte encriptado</string>
+  <string name="insecure_transport_label">Transporte no encriptado</string>
+  <string name="server_label">Servidor DNS seguro</string>
+  <string name="insecure_server_label">Servidor DNS de la red</string>
+  <string name="unknown_server">(servidor desconocido)</string>
+  <string name="show_history">Mostrar consultas recientes</string>
+  <string name="query_label">Consulta</string>
+  <string name="type_label">Tipo</string>
+  <string name="latency_label">Latencia</string>
+  <string name="resolver_label">Ubicación del servidor DNS</string>
+  <string name="destination_label">Servidor de destino</string>
+  <string name="server_choice">Seleccionar servidor DNS sobre HTTPS</string>
+  <string name="server_choice_summary">Actualmente: %s</string>
+  <string name="server_choice_custom">URL de servidor personalizado</string>
+  <string name="server_choice_warning">El servidor personalizado debe ser una URL https:// válida</string>
+  <string name="excluded_apps">Aplicaciones excluidas</string>
+  <string name="excluded_apps_summary">Las consultas de DNS de las aplicaciones seleccionadas no se enviarán a través de Intra. Si una aplicación parece ser incompatible con Intra, puedes añadirla aquí.</string>
+  <string name="excluded_apps_title">Marcar aplicaciones que excluir de Intra</string>
+  <string name="old_android">Esta función no está disponible en tu versión de Android.</string>
+  <string name="before_feedback">¡Ayúdanos a mejorar Intra!
         Intra es un producto en desarrollo y necesitamos tu ayuda para mejorarlo.
-        Cuéntanos que está funcionando y qué no. ¡Gracias!</string>
-
-    <!-- Hint that appears in the text field where the user will type their complaint or error. -->
-    <string name="feedback_hint">Tus comentarios</string>
-
-    <!-- Text that appears after the feedback text entry field, warning users not to include
-    personally identifying information that could violate their privacy. -->
-    <string name="after_feedback">Esta información será enviada al equipo de Intra. Por favor, no incluyas
-        ninguna información personal.</string>
-
-    <!-- Text on the button to submit feedback. -->
-    <string name="submit_feedback">Enviar</string>
-
-    <!-- Status indicator text shown in a persistent notification. -->
-    <string name="notification_title">Protección de DNS activada</string>
-
-    <!-- Indicates what will happen if the user taps the notification. -->
-    <string name="notification_content">Presiona para cambiar la configuración de tu protección de DNS</string>
-
-    <!-- Description of the notification, as shown in the system's advanced notifications settings
-    page. -->
-    <string name="channel_name">Notificación de protección de DNS activada</string>
-    <string name="channel_description">Esta notificación aparece cuando la protección de DNS está activada.
-    </string>
-    <string name="warning_title">Aviso: Intra ha sido desactivado</string>
-    <string name="warning_channel_name">Aviso</string>
-    <string name="warning_channel_description">Mostrado cuando Intra ha encontrado un problema.</string>
+        Cuéntanos qué está funcionando y qué no. ¡Gracias!</string>
+  <string name="feedback_hint">Tus comentarios</string>
+  <string name="after_feedback">Esta información se enviará al equipo de Intra. No incluyas ninguna información personal.</string>
+  <string name="submit_feedback">Enviar</string>
+  <string name="notification_title">Protección de DNS activada</string>
+  <string name="notification_content">Toca para cambiar la configuración de tu protección de DNS</string>
+  <string name="channel_name">Notificación de protección de DNS activada</string>
+  <string name="channel_description">Esta notificación aparece cuando la protección de DNS está activada</string>
+  <string name="warning_title">Protección de DNS activada</string>
+  <string name="warning_channel_name">Aviso</string>
+  <string name="warning_channel_description">Mostrado cuando Intra ha encontrado un problema.</string>
 </resources>
