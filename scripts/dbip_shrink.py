@@ -6,7 +6,7 @@ import sys
 """
 Usage:
 Download the latest IP-to-country database from https://db-ip.com/db/download/country
-$ python shrink.py dbip-country-[date].csv.gz dbip
+$ python dbip_shrink.py dbip-country-[date].csv.gz dbip
 Writes a packed binary file suitable for bisection search.
 Thanks to DB-IP.com for offering a suitable database under a CC-BY license.
 """
