@@ -42,8 +42,8 @@ repositories {
 dependencies {
     // Third-party dependency: OkHttp3
     implementation fileTree(include: [
-            'okhttp-3.9.1.jar',
-            'okio-1.13.0.jar',
+            'okhttp-3.11.0.jar',
+            'okio-1.15.0.jar',
             'guava-26.0-android.jar'
     ], dir: 'libs')
 
@@ -61,9 +61,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
 
     // For Firebase Analytics, etc.
-    implementation 'com.google.firebase:firebase-core:11.8.0'
-    implementation 'com.google.firebase:firebase-perf:11.8.0'
-    implementation 'com.google.firebase:firebase-crash:11.8.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-perf:16.1.0'
+    implementation 'com.google.firebase:firebase-crash:16.0.1'
 }
 // For Firebase Analytics
 apply plugin: 'com.google.gms.google-services'

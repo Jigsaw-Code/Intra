@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dns_switch"
-        tools:text="@string/vpn_active"/>
+        tools:text="@string/vpn_explanation"/>
 
     <app.intra.util.HistoryGraph
         android:id="@+id/graph"
