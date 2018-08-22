@@ -13,16 +13,16 @@ buildscript {
         maven {
             url 'firebase-repo'
         }
-        // However, miscellaneous remaining build-setup dependencies (especially transitive
-        // dependencies of com.android.tools.build:gradle) are still only available at jcenter
-        // and are not mirrored.
-        jcenter()
+        // The gradle plugin also has dependencies that are not in the Google repository.
+        maven {
+            url 'gradle-plugin-repo'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0-beta05'
 
         // For Firebase Analytics
-        classpath 'com.google.gms:google-services:3.1.2'
+        classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
     }
 }
