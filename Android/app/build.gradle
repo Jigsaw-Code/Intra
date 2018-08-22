@@ -21,8 +21,8 @@ android {
         applicationId "app.intra"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 6
-        versionName "0.0.5"
+        versionCode 7
+        versionName "0.0.6"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -36,6 +36,12 @@ android {
 repositories {
     maven {
         url 'test-repo'
+    }
+    maven {
+        url '../gradle-plugin-repo'
+    }
+    maven {
+        url '../firebase-repo'
     }
 }
 
