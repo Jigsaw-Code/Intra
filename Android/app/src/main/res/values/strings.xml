@@ -108,6 +108,11 @@
     disable
   </string>
 
+  <string name="starting_protection"
+          description="This text briefly appears on the button while starting.">
+    starting&#8230;
+  </string>
+
   <string name="vpn_explanation"
           description="Warning text shown on the main screen before the user starts Intra">
     Intra has detected another VPN on your device.  If you enable Intra, that VPN will be disabled.
@@ -118,6 +123,25 @@
           description="Explanation on the main screen for users who have Private DNS strict mode enabled at the OS level.">
     Intra has detected that the Android Private DNS setting is enabled.  This means your DNS
     queries are already protected, so there\'s no need to enable Intra.
+  </string>
+
+  <string name="connecting"
+          description="Status indicator shown briefly when establishing a connection">
+    Connecting&#8230;
+  </string>
+
+  <string name="connected" description="Status indicator shown when the connection is working">
+    Connected
+  </string>
+
+  <string name="offline"
+          description="Status indicator shown when there is no network connection.">
+    Offline
+  </string>
+
+  <string name="connection_warning"
+          description="Status indicator shown when the most recent query has failed.  Future queries may be likely to fail.">
+    Warning: Queries are failing.  You may want to choose a different server and restart Intra.
   </string>
 
   <string name="system_details"

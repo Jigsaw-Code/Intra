@@ -17,6 +17,7 @@ package app.intra;
 
 import com.google.firebase.crash.FirebaseCrash;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
@@ -30,6 +31,8 @@ import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.util.DnsMetadata;
 import app.intra.util.DnsPacket;
@@ -70,11 +73,14 @@ public class DnsResolverUdpToHttps extends Thread {
   // Misc constants
   private static final int SLEEP_MILLIS = 1500;
 
+  private final @NonNull DnsVpnService vpnService;
   private ParcelFileDescriptor tunFd = null;
-  public ServerConnection serverConnection = null;
+  @Nullable ServerConnection serverConnection = null;
 
-  public DnsResolverUdpToHttps(ParcelFileDescriptor tunFd, ServerConnection serverConnection) {
+  DnsResolverUdpToHttps(@NonNull DnsVpnService vpnService, ParcelFileDescriptor tunFd,
+                        ServerConnection serverConnection) {
     super(LOG_TAG);
+    this.vpnService = vpnService;
     this.tunFd = tunFd;
     this.serverConnection = serverConnection;
   }
@@ -174,13 +180,14 @@ public class DnsResolverUdpToHttps extends Thread {
         dnsRequest.sourcePort = udpPacket.destPort;
         dnsRequest.destPort = udpPacket.sourcePort;
 
-        serverConnection.performDnsRequest(dnsRequest, udpPacket.data,
-            new DnsResponseCallback(dnsRequest, out));
-
-        Intent intent = new Intent(Names.QUERY.name());
-        DnsVpnService dnsVpnService = DnsVpnServiceState.getInstance().getDnsVpnService();
-        LocalBroadcastManager.getInstance(dnsVpnService).sendBroadcast(intent);
-
+        try {
+          serverConnection.performDnsRequest(dnsRequest, udpPacket.data,
+              new DnsResponseCallback(dnsRequest, out));
+        } catch (NullPointerException e) {
+          DnsTransaction transaction = new DnsTransaction(dnsRequest);
+          transaction.status = DnsTransaction.Status.SEND_FAIL;
+          sendResult(transaction);
+        }
       } catch (Exception e) {
         if (!isInterrupted()) {
           FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Unexpected exception in UDP loop.");
@@ -243,6 +250,16 @@ public class DnsResolverUdpToHttps extends Thread {
     return msg;
   }
 
+  private void sendResult(DnsTransaction transaction) {
+    vpnService.recordTransaction(transaction);
+    DnsVpnController controller = DnsVpnController.getInstance();
+    if (transaction.status == DnsTransaction.Status.COMPLETE) {
+      controller.onConnectionStateChanged(vpnService, ServerConnection.State.WORKING);
+    } else {
+      controller.onConnectionStateChanged(vpnService, ServerConnection.State.FAILING);
+    }
+  }
+
   /**
    * A callback object to listen for a DNS response. The caller should create one such object for
    * each DNS request. Responses will run on a reader thread owned by OkHttp.
@@ -263,15 +280,7 @@ public class DnsResolverUdpToHttps extends Thread {
     public DnsResponseCallback(DnsMetadata request, FileOutputStream output) {
       dnsMetadata = request;
       outputStream = output;
-      transaction = makeTransaction(request);
-    }
-
-    private DnsTransaction makeTransaction(DnsMetadata query) {
-      DnsTransaction transaction = new DnsTransaction();
-      transaction.name = query.name;
-      transaction.queryTime = query.timestamp;
-      transaction.type = query.type;
-      return transaction;
+      transaction = new DnsTransaction(request);
     }
 
     @Override
@@ -280,17 +289,14 @@ public class DnsResolverUdpToHttps extends Thread {
       FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
       if (e instanceof SocketTimeoutException) {
         FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
-        serverConnection.reset();
+        try {
+          serverConnection.reset();
+        } catch (NullPointerException npe) {
+          FirebaseCrash.logcat(Log.WARN, LOG_TAG,
+              "Unlikely race: Null server connection at reset.");
+        }
       }
-    }
-
-    private void sendResult() {
-      DnsVpnService dnsVpnService = DnsVpnServiceState.getInstance().getDnsVpnService();
-      if (dnsVpnService != null) {
-        dnsVpnService.recordTransaction(transaction);
-      } else {
-        FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN service was gone when result arrived.");
-      }
+      sendResult(transaction);
     }
 
     @Override
@@ -298,7 +304,7 @@ public class DnsResolverUdpToHttps extends Thread {
       transaction.serverIp = response.header(IpTagInterceptor.HEADER_NAME);
       if (!response.isSuccessful()) {
         transaction.status = DnsTransaction.Status.HTTP_ERROR;
-        sendResult();
+        sendResult(transaction);
         return;
       }
       byte[] dnsResponse;
@@ -306,7 +312,7 @@ public class DnsResolverUdpToHttps extends Thread {
         dnsResponse = response.body().bytes();
       } catch (IOException e) {
         transaction.status = DnsTransaction.Status.BAD_RESPONSE;
-        sendResult();
+        sendResult(transaction);
         return;
       }
       writeRequestIdToDnsResponse(dnsResponse, dnsMetadata.requestId);
@@ -316,7 +322,7 @@ public class DnsResolverUdpToHttps extends Thread {
         if (!dnsMetadata.name.equals(parsedDnsResponse.name)) {
           FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
           transaction.status = DnsTransaction.Status.BAD_RESPONSE;
-          sendResult();
+          sendResult(transaction);
           return;
         }
       }
@@ -352,7 +358,7 @@ public class DnsResolverUdpToHttps extends Thread {
         transaction.status = DnsTransaction.Status.INTERNAL_ERROR;
       }
 
-      sendResult();
+      sendResult(transaction);
     }
   }
 }

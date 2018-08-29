@@ -18,7 +18,6 @@ package app.intra;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crash.FirebaseCrash;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -101,16 +100,10 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
           if (Names.RESULT.name().equals(intent.getAction())) {
-            DnsVpnService dnsVpnService = DnsVpnServiceState.getInstance().getDnsVpnService();
-            if (dnsVpnService == null) {
-              FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Found unexpected null DnsVpnService");
-              return;
-            }
             updateStatsDisplay(getNumRequests(),
                 (DnsTransaction) intent.getSerializableExtra(Names.TRANSACTION.name()));
-
           } else if (Names.DNS_STATUS.name().equals(intent.getAction())) {
-            setDnsStatus(intent.getBooleanExtra(Names.DNS_STATUS.name(), false));
+            syncDnsStatus();
           }
         }
       };
@@ -253,6 +246,9 @@ public class MainActivity extends AppCompatActivity
     });
 
     prepareHyperlinks(this, findViewById(R.id.activity_main));
+
+    // Autostart if necessary
+    maybeAutostart();
   }
 
   @Override
@@ -270,7 +266,7 @@ public class MainActivity extends AppCompatActivity
 
     // Set up the main UI
     final ToggleButton switchButton = (ToggleButton) controlView.findViewById(R.id.dns_switch);
-    setDnsStatus(isServiceRunning());
+    syncDnsStatus();
     switchButton.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
           @Override
@@ -284,10 +280,9 @@ public class MainActivity extends AppCompatActivity
         });
 
     final CheckBox showHistory = (CheckBox) controlView.findViewById(R.id.show_history);
-    if (isServiceRunning()) {
-      showHistory.setChecked(isHistoryEnabled());
-    }
-    final DnsQueryTracker tracker = DnsVpnServiceState.getInstance().getTracker(this);
+    showHistory.setChecked(isHistoryEnabled());
+
+    final DnsQueryTracker tracker = DnsVpnController.getInstance().getTracker(this);
     showHistory.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
           @Override
@@ -323,7 +318,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   private boolean isHistoryEnabled() {
-    return DnsVpnServiceState.getInstance().getTracker(this).isHistoryEnabled();
+    return DnsVpnController.getInstance().getTracker(this).isHistoryEnabled();
   }
 
   private void startAnimation() {
@@ -335,7 +330,7 @@ public class MainActivity extends AppCompatActivity
     if (activityTimer == null) {
       activityTimer = new Timer();
     }
-    final DnsQueryTracker tracker = DnsVpnServiceState.getInstance().getTracker(this);
+    final DnsQueryTracker tracker = DnsVpnController.getInstance().getTracker(this);
     final Handler controlViewUpdateHandler = new Handler();
     final TextView qpmView = (TextView) controlView.findViewById(R.id.qpm);
     final Runnable doUpdate = new Runnable() {
@@ -375,7 +370,7 @@ public class MainActivity extends AppCompatActivity
     startAnimation();
 
     // Refresh DNS status.  This is mostly to update the VPN warning message state.
-    setDnsStatus(isServiceRunning());
+    syncDnsStatus();
   }
 
   @Override
@@ -393,34 +388,31 @@ public class MainActivity extends AppCompatActivity
     super.onDestroy();
   }
 
-  private void startDnsVpnService() {
-    PersistentState.setVpnEnabled(this, true);
-    Intent startServiceIntent = new Intent(this, DnsVpnService.class);
-    startService(startServiceIntent);
-    DnsVpnServiceState.getInstance().setDnsVpnServiceStarting();
+  private void maybeAutostart() {
+    DnsVpnController controller = DnsVpnController.getInstance();
+    DnsVpnState state = controller.getState(this);
+    if (state.requested && !state.on) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Autostarting");
+      controller.start(this);
+    }
   }
 
-  private boolean isServiceRunning() {
-    DnsVpnServiceState serviceState = DnsVpnServiceState.getInstance();
-    return serviceState.isDnsVpnServiceStarting() || serviceState.getDnsVpnService() != null;
+  private void startDnsVpnService() {
+    DnsVpnController.getInstance().start(this);
   }
 
   private void stopDnsVpnService() {
-    DnsVpnService dnsVpnService = DnsVpnServiceState.getInstance().getDnsVpnService();
-    if (dnsVpnService != null) {
-      dnsVpnService.signalStopService(true /* user initiated */);
-    }
-    PersistentState.setVpnEnabled(this, false);
+    DnsVpnController.getInstance().stop(this);
   }
 
   private Queue<DnsTransaction> getHistory() {
-    DnsVpnServiceState serviceState = DnsVpnServiceState.getInstance();
-    return serviceState.getTracker(this).getRecentTransactions();
+    DnsVpnController controller = DnsVpnController.getInstance();
+    return controller.getTracker(this).getRecentTransactions();
   }
 
   private long getNumRequests() {
-    DnsVpnServiceState serviceState = DnsVpnServiceState.getInstance();
-    return serviceState.getTracker(this).getNumRequests();
+    DnsVpnController controller = DnsVpnController.getInstance();
+    return controller.getTracker(this).getNumRequests();
   }
 
   private void prepareAndStartDnsVpn() {
@@ -451,7 +443,7 @@ public class MainActivity extends AppCompatActivity
     if (prepareVpnIntent != null) {
       Log.i(LOG_TAG, "Prepare VPN with activity");
       startActivityForResult(prepareVpnIntent, REQUEST_CODE_PREPARE_VPN);
-      setDnsStatus(false); // Set DNS status to off in case the user does not grant VPN permissions
+      syncDnsStatus();  // Set DNS status to off in case the user does not grant VPN permissions
       return false;
     }
     return true;
@@ -515,7 +507,7 @@ public class MainActivity extends AppCompatActivity
     return PrivateDnsMode.NONE;
   }
 
-  private boolean getVpnActive() {
+  private boolean isAnotherVpnActive() {
     ConnectivityManager connectivityManager =
         (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
@@ -551,28 +543,36 @@ public class MainActivity extends AppCompatActivity
   }
 
   // Sets the UI DNS status on/off.
-  private void setDnsStatus(boolean on) {
+  private void syncDnsStatus() {
     if (controlView == null) {
       return;
     }
 
+    DnsVpnState status = DnsVpnController.getInstance().getState(this);
+
     // Change toggle button text
     final ToggleButton switchButton = (ToggleButton) controlView.findViewById(R.id.dns_switch);
-    switchButton.setChecked(on);
+    switchButton.setChecked(status.requested);
+    if (status.on) {
+      switchButton.setText(R.string.disable_protection);
+    } else if (status.requested) {
+      switchButton.setText(R.string.starting_protection);
+    } else {
+      switchButton.setText(R.string.enable_protection);
+    }
 
     // Show/hide graph
     View graph = controlView.findViewById(R.id.graph);
-    graph.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
+    graph.setVisibility(status.on ? View.VISIBLE : View.INVISIBLE);
 
     // Change indicator text
-    boolean vpnActive = !on && getVpnActive();
     final TextView indicatorText = controlView.findViewById(R.id.indicator);
-    int colorId = on ? R.color.accent_good : R.color.accent_bad;
+    int colorId = status.on ? R.color.accent_good : R.color.accent_bad;
     int color = ContextCompat.getColor(this, colorId);
 
     PrivateDnsMode privateDnsMode = PrivateDnsMode.NONE;
     int templateId;
-    if (on) {
+    if (status.on) {
       templateId = R.string.dns_on;
     } else {
       privateDnsMode = getPrivateDnsMode();
@@ -585,14 +585,6 @@ public class MainActivity extends AppCompatActivity
       }
     }
 
-    final TextView osStatusText = controlView.findViewById(R.id.os_status);
-    if (vpnActive) {
-      osStatusText.setText(R.string.vpn_explanation);
-    } else if (privateDnsMode == PrivateDnsMode.STRICT) {
-      osStatusText.setText(R.string.dns_strict_explanation);
-    } else {
-      osStatusText.setText("");
-    }
     String template = getResources().getText(templateId).toString();
     // Html.fromHtml only supports RGB, not ARGB, so mask off the alpha byte.
     String html = String.format(template, color & 0xFFFFFF);
@@ -608,12 +600,30 @@ public class MainActivity extends AppCompatActivity
     ImageView backdrop = controlView.findViewById(R.id.graph_backdrop);
     backdrop.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
+    // Set detailed status text.
+    final TextView detailedStatusText = controlView.findViewById(R.id.detailed_status);
+    if (status.on) {
+      if (status.connectionState == null) {
+        detailedStatusText.setText(R.string.offline);
+      } else {
+        detailedStatusText.setText(status.connectionState.message());
+      }
+    } else {
+      if (isAnotherVpnActive()) {
+        detailedStatusText.setText(R.string.vpn_explanation);
+      } else if (privateDnsMode == PrivateDnsMode.STRICT) {
+        detailedStatusText.setText(R.string.dns_strict_explanation);
+      } else {
+        detailedStatusText.setText("");
+      }
+    }
+
     // Show/hide secure/insecure details
     View systemDetails = controlView.findViewById(R.id.system_details);
-    systemDetails.setVisibility(on ? View.VISIBLE : View.GONE);
+    systemDetails.setVisibility(status.on ? View.VISIBLE : View.GONE);
     View insecureSystemDetails = controlView.findViewById(R.id.insecure_system_details);
-    insecureSystemDetails.setVisibility(on ? View.GONE : View.VISIBLE);
-    if (!on) {
+    insecureSystemDetails.setVisibility(status.on ? View.GONE : View.VISIBLE);
+    if (!status.on) {
       String insecureServerAddress = getSystemDnsServer();
       if (insecureServerAddress == null) {
         insecureServerAddress = getResources().getText(R.string.unknown_server).toString();

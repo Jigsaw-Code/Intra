@@ -43,11 +43,8 @@ public class DnsQueryTracker {
   private Queue<Long> recentActivity = new LinkedList<>();
   private boolean historyEnabled = false;
 
-  private Context context;
-
   public DnsQueryTracker(Context context) {
-    this.context = context;
-    sync();
+    sync(context);
   }
 
   public synchronized long getNumRequests() {
@@ -88,7 +85,7 @@ public class DnsQueryTracker {
     return historyEnabled;
   }
 
-  public synchronized void recordTransaction(DnsTransaction transaction) {
+  public synchronized void recordTransaction(Context context, DnsTransaction transaction) {
     // Increment request counter on each successful resolution
     if (transaction.status == DnsTransaction.Status.COMPLETE) {
       ++numRequests;
@@ -96,7 +93,7 @@ public class DnsQueryTracker {
       if (numRequests % HISTORY_SIZE == 0) {
         // Avoid losing too many requests in case of an unclean shutdown, but also avoid
         // excessive disk I/O from syncing the counter to disk after every request.
-        sync();
+        sync(context);
       }
     }
 
@@ -113,7 +110,7 @@ public class DnsQueryTracker {
     }
   }
 
-  public synchronized void sync() {
+  public synchronized void sync(Context context) {
     // Restore number of requests from storage, or 0 if it isn't defined yet.
     SharedPreferences settings =
         context.getSharedPreferences(DnsQueryTracker.class.getSimpleName(), MODE_PRIVATE);

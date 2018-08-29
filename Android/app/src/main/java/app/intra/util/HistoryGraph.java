@@ -18,7 +18,7 @@ package app.intra.util;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 
-import app.intra.DnsVpnServiceState;
+import app.intra.DnsVpnController;
 import app.intra.R;
 
 import android.content.Context;
@@ -70,7 +70,7 @@ public class HistoryGraph extends View implements DnsActivityReader {
 
   public HistoryGraph(Context context, AttributeSet attrs) {
     super(context, attrs);
-    tracker = DnsVpnServiceState.getInstance().getTracker(context);
+    tracker = DnsVpnController.getInstance().getTracker(context);
 
     int color = getResources().getColor(R.color.accent_good);
 
