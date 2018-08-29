@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Dns;
 import okhttp3.MediaType;
@@ -40,7 +41,8 @@ import okhttp3.RequestBody;
 public class StandardServerConnection implements ServerConnection {
 
   private final String url;
-  private final OkHttpClient client;
+  private OkHttpClient client;
+  private final List<InetAddress> ips;
 
   private class PinnedDns implements Dns {
 
@@ -84,12 +86,9 @@ public class StandardServerConnection implements ServerConnection {
 
   private StandardServerConnection(String url, List<InetAddress> ips) {
     this.url = url;
+    this.ips = ips;
 
-    client = new OkHttpClient.Builder()
-        .dns(new PinnedDns(ips))
-        .connectTimeout(3, TimeUnit.SECONDS) // Detect blocked connections.  TODO: tune.
-        .addNetworkInterceptor(new IpTagInterceptor())
-        .build();
+    reset();
   }
 
   @Override
@@ -115,6 +114,20 @@ public class StandardServerConnection implements ServerConnection {
 
   @Override
   public void reset() {
-    client.connectionPool().evictAll();
+    OkHttpClient oldClient = client;
+    client = new OkHttpClient.Builder()
+        .dns(new PinnedDns(ips))
+        .connectTimeout(3, TimeUnit.SECONDS) // Detect blocked connections.  TODO: tune.
+        .addNetworkInterceptor(new IpTagInterceptor())
+        .build();
+    if (oldClient != null) {
+      for (Call call : oldClient.dispatcher().queuedCalls()) {
+        call.cancel();
+      }
+      for (Call call : oldClient.dispatcher().runningCalls()) {
+        call.cancel();
+      }
+    }
+
   }
 }

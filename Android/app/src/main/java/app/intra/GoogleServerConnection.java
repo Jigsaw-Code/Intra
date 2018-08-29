@@ -22,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -46,6 +48,7 @@ public class GoogleServerConnection implements ServerConnection {
 
   // Client, with DNS fixed to the selectedServer.  Initialized by bootstrap.
   private OkHttpClient client = null;
+  final private GoogleServerDatabase db;
 
   /**
    * Gets a working GoogleServerConnection, or null if the GoogleServerConnection cannot be made to
@@ -63,11 +66,8 @@ public class GoogleServerConnection implements ServerConnection {
   }
 
   private GoogleServerConnection(GoogleServerDatabase db) {
-    client = new OkHttpClient.Builder()
-        .dns(db)
-        .connectTimeout(3, TimeUnit.SECONDS) // Detect blocked connections.  TODO: tune.
-        .addNetworkInterceptor(new IpTagInterceptor())
-        .build();
+    this.db = db;
+    reset();
   }
 
   /**
@@ -176,6 +176,19 @@ public class GoogleServerConnection implements ServerConnection {
 
   @Override
   public void reset() {
-    client.connectionPool().evictAll();
+    OkHttpClient oldClient = client;
+    client = new OkHttpClient.Builder()
+        .dns(db)
+        .connectTimeout(3, TimeUnit.SECONDS)  // Detect blocked connections.  TODO: tune.
+        .addNetworkInterceptor(new IpTagInterceptor())
+        .build();
+    if (oldClient != null) {
+      for (Call call : oldClient.dispatcher().queuedCalls()) {
+        call.cancel();
+      }
+      for (Call call : oldClient.dispatcher().runningCalls()) {
+        call.cancel();
+      }
+    }
   }
 }

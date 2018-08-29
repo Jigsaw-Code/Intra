@@ -28,7 +28,8 @@ public class DnsTransaction implements Serializable {
     SEND_FAIL,
     HTTP_ERROR,
     BAD_RESPONSE,
-    INTERNAL_ERROR
+    INTERNAL_ERROR,
+    CANCELED
   }
 
   public DnsTransaction(DnsUdpQuery query) {

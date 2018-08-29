@@ -255,7 +255,7 @@ public class DnsResolverUdpToHttps extends Thread {
     DnsVpnController controller = DnsVpnController.getInstance();
     if (transaction.status == DnsTransaction.Status.COMPLETE) {
       controller.onConnectionStateChanged(vpnService, ServerConnection.State.WORKING);
-    } else {
+    } else if (transaction.status != DnsTransaction.Status.CANCELED) {
       controller.onConnectionStateChanged(vpnService, ServerConnection.State.FAILING);
     }
   }
@@ -285,7 +285,8 @@ public class DnsResolverUdpToHttps extends Thread {
 
     @Override
     public void onFailure(Call call, IOException e) {
-      transaction.status = DnsTransaction.Status.SEND_FAIL;
+      transaction.status = call.isCanceled() ?
+          DnsTransaction.Status.CANCELED : DnsTransaction.Status.SEND_FAIL;
       FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
       if (e instanceof SocketTimeoutException) {
         FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");

@@ -247,12 +247,32 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   }
 
   private void restartVpn() {
-    // TODO: Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
+    // Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
+    final ParcelFileDescriptor oldTunFd = tunFd;
+    tunFd = establishVpn();
+    if (serverConnection != null) {
+      // Cancel all outstanding queries, and establish a new client bound to the new active network.
+      // Subsequent queries will flow into the new tunFd, and then into the new HTTP client.
+      serverConnection.reset();
+    }
+    new Thread(
+        new Runnable() {
+          public void run() {
+            // Regenerate dnsResolver to use the new tunFd.
+            stopDnsResolver();
+            startDnsResolver();
 
-    // Ask for a restart in onDestroy.
-    shouldRestart = true;
-    // Stop this service.
-    signalStopService(true);
+            // Close the old FD to release resources.
+            try {
+              if (oldTunFd != null) {
+                oldTunFd.close();
+              }
+            } catch (IOException e) {
+              FirebaseCrash.report(e);
+            }
+          }
+        }, "restartVpn")
+        .start();
   }
 
   @Override

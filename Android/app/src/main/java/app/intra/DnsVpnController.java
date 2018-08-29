@@ -71,6 +71,9 @@ public class DnsVpnController {
   }
 
   public synchronized void start(Context context) {
+    if (dnsVpnService != null) {
+      return;
+    }
     PersistentState.setVpnEnabled(context, true);
     stateChanged(context);
     Intent startServiceIntent = new Intent(context, DnsVpnService.class);
