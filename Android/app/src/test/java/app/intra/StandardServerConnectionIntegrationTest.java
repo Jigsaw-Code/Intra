@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-import app.intra.util.DnsMetadata;
+import app.intra.util.DnsUdpQuery;
 import app.intra.util.DnsPacket;
 
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class StandardServerConnectionIntegrationTest {
         StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsMetadata metadata = new DnsMetadata();
+        DnsUdpQuery metadata = new DnsUdpQuery();
         metadata.name = "youtube.com";
         metadata.type = 1;
         s.performDnsRequest(metadata, QUERY_DATA, cb);

@@ -15,7 +15,7 @@ limitations under the License.
 */
 package app.intra;
 
-import app.intra.util.DnsMetadata;
+import app.intra.util.DnsUdpQuery;
 import app.intra.util.DualStackResult;
 import app.intra.util.IpTagInterceptor;
 
@@ -93,7 +93,7 @@ public class StandardServerConnection implements ServerConnection {
   }
 
   @Override
-  public void performDnsRequest(DnsMetadata metadata, byte[] data, Callback cb) {
+  public void performDnsRequest(DnsUdpQuery metadata, byte[] data, Callback cb) {
     // Zero out the ID
     data[0] = 0;
     data[1] = 0;

@@ -30,7 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import app.intra.util.DnsMetadata;
+import app.intra.util.DnsUdpQuery;
 import app.intra.util.DualStackResult;
 import app.intra.util.IpTagInterceptor;
 
@@ -115,7 +115,7 @@ public class GoogleServerConnection implements ServerConnection {
   }
 
   @Override
-  public void performDnsRequest(final DnsMetadata metadata, final byte[] data, Callback cb) {
+  public void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb) {
     final int unsignedType = metadata.type & 0xffff; // Convert Java's signed short to unsigned int
     String url =
         String.format(

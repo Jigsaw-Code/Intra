@@ -19,7 +19,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import app.intra.util.DnsMetadata;
+import app.intra.util.DnsUdpQuery;
 import app.intra.util.DualStackResult;
 
 import java.net.Inet4Address;
@@ -60,7 +60,7 @@ public class GoogleServerConnectionIntegrationTest {
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsMetadata metadata = new DnsMetadata();
+        DnsUdpQuery metadata = new DnsUdpQuery();
         metadata.name = "youtube.com";
         metadata.type = 1;
         s.performDnsRequest(metadata, new byte[0], cb);
@@ -132,7 +132,7 @@ public class GoogleServerConnectionIntegrationTest {
         assertNotNull(s);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsMetadata metadata = new DnsMetadata();
+        DnsUdpQuery metadata = new DnsUdpQuery();
         metadata.name = "youtube.com";
         metadata.type = 1;
         s.performDnsRequest(metadata, new byte[0], cb);

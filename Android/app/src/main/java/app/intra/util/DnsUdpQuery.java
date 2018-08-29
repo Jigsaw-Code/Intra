@@ -18,7 +18,7 @@ package app.intra.util;
 import java.net.InetAddress;
 
 // Class to maintain state about a DNS query over UDP.
-public class DnsMetadata {
+public class DnsUdpQuery {
 
   public String name;
   public short requestId;
@@ -28,7 +28,4 @@ public class DnsMetadata {
   public short sourcePort;
   public short destPort;
   public long timestamp;
-
-  public DnsMetadata() {
-  }
 }
