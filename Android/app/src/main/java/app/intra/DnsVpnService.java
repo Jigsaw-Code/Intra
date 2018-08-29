@@ -45,14 +45,16 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.Inet4Address;
+import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.CheckResult;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -77,6 +79,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   private DnsResolverUdpToHttps dnsResolver = null;
   private ServerConnection serverConnection = null;
   private String url = null;
+  private Set<InetAddress> coveredServers = null;
 
   private boolean shouldRestart = false;
 
@@ -258,9 +261,13 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     new Thread(
         new Runnable() {
           public void run() {
-            // Regenerate dnsResolver to use the new tunFd.
-            stopDnsResolver();
-            startDnsResolver();
+            synchronized (DnsVpnService.this) {
+              if (dnsResolver != null && dnsResolver.getTunFd() == oldTunFd) {
+                // Regenerate dnsResolver to use the new tunFd.
+                stopDnsResolver();
+                startDnsResolver();
+              }
+            }
 
             // Close the old FD to release resources.
             try {
@@ -316,6 +323,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
         FirebaseCrash.report(e);
       } finally {
         tunFd = null;
+        coveredServers = null;
       }
     }
   }
@@ -343,6 +351,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
       dnsResolver = new DnsResolverUdpToHttps(this, tunFd, serverConnection);
       dnsResolver.start();
+      DnsVpnController.getInstance().onConnectionStateChanged(this,
+          ServerConnection.State.WORKING);
     }
   }
 
@@ -436,19 +446,27 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     Log.i(LOG_TAG, String.format("VPN address: { IPv4: %s, IPv6: %s }",
                                  privateIpv4Address, privateIpv6Address));
 
+    final Set<InetAddress> otherServers = getOtherDnsServers();
+    Log.i(LOG_TAG, String.format("Other servers: %s", otherServers));
+
     final String establishVpnErrorMsg = "Failed to establish VPN ";
     ParcelFileDescriptor tunFd = null;
     try {
       VpnService.Builder builder =
           (new VpnService.Builder())
               .setSession("Jigsaw DNS Protection")
-              .setMtu(VPN_INTERFACE_MTU)
-              .addAddress(privateIpv4Address.address, privateIpv4Address.prefix)
-              .addRoute(privateIpv4Address.subnet, privateIpv4Address.prefix)
-              .addDnsServer(privateIpv4Address.router)
-              .addAddress(privateIpv6Address.address, privateIpv6Address.prefix)
-              .addRoute(privateIpv6Address.subnet, privateIpv6Address.prefix)
-              .addDnsServer(privateIpv6Address.router);
+              .setMtu(VPN_INTERFACE_MTU);
+      // The scope of the VPN is the private addresses (chosen to be non-colliding) and also the
+      // IPs of the active network's DNS servers.  The private addresses are used to ensure that
+      // there is always a designated DNS server on the VPN, and the other servers are added so
+      // that apps that implement their own DNS resolution (such as Chrome) don't bypass Intra.
+      // For unknown reasons, the private addresses (with router != address) have to be added before
+      // the other servers (with only one address each).
+      builder = addPrivateAddress(builder, privateIpv4Address);
+      builder = addPrivateAddress(builder, privateIpv6Address);
+      for (InetAddress server : otherServers) {
+        builder = addOtherServer(builder, server);
+      }
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         // Only available in API >= 21
@@ -464,12 +482,16 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
           }
           // Play Store incompatibility is a known issue, so always exclude it.
           builder = builder.addDisallowedApplication("com.android.vending");
+          // Exclude system processes, to the extent possible.
+          builder = builder.addDisallowedApplication("android");
         } catch (PackageManager.NameNotFoundException e) {
           FirebaseCrash.report(e);
           Log.e(LOG_TAG, "Failed to exclude an app", e);
         }
       }
       tunFd = builder.establish();
+
+      coveredServers = otherServers;
     } catch (IllegalArgumentException e) {
       FirebaseCrash.report(e);
       Log.e(LOG_TAG, establishVpnErrorMsg, e);
@@ -545,6 +567,45 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     return null;
   }
 
+  private Set<InetAddress> getOtherDnsServers() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      return Collections.emptySet();
+    }
+    ConnectivityManager connectivityManager =
+        (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+    final Network network = connectivityManager.getActiveNetwork();
+    if (network == null) {
+      return Collections.emptySet();
+    }
+    final LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
+    if (linkProperties == null) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Null properties for a non-null network");
+      return Collections.emptySet();
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+        linkProperties.isPrivateDnsActive()) {
+      // Queries on this network are already encrypted.  Rerouting them to Intra would cause a
+      // failure, because we do not support DNS-over-TLS.
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Skipping servers due to Private DNS");
+      return Collections.emptySet();
+    }
+    return new HashSet<>(linkProperties.getDnsServers());
+  }
+
+  @CheckResult
+  private static VpnService.Builder addPrivateAddress(VpnService.Builder builder,
+                                                      PrivateAddress address) {
+    return builder.addAddress(address.address, address.prefix)
+        .addRoute(address.subnet, address.prefix)
+        .addDnsServer(address.router);
+  }
+
+  @CheckResult
+  private static VpnService.Builder addOtherServer(VpnService.Builder builder,
+                                                   InetAddress address) {
+    return builder.addAddress(address, address.getAddress().length);
+  }
+
   public void recordTransaction(DnsTransaction transaction) {
     transaction.responseTime = SystemClock.elapsedRealtime();
     transaction.responseCalendar = Calendar.getInstance();
@@ -554,6 +615,23 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     Intent intent = new Intent(Names.RESULT.name());
     intent.putExtra(Names.TRANSACTION.name(), transaction);
     LocalBroadcastManager.getInstance(DnsVpnService.this).sendBroadcast(intent);
+  }
+
+  private synchronized void maybeChangeVpnCoverage(boolean includeOtherServers) {
+    // This code forces a full VPN restart whenever the active network's DNS servers change.
+    // Intuitively, it seems like it would be OK for coveredServers to be a superset of
+    // getOtherDnsServers().  However, this does not work in practice because Android's connectivity
+    // checks fail if a new network's DNS server is already covered by the VPN, causing the network
+    // to be marked as "No internet".  (The reason for this failure is unknown.)
+    // TODO: Consider the edge case where a new network uses the same DNS servers as the current
+    // network.
+    Set<InetAddress> otherServers = includeOtherServers ? getOtherDnsServers()
+        : Collections.<InetAddress>emptySet();
+    if (coveredServers != null && !coveredServers.equals(otherServers)) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, String.format("Changing VPN coverage of other " +
+          "servers from %s to %s", coveredServers, otherServers));
+      restartVpn();
+    }
   }
 
   private DnsQueryTracker getTracker() {
@@ -569,6 +647,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   public void onNetworkConnected(NetworkInfo networkInfo) {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Connected event.");
     if (tunFd != null) {
+      maybeChangeVpnCoverage(true);
       startDnsResolver();
     } else {
       // startVpn performs network activity so it has to run on a separate thread.
@@ -590,6 +669,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
             new Runnable() {
               public void run() {
                 stopDnsResolver();
+                maybeChangeVpnCoverage(false);
               }
             }, "stopDnsResolver-onNetworkDisconnected")
         .start();

@@ -15,12 +15,18 @@ limitations under the License.
 */
 package app.intra;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
+import android.os.Build;
 import android.util.Log;
 
 // This class listens for network connectivity changes and notifies a NetworkListener of
@@ -32,22 +38,25 @@ public class NetworkManager {
 
   public interface NetworkListener {
 
-    public void onNetworkConnected(NetworkInfo networkInfo);
+    void onNetworkConnected(NetworkInfo networkInfo);
 
-    public void onNetworkDisconnected();
+    void onNetworkDisconnected();
   }
 
-  private ConnectivityManager connectivityManager;
-  private BroadcastReceiver broadcastReceiver;
-  private Context applicationContext;
-  private NetworkListener networkListener;
+  private final ConnectivityManager connectivityManager;
+  private BroadcastReceiver broadcastReceiver = null;
+  private ConnectivityManager.NetworkCallback networkCallback = null;
+  private final Context applicationContext;
+  private final NetworkListener networkListener;
 
-  public NetworkManager(Context context, NetworkListener networkListener) {
+  public NetworkManager(Context context, final NetworkListener networkListener) {
     applicationContext = context.getApplicationContext();
     connectivityManager =
         (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
     this.networkListener = networkListener;
 
+    // We listen for CONNECTIVITY_ACTION to monitor network disconnection events.
+    // On pre-Lollipop devices, it's also used to monitor network connection events.
     IntentFilter intentFilter = new IntentFilter();
     intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
     broadcastReceiver =
@@ -59,6 +68,33 @@ public class NetworkManager {
         };
     applicationContext.registerReceiver(this.broadcastReceiver, intentFilter);
 
+    // NetworkRequest only exists in Lollipop and later.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      // We only want to know about internet-connected networks that are not VPNs.
+      NetworkRequest.Builder builder = (new NetworkRequest.Builder())
+          .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+          .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN);
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        // If the device is checking the network for internet access, we don't want to know about
+        // the network until after it's validated.  This is important because, empirically, if the
+        // Intra VPN captures the IP of the network's DNS servers before validation completes,
+        // validation will fail.
+        builder.addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+      }
+
+      networkCallback = new ConnectivityManager.NetworkCallback() {
+        // This method is called whenever a network is validated, and subsequently whenever its DNS
+        // servers change.  (Some networks initially come online with a subset of their DNS servers
+        // and later experience a configuration change to add more DNS servers.)
+        @Override
+        public void onLinkPropertiesChanged(Network network, LinkProperties linkProperties) {
+          networkChanged(network);
+        }
+      };
+      connectivityManager.registerNetworkCallback(builder.build(), networkCallback);
+    }
+
     // Fire onNetworkConnected listener immediately if we are online.
     NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
     if (networkInfo != null && networkInfo.isConnected()) {
@@ -68,11 +104,13 @@ public class NetworkManager {
 
   // Destroys the network receiver.
   public void destroy() {
-    if (broadcastReceiver == null) {
-      return;
-    }
     try {
-      applicationContext.unregisterReceiver(broadcastReceiver);
+      if (broadcastReceiver != null) {
+        applicationContext.unregisterReceiver(broadcastReceiver);
+      }
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && networkCallback != null) {
+        connectivityManager.unregisterNetworkCallback(networkCallback);
+      }
     } catch (Exception e) {
       Log.e(LOG_TAG, "Error unregistering network receiver: " + e.getMessage(), e);
     } finally {
@@ -100,8 +138,29 @@ public class NetworkManager {
     } else if (!isConnectedNetwork(activeNetworkInfo)) {
       // No active network, signal disconnect event.
       networkListener.onNetworkDisconnected();
-    } else if (activeNetworkInfo.getType() != ConnectivityManager.TYPE_VPN) {
-      // We have an active network, make sure it is not a VPN to signal a connected event.
+    } else if (networkCallback == null &&
+        activeNetworkInfo.getType() != ConnectivityManager.TYPE_VPN) {
+      // We have an active network that is not a VPN, and this is a pre-Lollipop device so
+      // connectivityChanged() is responsible for surfacing network connection events.
+      networkListener.onNetworkConnected(activeNetworkInfo);
+    }
+  }
+
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  private void networkChanged(Network network) {
+    Log.v(LOG_TAG, "NETWORK CHANGED " + network);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      // getActiveNetwork() requires M or later.
+      if (!network.equals(connectivityManager.getActiveNetwork())) {
+        Log.v(LOG_TAG, "Skipping network that is not the active network.");
+        return;
+      }
+    }
+    // There is a new active network, or the active network's DNS servers may have changed.
+    // onNetworkConnected is idempotent, so it's safe to call it whenever we are in that state
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    if (isConnectedNetwork(activeNetworkInfo) &&
+        activeNetworkInfo.getType() != ConnectivityManager.TYPE_VPN) {
       networkListener.onNetworkConnected(activeNetworkInfo);
     }
   }
@@ -111,6 +170,6 @@ public class NetworkManager {
     if (networkInfo == null) {
       return false;
     }
-    return networkInfo.isConnectedOrConnecting() && networkInfo.isAvailable();
+    return networkInfo.isConnected() && networkInfo.isAvailable();
   }
 }

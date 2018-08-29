@@ -85,6 +85,10 @@ public class DnsResolverUdpToHttps extends Thread {
     this.serverConnection = serverConnection;
   }
 
+  ParcelFileDescriptor getTunFd() {
+    return tunFd;
+  }
+
   @Override
   // In addition to reading DNS requests from the VPN interface and forwarding them via HTTPS, this
   // thread is responsible for maintaining a connected socket to Google's DNS-over-HTTPS API.
