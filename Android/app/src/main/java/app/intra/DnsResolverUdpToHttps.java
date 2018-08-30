@@ -252,6 +252,10 @@ public class DnsResolverUdpToHttps extends Thread {
 
   private void sendResult(DnsTransaction transaction) {
     vpnService.recordTransaction(transaction);
+    // Update the connection state.  If the transaction succeeded, then the connection is working.
+    // If the transaction failed, then the connection is not working.
+    // If the transaction was canceled, then we don't have any new information about the status
+    // of the connection, so we don't send an update.
     DnsVpnController controller = DnsVpnController.getInstance();
     if (transaction.status == DnsTransaction.Status.COMPLETE) {
       controller.onConnectionStateChanged(vpnService, ServerConnection.State.WORKING);
