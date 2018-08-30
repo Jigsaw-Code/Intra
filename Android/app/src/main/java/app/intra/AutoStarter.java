@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
-import android.os.Build;
 import android.util.Log;
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -20,7 +19,7 @@ public class AutoStarter extends BroadcastReceiver {
     FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Boot event");
     DnsVpnController controller = DnsVpnController.getInstance();
     DnsVpnState state = controller.getState(context);
-    if (state.requested && !state.on) {
+    if (state.activationRequested && !state.on) {
       FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Autostart enabled");
       if (VpnService.prepare(context) != null) {
         // prepare() returns a non-null intent if VPN permission has not been granted.

@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity
   private void maybeAutostart() {
     DnsVpnController controller = DnsVpnController.getInstance();
     DnsVpnState state = controller.getState(this);
-    if (state.requested && !state.on) {
+    if (state.activationRequested && !state.on) {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Autostarting");
       controller.start(this);
     }
@@ -552,10 +552,10 @@ public class MainActivity extends AppCompatActivity
 
     // Change toggle button text
     final ToggleButton switchButton = (ToggleButton) controlView.findViewById(R.id.dns_switch);
-    switchButton.setChecked(status.requested);
+    switchButton.setChecked(status.activationRequested);
     if (status.on) {
       switchButton.setText(R.string.disable_protection);
-    } else if (status.requested) {
+    } else if (status.activationRequested) {
       switchButton.setText(R.string.starting_protection);
     } else {
       switchButton.setText(R.string.enable_protection);
