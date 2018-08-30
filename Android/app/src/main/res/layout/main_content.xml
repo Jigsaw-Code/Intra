@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/indicator"/>
 
     <TextView
-        android:id="@+id/os_status"
+        android:id="@+id/detailed_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

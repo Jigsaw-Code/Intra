@@ -23,13 +23,14 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
@@ -37,6 +38,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
@@ -46,11 +48,13 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.annotation.CheckResult;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.util.DnsQueryTracker;
 import app.intra.util.DnsTransaction;
@@ -78,20 +82,9 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   private FirebaseAnalytics firebaseAnalytics;
 
-  private BroadcastReceiver messageReceiver =
-      new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-          String action = intent.getAction();
-          if (Names.RESOLVED.name().equals(action)) {
-            onResolved(intent);
-          }
-        }
-
-        private void onResolved(Intent intent) {
-        }
-
-      };
+  public boolean isOn() {
+    return tunFd != null;
+  }
 
   @Override
   public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
@@ -104,7 +97,6 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       spawnServerUpdate();
     }
   }
-
 
   private synchronized void spawnServerUpdate() {
     if (networkManager != null && serverConnection != null) {
@@ -120,7 +112,13 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   @Override
   public synchronized int onStartCommand(Intent intent, int flags, int startId) {
-    url = PersistentState.getServerUrl(this);
+    String newUrl = PersistentState.getServerUrl(this);
+    if (TextUtils.equals(url, newUrl)) {
+      Log.i(LOG_TAG, "Ignoring redundant start command");
+      return START_REDELIVER_INTENT;
+    }
+
+    url = newUrl;
     Log.i(LOG_TAG, String.format("Starting DNS VPN service, url=%s", url));
 
     // Registers this class as a listener for user preference changes.
@@ -184,16 +182,13 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   }
 
   private synchronized void updateServerConnection() {
-    if (serverConnection != null) {
-      String currentUrl = serverConnection.getUrl();
-      if (currentUrl == null) {
-        if (url == null) {
-          return;
-        }
-      } else if (currentUrl.equals(url)) {
-        return;
-      }
+    if (serverConnection != null && TextUtils.equals(url, serverConnection.getUrl())) {
+      return;
     }
+
+    // Inform the controller that we are starting a new connection.
+    DnsVpnController controller = DnsVpnController.getInstance();
+    controller.onConnectionStateChanged(this, ServerConnection.State.NEW);
 
     // Bootstrap the new server connection, which may require resolving the new server's name, using
     // the current DNS configuration.
@@ -202,21 +197,22 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     if (url == null || url.isEmpty()) {
       // Use the Google Resolver
       AssetManager assets = this.getApplicationContext().getAssets();
-      serverConnection = GoogleServerConnection.get(new GoogleServerDatabase(assets));
+      serverConnection = GoogleServerConnection.get(new GoogleServerDatabase(this, assets));
     } else {
       serverConnection = StandardServerConnection.get(url);
     }
 
-    if (serverConnection == null) {
-      firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);
-      stopSelf();
-      return;
-    }
+    if (serverConnection != null) {
+      controller.onConnectionStateChanged(this, ServerConnection.State.WORKING);
 
-    // Measure bootstrap delay.
-    long afterBootStrap = SystemClock.elapsedRealtime();
-    bootstrap.putInt(Names.LATENCY.name(), (int) (afterBootStrap - beforeBootstrap));
-    firebaseAnalytics.logEvent(Names.BOOTSTRAP.name(), bootstrap);
+      // Measure bootstrap delay.
+      long afterBootStrap = SystemClock.elapsedRealtime();
+      bootstrap.putInt(Names.LATENCY.name(), (int) (afterBootStrap - beforeBootstrap));
+      firebaseAnalytics.logEvent(Names.BOOTSTRAP.name(), bootstrap);
+    } else {
+      controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
+      firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);
+    }
 
     if (dnsResolver != null) {
       dnsResolver.serverConnection = serverConnection;
@@ -235,9 +231,12 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       return;
     }
 
+    // The server connection setup process may rely on DNS, so it has to occur before we set up
+    // the VPN.
     updateServerConnection();
 
     tunFd = establishVpn();
+    DnsVpnController.getInstance().onStartComplete(this, tunFd != null);
     if (tunFd == null) {
       FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to get TUN device");
       stopSelf();
@@ -245,7 +244,6 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     }
 
     startDnsResolver();
-    broadcastIntent(true);
   }
 
   private void restartVpn() {
@@ -260,18 +258,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   @Override
   public void onCreate() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Creating DNS VPN service");
-    DnsVpnServiceState.getInstance().setDnsVpnService(DnsVpnService.this);
+    DnsVpnController.getInstance().setDnsVpnService(this);
 
     firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
     syncNumRequests();
-
-    LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(DnsVpnService.this);
-    IntentFilter intentFilter = new IntentFilter(Names.QUERY.name());
-    intentFilter.addAction(Names.RESOLVED.name());
-    intentFilter.addAction(Names.DROPPED.name());
-
-    broadcastManager.registerReceiver(messageReceiver, intentFilter);
   }
 
   public void signalStopService(boolean userInitiated) {
@@ -330,7 +321,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   private synchronized void startDnsResolver() {
     if (dnsResolver == null && serverConnection != null) {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
-      dnsResolver = new DnsResolverUdpToHttps(tunFd, serverConnection);
+      dnsResolver = new DnsResolverUdpToHttps(this, tunFd, serverConnection);
       dnsResolver.start();
     }
   }
@@ -340,13 +331,13 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       dnsResolver.interrupt();
       pingLocalDns(); // Try to wake up the resolver thread if it's blocked on a read() call.
       dnsResolver = null;
+      DnsVpnController.getInstance().onConnectionStateChanged(this, null);
     }
   }
 
   @Override
   public synchronized void onDestroy() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
-    broadcastIntent(false);
 
     PreferenceManager.getDefaultSharedPreferences(this).
         unregisterOnSharedPreferenceChangeListener(this);
@@ -358,10 +349,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     syncNumRequests();
     serverConnection = null;
 
-    DnsVpnServiceState.getInstance().setDnsVpnService(null);
-
-    LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-    broadcastManager.unregisterReceiver(messageReceiver);
+    DnsVpnController.getInstance().setDnsVpnService(null);
 
     stopForeground(true);
     if (dnsResolver != null) {
@@ -537,18 +525,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     return null;
   }
 
-  // Broadcasts the status of the service.
-  private void broadcastIntent(boolean dnsStatusOn) {
-    Intent broadcast = new Intent(Names.DNS_STATUS.name());
-    broadcast.putExtra(Names.DNS_STATUS.name(), dnsStatusOn);
-    LocalBroadcastManager.getInstance(DnsVpnService.this).sendBroadcast(broadcast);
-  }
-
   public void recordTransaction(DnsTransaction transaction) {
     transaction.responseTime = SystemClock.elapsedRealtime();
     transaction.responseCalendar = Calendar.getInstance();
 
-    getTracker().recordTransaction(transaction);
+    getTracker().recordTransaction(this, transaction);
 
     Intent intent = new Intent(Names.RESULT.name());
     intent.putExtra(Names.TRANSACTION.name(), transaction);
@@ -556,11 +537,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   }
 
   private DnsQueryTracker getTracker() {
-    return DnsVpnServiceState.getInstance().getTracker(this);
+    return DnsVpnController.getInstance().getTracker(this);
   }
 
   private void syncNumRequests() {
-    getTracker().sync();
+    getTracker().sync(this);
   }
 
   // NetworkListener interface implementation

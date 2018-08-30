@@ -56,8 +56,10 @@ public class GoogleServerDatabase implements Dns {
   private static final String[] NAMES = {"dns.google.com", "www.google.com"};
 
   private LinkedList<InetAddress> tryOrder;
+  private Context context;
 
-  public GoogleServerDatabase(AssetManager assets) {
+  public GoogleServerDatabase(Context context, AssetManager assets) {
+    this.context = context;
     // Try the preferred servers, then dns.google.com, then www.google.com.
     DualStackResult preferredServers = getPreferred();
     tryOrder = preferredServers.getInterleaved();
@@ -115,11 +117,6 @@ public class GoogleServerDatabase implements Dns {
    * @return The last known working server, or "" if there is none.
    */
   private DualStackResult getPreferred() {
-    Context context = DnsVpnServiceState.getInstance().getDnsVpnService();
-    if (context == null) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap started");
-      return new DualStackResult(new String[0], new String[0]);
-    }
     Set<String> v4set = PersistentState.getExtraGoogleV4Servers(context);
     Set<String> v6set = PersistentState.getExtraGoogleV6Servers(context);
     String[] dummy = new String[0];
@@ -136,11 +133,6 @@ public class GoogleServerDatabase implements Dns {
     tryOrder.addAll(0, servers.getInterleaved());
 
     // Record them to disk so they can be prepended at the next startup.
-    Context context = DnsVpnServiceState.getInstance().getDnsVpnService();
-    if (context == null) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "VPN was destroyed before bootstrap completed");
-      return;
-    }
     PersistentState.setExtraGoogleV4Servers(context, servers.getV4());
     PersistentState.setExtraGoogleV6Servers(context, servers.getV6());
   }
