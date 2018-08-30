@@ -70,10 +70,6 @@ public class DnsVpnController {
     return tracker;
   }
 
-  public DnsVpnService getDnsVpnService() {
-    return dnsVpnService;
-  }
-
   public synchronized void start(Context context) {
     PersistentState.setVpnEnabled(context, true);
     stateChanged(context);

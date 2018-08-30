@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import app.intra.util.DnsMetadata;
+import app.intra.util.DnsUdpQuery;
 import app.intra.util.DnsPacket;
 import app.intra.util.DnsTransaction;
 import app.intra.util.IpPacket;
@@ -161,7 +161,7 @@ public class DnsResolverUdpToHttps extends Thread {
           continue;
         }
 
-        DnsMetadata dnsRequest = parseDnsPacket(udpPacket.data);
+        DnsUdpQuery dnsRequest = parseDnsPacket(udpPacket.data);
         if (dnsRequest == null) {
           FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
           continue;
@@ -203,11 +203,11 @@ public class DnsResolverUdpToHttps extends Thread {
     buffer.putShort(dnsRequestId);
   }
 
-  // Returns the question name, type, and id  present in |dnsPacket|, as a DnsMetadata object.
+  // Returns the question name, type, and id  present in |dnsPacket|, as a DnsUdpQuery object.
   // Assumes the DNS packet has been validated.
-  private DnsMetadata parseDnsPacket(byte[] data) {
-    DnsMetadata dnsMetadata = new DnsMetadata();
-    dnsMetadata.timestamp = SystemClock.elapsedRealtime();
+  private DnsUdpQuery parseDnsPacket(byte[] data) {
+    DnsUdpQuery dnsUdpQuery = new DnsUdpQuery();
+    dnsUdpQuery.timestamp = SystemClock.elapsedRealtime();
 
     DnsPacket dnsPacket;
     try {
@@ -221,15 +221,15 @@ public class DnsResolverUdpToHttps extends Thread {
       return null;
     }
 
-    dnsMetadata.type = dnsPacket.getQueryType();
-    dnsMetadata.name = dnsPacket.getQueryName();
-    if (dnsMetadata.name == null || dnsMetadata.type == 0) {
+    dnsUdpQuery.type = dnsPacket.getQueryType();
+    dnsUdpQuery.name = dnsPacket.getQueryName();
+    if (dnsUdpQuery.name == null || dnsUdpQuery.type == 0) {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "No question in DNS packet");
       return null;
     }
-    dnsMetadata.requestId = dnsPacket.getId();
+    dnsUdpQuery.requestId = dnsPacket.getId();
 
-    return dnsMetadata;
+    return dnsUdpQuery;
   }
 
   // Returns an error string for unexpected, non-UDP protocols.
@@ -267,7 +267,7 @@ public class DnsResolverUdpToHttps extends Thread {
   private class DnsResponseCallback implements Callback {
 
     private final FileOutputStream outputStream;
-    private final DnsMetadata dnsMetadata;
+    private final DnsUdpQuery dnsUdpQuery;
     private final DnsTransaction transaction;
 
     /**
@@ -277,8 +277,8 @@ public class DnsResolverUdpToHttps extends Thread {
      * port.
      * @param output Represents the VPN TUN device.
      */
-    public DnsResponseCallback(DnsMetadata request, FileOutputStream output) {
-      dnsMetadata = request;
+    public DnsResponseCallback(DnsUdpQuery request, FileOutputStream output) {
+      dnsUdpQuery = request;
       outputStream = output;
       transaction = new DnsTransaction(request);
     }
@@ -315,11 +315,11 @@ public class DnsResolverUdpToHttps extends Thread {
         sendResult(transaction);
         return;
       }
-      writeRequestIdToDnsResponse(dnsResponse, dnsMetadata.requestId);
-      DnsMetadata parsedDnsResponse = parseDnsPacket(dnsResponse);
+      writeRequestIdToDnsResponse(dnsResponse, dnsUdpQuery.requestId);
+      DnsUdpQuery parsedDnsResponse = parseDnsPacket(dnsResponse);
       if (parsedDnsResponse != null) {
-        Log.d(LOG_TAG, "RNAME: " + parsedDnsResponse.name + " NAME: " + dnsMetadata.name);
-        if (!dnsMetadata.name.equals(parsedDnsResponse.name)) {
+        Log.d(LOG_TAG, "RNAME: " + parsedDnsResponse.name + " NAME: " + dnsUdpQuery.name);
+        if (!dnsUdpQuery.name.equals(parsedDnsResponse.name)) {
           FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
           transaction.status = DnsTransaction.Status.BAD_RESPONSE;
           sendResult(transaction);
@@ -331,21 +331,21 @@ public class DnsResolverUdpToHttps extends Thread {
       transaction.response = dnsResponse;
 
       UdpPacket udpResponsePacket =
-          new UdpPacket(dnsMetadata.sourcePort, dnsMetadata.destPort, dnsResponse);
+          new UdpPacket(dnsUdpQuery.sourcePort, dnsUdpQuery.destPort, dnsResponse);
       byte[] rawUdpResponse = udpResponsePacket.getRawPacket();
 
       IpPacket ipPacket;
-      if (dnsMetadata.sourceAddress instanceof Inet4Address) {
+      if (dnsUdpQuery.sourceAddress instanceof Inet4Address) {
         ipPacket = new Ipv4Packet(
             UDP_PROTOCOL,
-            dnsMetadata.sourceAddress,
-            dnsMetadata.destAddress,
+            dnsUdpQuery.sourceAddress,
+            dnsUdpQuery.destAddress,
             rawUdpResponse);
       } else {
         ipPacket = new Ipv6Packet(
             UDP_PROTOCOL,
-            dnsMetadata.sourceAddress,
-            dnsMetadata.destAddress,
+            dnsUdpQuery.sourceAddress,
+            dnsUdpQuery.destAddress,
             rawUdpResponse);
       }
 

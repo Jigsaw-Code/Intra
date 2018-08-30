@@ -15,7 +15,7 @@ limitations under the License.
 */
 package app.intra;
 
-import app.intra.util.DnsMetadata;
+import app.intra.util.DnsUdpQuery;
 
 import okhttp3.Callback;
 
@@ -44,7 +44,7 @@ public interface ServerConnection {
    * @param data The request body
    * @param cb An OkHttp response callback to receive the result.
    */
-  void performDnsRequest(final DnsMetadata metadata, final byte[] data, Callback cb);
+  void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb);
 
   /**
    * @return The URL identifying this ServerConnection.

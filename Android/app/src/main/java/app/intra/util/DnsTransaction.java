@@ -31,7 +31,7 @@ public class DnsTransaction implements Serializable {
     INTERNAL_ERROR
   }
 
-  public DnsTransaction(DnsMetadata query) {
+  public DnsTransaction(DnsUdpQuery query) {
     this.name = query.name;
     this.type = query.type;
     this.queryTime = query.timestamp;
