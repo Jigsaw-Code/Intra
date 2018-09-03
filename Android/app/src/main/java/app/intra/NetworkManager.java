@@ -15,6 +15,8 @@ limitations under the License.
 */
 package app.intra;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,7 +40,7 @@ public class NetworkManager {
 
   public interface NetworkListener {
 
-    void onNetworkConnected(NetworkInfo networkInfo);
+    void onNetworkConnected();
 
     void onNetworkDisconnected();
   }
@@ -75,13 +77,7 @@ public class NetworkManager {
           .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
           .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN);
 
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        // If the device is checking the network for internet access, we don't want to know about
-        // the network until after it's validated.  This is important because, empirically, if the
-        // Intra VPN captures the IP of the network's DNS servers before validation completes,
-        // validation will fail.
-        builder.addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
-      }
+      // TODO: Consider requiring NET_CAPABILITY_VALIDATED on >=M.
 
       networkCallback = new ConnectivityManager.NetworkCallback() {
         // This method is called whenever a network is validated, and subsequently whenever its DNS
@@ -98,7 +94,7 @@ public class NetworkManager {
     // Fire onNetworkConnected listener immediately if we are online.
     NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
     if (networkInfo != null && networkInfo.isConnected()) {
-      this.networkListener.onNetworkConnected(networkInfo);
+      this.networkListener.onNetworkConnected();
     }
   }
 
@@ -121,55 +117,64 @@ public class NetworkManager {
   // Handles changes in connectivity by binding the process to the latest
   // connected network.
   private void connectivityChanged(Intent intent) {
-    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
     NetworkInfo intentNetworkInfo = intent.getParcelableExtra(EXTRA_NETWORK_INFO);
-
-    Log.v(LOG_TAG, "ACTIVE NETWORK " + activeNetworkInfo);
     Log.v(LOG_TAG, "INTENT NETWORK " + intentNetworkInfo);
-    if (networkListener == null) {
-      return;
-    }
 
-    if (isConnectedNetwork(activeNetworkInfo)
-        && intentNetworkInfo != null
+    if (intentNetworkInfo != null
         && intentNetworkInfo.getType() == ConnectivityManager.TYPE_VPN) {
-      // VPN state changed, we have connectivity, ignore.
+      // VPN state changed, ignore.
       return;
-    } else if (!isConnectedNetwork(activeNetworkInfo)) {
-      // No active network, signal disconnect event.
-      networkListener.onNetworkDisconnected();
-    } else if (networkCallback == null &&
-        activeNetworkInfo.getType() != ConnectivityManager.TYPE_VPN) {
-      // We have an active network that is not a VPN, and this is a pre-Lollipop device so
-      // connectivityChanged() is responsible for surfacing network connection events.
-      networkListener.onNetworkConnected(activeNetworkInfo);
     }
+    sendUpdate();
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private void networkChanged(Network network) {
-    Log.v(LOG_TAG, "NETWORK CHANGED " + network);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      // getActiveNetwork() requires M or later.
-      if (!network.equals(connectivityManager.getActiveNetwork())) {
-        Log.v(LOG_TAG, "Skipping network that is not the active network.");
-        return;
-      }
+    Log.v(LOG_TAG, "NETWORK CHANGED " + connectivityManager.getNetworkInfo(network));
+    // In the future, it might make sense to ignore changes to networks that are not the active
+    // network.
+
+    sendUpdate();
+  }
+
+  private void sendUpdate() {
+    if (networkListener == null) {
+      return;
     }
-    // There is a new active network, or the active network's DNS servers may have changed.
-    // onNetworkConnected is idempotent, so it's safe to call it whenever we are in that state
-    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-    if (isConnectedNetwork(activeNetworkInfo) &&
-        activeNetworkInfo.getType() != ConnectivityManager.TYPE_VPN) {
-      networkListener.onNetworkConnected(activeNetworkInfo);
+
+    if (isConnected()) {
+      networkListener.onNetworkConnected();
+    } else {
+      networkListener.onNetworkDisconnected();
     }
   }
 
-  // Returns true if the supplied network is connected and available
-  private static boolean isConnectedNetwork(NetworkInfo networkInfo) {
-    if (networkInfo == null) {
+  private boolean isConnected() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      Network activeNetwork = connectivityManager.getActiveNetwork();
+      if (activeNetwork == null) {
+        return false;
+      }
+      Log.v(LOG_TAG, "ACTIVE NETWORK " + connectivityManager.getNetworkInfo(activeNetwork));
+      NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
+      if (capabilities == null) {
+        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Got null capabilities for non-null network");
+        return false;
+      }
+      // If the device is checking the network for internet access, we don't want to try to use
+      // the network until after it's validated.  This is a workaround for an observed
+      // misbehavior: if the Intra VPN captures the IP of the network's DNS servers before
+      // validation completes, validation seems to fail.
+      return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+      //    && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+    }
+
+    // Version < M
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    Log.v(LOG_TAG, "ACTIVE NETWORK " + activeNetworkInfo);
+    if (activeNetworkInfo == null) {
       return false;
     }
-    return networkInfo.isConnected() && networkInfo.isAvailable();
+    return activeNetworkInfo.isConnected() && activeNetworkInfo.isAvailable();
   }
 }

@@ -31,6 +31,7 @@ import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
@@ -577,6 +578,16 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     if (network == null) {
       return Collections.emptySet();
     }
+    NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+    if (capabilities == null) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Null capabilities for a non-null network");
+      return Collections.emptySet();
+    }
+    boolean isSuitable = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+    //   && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+    if (!isSuitable) {
+      return Collections.emptySet();
+    }
     final LinkProperties linkProperties = connectivityManager.getLinkProperties(network);
     if (linkProperties == null) {
       FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Null properties for a non-null network");
@@ -603,7 +614,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   @CheckResult
   private static VpnService.Builder addOtherServer(VpnService.Builder builder,
                                                    InetAddress address) {
-    return builder.addAddress(address, address.getAddress().length);
+    int prefixLength = address.getAddress().length * 8;
+    return builder.addAddress(address, prefixLength);
   }
 
   public void recordTransaction(DnsTransaction transaction) {
@@ -644,7 +656,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   // NetworkListener interface implementation
   @Override
-  public void onNetworkConnected(NetworkInfo networkInfo) {
+  public void onNetworkConnected() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Connected event.");
     if (tunFd != null) {
       maybeChangeVpnCoverage(true);
