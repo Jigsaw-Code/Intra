@@ -28,9 +28,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.net.ConnectivityManager;
-import android.net.LinkProperties;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
@@ -48,13 +45,11 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import androidx.annotation.CheckResult;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.util.DnsQueryTracker;
 import app.intra.util.DnsTransaction;
@@ -74,7 +69,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   private PrivateAddress privateIpv4Address = null;
   private PrivateAddress privateIpv6Address = null;
   private ParcelFileDescriptor tunFd = null;
-  private DnsResolverUdpToHttps dnsResolver = null;
+  private DnsVpnAdapter vpnAdapter = null;
   private ServerConnection serverConnection = null;
   private String url = null;
 
@@ -214,8 +209,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);
     }
 
-    if (dnsResolver != null) {
-      dnsResolver.serverConnection = serverConnection;
+    if (vpnAdapter != null) {
+      vpnAdapter.serverConnection = serverConnection;
     }
   }
 
@@ -258,7 +253,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     new Thread(
         new Runnable() {
           public void run() {
-            // Regenerate dnsResolver to use the new tunFd.
+            // Regenerate vpnAdapter to use the new tunFd.
             stopDnsResolver();
             startDnsResolver();
 
@@ -339,18 +334,18 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   }
 
   private synchronized void startDnsResolver() {
-    if (dnsResolver == null && serverConnection != null) {
+    if (vpnAdapter == null && serverConnection != null) {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
-      dnsResolver = new DnsResolverUdpToHttps(this, tunFd, serverConnection);
-      dnsResolver.start();
+      vpnAdapter = new DnsVpnAdapter(this, tunFd, serverConnection);
+      vpnAdapter.start();
     }
   }
 
   private synchronized void stopDnsResolver() {
-    if (dnsResolver != null) {
-      dnsResolver.interrupt();
+    if (vpnAdapter != null) {
+      vpnAdapter.interrupt();
       pingLocalDns(); // Try to wake up the resolver thread if it's blocked on a read() call.
-      dnsResolver = null;
+      vpnAdapter = null;
       DnsVpnController.getInstance().onConnectionStateChanged(this, null);
     }
   }
@@ -372,7 +367,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     DnsVpnController.getInstance().setDnsVpnService(null);
 
     stopForeground(true);
-    if (dnsResolver != null) {
+    if (vpnAdapter != null) {
       signalStopService(false);
     }
 
