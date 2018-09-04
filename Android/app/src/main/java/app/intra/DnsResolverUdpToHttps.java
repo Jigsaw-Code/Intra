@@ -35,17 +35,23 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-// Reads DNS requests over UDP from |tunFd|, forwards them to Google Public DNS through HTTPS and
-// writes them back to the tun interface. Takes ownership of the file descriptor.
+/**
+ * Static class for performing queries on a DNS-over-HTTPS ServerConnection.
+ */
 class DnsResolverUdpToHttps {
   private static final String LOG_TAG = "DnsResolverUdpToHttps";
 
-  static void processQuery(ServerConnection serverConnection, DnsUdpQuery query, byte[]
-      data,
-                                  DnsResponseWriter
-      responseWriter) {
+  /**
+   * Send a query.
+   * @param serverConnection The connection to use for the query
+   * @param query The query information parsed from the packet
+   * @param dnsPacketData The raw data of the DNS query (starting with the ID number)
+   * @param responseWriter The object that will receive the response when it's ready.
+   */
+  static void processQuery(ServerConnection serverConnection, DnsUdpQuery query,
+                           byte[] dnsPacketData, DnsResponseWriter responseWriter) {
     try {
-      serverConnection.performDnsRequest(query, data,
+      serverConnection.performDnsRequest(query, dnsPacketData,
           new DnsResolverUdpToHttps.DnsResponseCallback(serverConnection, query, responseWriter));
     } catch (NullPointerException e) {
       DnsTransaction transaction = new DnsTransaction(query);

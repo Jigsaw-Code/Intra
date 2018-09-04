@@ -38,13 +38,13 @@ public class DnsUdpQuery {
 
   // Returns the question name, type, and id  present in |dnsPacket|, as a DnsUdpQuery object.
   // Assumes the DNS packet has been validated.
-  public static DnsUdpQuery fromUdpBody(byte[] data) {
+  public static DnsUdpQuery fromUdpBody(byte[] dnsPacketData) {
     DnsUdpQuery dnsUdpQuery = new DnsUdpQuery();
     dnsUdpQuery.timestamp = SystemClock.elapsedRealtime();
 
     DnsPacket dnsPacket;
     try {
-      dnsPacket = new DnsPacket(data);
+      dnsPacket = new DnsPacket(dnsPacketData);
     } catch (ProtocolException e) {
       FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Received invalid DNS request");
       return null;
