@@ -85,8 +85,7 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
   }
 
   @Override
-  // In addition to reading DNS requests from the VPN interface and forwarding them via HTTPS, this
-  // thread is responsible for maintaining a connected socket to Google's DNS-over-HTTPS API.
+  // This thread reads DNS requests from the VPN interface and forwards them via |serverConnection|.
   public void run() {
     FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Query thread starting");
     if (tunFd == null) {
@@ -172,10 +171,10 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
                 + " TYPE: "
                 + dnsRequest.type);
 
-        dnsRequest.sourceAddress = ipPacket.getDestAddress();
-        dnsRequest.destAddress = ipPacket.getSourceAddress();
-        dnsRequest.sourcePort = udpPacket.destPort;
-        dnsRequest.destPort = udpPacket.sourcePort;
+        dnsRequest.sourceAddress = ipPacket.getSourceAddress();
+        dnsRequest.destAddress = ipPacket.getDestAddress();
+        dnsRequest.sourcePort = udpPacket.sourcePort;
+        dnsRequest.destPort = udpPacket.destPort;
 
         DnsResolverUdpToHttps.processQuery(serverConnection, dnsRequest, udpPacket.data, this);
       } catch (Exception e) {
@@ -208,24 +207,23 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
 
   @Override
   public void sendResult(DnsUdpQuery dnsUdpQuery, DnsTransaction transaction) {
-    vpnService.recordTransaction(transaction);
-
+    // Construct a reply to the query's source port by switching the source and destination.
     UdpPacket udpResponsePacket =
-        new UdpPacket(dnsUdpQuery.sourcePort, dnsUdpQuery.destPort, transaction.response);
+        new UdpPacket(dnsUdpQuery.destPort, dnsUdpQuery.sourcePort, transaction.response);
     byte[] rawUdpResponse = udpResponsePacket.getRawPacket();
 
     IpPacket ipPacket;
     if (dnsUdpQuery.sourceAddress instanceof Inet4Address) {
       ipPacket = new Ipv4Packet(
           UDP_PROTOCOL,
-          dnsUdpQuery.sourceAddress,
           dnsUdpQuery.destAddress,
+          dnsUdpQuery.sourceAddress,
           rawUdpResponse);
     } else {
       ipPacket = new Ipv6Packet(
           UDP_PROTOCOL,
-          dnsUdpQuery.sourceAddress,
           dnsUdpQuery.destAddress,
+          dnsUdpQuery.sourceAddress,
           rawUdpResponse);
     }
 
@@ -238,15 +236,6 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
       transaction.status = DnsTransaction.Status.INTERNAL_ERROR;
     }
 
-    // Update the connection state.  If the transaction succeeded, then the connection is working.
-    // If the transaction failed, then the connection is not working.
-    // If the transaction was canceled, then we don't have any new information about the status
-    // of the connection, so we don't send an update.
-    DnsVpnController controller = DnsVpnController.getInstance();
-    if (transaction.status == DnsTransaction.Status.COMPLETE) {
-      controller.onConnectionStateChanged(vpnService, ServerConnection.State.WORKING);
-    } else if (transaction.status != DnsTransaction.Status.CANCELED) {
-      controller.onConnectionStateChanged(vpnService, ServerConnection.State.FAILING);
-    }
+    vpnService.recordTransaction(transaction);
   }
 }

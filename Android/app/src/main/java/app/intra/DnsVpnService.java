@@ -549,6 +549,17 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     Intent intent = new Intent(Names.RESULT.name());
     intent.putExtra(Names.TRANSACTION.name(), transaction);
     LocalBroadcastManager.getInstance(DnsVpnService.this).sendBroadcast(intent);
+
+    // Update the connection state.  If the transaction succeeded, then the connection is working.
+    // If the transaction failed, then the connection is not working.
+    // If the transaction was canceled, then we don't have any new information about the status
+    // of the connection, so we don't send an update.
+    DnsVpnController controller = DnsVpnController.getInstance();
+    if (transaction.status == DnsTransaction.Status.COMPLETE) {
+      controller.onConnectionStateChanged(this, ServerConnection.State.WORKING);
+    } else if (transaction.status != DnsTransaction.Status.CANCELED) {
+      controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
+    }
   }
 
   private DnsQueryTracker getTracker() {
