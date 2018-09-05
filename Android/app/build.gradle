@@ -32,6 +32,10 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
 }
 repositories {
     maven {
