@@ -15,6 +15,8 @@ limitations under the License.
 */
 package app.intra.util;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -44,18 +46,18 @@ public class DnsUdpQuery {
     try {
       dnsPacket = new DnsPacket(dnsPacketData);
     } catch (ProtocolException e) {
-      LogWrapper.logcat(Log.INFO, LOG_TAG, "Received invalid DNS request");
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Received invalid DNS request");
       return null;
     }
     if (!dnsPacket.isNormalQuery() && !dnsPacket.isResponse()) {
-      LogWrapper.logcat(Log.INFO, LOG_TAG, "Dropping strange DNS query");
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Dropping strange DNS query");
       return null;
     }
 
     dnsUdpQuery.type = dnsPacket.getQueryType();
     dnsUdpQuery.name = dnsPacket.getQueryName();
     if (dnsUdpQuery.name == null || dnsUdpQuery.type == 0) {
-      LogWrapper.logcat(Log.INFO, LOG_TAG, "No question in DNS packet");
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "No question in DNS packet");
       return null;
     }
     dnsUdpQuery.requestId = dnsPacket.getId();

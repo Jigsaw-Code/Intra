@@ -15,16 +15,22 @@ limitations under the License.
 */
 package app.intra;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 
 import app.intra.util.DnsUdpQuery;
 import app.intra.util.DnsTransaction;
+import app.intra.util.IpPacket;
 import app.intra.util.IpTagInterceptor;
-import app.intra.util.LogWrapper;
+import app.intra.util.Ipv4Packet;
+import app.intra.util.Ipv6Packet;
+import app.intra.util.UdpPacket;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -73,7 +79,8 @@ class DnsResolverUdpToHttps {
      * @param responseWriter Receives the response
      */
     DnsResponseCallback(ServerConnection serverConnection, DnsUdpQuery request,
-                        DnsResponseWriter responseWriter) {
+                               DnsResponseWriter
+        responseWriter) {
       this.serverConnection = serverConnection;
       dnsUdpQuery = request;
       this.responseWriter = responseWriter;
@@ -94,13 +101,13 @@ class DnsResolverUdpToHttps {
     public void onFailure(Call call, IOException e) {
       transaction.status = call.isCanceled() ?
           DnsTransaction.Status.CANCELED : DnsTransaction.Status.SEND_FAIL;
-      LogWrapper.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
       if (e instanceof SocketTimeoutException) {
-        LogWrapper.logcat(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
+        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
         try {
           serverConnection.reset();
         } catch (NullPointerException npe) {
-          LogWrapper.logcat(Log.WARN, LOG_TAG,
+          FirebaseCrash.logcat(Log.WARN, LOG_TAG,
               "Unlikely race: Null server connection at reset.");
         }
       }
@@ -128,7 +135,7 @@ class DnsResolverUdpToHttps {
       if (parsedDnsResponse != null) {
         Log.d(LOG_TAG, "RNAME: " + parsedDnsResponse.name + " NAME: " + dnsUdpQuery.name);
         if (!dnsUdpQuery.name.equals(parsedDnsResponse.name)) {
-          LogWrapper.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
+          FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
           transaction.status = DnsTransaction.Status.BAD_RESPONSE;
           sendResult();
           return;
