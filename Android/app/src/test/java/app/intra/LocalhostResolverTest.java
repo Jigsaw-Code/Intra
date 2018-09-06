@@ -91,7 +91,8 @@ public class LocalhostResolverTest {
   public void setUp() throws Exception {
     mockVpn = mock(DnsVpnService.class);
     mockConnection = mock(ServerConnection.class);
-    resolver = LocalhostResolver.get(mockVpn, mockConnection);
+    when(mockVpn.getServerConnection()).thenReturn(mockConnection);
+    resolver = LocalhostResolver.get(mockVpn);
     assertNotNull(resolver);
     resolver.start();
     clientSocket = new DatagramSocket();
@@ -254,7 +255,7 @@ public class LocalhostResolverTest {
   @Test
   public void nullConnection() throws Exception {
     // Set the serverConnection to null.  This is allowed, and should cause queries to fail.
-    resolver.serverConnection = null;
+    when(mockVpn.getServerConnection()).thenReturn(null);
 
     DatagramPacket queryPacket = new DatagramPacket(QUERY_DATA, QUERY_DATA.length);
     queryPacket.setSocketAddress(resolver.getAddress());
@@ -293,10 +294,12 @@ public class LocalhostResolverTest {
     reset(mockConnection);
     reset(mockVpn);
 
+    when(mockVpn.getServerConnection()).thenReturn(mockConnection);
     success();
     reset(mockConnection);
     reset(mockVpn);
 
+    when(mockVpn.getServerConnection()).thenReturn(mockConnection);
     success();
   }
 }

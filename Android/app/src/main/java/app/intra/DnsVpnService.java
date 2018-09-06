@@ -18,7 +18,6 @@ package app.intra;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -26,64 +25,47 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
+import androidx.annotation.WorkerThread;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.util.DnsQueryTracker;
 import app.intra.util.DnsTransaction;
 import app.intra.util.Names;
+import okhttp3.internal.Version;
 
 public class DnsVpnService extends VpnService implements NetworkManager.NetworkListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
 
   private static final String LOG_TAG = "DnsVpnService";
   private static final int SERVICE_ID = 1; // Only has to be unique within this app.
-  private static final int VPN_INTERFACE_MTU = 32767;
-  // Randomly generated unique local IPv6 unicast subnet prefix, as defined by RFC 4193.
-  private static final String IPV6_SUBNET = "fd66:f83a:c650::%s";
   private static final String CHANNEL_ID = "vpn";
 
   private NetworkManager networkManager;
-  private PrivateAddress privateIpv4Address = null;
-  private PrivateAddress privateIpv6Address = null;
-  private ParcelFileDescriptor tunFd = null;
-  private DnsVpnAdapter vpnAdapter = null;
+  private VpnAdapter vpnAdapter = null;
   private ServerConnection serverConnection = null;
+  private boolean networkConnected = false;
   private String url = null;
-
-  private boolean shouldRestart = false;
 
   private FirebaseAnalytics firebaseAnalytics;
 
   public boolean isOn() {
-    return tunFd != null;
+    return vpnAdapter != null;
   }
 
   @Override
   public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
-    if (PersistentState.APPS_KEY.equals(key) && tunFd != null) {
+    if (PersistentState.APPS_KEY.equals(key) && vpnAdapter != null) {
       // Restart the VPN so the new app exclusion choices take effect immediately.
       restartVpn();
     }
@@ -109,7 +91,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   public synchronized int onStartCommand(Intent intent, int flags, int startId) {
     String newUrl = PersistentState.getServerUrl(this);
     if (TextUtils.equals(url, newUrl)) {
-      Log.i(LOG_TAG, "Ignoring redundant start command");
+      Log.i(LOG_TAG, "Ignoring redundant startVpn command");
       return START_REDELIVER_INTENT;
     }
 
@@ -127,7 +109,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     }
 
     // If we're online, |networkManager| immediately calls this.onNetworkConnected(), which in turn
-    // calls startVpn() to actually start.  If we're offline, the startup actions will be delayed
+    // calls startVpn() to actually startVpn.  If we're offline, the startup actions will be delayed
     // until we come online.
     networkManager = new NetworkManager(DnsVpnService.this, DnsVpnService.this);
 
@@ -176,6 +158,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     return START_REDELIVER_INTENT;
   }
 
+  ServerConnection getServerConnection() {
+    return serverConnection;
+  }
+
+  @WorkerThread
   private synchronized void updateServerConnection() {
     if (serverConnection != null && TextUtils.equals(url, serverConnection.getUrl())) {
       return;
@@ -208,10 +195,6 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
       controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
       firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);
     }
-
-    if (vpnAdapter != null) {
-      vpnAdapter.serverConnection = serverConnection;
-    }
   }
 
   /**
@@ -221,53 +204,39 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
    *
    * TODO: Consider cancellation races more carefully.
    */
+  @WorkerThread
   private synchronized void startVpn() {
-    if (tunFd != null) {
+    if (vpnAdapter != null) {
       return;
     }
 
     // The server connection setup process may rely on DNS, so it has to occur before we set up
     // the VPN.
     updateServerConnection();
+    startVpnAdapter();
 
-    tunFd = establishVpn();
-    DnsVpnController.getInstance().onStartComplete(this, tunFd != null);
-    if (tunFd == null) {
-      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to get TUN device");
+    DnsVpnController.getInstance().onStartComplete(this, vpnAdapter != null);
+    if (vpnAdapter == null) {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to startVpn VPN adapter");
       stopSelf();
-      return;
     }
-
-    startDnsResolver();
   }
 
-  private void restartVpn() {
+  private synchronized void restartVpn() {
     // Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
-    final ParcelFileDescriptor oldTunFd = tunFd;
-    tunFd = establishVpn();
+    final VpnAdapter oldAdapter = vpnAdapter;
+    vpnAdapter = makeVpnAdapter();
     if (serverConnection != null) {
       // Cancel all outstanding queries, and establish a new client bound to the new active network.
       // Subsequent queries will flow into the new tunFd, and then into the new HTTP client.
       serverConnection.reset();
     }
-    new Thread(
-        new Runnable() {
-          public void run() {
-            // Regenerate vpnAdapter to use the new tunFd.
-            stopDnsResolver();
-            startDnsResolver();
-
-            // Close the old FD to release resources.
-            try {
-              if (oldTunFd != null) {
-                oldTunFd.close();
-              }
-            } catch (IOException e) {
-              FirebaseCrash.report(e);
-            }
-          }
-        }, "restartVpn")
-        .start();
+    oldAdapter.close();
+    if (vpnAdapter != null) {
+      vpnAdapter.start();
+    } else {
+      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Restart failed");
+    }
   }
 
   @Override
@@ -287,64 +256,32 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
         LOG_TAG,
         String.format("Received stop signal. User initiated: %b", userInitiated));
 
-    // stopDnsResolver() performs network activity, so it can't run on the main thread due to
-    // Android rules.  closeVpnInterface() can't be run until after the network action, because
-    // we need the packet to go through the VPN interface.  Therefore, both actions have to run in
-    // a new thread, in this order.
-    new Thread(
-            new Runnable() {
-              public void run() {
-                stopDnsResolver();
-                closeVpnInterface();
-              }
-            }, "Stop VPN on signal")
-        .start();
+    stopVpnAdapter();
     stopSelf();
   }
 
-  private void closeVpnInterface() {
-    if (tunFd != null) {
-      try {
-        tunFd.close();
-      } catch (IOException e) {
-        FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to close the VPN interface.");
-        FirebaseCrash.report(e);
-      } finally {
-        tunFd = null;
+  private VpnAdapter makeVpnAdapter() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      return SocksVpnAdapter.get(this);
+    }
+    return DnsVpnAdapter.get(this);
+  }
+
+  private synchronized void startVpnAdapter() {
+    if (vpnAdapter == null) {
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
+      vpnAdapter = makeVpnAdapter();
+      if (vpnAdapter != null) {
+        vpnAdapter.start();
+      } else {
+        FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
       }
     }
   }
 
-  private void pingLocalDns() {
-    try {
-      // Send an empty UDP packet to the DNS server, which will cause the read() call in
-      // DnsResolverUdpToHttps to unblock and return.  This wakes up that thread, so it can detect
-      // that it has been interrupted and perform a clean shutdown.
-      byte zero[] = {0};
-      DatagramPacket packet =
-          new DatagramPacket(
-              zero, zero.length, 0, InetAddress.getByName(privateIpv4Address.router), 53);
-      DatagramSocket datagramSocket = new DatagramSocket();
-      datagramSocket.send(packet);
-    } catch (IOException e) {
-      // An IOException likely means that the VPN has already been torn down, so there's no need for
-      // this ping.
-      FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to send UDP ping: " + e.getMessage());
-    }
-  }
-
-  private synchronized void startDnsResolver() {
-    if (vpnAdapter == null && serverConnection != null) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
-      vpnAdapter = new DnsVpnAdapter(this, tunFd, serverConnection);
-      vpnAdapter.start();
-    }
-  }
-
-  private synchronized void stopDnsResolver() {
+  private synchronized void stopVpnAdapter() {
     if (vpnAdapter != null) {
-      vpnAdapter.interrupt();
-      pingLocalDns(); // Try to wake up the resolver thread if it's blocked on a read() call.
+      vpnAdapter.close();
       vpnAdapter = null;
       DnsVpnController.getInstance().onConnectionStateChanged(this, null);
     }
@@ -370,17 +307,12 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     if (vpnAdapter != null) {
       signalStopService(false);
     }
-
-    if (shouldRestart) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Restarting from onDestroy");
-      startService(new Intent(this, DnsVpnService.class));
-    }
   }
 
   @Override
   public void onRevoke() {
     FirebaseCrash.logcat(Log.WARN, LOG_TAG, "VPN service revoked.");
-    stopDnsResolver();
+    stopVpnAdapter();
     stopSelf();
 
     // Disable autostart if VPN permission is revoked.
@@ -419,126 +351,6 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     notificationManager.notify(0, builder.getNotification());
   }
 
-  @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-  private ParcelFileDescriptor establishVpn() {
-    privateIpv6Address = new PrivateAddress(IPV6_SUBNET, 120);
-    privateIpv4Address = selectPrivateAddress();
-    if (privateIpv4Address == null) {
-      FirebaseCrash.logcat(
-          Log.ERROR, LOG_TAG, "Unable to find a private address on which to establish a VPN.");
-      return null;
-    }
-    Log.i(LOG_TAG, String.format("VPN address: { IPv4: %s, IPv6: %s }",
-                                 privateIpv4Address, privateIpv6Address));
-
-    final String establishVpnErrorMsg = "Failed to establish VPN ";
-    ParcelFileDescriptor tunFd = null;
-    try {
-      VpnService.Builder builder =
-          (new VpnService.Builder())
-              .setSession("Jigsaw DNS Protection")
-              .setMtu(VPN_INTERFACE_MTU)
-              .addAddress(privateIpv4Address.address, privateIpv4Address.prefix)
-              .addRoute(privateIpv4Address.subnet, privateIpv4Address.prefix)
-              .addDnsServer(privateIpv4Address.router)
-              .addAddress(privateIpv6Address.address, privateIpv6Address.prefix)
-              .addRoute(privateIpv6Address.subnet, privateIpv6Address.prefix)
-              .addDnsServer(privateIpv6Address.router);
-
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        // Only available in API >= 21
-        builder = builder.setBlocking(true);
-        // Some WebRTC apps rely on the ability to bind to specific interfaces, which is only
-        // possible if we allow bypass.
-        builder = builder.allowBypass();
-
-        try {
-          // Workaround for any app incompatibility bugs.
-          for (String packageName : PersistentState.getExcludedPackages(this)) {
-            builder = builder.addDisallowedApplication(packageName);
-          }
-          // Play Store incompatibility is a known issue, so always exclude it.
-          builder = builder.addDisallowedApplication("com.android.vending");
-        } catch (PackageManager.NameNotFoundException e) {
-          FirebaseCrash.report(e);
-          Log.e(LOG_TAG, "Failed to exclude an app", e);
-        }
-      }
-      tunFd = builder.establish();
-    } catch (IllegalArgumentException e) {
-      FirebaseCrash.report(e);
-      Log.e(LOG_TAG, establishVpnErrorMsg, e);
-    } catch (SecurityException e) {
-      FirebaseCrash.report(e);
-      Log.e(LOG_TAG, establishVpnErrorMsg, e);
-    } catch (IllegalStateException e) {
-      FirebaseCrash.report(e);
-      Log.e(LOG_TAG, establishVpnErrorMsg, e);
-    }
-
-    return tunFd;
-  }
-
-  private static class PrivateAddress {
-    final String address;
-    final String subnet;
-    final String router;
-    final int prefix;
-
-    PrivateAddress(String addressFormat, int subnetPrefix) {
-      subnet = String.format(addressFormat, "0");
-      address = String.format(addressFormat, "1");
-      router = String.format(addressFormat, "2");
-      prefix = subnetPrefix;
-    }
-
-    @Override
-    public String toString() {
-      return String.format("{ subnet: %s, address: %s, router: %s, prefix: %d }",
-                           subnet, address, router, prefix);
-    }
-  }
-
-  private static PrivateAddress selectPrivateAddress() {
-    // Select one of 10.0.0.1, 172.16.0.1, or 192.168.0.1 depending on
-    // which private address range isn't in use.
-    HashMap<String, PrivateAddress> candidates = new HashMap<>();
-    candidates.put("10", new PrivateAddress("10.0.0.%s", 8));
-    candidates.put("172", new PrivateAddress("172.16.0.%s", 12));
-    candidates.put("192", new PrivateAddress("192.168.0.%s", 16));
-    candidates.put("169", new PrivateAddress("169.254.1.%s", 24));
-    List<NetworkInterface> netInterfaces;
-    try {
-      netInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-    } catch (SocketException e) {
-      FirebaseCrash.report(e);
-      e.printStackTrace();
-      return null;
-    }
-
-    for (NetworkInterface netInterface : netInterfaces) {
-      for (InetAddress inetAddress : Collections.list(netInterface.getInetAddresses())) {
-        if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-          String ipAddress = inetAddress.getHostAddress();
-          if (ipAddress.startsWith("10.")) {
-            candidates.remove("10");
-          } else if (ipAddress.length() >= 6
-              && ipAddress.substring(0, 6).compareTo("172.16") >= 0
-              && ipAddress.substring(0, 6).compareTo("172.31") <= 0) {
-            candidates.remove("172");
-          } else if (ipAddress.startsWith("192.168")) {
-            candidates.remove("192");
-          }
-        }
-      }
-    }
-
-    if (candidates.size() > 0) {
-      return candidates.values().iterator().next();
-    }
-
-    return null;
-  }
 
   public void recordTransaction(DnsTransaction transaction) {
     transaction.responseTime = SystemClock.elapsedRealtime();
@@ -549,6 +361,11 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     Intent intent = new Intent(Names.RESULT.name());
     intent.putExtra(Names.TRANSACTION.name(), transaction);
     LocalBroadcastManager.getInstance(DnsVpnService.this).sendBroadcast(intent);
+
+    if (!networkConnected) {
+      // No need ot update the user-visible connection state while there is no network.
+      return;
+    }
 
     // Update the connection state.  If the transaction succeeded, then the connection is working.
     // If the transaction failed, then the connection is not working.
@@ -574,30 +391,22 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   @Override
   public void onNetworkConnected(NetworkInfo networkInfo) {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Connected event.");
-    if (tunFd != null) {
-      startDnsResolver();
-    } else {
-      // startVpn performs network activity so it has to run on a separate thread.
-      new Thread(
-              new Runnable() {
-                public void run() {
-                  startVpn();
-                }
-              }, "startVpn-onNetworkConnected")
-          .start();
-    }
+    networkConnected = true;
+    // This code is used to start the VPN for the first time, but startVpn is idempotent, so we can
+    // call it every time. startVpn performs network activity so it has to run on a separate thread.
+    new Thread(
+        new Runnable() {
+          public void run() {
+            startVpn();
+          }
+        }, "startVpn-onNetworkConnected")
+        .start();
   }
 
   @Override
   public void onNetworkDisconnected() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Disconnected event.");
-    // stopDnsResolver performs network activity so it has to run on a separate thread.
-    new Thread(
-            new Runnable() {
-              public void run() {
-                stopDnsResolver();
-              }
-            }, "stopDnsResolver-onNetworkDisconnected")
-        .start();
+    networkConnected = false;
+    DnsVpnController.getInstance().onConnectionStateChanged(this, null);
   }
 }

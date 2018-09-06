@@ -35,7 +35,6 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
 }
 repositories {
     maven {
@@ -54,7 +53,8 @@ dependencies {
     implementation fileTree(include: [
             'okhttp-3.11.0.jar',
             'okio-1.15.0.jar',
-            'guava-26.0-android.jar'
+            'guava-26.0-android.jar',
+            'jsocks-1.0.0.jar'
     ], dir: 'libs')
 
     // Third-party test dependencies.
