@@ -266,13 +266,13 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     // SocksVpnAdapter.  Additionally, M and later also exhibit DownloadManager bugs when used
     // with a split-tunnel VPN.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      return SocksVpnAdapter.get(this);
+      return SocksVpnAdapter.establish(this);
     }
     // Pre-M we prefer DnsVpnAdapter, which uses much less CPU and RAM (important for older
     // devices).  This is also necessary because SocksVpnAdapter relies on VpnService.Builder
     // .addDisallowedApplication(this) to bypass its own VPN, and this method is only available in
     // Lollipop and later.
-    return DnsVpnAdapter.get(this);
+    return DnsVpnAdapter.establish(this);
   }
 
   private synchronized void startVpnAdapter() {

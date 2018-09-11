@@ -20,6 +20,13 @@ import sockslib.server.msg.ServerReply;
  * actually redirected to |trueDns|.
  */
 public class UdpOverrideSocksHandler extends Socks5Handler {
+  // UDP server buffer size in bytes.
+  private static final int BUFFER_SIZE = 5 * 1024;
+  // SOCKS protocol version
+  private static final int VERSION = 0x5;
+  // Polling loop interval.  This is the value used by upstream sockslib.
+  private static final int IDLE_TIME_MS = 2000;
+
   private InetSocketAddress fakeDns = null;
   private InetSocketAddress trueDns = null;
 
@@ -44,8 +51,7 @@ public class UdpOverrideSocksHandler extends Socks5Handler {
         new UDPRelayServer(((InetSocketAddress) session.getClientAddress()).getAddress(),
             commandMessage.getPort());
 
-    // Set buffer size to 5 KB.  (The default is 5 MB, which causes OOM crashes.)
-    final int BUFFER_SIZE = 5 * 1024;
+    // Reduce buffer size  (The default is 5 MB, which causes OOM crashes.)
     udpRelayServer.setBufferSize(BUFFER_SIZE);
 
     // Replace its datagram packet handler with one that will perform DNS address replacement.
@@ -54,14 +60,15 @@ public class UdpOverrideSocksHandler extends Socks5Handler {
     // Start the server.
     InetSocketAddress socketAddress = (InetSocketAddress) udpRelayServer.start();
 
-    // Inform the client where the server is located.
-    final int VERSION = 0x5;
+    // Inform the client where the server is located, by writing a success response on the TCP
+    // socket used to establish the association.
     session.write(new CommandResponseMessage(VERSION, ServerReply.SUCCEEDED, InetAddress
         .getLocalHost(), socketAddress.getPort()));
 
-    // This polling loop matches upstream's implementation.  Evidently, an event-based solution is
-    // not possible.
-    final int IDLE_TIME_MS = 2000;
+    // As long as the UDP relay server hasn't crashed and the proxy hasn't been shut down, wait
+    // until the client closes the TCP socket, and then stop the UDP relay server.
+    // This polling loop matches upstream's implementation.  Presumably, an event-based solution is
+    // not possible in sockslib's present architecture.
     while (udpRelayServer.isRunning()) {
       try {
         Thread.sleep(IDLE_TIME_MS);

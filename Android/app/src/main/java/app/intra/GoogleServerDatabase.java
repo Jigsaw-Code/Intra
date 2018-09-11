@@ -18,8 +18,6 @@ package app.intra;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import android.util.Log;
-
 import androidx.annotation.WorkerThread;
 import app.intra.util.DiversitySampler;
 import app.intra.util.DualStackResult;

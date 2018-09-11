@@ -79,8 +79,7 @@ class DnsResolverUdpToHttps {
      * @param responseWriter Receives the response
      */
     DnsResponseCallback(ServerConnection serverConnection, DnsUdpQuery request,
-                               DnsResponseWriter
-        responseWriter) {
+                        DnsResponseWriter responseWriter) {
       this.serverConnection = serverConnection;
       dnsUdpQuery = request;
       this.responseWriter = responseWriter;

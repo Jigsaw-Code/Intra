@@ -36,7 +36,6 @@ public class SocksVpnAdapter extends VpnAdapter {
   private static final String IPV6_TEMPLATE = "fd66:f83a:c650::%d";
   private static final int IPV6_PREFIX_LENGTH = 120;
 
-  private static final int MTU = 32767;
   // Disable Transparent DNS.  We need Transparent DNS to be disabled because it is not compatible
   // with standard SOCKS-UDP servers, only special servers that use a constant UDP port.
   private static final int TRANSPARENT_DNS_ENABLED = 0;
@@ -65,7 +64,7 @@ public class SocksVpnAdapter extends VpnAdapter {
   // TUN device representing the VPN.
   private ParcelFileDescriptor tunFd;
 
-  public static SocksVpnAdapter get(@NonNull DnsVpnService vpnService) {
+  public static SocksVpnAdapter establish(@NonNull DnsVpnService vpnService) {
     LocalhostResolver resolver = LocalhostResolver.get(vpnService);
     if (resolver == null) {
       return null;
@@ -88,13 +87,12 @@ public class SocksVpnAdapter extends VpnAdapter {
     resolver.start();
 
     // VPN parameters
-    final int DNS_PORT = 53;
     final String fakeDnsIp = LanIp.DNS.make(IPV4_TEMPLATE);
-    final String fakeDnsAddress = fakeDnsIp + ":" + DNS_PORT;
+    final String fakeDnsAddress = fakeDnsIp + ":" + DNS_DEFAULT_PORT;
     final String ipv4Router = LanIp.ROUTER.make(IPV4_TEMPLATE);
 
     // Proxy parameters
-    InetSocketAddress fakeDns = new InetSocketAddress(fakeDnsIp, DNS_PORT);
+    InetSocketAddress fakeDns = new InetSocketAddress(fakeDnsIp, DNS_DEFAULT_PORT);
     InetSocketAddress trueDns = resolver.getAddress();
     // Allocate 5 KB per socket.  sockslib's default is 5 MB, which causes OOM crashes.
     final int BUFFER_SIZE = 5 * 1024;
@@ -120,7 +118,7 @@ public class SocksVpnAdapter extends VpnAdapter {
 
     // After start(), if bindPort was 0, it has been changed to the dynamically allocated port.
     String proxyAddress = proxy.getBindAddr().getHostAddress() + ":" + proxy.getBindPort();
-    SafeTun2Socks tun2Socks = new SafeTun2Socks(tunFd, MTU, ipv4Router, IPV4_NETMASK,
+    SafeTun2Socks tun2Socks = new SafeTun2Socks(tunFd, VPN_INTERFACE_MTU, ipv4Router, IPV4_NETMASK,
         proxyAddress, proxyAddress, fakeDnsAddress, TRANSPARENT_DNS_ENABLED, SOCKS5_UDP_ENABLED);
 
     try {
@@ -141,7 +139,7 @@ public class SocksVpnAdapter extends VpnAdapter {
     try {
       return vpnService.newBuilder()
           .setSession("Intra tun2socks VPN")
-          .setMtu(MTU)
+          .setMtu(VPN_INTERFACE_MTU)
           .addAddress(LanIp.GATEWAY.make(IPV4_TEMPLATE), IPV4_PREFIX_LENGTH)
           .addRoute("0.0.0.0", 0)
           .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE))

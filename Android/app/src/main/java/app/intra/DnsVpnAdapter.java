@@ -17,7 +17,6 @@ package app.intra;
 
 import com.google.firebase.crash.FirebaseCrash;
 
-import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
@@ -67,10 +66,7 @@ public class DnsVpnAdapter extends VpnAdapter implements DnsResponseWriter {
   private static final int UDP_MAX_DATAGRAM_LEN = 32767;
   private static final byte UDP_PROTOCOL = 17;
 
-  private static final int DNS_DEFAULT_PORT = 53;
-
   // VPN parameters
-  private static final int VPN_INTERFACE_MTU = 32767;
   // Randomly generated unique local IPv6 unicast subnet prefix, as defined by RFC 4193.
   private static final String IPV6_SUBNET = "fd66:f83a:c650::%s";
 
@@ -83,7 +79,7 @@ public class DnsVpnAdapter extends VpnAdapter implements DnsResponseWriter {
   private final FileInputStream in;
   private final FileOutputStream out;
 
-  static DnsVpnAdapter get(DnsVpnService vpnService) {
+  static DnsVpnAdapter establish(DnsVpnService vpnService) {
     ParcelFileDescriptor tunFd = establishVpn(vpnService);
     if (tunFd == null) {
       return null;
