@@ -17,6 +17,8 @@ package app.intra;
 
 import com.google.firebase.crash.FirebaseCrash;
 
+import android.net.VpnService;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
@@ -24,10 +26,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import app.intra.util.DnsTransaction;
 import app.intra.util.DnsUdpQuery;
 import app.intra.util.IpPacket;
@@ -36,11 +43,12 @@ import app.intra.util.Ipv6Packet;
 import app.intra.util.UdpPacket;
 
 /**
- * Reads DNS requests over UDP from|tunFd| and forwards them to a DNS over HTTPS server using
+ * Implements a split-tunnel VPN that only receives DNS traffic.  All other traffic skips the VPN.
+ * Reads DNS requests over UDP from |tunFd| and forwards them to a DNS over HTTPS server using
  * DnsResolverUdpToHttps and ServerConnection.  When responses arrive, it writes them back to the
  * tun device and updates the connection status in DnsVpnServiceController.
  */
-public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
+public class DnsVpnAdapter extends VpnAdapter implements DnsResponseWriter {
   private static final String LOG_TAG = "DnsVpnAdapter";
 
   // IP constants
@@ -58,30 +66,137 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
   private static final int UDP_MAX_DATAGRAM_LEN = 32767;
   private static final byte UDP_PROTOCOL = 17;
 
-  private static final int DNS_DEFAULT_PORT = 53;
+  // VPN parameters
+  // Randomly generated unique local IPv6 unicast subnet prefix, as defined by RFC 4193.
+  private static final String IPV6_SUBNET = "fd66:f83a:c650::%s";
 
   // Misc constants
   private static final int SLEEP_MILLIS = 1500;
 
   private final @NonNull
   DnsVpnService vpnService;
-  private final ParcelFileDescriptor tunFd;
+  @NonNull private final ParcelFileDescriptor tunFd;
   private final FileInputStream in;
   private final FileOutputStream out;
 
-  // Owners can safely mutate serverConnection at any time, including setting it to null.
-  @Nullable
-  ServerConnection serverConnection = null;
+  static DnsVpnAdapter establish(DnsVpnService vpnService) {
+    ParcelFileDescriptor tunFd = establishVpn(vpnService);
+    if (tunFd == null) {
+      return null;
+    }
+    return new DnsVpnAdapter(vpnService, tunFd);
+  }
 
-  DnsVpnAdapter(@NonNull DnsVpnService vpnService, ParcelFileDescriptor tunFd,
-                        ServerConnection serverConnection) {
+  private DnsVpnAdapter(@NonNull DnsVpnService vpnService, ParcelFileDescriptor tunFd) {
     super(LOG_TAG);
     this.vpnService = vpnService;
     this.tunFd = tunFd;
-    this.serverConnection = serverConnection;
-
     in = new FileInputStream(tunFd.getFileDescriptor());
     out = new FileOutputStream(tunFd.getFileDescriptor());
+  }
+
+  private static ParcelFileDescriptor establishVpn(DnsVpnService vpnService) {
+    PrivateAddress privateIpv6Address = new PrivateAddress(IPV6_SUBNET, 120);
+    PrivateAddress privateIpv4Address = selectPrivateAddress();
+    if (privateIpv4Address == null) {
+      FirebaseCrash.logcat(
+          Log.ERROR, LOG_TAG, "Unable to find a private address on which to establish a VPN.");
+      return null;
+    }
+    Log.i(LOG_TAG, String.format("VPN address: { IPv4: %s, IPv6: %s }",
+        privateIpv4Address, privateIpv6Address));
+
+    final String establishVpnErrorMsg = "Failed to establish VPN ";
+    ParcelFileDescriptor tunFd = null;
+    try {
+      VpnService.Builder builder = vpnService.newBuilder()
+              .setSession("Intra split-tunnel VPN")
+              .setMtu(VPN_INTERFACE_MTU)
+              .addAddress(privateIpv4Address.address, privateIpv4Address.prefix)
+              .addRoute(privateIpv4Address.subnet, privateIpv4Address.prefix)
+              .addDnsServer(privateIpv4Address.router)
+              .addAddress(privateIpv6Address.address, privateIpv6Address.prefix)
+              .addRoute(privateIpv6Address.subnet, privateIpv6Address.prefix)
+              .addDnsServer(privateIpv6Address.router);
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        // Only available in API >= 21
+        builder = builder.setBlocking(true);
+      }
+      tunFd = builder.establish();
+    } catch (IllegalArgumentException e) {
+      FirebaseCrash.report(e);
+      Log.e(LOG_TAG, establishVpnErrorMsg, e);
+    } catch (SecurityException e) {
+      FirebaseCrash.report(e);
+      Log.e(LOG_TAG, establishVpnErrorMsg, e);
+    } catch (IllegalStateException e) {
+      FirebaseCrash.report(e);
+      Log.e(LOG_TAG, establishVpnErrorMsg, e);
+    }
+
+    return tunFd;
+  }
+
+  private static class PrivateAddress {
+    final String address;
+    final String subnet;
+    final String router;
+    final int prefix;
+
+    PrivateAddress(String addressFormat, int subnetPrefix) {
+      subnet = String.format(addressFormat, "0");
+      address = String.format(addressFormat, "1");
+      router = String.format(addressFormat, "2");
+      prefix = subnetPrefix;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("{ subnet: %s, address: %s, router: %s, prefix: %d }",
+          subnet, address, router, prefix);
+    }
+  }
+
+  private static PrivateAddress selectPrivateAddress() {
+    // Select one of 10.0.0.1, 172.16.0.1, or 192.168.0.1 depending on
+    // which private address range isn't in use.
+    HashMap<String, PrivateAddress> candidates = new HashMap<>();
+    candidates.put("10", new PrivateAddress("10.0.0.%s", 8));
+    candidates.put("172", new PrivateAddress("172.16.0.%s", 12));
+    candidates.put("192", new PrivateAddress("192.168.0.%s", 16));
+    candidates.put("169", new PrivateAddress("169.254.1.%s", 24));
+    List<NetworkInterface> netInterfaces;
+    try {
+      netInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+    } catch (SocketException e) {
+      FirebaseCrash.report(e);
+      e.printStackTrace();
+      return null;
+    }
+
+    for (NetworkInterface netInterface : netInterfaces) {
+      for (InetAddress inetAddress : Collections.list(netInterface.getInetAddresses())) {
+        if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+          String ipAddress = inetAddress.getHostAddress();
+          if (ipAddress.startsWith("10.")) {
+            candidates.remove("10");
+          } else if (ipAddress.length() >= 6
+              && ipAddress.substring(0, 6).compareTo("172.16") >= 0
+              && ipAddress.substring(0, 6).compareTo("172.31") <= 0) {
+            candidates.remove("172");
+          } else if (ipAddress.startsWith("192.168")) {
+            candidates.remove("192");
+          }
+        }
+      }
+    }
+
+    if (candidates.size() > 0) {
+      return candidates.values().iterator().next();
+    }
+
+    return null;
   }
 
   @Override
@@ -176,7 +291,8 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
         dnsRequest.sourcePort = udpPacket.sourcePort;
         dnsRequest.destPort = udpPacket.destPort;
 
-        DnsResolverUdpToHttps.processQuery(serverConnection, dnsRequest, udpPacket.data, this);
+        DnsResolverUdpToHttps.processQuery(vpnService.getServerConnection(),
+            dnsRequest, udpPacket.data, this);
       } catch (Exception e) {
         if (!isInterrupted()) {
           FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Unexpected exception in UDP loop.");
@@ -207,35 +323,46 @@ public class DnsVpnAdapter extends Thread implements DnsResponseWriter {
 
   @Override
   public void sendResult(DnsUdpQuery dnsUdpQuery, DnsTransaction transaction) {
-    // Construct a reply to the query's source port by switching the source and destination.
-    UdpPacket udpResponsePacket =
-        new UdpPacket(dnsUdpQuery.destPort, dnsUdpQuery.sourcePort, transaction.response);
-    byte[] rawUdpResponse = udpResponsePacket.getRawPacket();
+    if (transaction.response != null) {
+      // Construct a reply to the query's source port by switching the source and destination.
+      UdpPacket udpResponsePacket =
+          new UdpPacket(dnsUdpQuery.destPort, dnsUdpQuery.sourcePort, transaction.response);
+      byte[] rawUdpResponse = udpResponsePacket.getRawPacket();
 
-    IpPacket ipPacket;
-    if (dnsUdpQuery.sourceAddress instanceof Inet4Address) {
-      ipPacket = new Ipv4Packet(
-          UDP_PROTOCOL,
-          dnsUdpQuery.destAddress,
-          dnsUdpQuery.sourceAddress,
-          rawUdpResponse);
-    } else {
-      ipPacket = new Ipv6Packet(
-          UDP_PROTOCOL,
-          dnsUdpQuery.destAddress,
-          dnsUdpQuery.sourceAddress,
-          rawUdpResponse);
-    }
+      IpPacket ipPacket;
+      if (dnsUdpQuery.sourceAddress instanceof Inet4Address) {
+        ipPacket = new Ipv4Packet(
+            UDP_PROTOCOL,
+            dnsUdpQuery.destAddress,
+            dnsUdpQuery.sourceAddress,
+            rawUdpResponse);
+      } else {
+        ipPacket = new Ipv6Packet(
+            UDP_PROTOCOL,
+            dnsUdpQuery.destAddress,
+            dnsUdpQuery.sourceAddress,
+            rawUdpResponse);
+      }
 
-    byte[] rawIpResponse = ipPacket.getRawPacket();
-    try {
-      out.write(rawIpResponse);
-    } catch (IOException e) {
-      FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to write to VPN/TUN interface.");
-      FirebaseCrash.report(e);
-      transaction.status = DnsTransaction.Status.INTERNAL_ERROR;
+      byte[] rawIpResponse = ipPacket.getRawPacket();
+      try {
+        out.write(rawIpResponse);
+      } catch (IOException e) {
+        FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to write to VPN/TUN interface.");
+        FirebaseCrash.report(e);
+        transaction.status = DnsTransaction.Status.INTERNAL_ERROR;
+      }
     }
 
     vpnService.recordTransaction(transaction);
+  }
+
+  @Override
+  public void close() {
+    try {
+      tunFd.close();
+    } catch (IOException e) {
+      FirebaseCrash.report(e);
+    }
   }
 }

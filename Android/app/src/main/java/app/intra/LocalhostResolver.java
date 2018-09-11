@@ -20,9 +20,11 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import androidx.annotation.Nullable;
@@ -42,37 +44,37 @@ public class LocalhostResolver extends Thread implements DnsResponseWriter {
   private final DatagramSocket socket;
   private final DnsVpnService vpnService;
 
-  @Nullable
-  ServerConnection serverConnection;
-
   /**
    * Get a localhost resolver, bound to a port and ready to be started by calling start().
    * @param vpnService The VPN service that owns this server.
-   * @param serverConnection The connection to an upstream DOH server.
    * @return The localhost resolver, or null if it couldn't be started.
    */
-  public static LocalhostResolver get(DnsVpnService vpnService, ServerConnection serverConnection) {
+  public static LocalhostResolver get(DnsVpnService vpnService) {
     DatagramSocket socket = null;
     try {
-      SocketAddress bindaddr = new InetSocketAddress("localhost", 0);
+      InetAddress localhost = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
+      SocketAddress bindaddr = new InetSocketAddress(localhost, 0);
       socket = new DatagramSocket(bindaddr);
+    } catch (UnknownHostException e) {
+      LogWrapper.report(e);
+      return null;
     } catch (SocketException e) {
+      LogWrapper.report(e);
       return null;
     }
-    return new LocalhostResolver(vpnService, socket, serverConnection);
+    return new LocalhostResolver(vpnService, socket);
   }
 
-  private LocalhostResolver(DnsVpnService vpnService, DatagramSocket socket,
-                            ServerConnection serverConnection) {
+  private LocalhostResolver(DnsVpnService vpnService, DatagramSocket socket) {
     this.vpnService = vpnService;
     this.socket = socket;
-    this.serverConnection = serverConnection;
   }
 
   @Override
   public void run() {
     byte[] buffer = new byte[MAX_SIZE];
     DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
     while (receive(packet)) {
       byte[] data = Arrays.copyOfRange(packet.getData(), packet.getOffset(), packet.getLength());
       DnsUdpQuery dnsRequest = DnsUdpQuery.fromUdpBody(data);
@@ -94,7 +96,7 @@ public class LocalhostResolver extends Thread implements DnsResponseWriter {
       dnsRequest.sourcePort = (short)packet.getPort();
       dnsRequest.destPort = (short)socket.getLocalPort();
 
-      DnsResolverUdpToHttps.processQuery(serverConnection, dnsRequest, data, this);
+      DnsResolverUdpToHttps.processQuery(vpnService.getServerConnection(), dnsRequest, data, this);
     }
   }
 
@@ -112,6 +114,7 @@ public class LocalhostResolver extends Thread implements DnsResponseWriter {
       socket.receive(packet);
       return true;
     } catch (IOException e) {
+      Log.i(LOG_TAG, "Read failed", e);
       return false;
     }
   }
@@ -134,7 +137,7 @@ public class LocalhostResolver extends Thread implements DnsResponseWriter {
     vpnService.recordTransaction(transaction);
   }
 
-  void shutdown() {
+  public void shutdown() {
     // This will cause receive() to return false, thus exiting the main loop.
     socket.close();
   }
