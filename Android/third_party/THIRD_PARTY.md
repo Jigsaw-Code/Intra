@@ -2,3 +2,4 @@ sockslib/ contains a [point-in-time-snapshot(https://github.com/fengyouchao/sock
 of https://github.com/fengyouchao/sockslib, with the following changes:
 * Tests and examples have been removed, as these are not needed to build Intra.
 * Any files related to MongoDB or JDBC have been removed, as these are not relevant to Intra.
+ * A one-line fix for https://github.com/fengyouchao/sockslib/issues/14 in StreamPipe.java.

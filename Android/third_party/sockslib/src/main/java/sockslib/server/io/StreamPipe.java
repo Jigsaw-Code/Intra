@@ -220,7 +220,7 @@ public class StreamPipe implements Runnable, Pipe {
   }
 
   @Override
-  public void removePipeListener(PipeListener pipeListener) {
+  public synchronized void removePipeListener(PipeListener pipeListener) {
     pipeListeners.remove(pipeListener);
   }
 
