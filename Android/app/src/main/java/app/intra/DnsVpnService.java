@@ -373,6 +373,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
         for (String packageName : PersistentState.getExcludedPackages(this)) {
           builder = builder.addDisallowedApplication(packageName);
         }
+        // Play Store incompatibility is a known issue, so always exclude it.
+        builder = builder.addDisallowedApplication("com.android.vending");
       } catch (PackageManager.NameNotFoundException e) {
         FirebaseCrash.report(e);
         Log.e(LOG_TAG, "Failed to exclude an app", e);
