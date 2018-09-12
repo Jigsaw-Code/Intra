@@ -21,8 +21,8 @@ android {
         applicationId "app.intra"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.0.6"
+        versionCode 8
+        versionName "0.0.7"
         vectorDrawables.useSupportLibrary = true
         // Fix a build error related to having log4j in the classpath.
         javaCompileOptions {
@@ -33,7 +33,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
