@@ -27,6 +27,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
@@ -414,11 +416,21 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     getTracker().sync(this);
   }
 
+  private void setNetworkConnected(boolean connected) {
+    networkConnected = connected;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      // Indicate that traffic will be sent over the current active network.
+      // See e.g. https://issuetracker.google.com/issues/68657525
+      final Network activeNetwork = getSystemService(ConnectivityManager.class).getActiveNetwork();
+      setUnderlyingNetworks(connected ? new Network[]{ activeNetwork } : null);
+    }
+  }
+
   // NetworkListener interface implementation
   @Override
   public void onNetworkConnected(NetworkInfo networkInfo) {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Connected event.");
-    networkConnected = true;
+    setNetworkConnected(true);
     // This code is used to start the VPN for the first time, but startVpn is idempotent, so we can
     // call it every time. startVpn performs network activity so it has to run on a separate thread.
     new Thread(
@@ -433,7 +445,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
   @Override
   public void onNetworkDisconnected() {
     FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Disconnected event.");
-    networkConnected = false;
+    setNetworkConnected(false);
     DnsVpnController.getInstance().onConnectionStateChanged(this, null);
   }
 }
