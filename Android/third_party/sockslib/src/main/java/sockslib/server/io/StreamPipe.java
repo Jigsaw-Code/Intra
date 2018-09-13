@@ -120,7 +120,7 @@ public class StreamPipe implements Runnable, Pipe {
       runningThread = new Thread(this);
       runningThread.setDaemon(daemon);
       runningThread.start();
-      for (PipeListener listener : new ArrayList<>(pipeListeners)) {
+      for (PipeListener listener : getPipeListeners()) {
         listener.onStart(this);
       }
       return true;
@@ -136,7 +136,7 @@ public class StreamPipe implements Runnable, Pipe {
       if (runningThread != null) {
         runningThread.interrupt();
       }
-      for (PipeListener listener : new ArrayList<>(pipeListeners)) {
+      for (PipeListener listener : getPipeListeners()) {
         listener.onStop(this);
       }
       return true;
@@ -169,13 +169,13 @@ public class StreamPipe implements Runnable, Pipe {
       if (length > 0) { // transfer the buffer destination output stream.
         destination.write(buffer, 0, length);
         destination.flush();
-        for (PipeListener listener : new ArrayList<>(pipeListeners)) {
+        for (PipeListener listener : getPipeListeners()) {
           listener.onTransfer(this, buffer, length);
         }
       }
 
     } catch (IOException e) {
-      for (PipeListener listener : new ArrayList<>(pipeListeners)) {
+      for (PipeListener listener : getPipeListeners()) {
         listener.onError(this, e);
       }
       stop();
@@ -214,7 +214,7 @@ public class StreamPipe implements Runnable, Pipe {
   }
 
   @Override
-  public void addPipeListener(PipeListener pipeListener) {
+  public synchronized void addPipeListener(PipeListener pipeListener) {
     pipeListeners.add(pipeListener);
   }
 
@@ -228,8 +228,8 @@ public class StreamPipe implements Runnable, Pipe {
    *
    * @return All {@link PipeListener}.
    */
-  public List<PipeListener> getPipeListeners() {
-    return pipeListeners;
+  public synchronized List<PipeListener> getPipeListeners() {
+    return new ArrayList<>(pipeListeners);
   }
 
   /**
