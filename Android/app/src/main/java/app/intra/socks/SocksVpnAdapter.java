@@ -90,6 +90,7 @@ public class SocksVpnAdapter extends VpnAdapter {
     final String fakeDnsIp = LanIp.DNS.make(IPV4_TEMPLATE);
     final String fakeDnsAddress = fakeDnsIp + ":" + DNS_DEFAULT_PORT;
     final String ipv4Router = LanIp.ROUTER.make(IPV4_TEMPLATE);
+    final String ipv6Router = LanIp.ROUTER.make(IPV6_TEMPLATE);
 
     // Proxy parameters
     InetSocketAddress fakeDns = new InetSocketAddress(fakeDnsIp, DNS_DEFAULT_PORT);
@@ -119,7 +120,8 @@ public class SocksVpnAdapter extends VpnAdapter {
     // After start(), if bindPort was 0, it has been changed to the dynamically allocated port.
     String proxyAddress = proxy.getBindAddr().getHostAddress() + ":" + proxy.getBindPort();
     SafeTun2Socks tun2Socks = new SafeTun2Socks(tunFd, VPN_INTERFACE_MTU, ipv4Router, IPV4_NETMASK,
-        proxyAddress, proxyAddress, fakeDnsAddress, TRANSPARENT_DNS_ENABLED, SOCKS5_UDP_ENABLED);
+        ipv6Router, proxyAddress, proxyAddress, fakeDnsAddress, TRANSPARENT_DNS_ENABLED,
+        SOCKS5_UDP_ENABLED);
 
     try {
       synchronized(this) {
