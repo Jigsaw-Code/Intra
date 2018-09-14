@@ -3,8 +3,14 @@
   <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
     <!-- Customizations go here. -->
-    <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     <item name="android:textColorLink">?android:textColorPrimary</item>
     <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    <item name="colorAccent">@color/accent_good</item>
+    <item name="android:colorBackground">@color/background</item>
+    <item name="colorPrimary">@color/background</item>
+    <item name="colorPrimaryDark">@color/background</item>
+  </style>
+  <style name="Biggest" parent="TextAppearance.AppCompat.Display1">
+    <item name="android:textSize">48sp</item>
   </style>
 </resources>

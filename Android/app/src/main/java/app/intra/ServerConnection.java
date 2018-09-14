@@ -25,17 +25,12 @@ import okhttp3.Callback;
 public interface ServerConnection {
 
   /**
-   * NONE: There is no connection
+   * null: There is no connection
    * NEW: The connection has not yet completed bootstrap.
    * WORKING: The last query (or bootstrap) succeeded.
    * FAILING: The last query (or bootstrap) failed.
    */
-  enum State {
-    NEW { int message() { return R.string.connecting; } },
-    WORKING { int message() { return R.string.connected; } },
-    FAILING { int message() { return R.string.connection_warning; } };
-    abstract int message();
-  };
+  enum State { NEW, WORKING, FAILING };
 
   /**
    * Performs a binary, asynchronous DNS request over HTTPS.

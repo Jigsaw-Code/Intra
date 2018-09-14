@@ -46,7 +46,7 @@ public class HistoryGraph extends View implements DnsActivityReader {
   private static final int PULSE_INTERVAL_MS = 10 * 1000;  // Mark a pulse every 10 seconds
 
   private static final int DATA_STROKE_WIDTH = 10;  // Display pixels
-  private static final float BOTTOM_MARGIN_FRACTION = 0.1f;  // Space to reserve below y=0.
+  private static final float BOTTOM_MARGIN_FRACTION = 0.05f;  // Space to reserve below y=0.
   private static final float RIGHT_MARGIN_FRACTION = 0.1f;  // Space to reserve right of t=0.
 
   private DnsQueryTracker tracker;
@@ -83,6 +83,15 @@ public class HistoryGraph extends View implements DnsActivityReader {
     pulsePaint.setStrokeWidth(0);
     pulsePaint.setStyle(Paint.Style.STROKE);
     pulsePaint.setColor(color);
+  }
+
+  /**
+   * @param color ARGB color to use for the lines in subsequent frames
+   */
+  public void setColor(int color) {
+    dataPaint.setColor(color);
+    pulsePaint.setColor(color);
+    updateDataShader(getWidth());
   }
 
   // Gaussian curve formula.  (Not normalized.)
@@ -150,8 +159,12 @@ public class HistoryGraph extends View implements DnsActivityReader {
 
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    updateDataShader(w);
+  }
+
+  private void updateDataShader(int width) {
     int color = dataPaint.getColor();
-    dataPaint.setShader(new LinearGradient(0, 0, w, 0,
+    dataPaint.setShader(new LinearGradient(0, 0, width, 0,
         color, color & 0x00FFFFFF, TileMode.CLAMP));
   }
 
@@ -172,9 +185,9 @@ public class HistoryGraph extends View implements DnsActivityReader {
       // Nothing we can do about it.
       height = MeasureSpec.getSize(h);
     } else {
-      // Make the aspect ratio 1:1, but limit the height to fit on screen with some room to spare.
+      // Fill 80% of the height.
       int screenHeight = getResources().getDisplayMetrics().heightPixels;
-      height = Math.min(width, (int)(0.8 * screenHeight));
+      height = (int)(0.8 * screenHeight);
       if (hMode == MeasureSpec.AT_MOST) {
         height = Math.min(height, MeasureSpec.getSize(h));
       }
@@ -194,7 +207,8 @@ public class HistoryGraph extends View implements DnsActivityReader {
     float xoffset = (float) (getWidth()) * RIGHT_MARGIN_FRACTION;
     float usableWidth = getWidth() - xoffset;
     float yoffset = getHeight() * BOTTOM_MARGIN_FRACTION;
-    float usableHeight = getHeight() - (DATA_STROKE_WIDTH + yoffset);
+    // Make graph fit in the available height and never be taller than the width.
+    float usableHeight = Math.min(getWidth(), getHeight() - (DATA_STROKE_WIDTH + yoffset));
 
     now = SystemClock.elapsedRealtime();
     float rightEndY;
