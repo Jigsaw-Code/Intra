@@ -48,7 +48,6 @@ public class SafeTun2Socks  {
                 final int vpnInterfaceMTU,
                 final String vpnIpAddress,
                 final String vpnNetMask,
-                final String vpnIpV6Address,
                 final String socksServerAddress,
                 final String udpRelayAddress,
                 final String dnsResolverAddress,
@@ -70,7 +69,7 @@ public class SafeTun2Socks  {
         } finally {
           startupSemaphore.release();
         }
-        Tun2SocksJni.start(tunFd.getFd(), vpnInterfaceMTU, vpnIpAddress, vpnNetMask, vpnIpV6Address,
+        Tun2SocksJni.start(tunFd.getFd(), vpnInterfaceMTU, vpnIpAddress, vpnNetMask,
             socksServerAddress, udpRelayAddress, dnsResolverAddress, transparentDNS, socks5UDP);
       }
     });
