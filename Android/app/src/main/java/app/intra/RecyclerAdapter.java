@@ -219,10 +219,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         resolver = transaction.serverIp;
       }
 
-      if (transaction.status != DnsTransaction.Status.COMPLETE) {
-        response = transaction.status.name();
-        flag = "";
-      } else {
+      if (transaction.status == DnsTransaction.Status.COMPLETE) {
         DnsPacket packet = null;
         String err = null;
         try {
@@ -239,11 +236,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             flag = getFlag(countryCode);
           } else {
             response = "NXDOMAIN";
-            flag = "";
+            flag = "\u2754";  // White question mark
           }
         } else {
           response = err;
-          flag = "";
+          flag = "\u26a0";  // Warning sign
+        }
+      } else {
+        response = transaction.status.name();
+        if (transaction.status == DnsTransaction.Status.CANCELED) {
+          flag = "\u274c";  // "X" mark
+        } else {
+          flag = "\u26a0";  // Warning sign
         }
       }
     }
