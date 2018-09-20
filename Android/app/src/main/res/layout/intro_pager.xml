@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
+    <androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                                         xmlns:app="http://schemas.android.com/apk/res-auto"
+                                         android:layout_width="match_parent"
+                                         android:layout_height="match_parent"
+                                         android:id="@+id/welcome_pager">
+        <com.google.android.material.tabs.TabLayout android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="bottom"
+                                                    app:tabBackground="@drawable/tab_selector"
+                                                    app:tabGravity="center"
+                                                    app:tabIndicatorHeight="0dp">
+        </com.google.android.material.tabs.TabLayout>
+    </androidx.viewpager.widget.ViewPager>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/intro_back"
+            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:text="@string/intro_back"
+            style="?attr/borderlessButtonStyle"
+            android:visibility="gone"
+            tools:visibility="visible"
+        />
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/intro_next"
+            android:layout_alignParentBottom="true" android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/intro_next"
+            style="?attr/borderlessButtonStyle"
+    />
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/intro_accept"
+            android:layout_alignParentBottom="true" android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/intro_accept"
+            style="?attr/borderlessButtonStyle"
+            android:visibility="gone"
+    />
+</RelativeLayout>

@@ -13,4 +13,9 @@
   <style name="Biggest" parent="TextAppearance.AppCompat.Display1">
     <item name="android:textSize">48sp</item>
   </style>
+
+  <style name="FullScreenDialog" parent="Theme.AppCompat.Dialog">
+    <item name="android:windowIsFloating">false</item>
+    <item name="android:windowBackground">@color/background</item>
+  </style>
 </resources>
