@@ -4,31 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginBottom="1dp"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin">
+    android:background="@color/floating">
 
   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="?attr/colorBackgroundFloating"
+      tools:background="@color/light"
       android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/flag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:layout_margin="8dp"
-        android:layout_gravity="start|center_vertical"
-        android:ellipsize="none"
-        android:minWidth="40dp"
-        android:singleLine="true"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        tools:text="🇩🇪"/>
+            android:id="@+id/flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_margin="8dp"
+            android:layout_gravity="start|center_vertical"
+            android:ellipsize="none"
+            android:minWidth="40dp"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="30sp"
+            tools:text="🇩🇪" />
 
     <TextView
         android:id="@+id/hostname"
@@ -73,7 +76,6 @@
       android:id="@+id/details"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="?attr/colorBackgroundFloating"
       android:orientation="vertical"
       android:paddingBottom="8dp"
       android:paddingLeft="8dp"
@@ -84,7 +86,7 @@
     <View
         android:id="@+id/query_spacer"
         android:layout_width="2dp"
-        android:layout_height="32dp"
+        android:layout_height="72dp"
         android:background="@color/accent_good"
         app:layout_constraintEnd_toEndOf="@id/query_icon"
         app:layout_constraintStart_toStartOf="@id/query_icon"
@@ -127,7 +129,7 @@
     <View
         android:id="@+id/type_spacer"
         android:layout_width="2dp"
-        android:layout_height="32dp"
+        android:layout_height="72dp"
         android:background="@color/accent_good"
         app:layout_constraintEnd_toEndOf="@id/query_icon"
         app:layout_constraintStart_toStartOf="@id/query_icon"
@@ -164,7 +166,7 @@
     <View
         android:id="@+id/latency_spacer"
         android:layout_width="2dip"
-        android:layout_height="32dp"
+        android:layout_height="72dp"
         android:background="@color/accent_good"
         app:layout_constraintEnd_toEndOf="@id/query_icon"
         app:layout_constraintStart_toStartOf="@id/query_icon"
@@ -201,7 +203,7 @@
     <View
         android:id="@+id/resolver_spacer"
         android:layout_width="2dp"
-        android:layout_height="32dp"
+        android:layout_height="72dp"
         android:background="@color/accent_good"
         app:layout_constraintEnd_toEndOf="@id/query_icon"
         app:layout_constraintStart_toStartOf="@id/query_icon"
@@ -244,7 +246,7 @@
     <View
         android:id="@+id/response_spacer"
         android:layout_width="2dp"
-        android:layout_height="32dp"
+        android:layout_height="72dp"
         android:background="@color/accent_good"
         app:layout_constraintEnd_toEndOf="@id/query_icon"
         app:layout_constraintStart_toEndOf="parent"

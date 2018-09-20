@@ -8,7 +8,7 @@
         android:centerX="80%p"
         android:centerY="60%p"
         android:endColor="@android:color/transparent"
-        android:gradientRadius="50%p"
+        android:gradientRadius="70%p"
         android:startColor="@color/accent_good"
         android:type="radial" />
 </shape>

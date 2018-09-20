@@ -18,6 +18,7 @@ package app.intra;
 import com.google.common.net.InternetDomainName;
 import com.google.firebase.crash.FirebaseCrash;
 
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -72,9 +73,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private MainActivity activity;
   private CountryMap countryMap = null;
 
+  // ARGB colors to use as the background for condensed and expanded transaction rows.
+  private final int condensedColor, expandedColor;
+
   public RecyclerAdapter(MainActivity activity) {
     super();
     this.activity = activity;
+
+    // Populate colors for use by TransactionViewHolder.
+    condensedColor = activity.getResources().getColor(R.color.light);
+    expandedColor = activity.getResources().getColor(R.color.floating);
   }
 
   private void activateCountryMap() {
@@ -107,6 +115,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Transaction transaction;
 
+    // Overall view
+    private final View rowView;
+
     // Contents of the condensed view
     private final TextView hostnameView;
     private final TextView timeView;
@@ -123,6 +134,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     TransactionViewHolder(View v) {
       super(v);
+
+      rowView = v;
 
       hostnameView = v.findViewById(R.id.hostname);
       timeView = v.findViewById(R.id.response_time);
@@ -142,6 +155,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void setExpanded(boolean expanded) {
       detailsView.setVisibility(expanded ? View.VISIBLE : View.GONE);
+      rowView.setBackgroundColor(expanded ? expandedColor : condensedColor);
       expandButton.setChecked(expanded);
 
       if (expanded) {
