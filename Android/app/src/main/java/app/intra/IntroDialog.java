@@ -24,8 +24,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -39,10 +42,10 @@ public class IntroDialog extends DialogFragment {
 
   // Avoid duplicate instances of this dialog.  This can occur when rotating the app, which would
   // otherwise cause the main activity to launch an additional instance of this dialog.
-  private static boolean shown = false;
+  private static boolean isShown = false;
 
   public static boolean shouldShow(Activity activity) {
-    return !shown && !PersistentState.getWelcomeApproved(activity);
+    return !isShown && !PersistentState.getWelcomeApproved(activity);
   }
 
   @Override
@@ -114,46 +117,66 @@ public class IntroDialog extends DialogFragment {
 
     pager.addOnPageChangeListener(new TabListener(backButton, nextButton, acceptButton));
 
-    shown = true;
+    isShown = true;
     return welcomeView;
   }
 
-  public static class Page0 extends Fragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-      return inflater.inflate(R.layout.intro0, container, false);
+  public static class Page extends Fragment {
+    private static final String IMAGE = "image";
+    private static final String HEADLINE = "headline";
+    private static final String BODY = "body";
 
+    static Page newInstance(@DrawableRes int image, @StringRes int headline, @StringRes int body) {
+      Page page = new Page();
+      Bundle arguments = new Bundle(3);
+      arguments.putInt(IMAGE, image);
+      arguments.putInt(HEADLINE, headline);
+      arguments.putInt(BODY, body);
+      page.setArguments(arguments);
+      return page;
     }
-  }
 
-  public static class Page1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-      return inflater.inflate(R.layout.intro1, container, false);
-    }
-  }
+      View view = inflater.inflate(R.layout.intro_page, container, false);
+      ImageView imageView = view.findViewById(R.id.intro_image);
+      imageView.setImageResource(getArguments().getInt(IMAGE));
 
-  public static class Page2 extends Fragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-      View view = inflater.inflate(R.layout.intro2, container, false);
-      TextView details = view.findViewById(R.id.intro_details_body);
-      details.setMovementMethod(LinkMovementMethod.getInstance());
+      TextView headlineView = view.findViewById(R.id.intro_headline);
+      headlineView.setText(getArguments().getInt(HEADLINE));
+
+      TextView bodyView = view.findViewById(R.id.intro_body);
+      bodyView.setMovementMethod(LinkMovementMethod.getInstance());
+      bodyView.setText(getArguments().getInt(BODY));
       return view;
     }
   }
 
   private class Adapter extends FragmentPagerAdapter {
+    private final int[] images = {
+        R.drawable.intro0,
+        R.drawable.intro1,
+        R.drawable.intro2
+    };
+    private final int[] headlines = {
+        R.string.intro_benefit_headline,
+        R.string.intro_manipulation_headline,
+        R.string.intro_details_headline
+    };
+    private final int[] text = {
+        R.string.intro_benefit_body,
+        R.string.intro_manipulation_body,
+        R.string.intro_details_body
+    };
+
     private final Fragment[] pages;
     Adapter(FragmentManager fm) {
       super(fm);
       pages = new Fragment[NUM_PAGES];
-      pages[0] = new Page0();
-      pages[1] = new Page1();
-      pages[2] = new Page2();
+      for (int i = 0; i < pages.length; ++i) {
+        pages[i] = Page.newInstance(images[i], headlines[i], text[i]);
+      }
     }
 
     @Override
