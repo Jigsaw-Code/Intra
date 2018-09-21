@@ -186,7 +186,10 @@ public class IntroDialog extends DialogFragment {
 
     @Override
     public Fragment getItem(int position) {
-      return pages[position];
+      if (position >= 0 && position < pages.length) {
+        return pages[position];
+      }
+      return null;
     }
   }
 
