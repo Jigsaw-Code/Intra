@@ -1,6 +1,44 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_name" translatable="false">Intra</string>
 
+  <!-- Intro text -->
+  <string name="intro_benefit_headline" description="Headline for intro page describing key benefit">
+    A safer route to a more open internet
+  </string>
+
+  <string name="intro_benefit_body" description="Body text for intro page describing key benefit">
+    When you use the internet, your device needs to look up addresses in an internet contact list. Sometimes your connection can give you the wrong address.
+  </string>
+
+  <string name="intro_manipulation_headline" description="Headline for intro page describing manipulation">
+    Protection from wrong addresses
+  </string>
+
+  <string name="intro_manipulation_body" description="Body text for intro page describing manipulation">
+    Intra protects you from getting bad addresses that lead to dead ends (DNS manipulation) by encrypting your DNS connection.
+  </string>
+
+  <string name="intro_details_headline" description="Headline for intro page describing permissions and privacy">
+    Intra needs to monitor network traffic to enable protection
+  </string>
+
+  <string name="intro_details_body" description="Body text for intro page describing permissions and privacy">
+    Tap OK when you see the conection request to get started. By default, your queries will be routed to Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>). You can choose another service in the app settings.
+  </string>
+
+  <string name="intro_back" description="Button label to see the previous page of introduction">
+    back
+  </string>
+
+  <string name="intro_next" description="Button label to see the next page of introduction">
+    next
+  </string>
+
+  <string name="intro_accept"
+          description="Button label to acknowledge legal terms and VPN access permission request">
+    accept
+  </string>
+
   <string name="about_headline"
           description="Headline for the welcome screen.">Honest and secure DNS</string>
 
@@ -107,7 +145,7 @@
   </string>
 
   <string name="status_upgraded"
-          description="This is similar to exposed, and indicates weak protection that an attacker could disable.">
+          description="This is similar to status_exposed, and indicates weak protection that an attacker could disable.">
     Vulnerable
   </string>
 

@@ -709,8 +709,8 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void getIntroApproval() {
-    if (WelcomePopup.shouldShow(this)) {
-      WelcomePopup popup = new WelcomePopup(this);
+    if (IntroDialog.shouldShow(this)) {
+      new IntroDialog().show(getSupportFragmentManager(), "intro");
     }
   }
 }
