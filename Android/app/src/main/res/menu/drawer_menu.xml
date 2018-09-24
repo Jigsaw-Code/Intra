@@ -7,9 +7,6 @@
       android:id="@+id/settings"
       android:title="@string/settings"/>
   <item
-      android:id="@+id/report_error"
-      android:title="@string/feedback"/>
-  <item
       android:id="@+id/privacy"
       android:title="@string/privacy_link"/>
   <item
