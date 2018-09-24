@@ -195,6 +195,9 @@ public class MainActivity extends AppCompatActivity
           case R.id.settings:
             chooseView(R.id.settings);
             return true;
+          case R.id.support:
+            openUrl("https://getintra.org/help");
+            return true;
           case R.id.privacy:
             openUrl("https://developers.google.com/speed/public-dns/privacy");
             return true;
