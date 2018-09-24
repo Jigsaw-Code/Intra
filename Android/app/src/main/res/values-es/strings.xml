@@ -1,4 +1,13 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Una ruta más segura a un Internet más abierto</string>
+  <string name="intro_benefit_body">Cuando utilizas Internet, tu dispositivo busca direcciones en una lista de contactos de Internet. A veces, puede ocurrir que tu conexión te ofrezca una dirección incorrecta.</string>
+  <string name="intro_manipulation_headline">Protección contra direcciones incorrectas</string>
+  <string name="intro_manipulation_body">Intra te ayuda a evitar direcciones incorrectas que dirigen a páginas no deseadas (manipulación de DNS) cifrando tu conexión DNS.</string>
+  <string name="intro_details_headline">Para ofrecer protección, Intra necesita supervisar el tráfico de red</string>
+  <string name="intro_details_body">Para empezar, toca OK cuando veas la solicitud de conexión. De forma predeterminada, tus consultas se dirigirán a Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">política de privacidad</a>). Puedes elegir otro servicio en los ajustes de la aplicación.</string>
+  <string name="intro_back">atrás</string>
+  <string name="intro_next">próxima</string>
+  <string name="intro_accept">aceptar</string>
   <string name="about_headline">DNS seguro y honesto</string>
   <string name="about_text">Intra protege tus consultas de DNS enviándolas a través de una conexión segura de HTTPS.
         Esto reduce la posibilidad de que se te redirija al sitio equivocado o que tu navegación sea bloqueada o monitorizada.</string>
@@ -21,15 +30,24 @@
   <string name="credits_text">Intra ha sido desarrollado por
             <a href="https://jigsaw.google.com">Jigsaw</a> con la ayuda de Google.
             Las ubicaciones de las direcciones IP están basadas en información de DB-IP.com.</string>
-  <string name="dns_on">Tus consultas de DNS están &lt;font color=\"#%06X\"&gt;protegidas&lt;/font&gt;</string>
-  <string name="dns_off">Tus consultas de DNS están &lt;font color=\"#%06X\"&gt;expuestas&lt;/font&gt;</string>
-  <string name="dns_upgraded">Tus consultas de DNS son &lt;font color=\"#%06X\"&gt;vulnerables&lt;/font&gt;</string>
-  <string name="dns_strict">Tus consultas de DNS están protegidas por Android</string>
-  <string name="enable_protection">habilitar protección</string>
-  <string name="disable_protection">deshabilitar</string>
-  <string name="vpn_explanation">Intra ha detectado otra VPN en tu dispositivo. Si habilitas Intra, esa VPN se inhabilitará.
+  <string name="indicator_on">Activado</string>
+  <string name="indicator_off">Desactivado</string>
+  <string name="status_exposed">En riesgo</string>
+  <string name="explanation_exposed">Tu conexión está en riesgo de sufrir ataques de DNS.</string>
+  <string name="status_protected">Protegida</string>
+  <string name="explanation_protected">Tu conexión está protegida frente a ataques de DNS.</string>
+  <string name="status_upgraded">Vulnerable</string>
+  <string name="explanation_upgraded">Tu conexión está protegida con el ajuste DNS privado de Android, pero un atacante podría inhabilitar
+    o eludir esta protección.</string>
+  <string name="status_strict">Protegida por Android</string>
+  <string name="explanation_strict">Intra ha detectado que el ajuste DNS privado de Android está habilitado. Esto significa que tus consultas de DNS ya están protegidas, por lo que no es necesario habilitar Intra.</string>
+  <string name="status_starting">Iniciando…</string>
+  <string name="explanation_starting">Espera un momento. Intra está estableciendo conexión con el servidor.</string>
+  <string name="status_waiting">Esperando…</string>
+  <string name="explanation_offline">Tu dispositivo no tiene conexión. Intra está esperando una conexión de red.</string>
+  <string name="explanation_vpn">Intra ha detectado otra VPN en tu dispositivo. Si habilitas Intra, esa VPN se inhabilitará.
     Intra no es tan seguro como una VPN de confianza.</string>
-  <string name="dns_strict_explanation">Intra ha detectado que el ajuste DNS privado de Android está habilitado. Esto significa que tus consultas de DNS ya están protegidas, por lo que no es necesario habilitar Intra.</string>
+  <string name="explanation_failing">Advertencia: No se están procesando las consultas. Te aconsejamos que elijas otro servidor y reinicies Intra.</string>
   <string name="system_details">Detalles del sistema</string>
   <string name="num_requests">Consultas totales</string>
   <string name="queries_per_minute">Consultas recientes</string>
