@@ -6,7 +6,7 @@
   <string name="intro_details_headline">Para ofrecer protección, Intra necesita supervisar el tráfico de red</string>
   <string name="intro_details_body">Para empezar, toca OK cuando veas la solicitud de conexión. De forma predeterminada, tus consultas se dirigirán a Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">política de privacidad</a>). Puedes elegir otro servicio en los ajustes de la aplicación.</string>
   <string name="intro_back">atrás</string>
-  <string name="intro_next">próxima</string>
+  <string name="intro_next">siguiente</string>
   <string name="intro_accept">aceptar</string>
   <string name="about_headline">DNS seguro y honesto</string>
   <string name="about_text">Intra protege tus consultas de DNS enviándolas a través de una conexión segura de HTTPS.
