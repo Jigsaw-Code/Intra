@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -118,7 +119,7 @@ public class GoogleServerConnection implements ServerConnection {
   public void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb) {
     final int unsignedType = metadata.type & 0xffff; // Convert Java's signed short to unsigned int
     String url =
-        String.format(
+        String.format(Locale.ROOT,
             "https://%s/resolve?name=%s&type=%d&encoding=raw", HOSTNAME, urlEncode(metadata.name),
             unsignedType);
     Request request =

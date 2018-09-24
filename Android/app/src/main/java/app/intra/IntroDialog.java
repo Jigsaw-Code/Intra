@@ -17,7 +17,6 @@ package app.intra;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -34,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import app.intra.util.Rtl;
 
 // Fragment representing the full-screen first-run experience.  This intro is launched by the main
 // activity.
@@ -62,22 +62,27 @@ public class IntroDialog extends DialogFragment {
     ViewPager pager = welcomeView.findViewById(R.id.welcome_pager);
     pager.setAdapter(adapter);
 
-    // Right-to-left locale support.
-    boolean rtl = false;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      rtl = welcomeView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    if (Rtl.isRtl(this)) {
+      pager.setRotationY(180);
     }
 
-    Button backButton = welcomeView.findViewById(R.id.intro_back);
-    // Workaround for lack of vector drawable support pre-Lollipop with drawableEnd.
-    // Using a bitmap drawable might be a simpler solution, but bitmaps don't have auto-mirroring.
-    // ic_chevron_start is auto-mirroring, so we just have to put it on the outside end.
-    Drawable startChevron = getResources().getDrawable(R.drawable.ic_chevron_start);
-    if (rtl) {
-      backButton.setCompoundDrawablesWithIntrinsicBounds(null, null, startChevron, null);
+    Drawable leftChevron = getResources().getDrawable(R.drawable.ic_chevron_left);
+    Drawable rightChevron = getResources().getDrawable(R.drawable.ic_chevron_right);
+
+    final Button backButton = welcomeView.findViewById(R.id.intro_back);
+    final Button nextButton = welcomeView.findViewById(R.id.intro_next);
+
+    final Button leftButton, rightButton;
+    if (Rtl.isRtl(this)) {
+      leftButton = nextButton;
+      rightButton = backButton;
     } else {
-      backButton.setCompoundDrawablesWithIntrinsicBounds(startChevron, null, null, null);
+      leftButton = backButton;
+      rightButton = nextButton;
     }
+    leftButton.setCompoundDrawablesWithIntrinsicBounds(leftChevron, null, null, null);
+    rightButton.setCompoundDrawablesWithIntrinsicBounds(null, null, rightChevron, null);
+
     backButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -88,13 +93,6 @@ public class IntroDialog extends DialogFragment {
       }
     });
 
-    Button nextButton = welcomeView.findViewById(R.id.intro_next);
-    Drawable endChevron = getResources().getDrawable(R.drawable.ic_chevron_end);
-    if (rtl) {
-      nextButton.setCompoundDrawablesWithIntrinsicBounds(endChevron, null, null, null);
-    } else {
-      nextButton.setCompoundDrawablesWithIntrinsicBounds(null, null, endChevron, null);
-    }
     nextButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -140,6 +138,10 @@ public class IntroDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
       View view = inflater.inflate(R.layout.intro_page, container, false);
+      if (Rtl.isRtl(this)) {
+        view.setRotationY(180);
+      }
+
       ImageView imageView = view.findViewById(R.id.intro_image);
       imageView.setImageResource(getArguments().getInt(IMAGE));
 

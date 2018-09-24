@@ -37,6 +37,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
+        debug {
+            pseudoLocalesEnabled true
+        }
     }
     testOptions {
         unitTests.returnDefaultValues = true
