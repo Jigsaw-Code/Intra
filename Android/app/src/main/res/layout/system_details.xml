@@ -183,6 +183,7 @@
                         android:scrollbars="horizontal"
                         android:singleLine="true"
                         android:textIsSelectable="true"
+                        android:focusable="false"
                         android:text="dns.google.com"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
@@ -274,6 +275,7 @@
                     android:text="@string/unknown_server"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textIsSelectable="true"
+                    android:focusable="false"
                     tools:text="very:long:addr:goes:here"/>
 
             <TextView
