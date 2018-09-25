@@ -41,6 +41,7 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
     implements RadioGroup.OnCheckedChangeListener, TextWatcher, EditText.OnEditorActionListener {
     private RadioGroup buttons = null;
     private EditText text = null;
+    private TextView warning = null;
 
     public static ServerChooserFragment newInstance(String key) {
         final ServerChooserFragment fragment = new ServerChooserFragment();
@@ -126,6 +127,7 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         String url = preference.getUrl();
         buttons = view.findViewById(R.id.pref_server_radio_group);
         text = view.findViewById(R.id.custom_server_url);
+        warning = view.findViewById(R.id.url_warning);
         if (url == null || url.equals(getResources().getString(R.string.url0))) {
             buttons.check(R.id.pref_server_google);
         } else if (url.equals(getResources().getString(R.string.url1))) {
@@ -137,6 +139,7 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         buttons.setOnCheckedChangeListener(this);
         text.addTextChangedListener(this);
         text.setOnEditorActionListener(this);
+        updateUI();
     }
 
     @Override
@@ -157,10 +160,10 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
     }
 
     private void setValid(boolean valid) {
+        warning.setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
         Dialog dialog = getDialog();
         if (dialog instanceof AlertDialog) {
             ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(valid);
         }
-        dialog.findViewById(R.id.url_warning).setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
     }
 }
