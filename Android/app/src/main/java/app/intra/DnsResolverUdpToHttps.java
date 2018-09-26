@@ -88,14 +88,10 @@ class DnsResolverUdpToHttps {
     }
 
     // Writes |dnsRequestId| to |dnsResponse|'s ID header.
-    private boolean writeRequestIdToDnsResponse(byte[] dnsResponse, short dnsRequestId) {
+    private void writeRequestIdToDnsResponse(byte[] dnsResponse, short dnsRequestId)
+        throws BufferOverflowException {
       ByteBuffer buffer = ByteBuffer.wrap(dnsResponse);
-      try {
-        buffer.putShort(dnsRequestId);
-        return true;
-      } catch (BufferOverflowException e) {
-        return false;
-      }
+      buffer.putShort(dnsRequestId);
     }
 
     private void sendResult() {
@@ -133,7 +129,9 @@ class DnsResolverUdpToHttps {
         transaction.status = DnsTransaction.Status.BAD_RESPONSE;
         return;
       }
-      if (!writeRequestIdToDnsResponse(dnsResponse, dnsUdpQuery.requestId)) {
+      try {
+        writeRequestIdToDnsResponse(dnsResponse, dnsUdpQuery.requestId);
+      } catch (BufferOverflowException e) {
         FirebaseCrash.logcat(Log.WARN, LOG_TAG, "ID replacement failed");
         transaction.status = DnsTransaction.Status.BAD_RESPONSE;
         return;
