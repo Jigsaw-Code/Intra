@@ -507,14 +507,18 @@ public class MainActivity extends AppCompatActivity
   }
 
   private boolean isAnotherVpnActive() {
-    ConnectivityManager connectivityManager =
-        (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      ConnectivityManager connectivityManager =
+          (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
       Network activeNetwork = connectivityManager.getActiveNetwork();
       if (activeNetwork == null) {
         return false;
       }
       NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(activeNetwork);
+      if (capabilities == null) {
+        // It's not clear when this can happen, but it has occurred for at least one user.
+        return false;
+      }
       return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
     }
     // For pre-M versions, return true if there's any network whose name looks like a VPN.
