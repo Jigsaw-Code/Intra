@@ -653,7 +653,7 @@ public class MainActivity extends AppCompatActivity
 
   private void showSettings() {
     SettingsFragment fragment = new SettingsFragment();
-    fragment.updateInstalledApps(getApplicationContext().getPackageManager());
+    fragment.collectInstalledApps(getApplicationContext().getPackageManager());
 
     // Display the fragment in its designated location.
     getSupportFragmentManager().beginTransaction()
