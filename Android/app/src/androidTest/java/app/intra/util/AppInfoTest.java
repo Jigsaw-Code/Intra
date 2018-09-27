@@ -15,7 +15,7 @@ public class AppInfoTest {
   final AppInfo NULL2 = new AppInfo(null, NAME2);
 
   @Test
-  public void equal() {
+  public void compareToEqual() {
     assertEquals(0, APP1.compareTo(new AppInfo(LABEL1, NAME1)));
     assertEquals(0, NULL1.compareTo(new AppInfo(null, NAME1)));
     assertEquals(0, APP1.compareTo(APP1));
@@ -23,7 +23,7 @@ public class AppInfoTest {
   }
 
   @Test
-  public void notEqual() {
+  public void compareToUnequal() {
     assertEquals(-1, APP1.compareTo(APP2));
     assertEquals(1, APP2.compareTo(APP1));
     assertEquals(-1, APP1.compareTo(NULL1));
@@ -36,7 +36,7 @@ public class AppInfoTest {
     assertEquals(1, NULL2.compareTo(NULL1));
   }
 
-  private void roundtrip(AppInfo info) {
+  private void verifyParcelSerializationRoundtrip(AppInfo info) {
     Parcel parcel1 = Parcel.obtain();
     info.writeToParcel(parcel1, 0);
     byte[] data = parcel1.marshall();
@@ -51,7 +51,7 @@ public class AppInfoTest {
 
   @Test
   public void writeToParcel() {
-    roundtrip(APP1);
-    roundtrip(NULL1);
+    verifyParcelSerializationRoundtrip(APP1);
+    verifyParcelSerializationRoundtrip(NULL1);
   }
 }
