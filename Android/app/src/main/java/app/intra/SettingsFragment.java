@@ -29,12 +29,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import androidx.annotation.MainThread;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import app.intra.util.AppInfo;
 
 /**
  * UI Fragment for displaying user preferences.
@@ -45,44 +44,14 @@ import androidx.preference.PreferenceFragmentCompat;
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-  private static final String LABELS_KEY = "labels";
-  private static final String PACKAGENAMES_KEY = "packageNames";
+  private static final String APPS_KEY = "apps";
 
+  // Acquiring the list of apps happens asynchronously.  To get the list of apps, use the
+  // getAppList() function, which will wait for the enumeration to complete if necessary.
   private AppEnumerationTask enumerator = null;
-  private ArrayList<String> labels = null;
-  private ArrayList<String> packageNames = null;
-  private MultiSelectListPreference apps = null;
+  private ArrayList<AppInfo> appList = null;
 
-  /**
-   * Custom pair class for labels (human-readable names) and package names (Java-style package
-   * identifiers).  This class's primary purpose is to expose a custom ordering, where entries
-   * are sorted by label (if non-null) before packageName, and Entries with null labels are placed
-   * after those with non-null labels.
-   */
-  private class Entry implements Comparable<Entry> {
-    final String label;  // Human-readable app name (may be null)
-    final String packageName;  // Java-style package name (non-null)
-
-    Entry(@Nullable String label, @NonNull String packageName) {
-      this.label = label;
-      this.packageName = packageName;
-    }
-
-    @Override
-    public int compareTo(@NonNull Entry other) {
-      if (label == null) {
-        if (other.label == null) {
-          return packageName.compareTo(other.packageName);
-        }
-        return -1;
-      } else if (other.label == null) {
-        return 1;
-      } else if (!label.equals(other.label)) {
-        return label.compareTo(other.label);
-      }
-      return packageName.compareTo(other.packageName);
-    }
-  }
+  private MultiSelectListPreference appPref = null;
 
   /**
    * Task representing enumeration of the installed apps.  This task populates |labels| and
@@ -90,12 +59,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
    * ensures that enumeration starts when the user opens Settings, but only blocks the UI when the
    * user opens the Excluded Apps dialog.
    */
-  private class AppEnumerationTask extends AsyncTask<PackageManager, Void, List<Entry>> {
+  private static class AppEnumerationTask extends AsyncTask<PackageManager, Void,
+      ArrayList<AppInfo>> {
     @Override
-    protected List<Entry> doInBackground(PackageManager... pms) {
+    protected ArrayList<AppInfo> doInBackground(PackageManager... pms) {
       PackageManager pm = pms[0];
       List<ApplicationInfo> infos = pm.getInstalledApplications(0);
-      ArrayList<Entry> entries = new ArrayList<>(infos.size());
+      ArrayList<AppInfo> entries = new ArrayList<>(infos.size());
       for (ApplicationInfo info : infos) {
         if ("app.intra".equals(info.packageName)) {
           // Showing ourselves in the list of apps would be confusing and useless.
@@ -106,28 +76,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
           continue;
         }
         // Calling loadLabel() can be very slow, because it needs to read into the APK.
-        entries.add(new Entry(info.loadLabel(pm).toString(), info.packageName));
+        entries.add(new AppInfo(info.loadLabel(pm).toString(), info.packageName));
       }
       Collections.sort(entries);
       return entries;
-    }
-
-    @Override
-    protected void onPostExecute(List<Entry> entries) {
-      labels = new ArrayList<>(entries.size());
-      packageNames = new ArrayList<>(entries.size());
-      for (Entry e : entries) {
-        labels.add(e.label);
-        packageNames.add(e.packageName);
-      }
     }
   }
 
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
-    if (waitForAppInfo()) {
-      savedInstanceState.putStringArrayList(LABELS_KEY, labels);
-      savedInstanceState.putStringArrayList(PACKAGENAMES_KEY, packageNames);
+    ArrayList<AppInfo> appList = getAppList();
+    if (appList != null) {
+      savedInstanceState.putParcelableArrayList(APPS_KEY, appList);
     }
   }
 
@@ -135,17 +95,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     if (savedInstanceState != null) {
       // Restore the app list state.
-      labels = savedInstanceState.getStringArrayList(LABELS_KEY);
-      packageNames = savedInstanceState.getStringArrayList(PACKAGENAMES_KEY);
+      appList = savedInstanceState.getParcelableArrayList(APPS_KEY);
     }
 
     // Load the preferences from an XML resource
     addPreferencesFromResource(R.xml.preferences);
-    apps = (MultiSelectListPreference)findPreference(PersistentState.APPS_KEY);
+    appPref = (MultiSelectListPreference)findPreference(PersistentState.APPS_KEY);
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
       // App exclusion relies on VpnService.Builder.addDisallowedApplication, which was added in L.
-      apps.setEnabled(false);
-      apps.setSummary(R.string.old_android);
+      appPref.setEnabled(false);
+      appPref.setSummary(R.string.old_android);
     }
   }
 
@@ -157,9 +116,18 @@ public class SettingsFragment extends PreferenceFragmentCompat {
       dialogFragment.show(getFragmentManager(), null);
     } else {
       // This is the app exclusion dialog.
-      if (waitForAppInfo()) {
-        apps.setEntries(labels.toArray(new String[0]));
-        apps.setEntryValues(packageNames.toArray(new String[0]));
+      final ArrayList<AppInfo> appList = getAppList();
+      if (appList != null) {
+        String[] labels = new String[appList.size()];
+        String[] packageNames = new String[appList.size()];
+        for (int i = 0; i < appList.size(); ++i) {
+          AppInfo entry = appList.get(i);
+          labels[i] = entry.label;
+          packageNames[i] = entry.packageName;
+        }
+
+        appPref.setEntries(labels);
+        appPref.setEntryValues(packageNames);
       }
 
       super.onDisplayPreferenceDialog(preference);
@@ -178,18 +146,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   }
 
   /**
-   * Blocks until |labels| and |packageNames| have been populated by the async task.
-   * @return True if this was successful, or false if labels and packageNames are not available.
+   * Blocks until the app list is ready.
+   * @return The app list, or null if it could not be generated for any reason.
    */
   @MainThread
-  private boolean waitForAppInfo() {
-    if (labels != null && packageNames != null) {
-      return true;
+  private ArrayList<AppInfo> getAppList() {
+    if (appList != null) {
+      return appList;
     }
     if (enumerator != null) {
       try {
-        enumerator.get();
-        return true;
+        appList = enumerator.get();
       } catch (InterruptedException e) {
         // Thread was interrupted.  This is probably fine.
       } catch (ExecutionException e) {
@@ -197,6 +164,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         FirebaseCrash.report(e);
       }
     }
-    return false;
+    return appList;
   }
 }

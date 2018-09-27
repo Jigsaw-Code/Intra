@@ -30,6 +30,7 @@ android {
                 includeCompileClasspath false
             }
         }
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -83,6 +84,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.json:json:20171018'
     testImplementation 'org.mockito:mockito-core:2.13.0'
+    // Required for instrumented tests
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0-rc01'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha1'
     // UI libraries.
     implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
     implementation 'com.google.android.material:material:1.0.0-rc01'
