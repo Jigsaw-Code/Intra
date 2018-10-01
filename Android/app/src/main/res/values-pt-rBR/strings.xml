@@ -1,0 +1,82 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Um caminho mais seguro para uma Internet mais aberta</string>
+  <string name="intro_benefit_body">Quando você usa a Internet, o dispositivo precisa procurar endereços em uma lista de contatos da Internet. Às vezes, sua conexão informa o endereço errado a você.</string>
+  <string name="intro_manipulation_headline">Proteção contra endereços errados</string>
+  <string name="intro_manipulation_body">O Intra criptografa sua conexão DNS para evitar que você receba endereços errados que não levam a lugar nenhum (manipulação de DNS).</string>
+  <string name="intro_details_headline">O Intra precisa monitorar o tráfego de rede para ativar a proteção</string>
+  <string name="intro_details_body">Para começar, toque em \"OK\" ao ver a solicitação de conexão. Por padrão, suas consultas serão roteadas para o DNS público do Google (<a href="https://developers.google.com/speed/public-dns/privacy">Política de Privacidade</a>). Você pode escolher outro serviço nas configurações do app.</string>
+  <string name="intro_back">voltar</string>
+  <string name="intro_next">próxima</string>
+  <string name="intro_accept">aceitar</string>
+  <string name="about_headline">DNS confiável e seguro</string>
+  <string name="about_text">O Intra roteia suas consultas de DNS por uma conexão HTTPS segura para protegê-las. Isso reduz o risco de você ser direcionado ao site errado ou ter a navegação bloqueada ou observada.</string>
+  <string name="privacy_text">Por padrão, suas consultas serão encaminhadas para o
+    <a href="https://developers.google.com/speed/public-dns/">DNS público do Google</a>
+    (<a href="https://developers.google.com/speed/public-dns/privacy">Política de Privacidade</a>).
+    Você também pode usar o <a href="https://cloudflare-dns.com">Cloudflare</a>
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Política de Privacidade</a>)
+    ou outro serviço DNS por HTTPS.</string>
+  <string name="accept">Primeiros passos</string>
+  <string name="drawer_open">Abrir a gaveta de navegação</string>
+  <string name="drawer_close">Fechar a gaveta de navegação</string>
+  <string name="home">Página inicial</string>
+  <string name="settings">Configurações</string>
+  <string name="feedback">Enviar feedback</string>
+  <string name="support">Suporte</string>
+  <string name="privacy_link">Política de Privacidade</string>
+  <string name="tos_link">Termos de Serviço</string>
+  <string name="source_code">Código-fonte</string>
+  <string name="short_credits_text">O Intra é um projeto experimental de código aberto da <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+  <string name="credits_text">O Intra foi criado pela <a href="https://jigsaw.google.com">Jigsaw</a>. Os endereços IP são baseados em dados do site DB-IP.com.</string>
+  <string name="indicator_on">Ativado</string>
+  <string name="indicator_off">Desativado</string>
+  <string name="status_exposed">Exposto</string>
+  <string name="explanation_exposed">Sua conexão está exposta a ataques ao DNS.</string>
+  <string name="status_protected">Protegido</string>
+  <string name="explanation_protected">Sua conexão está protegida contra ataques ao DNS.</string>
+  <string name="status_upgraded">Vulnerável</string>
+  <string name="explanation_upgraded">Sua conexão está protegida pelo DNS particular do Android, mas um invasor pode desativar ou comprometer essa proteção.</string>
+  <string name="status_strict">Protegido pelo Android</string>
+  <string name="explanation_strict">O Intra detectou que a configuração de DNS particular do Android está ativada. Como suas consultas DNS já estão protegidas, não é necessário ativar o Intra.</string>
+  <string name="status_starting">Iniciando…</string>
+  <string name="explanation_starting">Aguarde. O Intra está estabelecendo uma conexão com o servidor.</string>
+  <string name="status_waiting">Aguardando…</string>
+  <string name="explanation_offline">Seu dispositivo está off-line. O Intra está aguardando uma conexão de rede.</string>
+  <string name="explanation_vpn">O Intra detectou outra VPN no seu dispositivo. Se você ativar o Intra, essa VPN será desativada.
+Uma VPN confiável é mais segura que o Intra.</string>
+  <string name="explanation_failing">Atenção: houve falha nas consultas. Escolha outro servidor e reinicie o Intra.</string>
+  <string name="system_details">Detalhes do sistema</string>
+  <string name="num_requests">Todas as consultas</string>
+  <string name="queries_per_minute">Consultas recentes</string>
+  <string name="transport_label">Transporte criptografado</string>
+  <string name="insecure_transport_label">Transporte não criptografado</string>
+  <string name="server_label">Servidor DNS seguro</string>
+  <string name="insecure_server_label">Servidor DNS fornecido pela rede</string>
+  <string name="unknown_server">(servidor desconhecido)</string>
+  <string name="show_history">Mostrar consultas recentes</string>
+  <string name="query_label">Consulta</string>
+  <string name="type_label">Tipo</string>
+  <string name="latency_label">Latência</string>
+  <string name="resolver_label">Local do resolvedor</string>
+  <string name="destination_label">Servidor de destino</string>
+  <string name="server_choice">Selecionar o servidor DNS por HTTPS</string>
+  <string name="server_choice_summary">Em uso: %s</string>
+  <string name="server_choice_custom">URL do servidor personalizado</string>
+  <string name="server_choice_warning">O servidor personalizado precisa ser um URL https:// válido</string>
+  <string name="excluded_apps">Apps excluídos</string>
+  <string name="excluded_apps_summary">As consultas DNS dos apps selecionados não passarão pelo Intra. Se um app for incompatível com o Intra, você poderá adicioná-lo aqui.</string>
+  <string name="excluded_apps_title">Marcar apps excluídos do Intra</string>
+  <string name="old_android">Esta funcionalidade não está disponível na sua versão do Android.</string>
+  <string name="before_feedback">Ajude a aprimorar o Intra. O produto está na fase inicial de desenvolvimento, e precisamos do seu feedback para melhorá-lo.
+Diga o que está dando certo e o que podemos mudar. Agradecemos sua colaboração.</string>
+  <string name="feedback_hint">Seu feedback</string>
+  <string name="after_feedback">Estes comentários serão enviados à equipe do Intra. Não inclua informações pessoais no feedback.</string>
+  <string name="submit_feedback">Enviar</string>
+  <string name="notification_title">A proteção do DNS está ativa</string>
+  <string name="notification_content">Toque para alterar a configuração da proteção do DNS</string>
+  <string name="channel_name">Notificação de proteção do DNS ativa</string>
+  <string name="channel_description">Esta notificação é exibida quando a proteção do DNS está ativa.</string>
+  <string name="warning_title">Aviso: o Intra foi desativado</string>
+  <string name="warning_channel_name">Aviso</string>
+  <string name="warning_channel_description">Esta notificação é exibida quando o Intra encontra um problema.</string>
+</resources>

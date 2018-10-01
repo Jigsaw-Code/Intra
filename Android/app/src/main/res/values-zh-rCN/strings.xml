@@ -1,0 +1,82 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">更安全的路由助您开启更开放的互联网之旅</string>
+  <string name="intro_benefit_body">当您使用互联网时，您的设备需要在互联网连接列表中查找地址。有时您可能会连接到错误的地址。</string>
+  <string name="intro_manipulation_headline">防止连接到错误的地址</string>
+  <string name="intro_manipulation_body">Intra 可通过加密您的 DNS 连接，防止您连接到无果的错误地址（DNS 篡改）。</string>
+  <string name="intro_details_headline">Intra 需要监测网络流量，以开启保护功能</string>
+  <string name="intro_details_body">当您看到连接请求时，点按“确定”即可开始连接。默认将您的查询路由至 Google 公共 DNS（<a href="https://developers.google.com/speed/public-dns/privacy">隐私权政策</a>）。您可以在应用设置中选择其他服务。</string>
+  <string name="intro_back">上一页</string>
+  <string name="intro_next">下一页</string>
+  <string name="intro_accept">接受</string>
+  <string name="about_headline">安全可靠的 DNS</string>
+  <string name="about_text">Intra 通过安全的 HTTPS 连接为您的 DNS 查询建立路由，从而保护这些查询。这会减少将您定向至错误的网站或让您的浏览遭到屏蔽或监视的机率。</string>
+  <string name="privacy_text">默认将您的查询路由至
+    <a href="https://developers.google.com/speed/public-dns/">Google 公共 DNS</a>
+    （<a href="https://developers.google.com/speed/public-dns/privacy">隐私权政策</a>）。
+    您还可以选择使用 <a href="https://cloudflare-dns.com">Cloudflare</a>
+    （<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">隐私权政策</a>）
+    或任何其他 DNS-over-HTTPS 服务。</string>
+  <string name="accept">开始使用</string>
+  <string name="drawer_open">打开抽屉式导航栏</string>
+  <string name="drawer_close">关闭抽屉式导航栏</string>
+  <string name="home">首页</string>
+  <string name="settings">设置</string>
+  <string name="feedback">提交反馈</string>
+  <string name="support">支持</string>
+  <string name="privacy_link">隐私权政策</string>
+  <string name="tos_link">服务条款</string>
+  <string name="source_code">源代码</string>
+  <string name="short_credits_text">Intra 是由 <a href="https://jigsaw.google.com">Jigsaw</a> 推出的一款实验性开放源代码项目。</string>
+  <string name="credits_text">Intra 由 <a href="https://jigsaw.google.com">Jigsaw</a> 开发。IP 位置基于 DB-IP.com 的数据。</string>
+  <string name="indicator_on">开启</string>
+  <string name="indicator_off">关闭</string>
+  <string name="status_exposed">未受保护</string>
+  <string name="explanation_exposed">您的连接未受保护，可能会遭到 DNS 攻击。</string>
+  <string name="status_protected">已受保护</string>
+  <string name="explanation_protected">您的连接已受保护，将免于 DNS 攻击。</string>
+  <string name="status_upgraded">易受攻击</string>
+  <string name="explanation_upgraded">您的连接目前已受 Android 私有 DNS 保护，但是攻击者可停用或破坏此保护。</string>
+  <string name="status_strict">由 Android 保护</string>
+  <string name="explanation_strict">Intra 检测到 Android 私有 DNS 设置已启用。这代表您的 DNS 查询已受保护，因此您无需启用 Intra。</string>
+  <string name="status_starting">正在启动…</string>
+  <string name="explanation_starting">请稍等，Intra 正在建立服务器连接。</string>
+  <string name="status_waiting">正在等待…</string>
+  <string name="explanation_offline">您的设备未连接到网络。Intra 在等待网络连接。</string>
+  <string name="explanation_vpn">Intra 在您的设备上检测到了其他 VPN。如果您启用 Intra，该 VPN 则会停用。
+    Intra 的安全性不及可信的 VPN。</string>
+  <string name="explanation_failing">警告：查询失败。您可能需要选择其他服务器或重启 Intra。</string>
+  <string name="system_details">系统详细信息</string>
+  <string name="num_requests">迄今为止的查询数</string>
+  <string name="queries_per_minute">近期查询数</string>
+  <string name="transport_label">加密的传输</string>
+  <string name="insecure_transport_label">未加密的传输</string>
+  <string name="server_label">安全的 DNS 服务器</string>
+  <string name="insecure_server_label">网络提供的 DNS 服务器</string>
+  <string name="unknown_server">（未知服务器）</string>
+  <string name="show_history">显示近期的查询</string>
+  <string name="query_label">查询</string>
+  <string name="type_label">类型</string>
+  <string name="latency_label">延迟时间</string>
+  <string name="resolver_label">解析器位置</string>
+  <string name="destination_label">目标服务器</string>
+  <string name="server_choice">选择 DNS-over-HTTPS 服务器</string>
+  <string name="server_choice_summary">目前为 %s</string>
+  <string name="server_choice_custom">自定义服务器网址</string>
+  <string name="server_choice_warning">自定义服务器必须是以 https:// 开头的有效网址</string>
+  <string name="excluded_apps">排除的应用</string>
+  <string name="excluded_apps_summary">来自所选应用的 DNS 查询将不通过 Intra 处理。如果某个应用与 Intra 不兼容，您可以将其添加至此处。</string>
+  <string name="excluded_apps_title">将应用标记为从 Intra 中排除</string>
+  <string name="old_android">您目前的 Android 版本尚不支持此功能。</string>
+  <string name="before_feedback">帮助我们改进 Intra！Intra 这款产品尚处于初级阶段，我们需要您的帮助让它更加完善。
+    请告诉我们它的优缺点，谢谢！</string>
+  <string name="feedback_hint">您的反馈</string>
+  <string name="after_feedback">此信息将会发送至 Intra 团队。请勿在反馈中加入任何个人信息。</string>
+  <string name="submit_feedback">提交</string>
+  <string name="notification_title">DNS 保护已启用</string>
+  <string name="notification_content">点按即可更改 DNS 保护设置</string>
+  <string name="channel_name">DNS 保护启用通知</string>
+  <string name="channel_description">此通知在 DNS 保护处于启用状态时显示。</string>
+  <string name="warning_title">警告：Intra 已停用</string>
+  <string name="warning_channel_name">警告</string>
+  <string name="warning_channel_description">当 Intra 遇到问题时显示。</string>
+</resources>
