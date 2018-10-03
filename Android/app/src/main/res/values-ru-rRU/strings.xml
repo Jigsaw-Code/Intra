@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings">Настройки</string>
+    <string name="feedback">Оставить отзыв</string>
+    <string name="privacy_link">Политика конфиденциальности</string>
+    <string name="tos_link">Условия использования</string>
+    <string name="source_code">Исходный код</string>
+    <string name="home">Домой</string>
+    <string name="about_text">Intra защищает ваши DNS запросы путем их маршрутизации через безопасное HTTPS соединение. Это снижает вероятность того, что они будут изменены, заблокированы или отслежены.</string>
+    <string name="about_headline">Честный и безопасный DNS</string>
+    <string name="accept">Начать</string>
+    <string name="privacy_text">"По умолчанию ваши запросы будут перенаправляться на <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a> (<a href="https://developers.google.com/speed/public-dns/privacy">Политика конфиденциальности</a>). Вы также можете использовать <a href="https://cloudflare-dns.com">Cloudflare</a> (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Политика конфиденциальности</a>) или любой другой DNS-over-HTTPS сервис."</string>
+    <string name="short_credits_text">Intra - это эксперементальный проект с открытым исходным кодом от команды <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+    <string name="credits_text">Intra был сделан командой <a href="https://jigsaw.google.com">Jigsaw</a>. Расположение IP-адресов основано на информации от DB-IP.com.</string>
+    <string name="dns_on"><![CDATA[Ваши DNS запросы <font color=\"#%06X\">защищены</font>]]></string>
+    <string name="dns_off"><![CDATA[Ваши DNS запросы <font color=\"#%06X\">не защищены</font>]]></string>
+    <string name="enable_protection">включить защиту</string>
+    <string name="disable_protection">отключить</string>
+    <string name="system_details">Системные подробности</string>
+    <string name="num_requests">Всего запросов</string>
+    <string name="queries_per_minute">Последние запросы</string>
+    <string name="transport_label">Зашифрованный канал</string>
+    <string name="insecure_transport_label">Незашифрованный канал</string>
+    <string name="server_label">Безопасный DNS сервер</string>
+    <string name="insecure_server_label">DNS сервер вашей сети</string>
+    <string name="unknown_server">(неизвестный сервер)</string>
+    <string name="show_history">Показать последние запросы</string>
+    <string name="query_label">Запрос</string>
+    <string name="type_label">Тип</string>
+    <string name="latency_label">Задержка</string>
+    <string name="resolver_label">Расположение резолвера</string>
+    <string name="destination_label">Конечный сервер</string>
+    <string name="before_feedback">Помогите нам улучшить Intra! Приложение находится на ранней стадии разработки и нам нужна ваша помощь, чтобы сделать его лучше. Сообщите нам, что у вас работает, а что нет. Спасибо!</string>
+    <string name="feedback_hint">Ваш отзыв</string>
+    <string name="after_feedback">Эта информация будет отправлена команде Intra. Пожалуйста, не оставляйте в отзыве любую персональную информацию.</string>
+    <string name="submit_feedback">Отправить</string>
+    <string name="notification_title">Защита DNS активирована</string>
+    <string name="notification_content">Нажмите, чтобы изменить настройки</string>
+    <string name="channel_name">Защита DNS Активирована</string>
+    <string name="channel_description">Это уведомление активно, пока DNS защита работает.</string>
+    <string name="warning_title">Внимание: Intra отключен</string>
+    <string name="warning_channel_name">Внимание</string>
+    <string name="warning_channel_description">Отображается, когда Intra столкнулась с проблемой.</string>
+    <string name="vpn_active">Intra обнаружила еще одну VPN на вашем устройстве. Она будет отключена, если вы запустите Intra.</string>
+    <string name="server_choice">Выберите DNS-over-HTTPS сервер</string>
+    <string name="server_choice_summary">"В настоящее время <xliff:g example="dns.google.com" id="server_name">%s</xliff:g>"</string>
+    <string name="server_choice_custom">"Пользовательский URL-адрес сервера "</string>
+    <string name="server_choice_warning">Адрес сервера должен начинаться с https://</string>
+    <string name="excluded_apps">Исключенные приложения</string>
+    <string name="excluded_apps_summary">DNS-запросы из любых выбранных приложений не будут проходить через Intra. Если приложение несовместимо с Intra, вы можете добавить его здесь.</string>
+    <string name="excluded_apps_title">Отметьте приложения для исключения из Intra</string>
+    <string name="old_android">Этот функционал недоступен на вашей версии системы.</string>
+</resources>
