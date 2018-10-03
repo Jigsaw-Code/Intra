@@ -88,6 +88,11 @@
     Submit Feedback
   </string>
 
+  <string name="support"
+          description="Menu entry that links to documentation and interactive support.">
+    Support
+  </string>
+
   <string name="privacy_link"
           description="Link to the privacy policy.">
     Privacy Policy
