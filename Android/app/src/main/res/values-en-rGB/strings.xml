@@ -1,0 +1,88 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">A safer route to a more open Internet</string>
+  <string name="intro_benefit_body">When you use the Internet, your device needs to look up addresses in an Internet contact list. Sometimes your connection can give you the wrong address.</string>
+  <string name="intro_manipulation_headline">Protection from wrong addresses</string>
+  <string name="intro_manipulation_body">Intra protects you from getting bad addresses that lead to dead ends (DNS manipulation) by encrypting your DNS connection.</string>
+  <string name="intro_details_headline">Intra needs to monitor network traffic to enable protection</string>
+  <string name="intro_details_body">Tap OK when you see the connection request to start. By default, your queries will be routed to Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>). You can choose another service in the app settings.</string>
+  <string name="intro_back">back</string>
+  <string name="intro_next">next</string>
+  <string name="intro_accept">accept</string>
+  <string name="about_headline">Honest and secure DNS</string>
+  <string name="about_text">Intra protects your DNS queries by routing them over a secure HTTPS connection. This reduces the
+    chance that you will be sent to the wrong site, or have your browsing blocked or observed.</string>
+  <string name="privacy_text">By default, your queries will be routed to
+    <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
+    (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>).
+    You can also choose to use <a href="https://cloudflare-dns.com">Cloudflare</a>
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>)
+    or any other DNS-over-HTTPS service.</string>
+  <string name="accept">Get Started</string>
+  <string name="drawer_open">Open navigation drawer</string>
+  <string name="drawer_close">Close navigation drawer</string>
+  <string name="home">Home</string>
+  <string name="settings">Settings</string>
+  <string name="feedback">Submit Feedback</string>
+  <string name="support">Support</string>
+  <string name="privacy_link">Privacy Policy</string>
+  <string name="tos_link">Terms of Service</string>
+  <string name="source_code">Source Code</string>
+  <string name="short_credits_text">Intra is an experimental open-source project by <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+  <string name="credits_text">Intra was made by <a href="https://jigsaw.google.com">Jigsaw</a>. IP locations are based on data
+    from DB-IP.com.</string>
+  <string name="indicator_on">On</string>
+  <string name="indicator_off">Off</string>
+  <string name="status_exposed">Exposed</string>
+  <string name="explanation_exposed">Your connection is exposed to DNS attacks.</string>
+  <string name="status_protected">Protected</string>
+  <string name="explanation_protected">Your connection is protected from DNS attacks.</string>
+  <string name="status_upgraded">Vulnerable</string>
+  <string name="explanation_upgraded">Your connection is currently protected by Android Private DNS, but an attacker could disable
+    or undermine this protection.</string>
+  <string name="status_strict">Protected by Android</string>
+  <string name="explanation_strict">Intra has detected that the Android Private DNS setting is enabled. This means that your DNS
+    queries are already protected, so there\'s no need to enable Intra.</string>
+  <string name="status_starting">Starting…</string>
+  <string name="explanation_starting">Just a moment. Intra is establishing a server connection.</string>
+  <string name="status_waiting">Waiting…</string>
+  <string name="explanation_offline">Your device is offline. Intra is waiting for a network connection.</string>
+  <string name="explanation_vpn">Intra has detected another VPN on your device.  If you enable Intra, that VPN will be disabled.
+    Intra is not as secure as a trusted VPN.</string>
+  <string name="explanation_failing">Warning: Queries are failing. You may want to choose a different server and restart Intra.</string>
+  <string name="system_details">System details</string>
+  <string name="num_requests">Lifetime queries</string>
+  <string name="queries_per_minute">Recent queries</string>
+  <string name="transport_label">Encrypted transport</string>
+  <string name="insecure_transport_label">Unencrypted transport</string>
+  <string name="server_label">Secure DNS server</string>
+  <string name="insecure_server_label">Network-provided DNS server</string>
+  <string name="unknown_server">(unknown server)</string>
+  <string name="show_history">Show recent queries</string>
+  <string name="query_label">Query</string>
+  <string name="type_label">Type</string>
+  <string name="latency_label">Latency</string>
+  <string name="resolver_label">Resolver location</string>
+  <string name="destination_label">Destination server</string>
+  <string name="server_choice">Select DNS over HTTPS Server</string>
+  <string name="server_choice_summary">Currently %s</string>
+  <string name="server_choice_custom">Custom server URL</string>
+  <string name="server_choice_warning">Custom server must be a valid https:// URL</string>
+  <string name="excluded_apps">Excluded apps</string>
+  <string name="excluded_apps_summary">DNS queries from any selected apps will not go through Intra. If an app appears to be
+    incompatible with Intra, you can add it here.</string>
+  <string name="excluded_apps_title">Mark apps to exclude from Intra</string>
+  <string name="old_android">This functionality is not available on your version of Android.</string>
+  <string name="before_feedback">Help us to improve Intra! Intra is an early-stage product and we need your help to make it better.
+    Tell us what\'s working, and what\'s not. Thanks!</string>
+  <string name="feedback_hint">Your feedback</string>
+  <string name="after_feedback">This information will be sent to the Intra team. Please do not include any personal information
+    in your feedback.</string>
+  <string name="submit_feedback">Submit</string>
+  <string name="notification_title">DNS protection is active</string>
+  <string name="notification_content">Tap to change DNS protection setting</string>
+  <string name="channel_name">DNS Protection Active Notification</string>
+  <string name="channel_description">This notification appears while DNS protection is active.</string>
+  <string name="warning_title">Warning: Intra has been deactivated</string>
+  <string name="warning_channel_name">Warning</string>
+  <string name="warning_channel_description">Shown when Intra has encountered a problem.</string>
+</resources>

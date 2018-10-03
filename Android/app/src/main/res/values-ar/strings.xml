@@ -1,0 +1,89 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">مسار أكثر أمانًا لمزيد من الحماية للإنترنت المفتوح</string>
+  <string name="intro_benefit_body">عند استخدام الإنترنت، يبحث جهازك عن العناوين في إحدى قوائم جهات الاتصال على الإنترنت. وفي بعض الأحيان، قد ينتُج عن الاتصال عنوان خاطئ.</string>
+  <string name="intro_manipulation_headline">الحماية من العناوين الخاطئة</string>
+  <string name="intro_manipulation_body">تحميك أداة Intra من الوصول إلى عناوين خاطئة تؤدي إلى نهايات مُغلقة (التلاعب بنظام أسماء النطاقات)، وذلك من خلال تشفير اتصالك بنظام أسماء النطاقات.</string>
+  <string name="intro_details_headline">تحتاج أداة Intra مراقبة حركة بيانات الشبكة من أجل تفعيل الحماية</string>
+  <string name="intro_details_body">انقر على \"موافق\" عند رؤية طلب الاتصال للبدء. سيتم توجيه طلبات بحثك تلقائيًا إلى \"نظام أسماء النطاقات العام من Google\" (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>). ويمكنك اختيار خدمة أخرى من إعدادات التطبيق.</string>
+  <string name="intro_back">السابق</string>
+  <string name="intro_next">التالي</string>
+  <string name="intro_accept">قبول</string>
+  <string name="about_headline">نظام أسماء نطاقات موثوق وآمن</string>
+  <string name="about_text">تحمي أداة Intra طلبات نظام أسماء النطاقات من خلال توجيهها عبر اتصال HTTPS آمن. ويؤدي ذلك إلى
+    تقليل احتمال انتقالك إلى موقع إلكتروني خطأ أو حظر ما تتصفّحه أو مراقبته.</string>
+  <string name="privacy_text">سيتم توجيه طلبات البحث بشكلٍ تلقائي إلى
+    <a href="https://developers.google.com/speed/public-dns/">نظام أسماء النطاقات العام من Google</a>
+    (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>).
+    يمكنك أيضًا اختيار استخدام خدمة <a href="https://cloudflare-dns.com">Cloudflare</a>
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">سياسة الخصوصية</a>)
+    أو أي خدمة أخرى لنظام أسماء النطاقات على بروتوكول HTTPS.</string>
+  <string name="accept">البدء</string>
+  <string name="drawer_open">فتح لائحة التنقّل</string>
+  <string name="drawer_close">إغلاق لائحة التنقّل</string>
+  <string name="home">الشاشة الرئيسية</string>
+  <string name="settings">الإعدادات</string>
+  <string name="feedback">إرسال ملاحظات</string>
+  <string name="support">الدعم</string>
+  <string name="privacy_link">سياسة الخصوصية</string>
+  <string name="tos_link">بنود الخدمة</string>
+  <string name="source_code">رمز المصدر</string>
+  <string name="short_credits_text">أداة Intra مشروع تجريبي مفتوح المصدر مُقدَّم من <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
+  <string name="credits_text">أنشأت <a href="https://jigsaw.google.com">Jigsaw</a> أداة Intra. وتستند مواقع IP إلى البيانات المأخوذة
+
+    من DB-IP.com.</string>
+  <string name="indicator_on">مُفعَّل</string>
+  <string name="indicator_off">غير مُفعَّل</string>
+  <string name="status_exposed">مُعرَّض للهجمات</string>
+  <string name="explanation_exposed">اتصالك مُعرَّض لهجمات نظام أسماء النطاقات.</string>
+  <string name="status_protected">مَحميّ</string>
+  <string name="explanation_protected">اتصالك مَحميّ من هجمات نظام أسماء النطاقات.</string>
+  <string name="status_upgraded">ضعيف الحماية</string>
+  <string name="explanation_upgraded">يخضع اتصالك حاليًا لحماية نظام أسماء النطاقات الخاصة في نظام تشغيل Android، ولكن يستطيع المهاجمون إيقاف
+    هذه الحماية أو إضعافها.</string>
+  <string name="status_strict">خاضِع لحماية Android</string>
+  <string name="explanation_strict">رصدت أداة Intra تفعيل إعداد نظام أسماء النطاقات الخاصة في نظام تشغيل Android. وهذا يعني أن طلبات البحث
+    لنظام أسماء النطاقات مَحمية من قبل، وبالتالي لا داعي لتفعيل Intra.</string>
+  <string name="status_starting">جارٍ البدء…</string>
+  <string name="explanation_starting">يُرجى الانتظار، يتم الآن إنشاء اتصال بالخادم من خلال أداة Intra.</string>
+  <string name="status_waiting">جارٍ الانتظار…</string>
+  <string name="explanation_offline">جهازك غير متصّل بالإنترنت، وIntra في انتظار الاتصال بالشبكة.</string>
+  <string name="explanation_vpn">لقد رصدت أداة Intra شبكة ظاهرية خاصة أخرى على جهازك. وفي حال تفعيل Intra، سيتم إيقاف تلك الشبكة.
+    لا تتمتع أداة Intra بنفس مستوى الأمان الذي تتمتع به شبكة ظاهرية خاصة موثوقة.</string>
+  <string name="explanation_failing">تحذير: يتعذّر إجراء طلبات البحث. يمكنك اختيار خادم مختلف وإعادة تشغيل Intra.</string>
+  <string name="system_details">تفاصيل النظام</string>
+  <string name="num_requests">الطلبات حتى الآن</string>
+  <string name="queries_per_minute">الطلبات الحديثة</string>
+  <string name="transport_label">النقل المشفر</string>
+  <string name="insecure_transport_label">النقل غير المشفر</string>
+  <string name="server_label">خادم نظام أسماء النطاقات الآمن</string>
+  <string name="insecure_server_label">خادم نظام أسماء النطاقات الوارد من الشبكة</string>
+  <string name="unknown_server">(خادم غير معروف)</string>
+  <string name="show_history">إظهار الطلبات الحديثة</string>
+  <string name="query_label">الطلب</string>
+  <string name="type_label">النوع</string>
+  <string name="latency_label">وقت الاستجابة</string>
+  <string name="resolver_label">موقع المحلل</string>
+  <string name="destination_label">خادم الوجهة</string>
+  <string name="server_choice">اختيار نظام أسماء النطاقات على خادم HTTPS</string>
+  <string name="server_choice_summary">حاليًا %s</string>
+  <string name="server_choice_custom">عنوان URL لخادم مخصّص</string>
+  <string name="server_choice_warning">يجب أن يكون الخادم المخصّص عنوان URL صالحًا يبدأ بالصيغة https://‎</string>
+  <string name="excluded_apps">التطبيقات المُستبعَدة</string>
+  <string name="excluded_apps_summary">لن يتم توجيه طلبات بحث لنظام أسماء النطاقات من أي تطبيقات محددة عبر Intra. إذا بدا أن أحد التطبيقات
+    غير متوافق مع Intra، يمكنك إضافته هنا.</string>
+  <string name="excluded_apps_title">تمييز التطبيقات المطلوب استبعادها من Intra</string>
+  <string name="old_android">هذه الوظيفة غير متوفّرة على إصدار نظام تشغيل Android عندك.</string>
+  <string name="before_feedback">ساعدنا على تحسين Intra! ما زال Intra منتجًا في طور النشوء ونحن بحاجة لمساعدتك لتحسينه.
+    يُرجى إعلامنا بميزاته التي تعمل بشكلٍ جيد وما به من أعطال. شكرًا لك!</string>
+  <string name="feedback_hint">ملاحظاتك</string>
+  <string name="after_feedback">سيتم إرسال هذه المعلومات إلى فريق عمل Intra. يُرجى عدم إضافة أي بيانات شخصية
+    إلى ملاحظاتك.</string>
+  <string name="submit_feedback">إرسال</string>
+  <string name="notification_title">إعداد حماية نظام أسماء النطاقات نشط</string>
+  <string name="notification_content">انقر لتغيير إعداد حماية نظام أسماء النطاقات</string>
+  <string name="channel_name">إشعار الحماية النشطة لنظام أسماء النطاقات</string>
+  <string name="channel_description">يظهر هذا الإشعار عندما يكون إعداد حماية نظام أسماء النطاقات نشطًا.</string>
+  <string name="warning_title">تحذير: تم إلغاء تنشيط Intra</string>
+  <string name="warning_channel_name">تحذير</string>
+  <string name="warning_channel_description">يظهر هذا الإشعار عندما يصادف Intra مشكلة ما.</string>
+</resources>

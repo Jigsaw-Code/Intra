@@ -1,0 +1,84 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">ใช้อินเทอร์เน็ตแบบเปิดบนเส้นทางที่ปลอดภัยมากขึ้น</string>
+  <string name="intro_benefit_body">เมื่อใช้อินเทอร์เน็ต อุปกรณ์ของคุณต้องค้นหาที่อยู่ในรายชื่อติดต่อทางอินเทอร์เน็ต แต่บางครั้งการเชื่อมต่อก็อาจทำให้ระบุที่อยู่ผิดได้</string>
+  <string name="intro_manipulation_headline">การป้องกันที่อยู่ผิด</string>
+  <string name="intro_manipulation_body">Intra ช่วยปกป้องคุณจากการได้รับที่อยู่ที่ไม่ถูกต้องซึ่งนำไปสู่ทางตัน (การเปลี่ยนเส้นทาง DNS) โดยการเข้ารหัสการเชื่อมต่อ DNS</string>
+  <string name="intro_details_headline">Intra ต้องตรวจสอบการจราจรของข้อมูลในเครือข่ายเพื่อทำการปกป้อง</string>
+  <string name="intro_details_body">แตะ \"ตกลง\" เมื่อเห็นคำขอการเชื่อมต่อเพื่อเริ่มต้นใช้งาน โดยค่าเริ่มต้น คำขอของคุณจะกำหนดเส้นทางไปที่ DNS สาธารณะของ Google (<a href="https://developers.google.com/speed/public-dns/privacy">นโยบายความเป็นส่วนตัว</a>) นอกจากนี้คุณยังเลือกใช้บริการอื่นในการตั้งค่าแอปได้อีกด้วย</string>
+  <string name="intro_back">ย้อนกลับ</string>
+  <string name="intro_next">ถัดไป</string>
+  <string name="intro_accept">ยอมรับ</string>
+  <string name="about_headline">DNS ที่ไว้ใจได้และปลอดภัย</string>
+  <string name="about_text">Intra ป้องกันการค้นหา DNS โดยการกำหนดเส้นทางการเชื่อมต่อ HTTP ที่ปลอดภัย การดำเนินการนี้จะช่วยลดโอกาสที่คุณจะเข้าถึงเว็บไซต์ที่ไม่ถูกต้อง หรือการท่องเว็บที่ถูกบล็อกหรือมีปัญหา</string>
+  <string name="privacy_text">โดยค่าเริ่มต้น คำขอของคุณจะกำหนดเส้นทางไปที่
+    <a href="https://developers.google.com/speed/public-dns/">DNS สาธารณะของ Google</a>
+    (<a href="https://developers.google.com/speed/public-dns/privacy">นโยบายความเป็นส่วนตัว</a>)
+    นอกจากนี้ยังเลือกใช้ <a href="https://cloudflare-dns.com">Cloudflare</a>
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">นโยบายความเป็นส่วนตัว</a>)
+    หรือบริการ DNS ผ่านโปรโตคอล HTTPS อื่นๆ ได้อีกด้วย</string>
+  <string name="accept">เริ่มต้นใช้งาน</string>
+  <string name="drawer_open">เปิดลิ้นชักการนำทาง</string>
+  <string name="drawer_close">ปิดลิ้นชักการนำทาง</string>
+  <string name="home">หน้าแรก</string>
+  <string name="settings">การตั้งค่า</string>
+  <string name="feedback">ส่งความคิดเห็น</string>
+  <string name="support">การสนับสนุน</string>
+  <string name="privacy_link">นโยบายความเป็นส่วนตัว</string>
+  <string name="tos_link">ข้อกำหนดในการให้บริการ</string>
+  <string name="source_code">ซอร์สโค้ด</string>
+  <string name="short_credits_text">Intra คือโครงการโอเพนซอร์สแบบทดลองโดย <a href="https://jigsaw.google.com">Jigsaw</a></string>
+  <string name="credits_text">Intra ดำเนินการโดย <a href="https://jigsaw.google.com">Jigsaw</a> ตำแหน่ง IP จะขึ้นอยู่กับข้อมูลจาก DB-IP.com.</string>
+  <string name="indicator_on">เปิด</string>
+  <string name="indicator_off">ปิด</string>
+  <string name="status_exposed">มีความเสี่ยง</string>
+  <string name="explanation_exposed">การเชื่อมต่อของคุณเสี่ยงต่อการโจมตี DNS</string>
+  <string name="status_protected">ปลอดภัย</string>
+  <string name="explanation_protected">การเชื่อมต่อของคุณได้รับการป้องกันจากการโจมตี DNS</string>
+  <string name="status_upgraded">ไม่ปลอดภัย</string>
+  <string name="explanation_upgraded">ขณะนี้การเชื่อมต่อของคุณได้รับการป้องกันโดย DNS ส่วนตัวของ Andriod แต่ผู้โจมตีอาจปิดใช้
+    หรือเจาะระบบรักษาความปลอดภัยได้</string>
+  <string name="status_strict">รักษาความปลอดภัยโดย Android</string>
+  <string name="explanation_strict">Intra ตรวจพบว่ามีการเปิดใช้งานการตั้งค่า DNS ส่วนตัวของ Android ซึ่งหมายความว่าคำขอ DNS 
+    ได้รับการรักษาความปลอดภัยแล้ว ดังนั้นจึงไม่จำเป็นต้องเปิดใช้ Intra อีก</string>
+  <string name="status_starting">กำลังเริ่มต้น...</string>
+  <string name="explanation_starting">รอสักครู่ Intra กำลังสร้างการเชื่อมต่อกับเซิร์ฟเวอร์</string>
+  <string name="status_waiting">โปรดรอ…</string>
+  <string name="explanation_offline">อุปกรณ์ของคุณออฟไลน์อยู่ Intra กำลังรอการเชื่อมต่อเครือข่าย</string>
+  <string name="explanation_vpn">Intra ตรวจพบว่ามี VPN อื่นอยู่ในอุปกรณ์ หากคุณเปิดใช้ Intra ระบบจะปิด VPN นี้
+    Intra ไม่ได้มีความปลอดภัยเท่ากับ VPN ที่เชื่อถือได้</string>
+  <string name="explanation_failing">คำเตือน: คำขอไม่สำเร็จ คุณอาจต้องเลือกเซิร์ฟเวอร์อื่นและรีสตาร์ท Intra</string>
+  <string name="system_details">รายละเอียดของระบบ</string>
+  <string name="num_requests">การค้นหาทั้งหมด</string>
+  <string name="queries_per_minute">การค้นหาล่าสุด</string>
+  <string name="transport_label">การส่งข้อมูลที่เข้ารหัส</string>
+  <string name="insecure_transport_label">การส่งข้อมูลที่ไม่เข้ารหัส</string>
+  <string name="server_label">เซิร์ฟเวอร์ DNS ที่ปลอดภัย</string>
+  <string name="insecure_server_label">เซิร์ฟเวอร์ DNS ที่ระบุโดยเครือข่าย</string>
+  <string name="unknown_server">(เซิร์ฟเวอร์ที่ไม่รู้จัก)</string>
+  <string name="show_history">แสดงการค้นหาล่าสุด</string>
+  <string name="query_label">การค้นหา</string>
+  <string name="type_label">ประเภท</string>
+  <string name="latency_label">เวลาในการตอบสนอง</string>
+  <string name="resolver_label">ตำแหน่งตัวแก้ไข</string>
+  <string name="destination_label">เซิร์ฟเวอร์ปลายทาง</string>
+  <string name="server_choice">เลือกเซิร์ฟเวอร์ DNS ที่จะใช้ผ่านโปรโตคอล HTTPS</string>
+  <string name="server_choice_summary">ปัจจุบันใช้ %s</string>
+  <string name="server_choice_custom">URL ของเซิร์ฟเวอร์ที่กำหนดเอง</string>
+  <string name="server_choice_warning">URL ของเซิร์ฟเวอร์ที่กำหนดเองจะต้องอยู่ในรูปแบบ https:// ที่ถูกต้อง</string>
+  <string name="excluded_apps">แอปที่ยกเว้น</string>
+  <string name="excluded_apps_summary">คำขอ DNS จากแอปที่เลือกไว้จะไม่ส่งผ่าน Intra หากพบว่าแอปใด
+    ใช้งานร่วมกับ Intra ไม่ได้ โปรดเพิ่มแอปดังกล่าวที่นี่</string>
+  <string name="excluded_apps_title">เลือกแอปที่ไม่ต้องการใช้กับ Intra</string>
+  <string name="old_android">Android เวอร์ชันที่คุณใช้งานอยู่ไม่มีฟังก์ชันนี้</string>
+  <string name="before_feedback">ช่วยเราปรับปรุง Intra! Intra เป็นผลิตภัณฑ์ระยะเริ่มต้น และเราต้องการให้คุณช่วยทำให้ Intra ดีขึ้น โปรดบอกให้เราว่าสิ่งใดใช้ได้ผลและไม่ได้ผล ขอขอบคุณ!</string>
+  <string name="feedback_hint">ความคิดเห็นของคุณ</string>
+  <string name="after_feedback">ข้อมูลนี้จะส่งไปยังทีม Intra โปรดอย่าใส่ข้อมูลส่วนบุคคลในความคิดเห็นของคุณ</string>
+  <string name="submit_feedback">ส่ง</string>
+  <string name="notification_title">การป้องกัน DNS ทำงานอยู่</string>
+  <string name="notification_content">แตะเพื่อเปลี่ยนการตั้งค่าการป้องกัน DNS</string>
+  <string name="channel_name">การแจ้งเตือนการใช้งานการป้องกัน DNS</string>
+  <string name="channel_description">การแจ้งเตือนนี้จะปรากฎขึ้นในขณะที่การป้องกัน DNS ทำงานอยู่</string>
+  <string name="warning_title">คำเตือน: Intra ถูกปิดการใช้งานแล้ว</string>
+  <string name="warning_channel_name">คำเตือน</string>
+  <string name="warning_channel_description">คำเตือนจะแสดงขึ้นเมื่อ Intra ประสบปัญหา</string>
+</resources>

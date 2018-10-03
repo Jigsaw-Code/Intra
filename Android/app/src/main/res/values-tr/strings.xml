@@ -1,0 +1,88 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Daha açık bir internet deneyimi için daha güvenli bir rota</string>
+  <string name="intro_benefit_body">İnterneti kullandığınızda cihazınızın, adresleri internet iletişim listesinden araması gerekir. Bazen bağlantınız size yanlış adres sunabilir.</string>
+  <string name="intro_manipulation_headline">Yanlış adreslerden korunma</string>
+  <string name="intro_manipulation_body">Intra, DNS bağlantınızı şifreleyerek, çıkmaz yola yönlendiren (DNS manipülasyonu) hatalı adresler almanızı önler.</string>
+  <string name="intro_details_headline">Koruma sağlamak için Intra\'nın ağ trafiğini izlemesi gerekir</string>
+  <string name="intro_details_body">Başlamak için, bağlantı isteğini gördüğünüzde Tamam\'a dokunun. Varsayılan olarak, sorgularınız Google Açık DNS\'e (<a href="https://developers.google.com/speed/public-dns/privacy">Gizlilik Politikası</a>) yönlendirilir. Uygulama ayarlarında başka bir hizmet seçebilirsiniz.</string>
+  <string name="intro_back">geri</string>
+  <string name="intro_next">sonraki</string>
+  <string name="intro_accept">kabul et</string>
+  <string name="about_headline">Güvenilir ve güvenli DNS</string>
+  <string name="about_text">Intra, DNS sorgularınızı güvenli bir HTTPS bağlantısı üzerinden yönlendirerek korur. Bu, yanlış bir siteye
+    yönlendirilmeniz veya tarama deneyiminizin engellenmesi ya da izlenmesi riskini azaltır.</string>
+  <string name="privacy_text">Varsayılan olarak sorgularınız
+    <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>\'e
+    (<a href="https://developers.google.com/speed/public-dns/privacy">Gizlilik Politikası</a>) yönlendirilir.
+    Dilerseniz <a href="https://cloudflare-dns.com">Cloudflare</a>\'i
+    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Gizlilik Politikası</a>)
+    veya diğer herhangi bir HTTPS üzerinden DNS hizmetini kullanmayı da tercih edebilirsiniz.</string>
+  <string name="accept">Başla</string>
+  <string name="drawer_open">Gezinme çekmecesini açın</string>
+  <string name="drawer_close">Gezinme çekmecesini kapatın</string>
+  <string name="home">Ana ekran</string>
+  <string name="settings">Ayarlar</string>
+  <string name="feedback">Geri Bildirim Gönder</string>
+  <string name="support">Destek</string>
+  <string name="privacy_link">Gizlilik Politikası</string>
+  <string name="tos_link">Kullanım Şartları</string>
+  <string name="source_code">Kaynak Kodu</string>
+  <string name="short_credits_text">Intra, <a href="https://jigsaw.google.com">Jigsaw</a>\'un sunduğu açık kaynaklı, deneysel bir projedir.</string>
+  <string name="credits_text">Intra, <a href="https://jigsaw.google.com">Jigsaw</a> tarafından geliştirilmiştir. IP konumları,
+    DB-IP.com sitesinden alınan verilere dayanır.</string>
+  <string name="indicator_on">Açık</string>
+  <string name="indicator_off">Kapalı</string>
+  <string name="status_exposed">Korumasız</string>
+  <string name="explanation_exposed">Bağlantınız, DNS saldırılarına açık durumda.</string>
+  <string name="status_protected">Korumalı</string>
+  <string name="explanation_protected">Bağlantınız, DNS saldırılarına karşı korunuyor.</string>
+  <string name="status_upgraded">Zayıf koruma</string>
+  <string name="explanation_upgraded">Bağlantınız şu anda Android Gizli DNS tarafından korunuyor, ancak bir saldırgan bu korumayı
+    devre dışı bırakabilir veya zayıflatabilir.</string>
+  <string name="status_strict">Android tarafından korunuyor</string>
+  <string name="explanation_strict">Intra, Android Gizli DNS ayarının etkin olduğunu algıladı. Bu, DNS sorgularınızın
+    zaten korunmakta olduğu anlamına geliyor. Dolayısıyla Intra\'nın etkinleştirilmesine gerek yok.</string>
+  <string name="status_starting">Başlatılıyor…</string>
+  <string name="explanation_starting">Lütfen bekleyin. Intra, sunucu bağlantısı kuruyor.</string>
+  <string name="status_waiting">Bekleniyor…</string>
+  <string name="explanation_offline">Cihazınız internete bağlı değil. Intra, ağ bağlantısı kurulmasını bekliyor.</string>
+  <string name="explanation_vpn">Intra, cihazınızda başka bir VPN algıladı. Intra\'yı etkinleştirirseniz söz konusu VPN devre dışı bırakılacak.
+    Intra, güvenilir bir VPN kadar güvenli değildir.</string>
+  <string name="explanation_failing">Uyarı: Sorgular başarısız oluyor. Farklı bir sunucu seçmeyi ve Intra\'yı yeniden başlatmayı deneyin.</string>
+  <string name="system_details">Sistem ayrıntıları</string>
+  <string name="num_requests">Şimdiye kadar korunan sorguların sayısı</string>
+  <string name="queries_per_minute">Yeni korunmaya başlayan sorguların sayısı</string>
+  <string name="transport_label">Şifreli aktarım</string>
+  <string name="insecure_transport_label">Şifresiz aktarım</string>
+  <string name="server_label">Güvenli DNS sunucusu</string>
+  <string name="insecure_server_label">Ağ üzerinden sağlanan DNS sunucusu</string>
+  <string name="unknown_server">(bilinmeyen sunucu)</string>
+  <string name="show_history">Son sorguları göster</string>
+  <string name="query_label">Sorgu</string>
+  <string name="type_label">Tür</string>
+  <string name="latency_label">Gecikme</string>
+  <string name="resolver_label">Çözümleyici konumu</string>
+  <string name="destination_label">Hedef sunucu</string>
+  <string name="server_choice">HTTPS Üzerinden DNS Sunucusunu Seç</string>
+  <string name="server_choice_summary">Şu an %s seçili</string>
+  <string name="server_choice_custom">Özel sunucu URL\'si</string>
+  <string name="server_choice_warning">Özel sunucu, geçerli bir https:// URL\'si olmalıdır</string>
+  <string name="excluded_apps">Hariç tutulan uygulamalar</string>
+  <string name="excluded_apps_summary">Seçili uygulamalardan gönderilen DNS sorguları Intra üzerinden iletilmez. Intra ile
+    uyumlu olmayan bir uygulama varsa buraya ekleyebilirsiniz.</string>
+  <string name="excluded_apps_title">Intra\'da hariç tutulacak uygulamaları işaretleyin</string>
+  <string name="old_android">Sahip olduğunuz Android sürümünde bu işlev kullanılamaz.</string>
+  <string name="before_feedback">Intra\'yı daha iyi hale getirmemize yardımcı olun! Intra geliştirme aşamasında olan bir üründür. Ürünün daha kullanışlı hale getirilmesi için yardımınıza ihtiyacımız var.
+    Bize, çalışan veya çalışmayan özellikleri bildirmenizi rica ediyoruz. Teşekkürler!</string>
+  <string name="feedback_hint">Geri bildiriminiz</string>
+  <string name="after_feedback">Bu bilgiler Intra ekibine gönderilecektir. Lütfen geri bildiriminize kişisel bilgiler
+    eklemeyin.</string>
+  <string name="submit_feedback">Gönder</string>
+  <string name="notification_title">DNS koruması etkin</string>
+  <string name="notification_content">DNS koruması ayarını değiştirmek için dokunun</string>
+  <string name="channel_name">DNS Koruması Etkin Bildirimi</string>
+  <string name="channel_description">DNS koruması etkinken bu bildirim gösterilir.</string>
+  <string name="warning_title">Uyarı: Intra devre dışı bırakıldı</string>
+  <string name="warning_channel_name">Uyarı</string>
+  <string name="warning_channel_description">Intra\'da bir sorun olduğunda bu bildirim gösterilir.</string>
+</resources>

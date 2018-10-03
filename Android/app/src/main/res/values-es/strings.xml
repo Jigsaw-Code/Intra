@@ -23,6 +23,7 @@
   <string name="home">Inicio</string>
   <string name="settings">Ajustes</string>
   <string name="feedback">Enviar comentarios</string>
+  <string name="support">Asistencia</string>
   <string name="privacy_link">Política de privacidad</string>
   <string name="tos_link">Condiciones de uso</string>
   <string name="source_code">Código fuente</string>
@@ -37,8 +38,7 @@
   <string name="status_protected">Protegida</string>
   <string name="explanation_protected">Tu conexión está protegida frente a ataques de DNS.</string>
   <string name="status_upgraded">Vulnerable</string>
-  <string name="explanation_upgraded">Tu conexión está protegida con el ajuste DNS privado de Android, pero un atacante podría inhabilitar
-    o eludir esta protección.</string>
+  <string name="explanation_upgraded">Tu conexión está protegida con el ajuste DNS privado de Android, pero un atacante podría inhabilitar o eludir esta protección.</string>
   <string name="status_strict">Protegida por Android</string>
   <string name="explanation_strict">Intra ha detectado que el ajuste DNS privado de Android está habilitado. Esto significa que tus consultas de DNS ya están protegidas, por lo que no es necesario habilitar Intra.</string>
   <string name="status_starting">Iniciando…</string>
