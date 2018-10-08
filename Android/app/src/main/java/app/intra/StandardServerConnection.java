@@ -97,7 +97,7 @@ public class StandardServerConnection implements ServerConnection {
     data[0] = 0;
     data[1] = 0;
 
-    MediaType mediaType = MediaType.parse("application/dns-udpwireformat");
+    MediaType mediaType = MediaType.parse("application/dns-message");
     RequestBody body = RequestBody.create(mediaType, data);
     Request request = new Request.Builder()
         .url(url)
