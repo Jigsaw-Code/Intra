@@ -17,6 +17,7 @@ package app.intra;
 
 import android.util.Log;
 
+import androidx.annotation.WorkerThread;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -56,6 +57,7 @@ public class GoogleServerConnection implements ServerConnection {
    * work. Blocks for the duration of bootstrap if it has not yet succeeded. This method performs
    * network activity, so it cannot be called on the application's main thread.
    */
+  @WorkerThread
   public static GoogleServerConnection get(GoogleServerDatabase db) {
     GoogleServerConnection s = new GoogleServerConnection(db);
     DualStackResult redirects = s.bootstrap();
