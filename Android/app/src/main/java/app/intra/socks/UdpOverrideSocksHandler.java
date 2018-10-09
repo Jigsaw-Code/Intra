@@ -65,20 +65,16 @@ public class UdpOverrideSocksHandler extends Socks5Handler {
     session.write(new CommandResponseMessage(VERSION, ServerReply.SUCCEEDED, InetAddress
         .getLocalHost(), socketAddress.getPort()));
 
-    // As long as the UDP relay server hasn't crashed and the proxy hasn't been shut down, wait
-    // until the client closes the TCP socket, and then stop the UDP relay server.
-    // This polling loop matches upstream's implementation.  Presumably, an event-based solution is
-    // not possible in sockslib's present architecture.
-    while (udpRelayServer.isRunning()) {
-      try {
-        Thread.sleep(IDLE_TIME_MS);
-      } catch (InterruptedException e) {
-        session.close();
-      }
-      if (session.isClose()) {
-        udpRelayServer.stop();
-      }
+    try {
+      // The client should never send any more data on the control socket, so read() should hang
+      // until the client closes the socket (returning -1) or this thread is interrupted (throwing
+      // InterruptedIOException).
+      int nextByte = session.getInputStream().read();
+    } catch (IOException e) {
+      // This is expected on a thread interrupt.
     }
+    session.close();
+    udpRelayServer.stop();
   }
 
   private class DnsPacketHandler extends Socks5DatagramPacketHandler {
