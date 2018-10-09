@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="intro_benefit_headline">Biztonságosabb út egy nyitottabb internethez</string>
+    <string name="intro_benefit_body">Az internet használatakor a készüléknek fel kell keresnie a kiszolgáló IP címeket egy internetes névjegyzékben. Néha az internetkapcsolata rossz címet adhat.</string>
+    <string name="intro_manipulation_headline">Védelem rossz címek ellen</string>
+    <string name="intro_manipulation_body">Az Intra a DNS-kapcsolat titkosításával megvédi Önt attól, hogy  rossz címeket kapjon (DNS manipuláció).</string>
+    <string name="intro_details_headline">Az Intra-nak figyelnie kell a hálózati forgalmat a védelem engedélyezéséhez</string>
+    <string name="intro_details_body">Nyomjon az OK-ra, amikor megjelenik a kapcsolatkérelem indítása. Alapértelmezés szerint lekérdezései a Google nyilvános DNS-címére (<a href="https://developers.google.com/speed/public-dns/privacy">Adatvédelmi irányelvek</a>) lesznek irányítva. Választhat másik szolgáltatást az alkalmazás beállításai között.</string>
+    <string name="intro_back">vissza</string>
+    <string name="intro_next">következő</string>
+    <string name="intro_accept">elfogad</string>
+    <string name="about_headline">Becsületes és biztonságos DNS</string>
+    <string name="about_text">Az Intra egy biztonságos HTTPS kapcsolaton keresztüli átirányítással védi a DNS lekérdezéseit. Ez csökkenti a rossz webhelyre irányítás, valamint a weboldal blokkolása, és a megfigyelés esélyét.</string>
+    <string name="privacy_text">Alapértelmezés szerint a lekérdezések átirányítódnak a <a href="https://developers.google.com/speed/public-dns/">Google nyilvános DNS-ére</a> (<a href="https://developers.google.com/speed/public-dns/privacy">Adatvédelmi irányelvek</a>). Dönthet a <a href="https://cloudflare-dns.com">Cloudflare-t</a>(<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Adatvédelmi irányelvek</a>), vagy bármely más DNS HTTPS-en keresztül szolgáltatás használata mellett is.</string>
+    <string name="accept">Lássunk neki</string>
+    <string name="drawer_open">Oldalmenü kinyitása</string>
+    <string name="drawer_close">Oldalmenü bezárása</string>
+    <string name="home">Kezdőképernyő</string>
+    <string name="settings">Beállítások</string>
+    <string name="feedback">Visszajelzés küldése</string>
+    <string name="support">Támogatás</string>
+    <string name="privacy_link">Adatvédelmi irányelvek</string>
+    <string name="tos_link">Általános Szerződési Feltételek</string>
+    <string name="source_code">Forráskód</string>
+    <string name="short_credits_text">Az Intra egy kísérleti nyílt forráskódú projekt a <a href="https://jigsaw.google.com">Jigsaw</a>-tól.</string>
+    <string name="credits_text">Az Intra-t a <a href="https://jigsaw.google.com">Jigsaw</a> készítette. Az IP címek a DB-IP.com webhelyről származó adatokon alapulnak.</string>
+    <string name="indicator_on">Bekapcsolva</string>
+    <string name="indicator_off">Kikapcsolva</string>
+    <string name="status_exposed">Védtelen</string>
+    <string name="explanation_exposed">A kapcsolat DNS-támadásoknak van kitéve.</string>
+    <string name="status_protected">Védett</string>
+    <string name="explanation_protected">A kapcsolat védett a DNS-támadásoktól.</string>
+    <string name="status_upgraded">Sebezhető</string>
+    <string name="explanation_upgraded">A kapcsolatot jelenleg az Android Private DNS védi, de egy támadó letilthatja vagy megkerülheti ezt a védelmet.</string>
+    <string name="status_strict">Android által védett</string>
+    <string name="explanation_strict">Az Intra észlelte, hogy az Android Private DNS beállítás engedélyezve van. Ez azt jelenti, hogy a DNS a lekérdezések már védettek, ezért nem szükséges az Intra bekapcsolása</string>
+    <string name="status_starting">Indítás…</string>
+    <string name="explanation_starting">Csak egy pillanat. Az Intra a szerverhez kapcsolódik.</string>
+    <string name="status_waiting">Várakozás…</string>
+    <string name="explanation_offline">A készülék offline állapotban van. Az Intra hálózati kapcsolatra vár.</string>
+    <string name="explanation_vpn">Az Intra másik VPN-t észlelt az eszközön. Ha engedélyezi az Intra szolgáltatást, akkor a másik VPN le lesz tiltva. Az Intra nem olyan biztonságos, mint egy megbízható VPN.</string>
+    <string name="explanation_failing">Figyelem: a lekérdezések sikertelenek. Lehet, hogy másik kiszolgálót kellene választania, és újraindítania az Intra-t.</string>
+    <string name="system_details">Rendszeradatok</string>
+    <string name="num_requests">Összes lekérés</string>
+    <string name="queries_per_minute">Rövid időn belüli lekérdezés</string>
+    <string name="transport_label">Titkosított adatforgalom</string>
+    <string name="insecure_transport_label">Nem titkosított adatforgalom</string>
+    <string name="server_label">Biztonságos DNS-kiszolgáló</string>
+    <string name="insecure_server_label">Hálózat által biztosított DNS-kiszolgáló</string>
+    <string name="unknown_server">(ismeretlen kiszolgáló)</string>
+    <string name="show_history">Legutóbbi lekérdezések megjelenítése</string>
+    <string name="query_label">Lekérdezés</string>
+    <string name="type_label">Típus</string>
+    <string name="latency_label">Válaszidő</string>
+    <string name="resolver_label">Címfeloldó helye</string>
+    <string name="destination_label">Célkiszolgáló</string>
+    <string name="server_choice">Válasszon DNS HTTPS-en keresztül kiszolgálót</string>
+    <string name="server_choice_summary">Jelenleg %s</string>
+    <string name="server_choice_custom">Egyéni kiszolgáló URL</string>
+    <string name="server_choice_warning">Az egyéni kiszolgálónak érvényes https:// URL-nek kell lennie</string>
+    <string name="excluded_apps">Figyelmen kívül hagyott alkalmazások</string>
+    <string name="excluded_apps_summary">A kiválasztott alkalmazások által indított DNS lekérések nem mennek keresztük az Intra-n. Ha egy alkalmazás az Intrával inkompatibilisnek tűnik, itt hozzáadhatja.</string>
+    <string name="excluded_apps_title">Válassza ki az Intra által figyelmen kívül hagyandó alkalmazásokat.</string>
+    <string name="old_android">Ez a funkció nem elérhető az Android verziójánál.</string>
+    <string name="before_feedback">Segítsen nekünk javítani az Intra-n! Az Intra korai stádiumú termék, és szükségünk van a segítségére, hogy jobbá tegyük. Mondja el, mi működik, és mi nem. Köszönjük!</string>
+    <string name="feedback_hint">Az Ön visszajelzése</string>
+    <string name="after_feedback">Ez az információ elküldésre kerül az Intra-csapat számára. Kérjük ne adjon meg semmilyen személyes adatot a visszajelzésében.</string>
+    <string name="submit_feedback">Küldés</string>
+    <string name="notification_title">DNS védelem aktív</string>
+    <string name="notification_content">Érintse meg a DNS védelmi beállítás módosításához</string>
+    <string name="channel_name">DNS-védelem aktív értesítés</string>
+    <string name="channel_description">Ez az értesítés akkor jelenik meg, ha a DNS védelem aktív.</string>
+    <string name="warning_title">Figyelem: az Intra deaktiválva van</string>
+    <string name="warning_channel_name">Figyelmeztetés</string>
+    <string name="warning_channel_description">Akkor jelenik meg ha az Intra problémát észlelt.</string>
+</resources>
