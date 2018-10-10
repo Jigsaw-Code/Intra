@@ -110,11 +110,10 @@ public class SocketPipe implements Pipe {
   @Override
   public boolean stop() {
     if (running) {
+      // Ensure that isRunning() returns false when PipeListener.onStop() runs.
+      running = false;
       pipe1.stop();
       pipe2.stop();
-      if (!pipe1.isRunning() && !pipe2.isRunning()) {
-        running = false;
-      }
     }
     return running;
   }
