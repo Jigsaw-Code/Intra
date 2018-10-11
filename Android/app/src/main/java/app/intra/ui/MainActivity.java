@@ -37,7 +37,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -278,6 +277,14 @@ public class MainActivity extends AppCompatActivity
           }
         });
 
+    // Set up click listeners for the info boxes.
+    setInfoClicker(R.id.lifetime_queries_box, InfoPage.LIFETIME_QUERIES);
+    setInfoClicker(R.id.qpm_box, InfoPage.RECENT_QUERIES);
+    setInfoClicker(R.id.protocol_box, InfoPage.SECURE_PROTOCOL);
+    setInfoClicker(R.id.server_box, InfoPage.SECURE_SERVER);
+    setInfoClicker(R.id.insecure_protocol_box, InfoPage.INSECURE_PROTOCOL);
+    setInfoClicker(R.id.insecure_server_box, InfoPage.INSECURE_SERVER);
+
     // Restore number of requests.
     long numRequests = tracker.getNumRequests();
     showNumRequests(numRequests);
@@ -288,6 +295,10 @@ public class MainActivity extends AppCompatActivity
     startAnimation();
 
     return controlView;
+  }
+
+  private void setInfoClicker(final @IdRes int id, final InfoPage page) {
+    controlView.findViewById(id).setOnClickListener(view -> showInfo(page));
   }
 
   private void updateServerName() {
@@ -614,7 +625,7 @@ public class MainActivity extends AppCompatActivity
     View insecureSystemDetails = controlView.findViewById(R.id.insecure_system_details);
     insecureSystemDetails.setVisibility(status.on ? View.GONE : View.VISIBLE);
     if (!status.on) {
-      TextView defaultProtocol = controlView.findViewById(R.id.default_protocol);
+      TextView defaultProtocol = controlView.findViewById(R.id.insecure_protocol);
       boolean tls = privateDnsMode != PrivateDnsMode.NONE;
       defaultProtocol.setText(tls ? R.string.tls_transport : R.string.insecure_transport);
 
@@ -652,11 +663,13 @@ public class MainActivity extends AppCompatActivity
         .commit();
   }
 
-  private void chooseView(int id) {
+  private View chooseView(int id) {
     View home = findViewById(R.id.frame_main);
     View settings = findViewById(R.id.settings);
+    View info = findViewById(R.id.info_page);
     home.setVisibility(View.GONE);
     settings.setVisibility(View.GONE);
+    info.setVisibility(View.GONE);
 
     View selected = findViewById(id);
     selected.setVisibility(View.VISIBLE);
@@ -674,7 +687,7 @@ public class MainActivity extends AppCompatActivity
 
     // Close the drawer
     DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_main);
-    drawerLayout.closeDrawer(Gravity.START);
+    drawerLayout.closeDrawer(GravityCompat.START);
 
     // Show an arrow on non-home screens.  See https://stackoverflow.com/questions/27742074
     if (id == R.id.frame_main) {
@@ -684,6 +697,71 @@ public class MainActivity extends AppCompatActivity
       drawerToggle.setDrawerIndicatorEnabled(false);
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
+    return selected;
+  }
+
+  private enum InfoPage {
+    LIFETIME_QUERIES(true,
+        R.string.num_requests,
+        R.drawable.ic_dns,
+        R.string.num_requests_headline,
+        R.string.num_requests_body),
+    RECENT_QUERIES(true,
+        R.string.queries_per_minute,
+        R.drawable.ic_trending_up_black_24dp,
+        R.string.queries_per_minute_headline,
+        R.string.queries_per_minute_body),
+    SECURE_PROTOCOL(true,
+        R.string.transport_label,
+        R.drawable.ic_lock_black_24dp,
+        R.string.transport_headline,
+        R.string.transport_body),
+    SECURE_SERVER(true,
+        R.string.server_label,
+        R.drawable.ic_server,
+        R.string.server_headline,
+        R.string.server_body),
+    INSECURE_PROTOCOL(false,
+        R.string.insecure_transport_label,
+        R.drawable.ic_lock_open_black_24dp,
+        R.string.insecure_transport_headline,
+        R.string.insecure_transport_body),
+    INSECURE_SERVER(false,
+        R.string.insecure_server_label,
+        R.drawable.ic_server,
+        R.string.insecure_server_headline,
+        R.string.insecure_server_body);
+
+    final boolean good;
+    final @StringRes int title;
+    final @DrawableRes int drawable;
+    final @StringRes int headline;
+    final @StringRes int body;
+    InfoPage(boolean good, int title, int drawable, int headline, int body) {
+      this.title = title;
+      this.good = good;
+      this.drawable = drawable;
+      this.headline = headline;
+      this.body = body;
+    }
+  }
+
+  private void showInfo(InfoPage page) {
+    View view = chooseView(R.id.info_page);
+
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setTitle(page.title);
+
+    ImageView image = view.findViewById(R.id.info_image);
+    image.setImageResource(page.drawable);
+    int color = ContextCompat.getColor(this, page.good ? R.color.accent_good : R.color.accent_bad);
+    ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color));
+
+    TextView headline = view.findViewById(R.id.info_headline);
+    headline.setText(page.headline);
+
+    TextView body = view.findViewById(R.id.info_body);
+    body.setText(page.body);
   }
 
   // Hyperlinks need to be filled in whenever the layout is instantiated.
