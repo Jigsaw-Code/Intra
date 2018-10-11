@@ -34,6 +34,11 @@
           android:id="@+id/settings"
           layout="@layout/placeholder"
           android:visibility="gone"/>
+
+      <include
+          android:id="@+id/info_page"
+          layout="@layout/info_page"
+          android:visibility="gone"/>
     </FrameLayout>
   </LinearLayout>
 
