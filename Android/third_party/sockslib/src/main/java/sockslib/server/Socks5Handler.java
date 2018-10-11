@@ -182,14 +182,7 @@ public class Socks5Handler implements SocksHandler {
       pipe = getSocksProxyServer().getPipeInitializer().initialize(pipe);
     }
 
-    // wait for pipe exit.
-    try {
-      runPipe(pipe);
-    } catch (InterruptedException e) {
-      pipe.stop();
-      session.close();
-      logger.info("SESSION[{}] closed", session.getId());
-    }
+    waitForPipe(pipe, session);
   }
 
   /**
@@ -202,7 +195,6 @@ public class Socks5Handler implements SocksHandler {
     pipe.addPipeListener(new PipeListener() {
       @Override
       public void onStart(Pipe pipe) {
-
       }
 
       @Override
@@ -212,18 +204,30 @@ public class Socks5Handler implements SocksHandler {
 
       @Override
       public void onTransfer(Pipe pipe, byte[] buffer, int bufferLength) {
-
       }
 
       @Override
       public void onError(Pipe pipe, Exception exception) {
-
       }
     });
 
     pipe.start(); // This method will build two threads to run two internal pipes.
     while (pipe.isRunning()) {
       latch.await();
+    }
+  }
+
+  /**
+   * This function starts the pipe and blocks until the pipe stops.  If the thread is interrupted,
+   * it closes the pipe and the session.
+   */
+  private static void waitForPipe(final Pipe pipe, final Session session) {
+    try {
+      runPipe(pipe);
+    } catch (InterruptedException e) {
+      pipe.stop();
+      session.close();
+      logger.info("SESSION[{}] closed", session.getId());
     }
   }
 
@@ -246,14 +250,7 @@ public class Socks5Handler implements SocksHandler {
     Pipe pipe = new SocketPipe(session.getSocket(), socket);
     pipe.setBufferSize(bufferSize);
 
-    // wait for pipe exit.
-    try {
-      runPipe(pipe);
-    } catch (InterruptedException e) {
-      pipe.stop();
-      session.close();
-      logger.info("Session[{}] closed", session.getId());
-    }
+    waitForPipe(pipe, session);
     serverSocket.close();
     // throw new NotImplementException("Not implement BIND command");
   }
