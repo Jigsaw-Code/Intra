@@ -3,9 +3,7 @@
 .gradle
 /Android/local.properties
 /Android/keystore.properties
-/Android/.idea/workspace.xml
-/Android/.idea/vcs.xml
-/Android/.idea/libraries
+/Android/.idea/
 .DS_Store
 /Android/build/
 /Android/app/build/
