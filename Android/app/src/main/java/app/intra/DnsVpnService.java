@@ -35,7 +35,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -114,14 +113,8 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
   @Override
   public synchronized int onStartCommand(Intent intent, int flags, int startId) {
-    String newUrl = PersistentState.getServerUrl(this);
-    if (TextUtils.equals(url, newUrl)) {
-      Log.i(LOG_TAG, "Ignoring redundant start command");
-      return START_REDELIVER_INTENT;
-    }
-
-    url = newUrl;
     Log.i(LOG_TAG, String.format("Starting DNS VPN service, url=%s", url));
+    url = PersistentState.getServerUrl(this);
 
     // Registers this class as a listener for user preference changes.
     PreferenceManager.getDefaultSharedPreferences(this).
@@ -196,12 +189,12 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
 
     // Step 1: Check if an update is necessary and set a flag (pendingUrl).
     synchronized (this) {
-      if (serverConnection != null && TextUtils.equals(url, serverConnection.getUrl())) {
+      if (serverConnection != null && equalUrls(url, serverConnection.getUrl())) {
         // Connection state is consistent.  No need for an update.
         return;
       }
 
-      if (TextUtils.equals(url, pendingUrl)) {
+      if (equalUrls(url, pendingUrl)) {
         // There's a pending update for this URL already.
         return;
       }
@@ -224,7 +217,7 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     Bundle bootstrap = new Bundle();
     long beforeBootstrap = SystemClock.elapsedRealtime();
     final ServerConnection newConnection;
-    if (url == null || url.isEmpty()) {
+    if (equalUrls(url, null)) {
       // Use the Google Resolver
       AssetManager assets = this.getApplicationContext().getAssets();
       newConnection = GoogleServerConnection.get(new GoogleServerDatabase(this, assets));
@@ -248,17 +241,31 @@ public class DnsVpnService extends VpnService implements NetworkManager.NetworkL
     synchronized (this) {
       pendingUrl = NO_PENDING_CONNECTION;
 
-      if (serverConnection != null && TextUtils.equals(url, serverConnection.getUrl())) {
+      if (serverConnection != null && equalUrls(url, serverConnection.getUrl())) {
         // Connection state has somehow become consistent, so an update is no longer needed.
         return;
       }
 
-      if (newConnection == null || TextUtils.equals(url, newConnection.getUrl())) {
+      if (newConnection != null && equalUrls(url, newConnection.getUrl())) {
         // Current connection state is not consistent, but newConnection is consistent with the
         // current URL, so perform the update.
         serverConnection = newConnection;
       }
     }
+  }
+
+  /**
+   * @return True if these URLs represents the same server.
+   */
+  private static boolean equalUrls(String url1, String url2) {
+    // null and "" are equivalent, representing the default server.
+    if (url1 == null) {
+      url1 = "";
+    }
+    if (url2 == null) {
+      url2 = "";
+    }
+    return url1.equals(url2);
   }
 
   /**
