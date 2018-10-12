@@ -19,7 +19,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-beta05'
+        classpath 'com.android.tools.build:gradle:3.2.0'
 
         // For Firebase Analytics
         classpath 'com.google.gms:google-services:4.1.0'
