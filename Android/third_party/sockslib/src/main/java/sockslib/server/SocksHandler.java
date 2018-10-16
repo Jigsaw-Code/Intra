@@ -103,20 +103,6 @@ public interface SocksHandler extends Runnable {
    */
   void setBufferSize(int bufferSize);
 
-  /**
-   * Returns idle time.
-   *
-   * @return idle time.
-   */
-  int getIdleTime();
-
-  /**
-   * Sets idle time.
-   *
-   * @param idleTime Idle time.
-   */
-  void setIdleTime(int idleTime);
-
   void setProxy(SocksProxy socksProxy);
 
   SocksProxyServer getSocksProxyServer();

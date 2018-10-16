@@ -14,6 +14,7 @@
 
 package sockslib.server;
 
+import java.util.concurrent.CountDownLatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sockslib.client.SocksProxy;
@@ -66,8 +67,6 @@ public class Socks5Handler implements SocksHandler {
   private MethodSelector methodSelector;
 
   private int bufferSize;
-
-  private int idleTime = 2000;
 
   private SocksProxy proxy;
 
@@ -182,19 +181,80 @@ public class Socks5Handler implements SocksHandler {
     if(getSocksProxyServer().getPipeInitializer() != null){
       pipe = getSocksProxyServer().getPipeInitializer().initialize(pipe);
     }
-    pipe.start(); // This method will build tow thread to run tow internal pipes.
 
-    // wait for pipe exit.
-    while (pipe.isRunning()) {
-      try {
-        Thread.sleep(idleTime);
-      } catch (InterruptedException e) {
-        pipe.stop();
-        session.close();
-        logger.info("SESSION[{}] closed", session.getId());
-      }
+    waitForPipe(pipe, session);
+  }
+
+  /**
+   * This PipeListener makes it possible to block until onStop is called.
+   */
+  private static class StopListener implements PipeListener {
+    private final CountDownLatch latch = new CountDownLatch(1);
+    private boolean stopped = false;
+
+    /**
+     * Blocks until onStop is called.
+     * @throws InterruptedException if this thread is interrupted.
+     */
+    void await() throws InterruptedException {
+      latch.await();
     }
 
+    boolean wasStopped() {
+      return stopped;
+    }
+
+    @Override
+    public void onStart(Pipe pipe) {
+    }
+
+    @Override
+    public void onStop(Pipe pipe) {
+      stopped = true;
+      latch.countDown();
+    }
+
+    @Override
+    public void onTransfer(Pipe pipe, byte[] buffer, int bufferLength) {
+    }
+
+    @Override
+    public void onError(Pipe pipe, Exception exception) {
+    }
+  }
+
+  /**
+   * This function starts the pipe and blocks until the pipe stops.
+   * @param pipe A pipe that has not yet been started.
+   * @throws InterruptedException if this thread is interrupted.
+   */
+  private static void runPipe(final Pipe pipe) throws InterruptedException {
+    StopListener listener = new StopListener();
+    pipe.addPipeListener(listener);
+
+    pipe.start(); // This method will build two threads to run two internal pipes.
+
+    // In normal operation, pipe.isRunning() and !listener.wasStopped() should be
+    // equal.  However, they can be different if start() failed, or if there is a
+    // bug in SocketPipe or StreamPipe.  Checking both ensures that there is no
+    // possibility of a hang or busy-loop here.
+    while (pipe.isRunning() && !listener.wasStopped()) {
+      listener.await();
+    }
+  }
+
+  /**
+   * This function starts the pipe and blocks until the pipe stops.  If the thread is interrupted,
+   * it closes the pipe and the session.
+   */
+  private static void waitForPipe(final Pipe pipe, final Session session) {
+    try {
+      runPipe(pipe);
+    } catch (InterruptedException e) {
+      pipe.stop();
+      session.close();
+      logger.info("SESSION[{}] closed", session.getId());
+    }
   }
 
   @Override
@@ -215,18 +275,8 @@ public class Socks5Handler implements SocksHandler {
 
     Pipe pipe = new SocketPipe(session.getSocket(), socket);
     pipe.setBufferSize(bufferSize);
-    pipe.start();
 
-    // wait for pipe exit.
-    while (pipe.isRunning()) {
-      try {
-        Thread.sleep(idleTime);
-      } catch (InterruptedException e) {
-        pipe.stop();
-        session.close();
-        logger.info("Session[{}] closed", session.getId());
-      }
-    }
+    waitForPipe(pipe, session);
     serverSocket.close();
     // throw new NotImplementException("Not implement BIND command");
   }
@@ -242,20 +292,21 @@ public class Socks5Handler implements SocksHandler {
         .getSocketAddress());
     session.write(new CommandResponseMessage(VERSION, ServerReply.SUCCEEDED, InetAddress
         .getLocalHost(), socketAddress.getPort()));
-    while (udpRelayServer.isRunning()) {
-      try {
-        Thread.sleep(idleTime);
-      } catch (InterruptedException e) {
-        session.close();
-        logger.info("Session[{}] closed", session.getId());
+    try {
+      // The client should never send any more data on the control socket, so read() should hang
+      // until the client closes the socket (returning -1) or this thread is interrupted (throwing
+      // InterruptedIOException).
+      int nextByte = session.getInputStream().read();
+      if (nextByte != -1) {
+        logger.warn("Unexpected data on Session[{}]", session.getId());
       }
-      if (session.isClose()) {
-        udpRelayServer.stop();
-        logger.debug("UDP relay server for session[{}] is closed", session.getId());
-      }
-
+    } catch (IOException e) {
+      // This is expected on a thread interrupt.
     }
-
+    session.close();
+    logger.info("Session[{}] closed", session.getId());
+    udpRelayServer.stop();
+    logger.debug("UDP relay server for session[{}] is closed", session.getId());
   }
 
   @Override
@@ -297,17 +348,6 @@ public class Socks5Handler implements SocksHandler {
   @Override
   public void setBufferSize(int bufferSize) {
     this.bufferSize = bufferSize;
-  }
-
-
-  @Override
-  public int getIdleTime() {
-    return idleTime;
-  }
-
-  @Override
-  public void setIdleTime(int idleTime) {
-    this.idleTime = idleTime;
   }
 
   public SocksProxy getProxy() {
