@@ -30,6 +30,13 @@ public class ReliabilityMonitor implements PipeInitializer {
 
   /**
    * This class converts pipe lifecycle callbacks into network reliability monitoring events.
+   * Events:
+   *  - BYTES event : value = total transfer over the lifetime of a socket
+   *    - PORT : TCP port number (i.e. protocol type)
+   *    - DURATION: socket lifetime in seconds
+   *  - EARLY_RESET (only on HTTPS connections that are reset after sending and before receiving)
+   *    - BYTES : Amount uploaded before reset
+   *    - CHUNKS : Number of upload writes before reset
    */
   private static class ReliabilityListener implements PipeListener {
     private static final int HTTPS_PORT = 443;
@@ -100,8 +107,8 @@ public class ReliabilityMonitor implements PipeInitializer {
       if (!RESET_MESSAGE.equals(exception.getMessage())) {
         return;
       }
-      if (downloadBytes > 0) {
-        // Ignore reset events after data is flowing bidirectionally.
+      if (uploadBytes == 0 || downloadBytes > 0) {
+        // Only consider reset events received after first upload and before first download.
         return;
       }
       if (getPort(pipe) != HTTPS_PORT) {
