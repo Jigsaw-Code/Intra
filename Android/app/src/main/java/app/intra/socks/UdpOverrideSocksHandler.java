@@ -24,8 +24,6 @@ public class UdpOverrideSocksHandler extends Socks5Handler {
   private static final int BUFFER_SIZE = 5 * 1024;
   // SOCKS protocol version
   private static final int VERSION = 0x5;
-  // Polling loop interval.  This is the value used by upstream sockslib.
-  private static final int IDLE_TIME_MS = 2000;
 
   private InetSocketAddress fakeDns = null;
   private InetSocketAddress trueDns = null;

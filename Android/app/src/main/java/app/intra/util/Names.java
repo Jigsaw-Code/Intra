@@ -20,8 +20,13 @@ package app.intra.util;
 public enum Names {
   BOOTSTRAP,
   BOOTSTRAP_FAILED,
+  BYTES,
+  CHUNKS,
   DNS_STATUS,
+  DURATION,
+  EARLY_RESET,
   LATENCY,
+  PORT,
   RESULT,
   TRANSACTION,
 }

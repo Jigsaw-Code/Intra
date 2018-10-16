@@ -1,5 +1,6 @@
 package app.intra.socks;
 
+import android.content.Context;
 import com.google.firebase.crash.FirebaseCrash;
 
 import android.annotation.TargetApi;
@@ -58,11 +59,14 @@ public class SocksVpnAdapter extends VpnAdapter {
     }
   }
 
+  // Service context in which the VPN is running.
+  private final Context context;
+
   // DNS resolver running on localhost.
-  private LocalhostResolver resolver;
+  private final LocalhostResolver resolver;
 
   // TUN device representing the VPN.
-  private ParcelFileDescriptor tunFd;
+  private final ParcelFileDescriptor tunFd;
 
   public static SocksVpnAdapter establish(@NonNull DnsVpnService vpnService) {
     LocalhostResolver resolver = LocalhostResolver.get(vpnService);
@@ -73,11 +77,12 @@ public class SocksVpnAdapter extends VpnAdapter {
     if (tunFd == null) {
       return null;
     }
-    return new SocksVpnAdapter(tunFd, resolver);
+    return new SocksVpnAdapter(vpnService, tunFd, resolver);
   }
 
-  private SocksVpnAdapter(ParcelFileDescriptor tunFd, LocalhostResolver resolver) {
+  private SocksVpnAdapter(Context context, ParcelFileDescriptor tunFd, LocalhostResolver resolver) {
     super(LOG_TAG);
+    this.context = context;
     this.resolver = resolver;
     this.tunFd = tunFd;
   }
@@ -107,7 +112,7 @@ public class SocksVpnAdapter extends VpnAdapter {
       return;
     }
 
-    SocksServer proxy = new SocksServer(fakeDns, trueDns);
+    SocksServer proxy = new SocksServer(context, fakeDns, trueDns);
     proxy.setSupportMethods(new NoAuthenticationRequiredMethod());
     proxy.setBindAddr(localhost);
     proxy.setBindPort(0);  // Uses our custom SocksServer's dynamic port feature.

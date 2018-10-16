@@ -1,5 +1,6 @@
 package app.intra.socks;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
@@ -25,11 +26,12 @@ public class SocksServer extends BasicSocksProxyServer {
   private final InetSocketAddress fakeDns;
   private final InetSocketAddress trueDns;
 
-  SocksServer(InetSocketAddress fakeDns, InetSocketAddress trueDns) {
+  SocksServer(Context context, InetSocketAddress fakeDns, InetSocketAddress trueDns) {
     super(UdpOverrideSocksHandler.class);
     this.fakeDns = fakeDns;
     this.trueDns = trueDns;
     setTimeout(TIMEOUT_MS);
+    setPipeInitializer(new ReliabilityMonitor(context));
   }
 
   @Override
