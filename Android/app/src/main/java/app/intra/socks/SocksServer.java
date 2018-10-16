@@ -18,6 +18,10 @@ import sockslib.server.SocksHandler;
 public class SocksServer extends BasicSocksProxyServer {
   private static final String LOG_TAG = "SocksServer";
 
+  // RFC 5382 REQ-5 requires a timeout no shorter than 2 hours and 4 minutes.
+  // Sockslib's default is 10 seconds.
+  private static final int TIMEOUT_MS = 1000 * 60 * (4 + 60 * 2);
+
   private final InetSocketAddress fakeDns;
   private final InetSocketAddress trueDns;
 
@@ -25,6 +29,7 @@ public class SocksServer extends BasicSocksProxyServer {
     super(UdpOverrideSocksHandler.class);
     this.fakeDns = fakeDns;
     this.trueDns = trueDns;
+    setTimeout(TIMEOUT_MS);
   }
 
   @Override
