@@ -186,34 +186,60 @@ public class Socks5Handler implements SocksHandler {
   }
 
   /**
+   * This PipeListener makes it possible to block until onStop is called.
+   */
+  private static class StopListener implements PipeListener {
+    private final CountDownLatch latch = new CountDownLatch(1);
+    private boolean stopped = false;
+
+    /**
+     * Blocks until onStop is called.
+     * @throws InterruptedException if this thread is interrupted.
+     */
+    void await() throws InterruptedException {
+      latch.await();
+    }
+
+    boolean wasStopped() {
+      return stopped;
+    }
+
+    @Override
+    public void onStart(Pipe pipe) {
+    }
+
+    @Override
+    public void onStop(Pipe pipe) {
+      stopped = true;
+      latch.countDown();
+    }
+
+    @Override
+    public void onTransfer(Pipe pipe, byte[] buffer, int bufferLength) {
+    }
+
+    @Override
+    public void onError(Pipe pipe, Exception exception) {
+    }
+  }
+
+  /**
    * This function starts the pipe and blocks until the pipe stops.
    * @param pipe A pipe that has not yet been started.
    * @throws InterruptedException if this thread is interrupted.
    */
   private static void runPipe(final Pipe pipe) throws InterruptedException {
-    CountDownLatch latch = new CountDownLatch(1);
-    pipe.addPipeListener(new PipeListener() {
-      @Override
-      public void onStart(Pipe pipe) {
-      }
-
-      @Override
-      public void onStop(Pipe pipe) {
-        latch.countDown();
-      }
-
-      @Override
-      public void onTransfer(Pipe pipe, byte[] buffer, int bufferLength) {
-      }
-
-      @Override
-      public void onError(Pipe pipe, Exception exception) {
-      }
-    });
+    StopListener listener = new StopListener();
+    pipe.addPipeListener(listener);
 
     pipe.start(); // This method will build two threads to run two internal pipes.
-    while (pipe.isRunning()) {
-      latch.await();
+
+    // In normal operation, pipe.isRunning() and !listener.wasStopped() should be
+    // equal.  However, they can be different if start() failed, or if there is a
+    // bug in SocketPipe or StreamPipe.  Checking both ensures that there is no
+    // possibility of a hang or busy-loop here.
+    while (pipe.isRunning() && !listener.wasStopped()) {
+      listener.await();
     }
   }
 
