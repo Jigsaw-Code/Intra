@@ -23,7 +23,10 @@ public class AutoStarter extends BroadcastReceiver {
       FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Autostart enabled");
       if (VpnService.prepare(context) != null) {
         // prepare() returns a non-null intent if VPN permission has not been granted.
-        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "VPN permission not granted");
+        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "VPN permission not granted.  Starting UI.");
+        Intent startIntent = new Intent(context, MainActivity.class);
+        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(startIntent);
         return;
       }
       controller.start(context);
