@@ -40,6 +40,7 @@ public class ReliabilityMonitor implements PipeInitializer {
    */
   private static class ReliabilityListener implements PipeListener {
     private static final int HTTPS_PORT = 443;
+    private static final int HTTP_PORT = 80;
     private static final String RESET_MESSAGE = "Connection reset";
     private final Context context;
     private int downloadBytes = 0;
@@ -80,6 +81,10 @@ public class ReliabilityMonitor implements PipeInitializer {
 
       int port = getPort(pipe);
       if (port >= 0) {
+        if (port != HTTP_PORT && port != HTTPS_PORT && port != 0) {
+          // Group all other ports together into an "other" bucket.
+          port = -1;
+        }
         event.putInt(Names.PORT.name(), port);
       }
 
