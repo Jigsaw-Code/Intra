@@ -374,8 +374,8 @@ public class MainActivity extends AppCompatActivity
     DnsVpnController controller = DnsVpnController.getInstance();
     DnsVpnState state = controller.getState(this);
     if (state.activationRequested && !state.on) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Autostarting");
-      controller.start(this);
+      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Autostart enabled");
+      prepareAndStartDnsVpn();
     }
   }
 
@@ -523,8 +523,12 @@ public class MainActivity extends AppCompatActivity
 
   @Override
   public void onActivityResult(int request, int result, Intent data) {
-    if (request == REQUEST_CODE_PREPARE_VPN && result == RESULT_OK) {
-      startDnsVpnService();
+    if (request == REQUEST_CODE_PREPARE_VPN) {
+      if (result == RESULT_OK) {
+        startDnsVpnService();
+      } else {
+        stopDnsVpnService();
+      }
     }
   }
 
