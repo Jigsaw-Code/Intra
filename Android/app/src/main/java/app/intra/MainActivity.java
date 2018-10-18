@@ -523,8 +523,12 @@ public class MainActivity extends AppCompatActivity
 
   @Override
   public void onActivityResult(int request, int result, Intent data) {
-    if (request == REQUEST_CODE_PREPARE_VPN && result == RESULT_OK) {
-      startDnsVpnService();
+    if (request == REQUEST_CODE_PREPARE_VPN) {
+      if (result == RESULT_OK) {
+        startDnsVpnService();
+      } else {
+        stopDnsVpnService();
+      }
     }
   }
 
