@@ -152,7 +152,7 @@ public class ReliabilityMonitor implements PipeInitializer {
       event.putInt(Names.BYTES.name(), uploadBytes);
       event.putInt(Names.CHUNKS.name(), uploadCount);
       if (uploadBuffer != null) {
-        new Thread(new Retry(context, getAddress(pipe), uploadBuffer, event)).start();
+        new Thread(new SplitTest(context, getAddress(pipe), uploadBuffer, event)).start();
       }
     }
   }
@@ -161,7 +161,7 @@ public class ReliabilityMonitor implements PipeInitializer {
    * Class for testing whether an unreachable server becomes reachable if we reduce the size of
    * the initial packet.
    */
-  private static class Retry implements Runnable {
+  private static class SplitTest implements Runnable {
     private static final Random RANDOM = new Random();
     // Limit the first packet to 32-64 bytes (inclusive).
     private static final int MIN_SPLIT = 32, MAX_SPLIT = 64;
@@ -170,16 +170,21 @@ public class ReliabilityMonitor implements PipeInitializer {
     private final ByteBuffer uploadBuffer;
     private final Bundle event;
 
-    Retry(Context context, SocketAddress dest, ByteBuffer uploadBuffer, Bundle event) {
+    SplitTest(Context context, SocketAddress dest, ByteBuffer uploadBuffer, Bundle event) {
       this.context = context;
       this.dest = dest;
       this.uploadBuffer = uploadBuffer;
       this.event = event;
     }
 
-    private boolean retryTest() {
+    /** @return The limit on the size of the first packet.  */
+    private static int chooseLimit() {
+      return MIN_SPLIT + RANDOM.nextInt() % (MAX_SPLIT + 1 - MIN_SPLIT);
+    }
+
+    private boolean retryTest(int limit) {
+      Socket socket = new Socket();
       try {
-        Socket socket = new Socket();
         socket.setTcpNoDelay(true);
         socket.connect(dest);
         OutputStream out = socket.getOutputStream();
@@ -188,7 +193,6 @@ public class ReliabilityMonitor implements PipeInitializer {
         final int position = uploadBuffer.position();
         final int offset = uploadBuffer.arrayOffset();
         final int length = position - offset;
-        final int limit = MIN_SPLIT + RANDOM.nextInt() % (MAX_SPLIT + 1 - MIN_SPLIT);
         final int split = Math.min(limit, length / 2);
         out.write(uploadBuffer.array(), offset, split);
         out.flush();
@@ -196,6 +200,9 @@ public class ReliabilityMonitor implements PipeInitializer {
         // Send the remainder in a second packet.
         out.write(uploadBuffer.array(), offset + split, offset + length - split);
         final int firstByte = socket.getInputStream().read();
+
+        // Test is complete.
+        socket.close();
 
         // If we received any response from the server, the connection is considered successful.
         return firstByte >= 0;
@@ -206,9 +213,11 @@ public class ReliabilityMonitor implements PipeInitializer {
 
     @Override
     public void run() {
-      final boolean retryWorks = retryTest();  // This blocks on I/O.
+      final int limit = chooseLimit();
+      final boolean retryWorks = retryTest(limit);  // This blocks on I/O.
       if (event != null && context != null) {
-        event.putInt("retry", retryWorks ? 1 : 0);
+        event.putInt(Names.SPLIT.name(), limit);
+        event.putInt(Names.RETRY.name(), retryWorks ? 1 : 0);
         FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
       }
     }

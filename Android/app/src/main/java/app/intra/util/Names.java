@@ -28,5 +28,7 @@ public enum Names {
   LATENCY,
   PORT,
   RESULT,
+  RETRY,
+  SPLIT,
   TRANSACTION,
 }
