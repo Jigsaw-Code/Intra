@@ -6,7 +6,11 @@ import android.os.SystemClock;
 import app.intra.util.Names;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.analytics.FirebaseAnalytics.Param;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.nio.ByteBuffer;
+import java.util.Random;
 import sockslib.server.io.Pipe;
 import sockslib.server.io.PipeListener;
 import sockslib.server.io.SocketPipe;
@@ -48,19 +52,33 @@ public class ReliabilityMonitor implements PipeInitializer {
     private int uploadCount = 0;
     private long startTime = -1;
 
+    // The upload buffer is only intended to hold the first flight from the client.
+    private static final int MAX_BUFFER = 1024;
+    private ByteBuffer uploadBuffer = ByteBuffer.allocateDirect(MAX_BUFFER);
+
     ReliabilityListener(Context context) {
       this.context = context;
     }
 
-    private static int getPort(Pipe pipe) {
-      final Socket remoteSocket;
+    private static Socket getRemoteSocket(Pipe pipe) {
       if (SocketPipe.INPUT_PIPE_NAME.equals(pipe.getName())) {
-        remoteSocket = (Socket) pipe.getAttribute(SocketPipe.ATTR_SOURCE_SOCKET);
+        return (Socket) pipe.getAttribute(SocketPipe.ATTR_SOURCE_SOCKET);
       } else if (SocketPipe.OUTPUT_PIPE_NAME.equals(pipe.getName())){
-        remoteSocket = (Socket) pipe.getAttribute(SocketPipe.ATTR_DESTINATION_SOCKET);
-      } else {
-        remoteSocket = null;
+        return (Socket) pipe.getAttribute(SocketPipe.ATTR_DESTINATION_SOCKET);
       }
+      return null;
+    }
+
+    private static SocketAddress getAddress(Pipe pipe) {
+      final Socket remoteSocket = getRemoteSocket(pipe);
+      if (remoteSocket == null) {
+        return null;
+      }
+      return remoteSocket.getRemoteSocketAddress();
+    }
+
+    private static int getPort(Pipe pipe) {
+      final Socket remoteSocket = getRemoteSocket(pipe);
       if (remoteSocket == null) {
         return -1;
       }
@@ -101,8 +119,17 @@ public class ReliabilityMonitor implements PipeInitializer {
     public void onTransfer(Pipe pipe, byte[] buffer, int bufferLength) {
       if (SocketPipe.INPUT_PIPE_NAME.equals(pipe.getName())) {
         downloadBytes += bufferLength;
+        // Free memory in uploadBuffer, since it's no longer needed.
+        uploadBuffer = null;
       } else {
         uploadBytes += bufferLength;
+        if (uploadBuffer != null) {
+          try {
+            uploadBuffer.put(buffer, 0, bufferLength);
+          } catch (Exception e) {
+            uploadBuffer = null;
+          }
+        }
         ++uploadCount;
       }
     }
@@ -110,6 +137,7 @@ public class ReliabilityMonitor implements PipeInitializer {
     @Override
     public void onError(Pipe pipe, Exception exception) {
       if (!RESET_MESSAGE.equals(exception.getMessage())) {
+        // Currently we're only analyzing TCP RST failures.
         return;
       }
       if (uploadBytes == 0 || downloadBytes > 0) {
@@ -123,7 +151,75 @@ public class ReliabilityMonitor implements PipeInitializer {
       Bundle event = new Bundle();
       event.putInt(Names.BYTES.name(), uploadBytes);
       event.putInt(Names.CHUNKS.name(), uploadCount);
-      FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
+      if (uploadBuffer != null) {
+        new Thread(new SplitTest(context, getAddress(pipe), uploadBuffer, event)).start();
+      }
+    }
+  }
+
+  /**
+   * Class for testing whether an unreachable server becomes reachable if we reduce the size of
+   * the initial packet.
+   */
+  private static class SplitTest implements Runnable {
+    private static final Random RANDOM = new Random();
+    // Limit the first packet to 32-64 bytes (inclusive).
+    private static final int MIN_SPLIT = 32, MAX_SPLIT = 64;
+    private final Context context;
+    private final SocketAddress dest;
+    private final ByteBuffer uploadBuffer;
+    private final Bundle event;
+
+    SplitTest(Context context, SocketAddress dest, ByteBuffer uploadBuffer, Bundle event) {
+      this.context = context;
+      this.dest = dest;
+      this.uploadBuffer = uploadBuffer;
+      this.event = event;
+    }
+
+    /** @return The limit on the size of the first packet.  */
+    private static int chooseLimit() {
+      return MIN_SPLIT + RANDOM.nextInt() % (MAX_SPLIT + 1 - MIN_SPLIT);
+    }
+
+    private boolean retryTest(int limit) {
+      Socket socket = new Socket();
+      try {
+        socket.setTcpNoDelay(true);
+        socket.connect(dest);
+        OutputStream out = socket.getOutputStream();
+
+        // Send the first 32-64 bytes in the first packet.
+        final int position = uploadBuffer.position();
+        final int offset = uploadBuffer.arrayOffset();
+        final int length = position - offset;
+        final int split = Math.min(limit, length / 2);
+        out.write(uploadBuffer.array(), offset, split);
+        out.flush();
+
+        // Send the remainder in a second packet.
+        out.write(uploadBuffer.array(), offset + split, offset + length - split);
+        final int firstByte = socket.getInputStream().read();
+
+        // Test is complete.
+        socket.close();
+
+        // If we received any response from the server, the connection is considered successful.
+        return firstByte >= 0;
+      } catch (Exception e) {
+        return false;
+      }
+    }
+
+    @Override
+    public void run() {
+      final int limit = chooseLimit();
+      final boolean retryWorks = retryTest(limit);  // This blocks on I/O.
+      if (event != null && context != null) {
+        event.putInt(Names.SPLIT.name(), limit);
+        event.putInt(Names.RETRY.name(), retryWorks ? 1 : 0);
+        FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
+      }
     }
   }
 }
