@@ -40,7 +40,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/dns_switch"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="On" android:textColor="@color/indicator"/>
+            tools:text="@string/indicator_on"
+            android:textColor="@color/indicator"/>
 
     <Switch
             android:id="@+id/dns_switch" android:layout_width="wrap_content"
@@ -57,16 +58,22 @@
 
     <TextView
             android:id="@+id/status"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:includeFontPadding="false"
             android:textAppearance="@style/Biggest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/indicator"
             app:layout_constraintBottom_toTopOf="@id/explanation"
-            tools:text="Protected" android:textColor="@color/accent_good"/>
+            app:layout_constraintWidth_default="wrap"
+            tools:text="@string/status_protected"
+            android:textColor="@color/accent_good"/>
 
     <TextView
             android:id="@+id/explanation"

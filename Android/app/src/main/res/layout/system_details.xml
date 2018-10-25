@@ -203,7 +203,7 @@
             android:layout_height="wrap_content">
 
         <LinearLayout
-                android:id="@+id/insecure_protocol_box"
+                android:id="@+id/default_protocol_box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -228,9 +228,10 @@
                     tools:ignore="ContentDescription"/>
 
             <TextView
+                    android:id="@+id/default_protocol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="dns"
+                    tools:text="@string/insecure_transport"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
             <TextView
@@ -253,7 +254,7 @@
                 android:orientation="vertical"
                 android:background="@color/floating"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/insecure_protocol_box"
+                app:layout_constraintStart_toEndOf="@+id/default_protocol_box"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 

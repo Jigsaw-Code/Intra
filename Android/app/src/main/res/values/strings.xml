@@ -224,9 +224,18 @@
   </string>
 
   <string name="insecure_transport_label"
-          description="This text appears under the name of the insecure protocol currently in use.  Currently,
-  that is always 'dns'.">
-    Unencrypted transport
+          description="This text appears under the name of the DNS protocol in use when Intra is off.  Currently,
+  that is usually 'unencrypted'.">
+    Default transport
+  </string>
+
+  <string name="insecure_transport" description="Indicates that normal, insecure DNS is in use.">
+    unencrypted
+  </string>
+
+  <string name="tls_transport" description="Indicates that 'DNS over TLS' protocol is in use"
+      translatable="false">
+    tls
   </string>
 
   <string name="server_label"
