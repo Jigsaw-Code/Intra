@@ -614,6 +614,10 @@ public class MainActivity extends AppCompatActivity
     View insecureSystemDetails = controlView.findViewById(R.id.insecure_system_details);
     insecureSystemDetails.setVisibility(status.on ? View.GONE : View.VISIBLE);
     if (!status.on) {
+      TextView defaultProtocol = controlView.findViewById(R.id.default_protocol);
+      boolean tls = privateDnsMode != PrivateDnsMode.NONE;
+      defaultProtocol.setText(tls ? R.string.tls_transport : R.string.insecure_transport);
+
       String insecureServerAddress = getSystemDnsServer();
       if (insecureServerAddress == null) {
         insecureServerAddress = getResources().getText(R.string.unknown_server).toString();
