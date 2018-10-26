@@ -163,7 +163,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         fqdnView.setText(transaction.fqdn);
         typeView.setText(transaction.typename);
         latencyView.setText(transaction.latency);
-        resolverView.setText(transaction.resolver);
+        if (transaction.resolver != null) {
+          resolverView.setText(transaction.resolver);
+        } else {
+          resolverView.setText(R.string.unknown_server);
+        }
         responseView.setText(transaction.response);
       }
     }
@@ -221,7 +225,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
       InetAddress serverAddress;
       try {
-        serverAddress = InetAddress.getByName(transaction.serverIp);
+        // InetAddress.getByName(null) returns IPv6 localhost, not an error indication.
+        if (transaction.serverIp != null) {
+          serverAddress = InetAddress.getByName(transaction.serverIp);
+        } else {
+          serverAddress = null;
+        }
       } catch (UnknownHostException e) {
         serverAddress = null;
       }
