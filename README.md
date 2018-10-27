@@ -7,7 +7,7 @@ additional options may be added over time.  You can get it from the
 Google Play Store [here](https://play.google.com/store/apps/details?id=app.intra).
 
 Features:
-* Built-in support for public DNS services from Cloudflare and Google
+* Built-in support for public DNS services from Cloudflare, Quad9 and Google
 * Visualization of server performance and application query behavior
 * Geocoding of query results to compare against expected regional results
 
