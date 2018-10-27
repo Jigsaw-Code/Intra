@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 // See https://developer.android.com/studio/publish/app-signing#secure-shared-keystore
+//TODO: Comment everything concerning keystoreProperties when forked to prevent issues
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
