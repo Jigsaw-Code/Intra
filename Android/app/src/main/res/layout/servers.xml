@@ -27,6 +27,24 @@
                 android:minHeight="48dp"/>
 
         <RadioButton
+            android:id="@+id/pref_server_dns_quad9"
+            android:text="@string/domain2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:minHeight="48dp"/>
+
+        <RadioButton
+            android:id="@+id/pref_server_dns10_quad9"
+            android:text="@string/domain3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:minHeight="48dp"/>
+
+        <RadioButton
                 android:id="@+id/pref_server_custom"
                 android:text="@string/server_choice_custom"
                 android:layout_width="wrap_content"

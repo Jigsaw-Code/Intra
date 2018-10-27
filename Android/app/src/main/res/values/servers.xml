@@ -8,12 +8,20 @@
   <string name="url0" translatable="false"></string>
   <string name="domain1" translatable="false">cloudflare-dns.com</string>
   <string name="url1" translatable="false">https://cloudflare-dns.com/dns-query</string>
+  <string name="domain2" translatable="false">dns.quad9.net</string>
+  <string name="url2" translatable="false">https://dns.quad9.net/dns-query</string>
+  <string name="domain3" translatable="false">dns10.quad9.net</string>
+  <string name="url3" translatable="false">https://dns10.quad9.net/dns-query</string>
   <string-array name="domains">
     <item>@string/domain0</item>
     <item>@string/domain1</item>
+    <item>@string/domain2</item>
+    <item>@string/domain3</item>
   </string-array>
   <string-array name="urls">
     <item>@string/url0</item>
     <item>@string/url1</item>
+    <item>@string/url2</item>
+    <item>@string/url3</item>
   </string-array>
 </resources>

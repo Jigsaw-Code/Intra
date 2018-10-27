@@ -55,6 +55,10 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
             return getResources().getString(R.string.url0);
         } else if (checkedId == R.id.pref_server_cloudflare) {
             return getResources().getString(R.string.url1);
+        } else if (checkedId == R.id.pref_server_dns_quad9) {
+            return getResources().getString(R.string.url2);
+        } else if (checkedId == R.id.pref_server_dns10_quad9) {
+            return getResources().getString(R.string.url3);
         } else {
             return text.getText().toString();
         }
@@ -130,6 +134,10 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
             buttons.check(R.id.pref_server_google);
         } else if (url.equals(getResources().getString(R.string.url1))) {
             buttons.check(R.id.pref_server_cloudflare);
+        } else if (url.equals(getResources().getString(R.string.url2))) {
+            buttons.check(R.id.pref_server_dns_quad9);
+        } else if (url.equals(getResources().getString(R.string.url3))) {
+            buttons.check(R.id.pref_server_dns10_quad9);
         } else {
             buttons.check(R.id.pref_server_custom);
             text.setText(url);
