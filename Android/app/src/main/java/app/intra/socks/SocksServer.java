@@ -26,19 +26,23 @@ public class SocksServer extends BasicSocksProxyServer {
   private final InetSocketAddress fakeDns;
   private final InetSocketAddress trueDns;
 
+  private final Context context;
+
   SocksServer(Context context, InetSocketAddress fakeDns, InetSocketAddress trueDns) {
-    super(UdpOverrideSocksHandler.class);
+    super(OverrideSocksHandler.class);
     this.fakeDns = fakeDns;
     this.trueDns = trueDns;
+    this.context = context;
     setTimeout(TIMEOUT_MS);
-    setPipeInitializer(new ReliabilityMonitor(context));
   }
 
   @Override
   public void initializeSocksHandler(SocksHandler socksHandler) {
     super.initializeSocksHandler(socksHandler);
-    if (socksHandler instanceof UdpOverrideSocksHandler) {
-      ((UdpOverrideSocksHandler)socksHandler).setDns(fakeDns, trueDns);
+    if (socksHandler instanceof OverrideSocksHandler) {
+      OverrideSocksHandler override = (OverrideSocksHandler)socksHandler;
+      override.setDns(fakeDns, trueDns);
+      override.setContext(context);
     } else {
       LogWrapper.logcat(Log.WARN, LOG_TAG, "Foreign handler");
     }
