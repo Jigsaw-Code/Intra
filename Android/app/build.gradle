@@ -37,9 +37,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+            resValue("bool", "FIREBASE_ENABLED", "true")
         }
         debug {
             pseudoLocalesEnabled true
+            resValue("bool", "FIREBASE_ENABLED", "false")
         }
     }
     testOptions {

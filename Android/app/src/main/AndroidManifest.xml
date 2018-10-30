@@ -39,6 +39,13 @@
             </intent-filter>
         </receiver>
 
+        <meta-data
+            android:name="firebase_crash_collection_enabled"
+            android:value="@bool/FIREBASE_ENABLED"/>
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="@bool/FIREBASE_ENABLED" />
+
         <!-- Uncomment the below line for network performance debug logging -->
         <!-- <meta-data android:name="firebase_performance_logcat_enabled" android:value="true" /> -->
     </application>
