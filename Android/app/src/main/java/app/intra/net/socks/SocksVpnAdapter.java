@@ -105,9 +105,7 @@ public class SocksVpnAdapter extends VpnAdapter {
     final String fakeDnsIp = LanIp.DNS.make(IPV4_TEMPLATE);
     final String fakeDnsAddress = fakeDnsIp + ":" + DNS_DEFAULT_PORT;
     final String ipv4Router = LanIp.ROUTER.make(IPV4_TEMPLATE);
-    // Disable IPv6 due to a double-free in tun2socks.
-    // TODO: Re-enable IPv6 once the double-free in tun2socks is debugged.
-    final String ipv6Router = null;
+    final String ipv6Router = LanIp.ROUTER.make(IPV6_TEMPLATE);
 
     // Proxy parameters
     InetSocketAddress fakeDns = new InetSocketAddress(fakeDnsIp, DNS_DEFAULT_PORT);

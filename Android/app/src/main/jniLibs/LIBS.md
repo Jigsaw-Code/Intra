@@ -27,4 +27,4 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 For the corresponding source code, see
-https://github.com/Jigsaw-Code/outline-client/tree/7e53543ea3a8720b036b44a194a735f20eb0e72d/third_party/badvpn
+https://github.com/Jigsaw-Code/outline-client/tree/613ee1447a83b428201559c56786d73bac188ea7/third_party/badvpn
