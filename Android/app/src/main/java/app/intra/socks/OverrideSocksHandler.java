@@ -47,10 +47,12 @@ import sockslib.server.msg.ServerReply;
   // Protocol and error identification constants.
   private static final int HTTPS_PORT = 443;
   private static final int HTTP_PORT = 80;
+  // This is the actual string returned in an IOException when a TCP RST packet is received.
+  // It is used to detect TCP RST packets, and also to simulate a reset when SIMULATE_RESET is true.
   private static final String RESET_MESSAGE = "Connection reset";
 
   // Simulate reset events.  Set to true only for testing.
-  private static final boolean SIMULATE_RESET = true;
+  private static final boolean SIMULATE_RESET = false;
 
   void setContext(Context context) {
     this.context = context;
@@ -115,10 +117,21 @@ import sockslib.server.msg.ServerReply;
 
     StatsListener listener = null;
     try {
-      listener = runPipes(upload, download, remoteServerPort, SIMULATE_RESET && remoteServerPort == HTTPS_PORT);
-      if (remoteServerPort == HTTPS_PORT && listener.downloadBytes == 0 && listener.uploadBytes > 0
+      listener = runPipes(upload, download, remoteServerPort, SIMULATE_RESET);
+      // We consider a termination event as a potentially recoverable failure if
+      // (1) It is HTTPS
+      // (2) Some data has been uploaded (i.e. the TLS ClientHello)
+      // (3) No data has been received
+      // (4) The socket was terminated by a TCP RST
+      // In this situation, the listener's uploadBuffer should be nonempty.
+      if (remoteServerPort == HTTPS_PORT && listener.uploadBytes > 0 && listener.downloadBytes == 0
           && listener.error != null && RESET_MESSAGE.equals(listener.error.getMessage())
           && listener.uploadBuffer != null) {
+        // To attempt recovery, we
+        // (1) Close the remote socket (which has already failed)
+        // (2) Open a new one
+        // (3) Connect the new remote socket to the existing StreamPipe
+        // (4) Retry the ClientHello via splitRetry
         socket.close();
         download.stop();
         socket = new Socket(remoteServerAddress, remoteServerPort);
@@ -149,7 +162,8 @@ import sockslib.server.msg.ServerReply;
 
     if (listener != null) {
       // We had a functional socket long enough to record statistics.
-      // Report the BYTES event : value = total transfer over the lifetime of a socket
+      // Report the BYTES event :
+      // - VALUE : total transfer over the lifetime of a socket
       // - PORT : TCP port number (i.e. protocol type)
       // - DURATION: socket lifetime in seconds
 
@@ -284,13 +298,14 @@ import sockslib.server.msg.ServerReply;
    * @param upload A pipe that has not yet been started
    * @param download A pipe that has not yet been started
    * @param port The remote server port number
+   * @param simulateReset Whether to simulate a reset event on every new HTTPS socket.  Test-only.
    * @throws IOException if there is a network error
    * @throws InterruptedException if this thread is interrupted.
    * @return A StatsListener containing final stats on the socket, which has now been closed.
    */
   private static StatsListener runPipes(final Pipe upload, final Pipe download, int port, boolean simulateReset) throws InterruptedException {
 
-    StatsListener listener = new StatsListener(port, simulateReset);
+    StatsListener listener = new StatsListener(port, simulateReset && port == HTTPS_PORT);
     upload.addPipeListener(listener);
     download.addPipeListener(listener);
 
@@ -328,22 +343,23 @@ import sockslib.server.msg.ServerReply;
     event.putInt(Names.BYTES.name(), listener.uploadBytes);
     event.putInt(Names.CHUNKS.name(), listener.uploadCount);
 
-    int limit = MIN_SPLIT + (Math.abs(RANDOM.nextInt()) % (MAX_SPLIT + 1 - MIN_SPLIT));
-    event.putInt(Names.SPLIT.name(), limit);
-
     try {
 
       // Send the first 32-64 bytes in the first packet.
-      final int position = listener.uploadBuffer.position();
+      final int length = listener.uploadBuffer.position();
+      // A typical offset is 4 bytes.
       final int offset = listener.uploadBuffer.arrayOffset();
-      final int length = position - offset;
+      // Limit the first segment to 32-64 bytes and at most half of uploadBuffer.
+      final int limit = MIN_SPLIT + (Math.abs(RANDOM.nextInt()) % (MAX_SPLIT + 1 - MIN_SPLIT));
       final int split = Math.min(limit, length / 2);
+      // Record the split for performance analysis.
+      event.putInt(Names.SPLIT.name(), split);
+      // Send the first packet.
       socketUpload.write(listener.uploadBuffer.array(), offset, split);
       socketUpload.flush();
 
       // Send the remainder in a second packet.
-      socketUpload.write(listener.uploadBuffer.array(),
-          offset + split, offset + length - split);
+      socketUpload.write(listener.uploadBuffer.array(), offset + split, length - split);
 
       StatsListener newListener = runPipes(upload, download, listener.port, false);
 
