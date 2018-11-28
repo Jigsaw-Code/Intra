@@ -288,4 +288,9 @@ public class StreamPipe implements Runnable, Pipe {
   public void setDaemon(boolean daemon) {
     this.daemon = daemon;
   }
+
+  public void setDestination(OutputStream destination) {
+    this.destination = destination;
+  }
+
 }

@@ -21,10 +21,12 @@ import sockslib.server.msg.ServerReply;
  */
 public class UdpOverrideSocksHandler extends Socks5Handler {
   // UDP server buffer size in bytes.
-  private static final int BUFFER_SIZE = 5 * 1024;
+  protected static final int BUFFER_SIZE = 5 * 1024;
   // SOCKS protocol version
-  private static final int VERSION = 0x5;
+  protected static final int VERSION = 0x5;
 
+  // DNS redirection information, used to move UDP packets from the nominal DNS server (port 53 on
+  // some random IP address) to the true DNS server (a high-numbered port on localhost).
   private InetSocketAddress fakeDns = null;
   private InetSocketAddress trueDns = null;
 
