@@ -367,9 +367,7 @@ import sockslib.server.msg.ServerReply;
       newListener.uploadBytes += length;
       newListener.uploadCount += 2;
 
-      boolean success = newListener.downloadBytes > 0;
-
-      event.putInt(Names.RETRY.name(), success ? 1 : 0);
+      event.putInt(Names.RETRY.name(), newListener.downloadBytes > 0 ? 1 : 0);
       FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
 
       return newListener;
