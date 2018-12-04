@@ -116,8 +116,10 @@ import sockslib.server.msg.ServerReply;
     download.setBufferSize(BUFFER_SIZE);
 
     StatsListener listener = null;
+    Exception initialError = null;
     try {
       listener = runPipes(upload, download, remoteServerPort, SIMULATE_RESET);
+      initialError = listener.error;
       // We consider a termination event as a potentially recoverable failure if
       // (1) It is HTTPS
       // (2) Some data has been uploaded (i.e. the TLS ClientHello)
@@ -125,7 +127,7 @@ import sockslib.server.msg.ServerReply;
       // (4) The socket was terminated by a TCP RST
       // In this situation, the listener's uploadBuffer should be nonempty.
       if (remoteServerPort == HTTPS_PORT && listener.uploadBytes > 0 && listener.downloadBytes == 0
-          && listener.error != null && RESET_MESSAGE.equals(listener.error.getMessage())
+          && initialError != null && RESET_MESSAGE.equals(initialError.getMessage())
           && listener.uploadBuffer != null) {
         // To attempt recovery, we
         // (1) Close the remote socket (which has already failed)
@@ -164,11 +166,17 @@ import sockslib.server.msg.ServerReply;
       // We had a functional socket long enough to record statistics.
       // Report the BYTES event :
       // - VALUE : total transfer over the lifetime of a socket
+      // - UPLOAD : Total bytes uploaded on this socket
       // - PORT : TCP port number (i.e. protocol type)
-      // - DURATION: socket lifetime in seconds
+      // - DURATION : socket lifetime in seconds
+      // - ERROR: If present, the hashcode of the IOException message that ended the connection.
+      //      Including a hashcode instead of the entire error message improves efficiency and
+      //      ensures that we only see the common messages.  It works because all Android versions
+      //      use the same hashcode() implementation.
 
       Bundle event = new Bundle();
       event.putInt(Param.VALUE, listener.uploadBytes + listener.downloadBytes);
+      event.putInt(Names.UPLOAD.name(), listener.uploadBytes);
 
       int port = listener.port;
       if (port >= 0) {
@@ -183,6 +191,10 @@ import sockslib.server.msg.ServerReply;
       if (durationMs >= 0) {
         // Socket connection duration is in seconds.
         event.putInt(Names.DURATION.name(), durationMs / 1000);
+      }
+
+      if (initialError != null) {
+        event.putInt(Names.ERROR.name(), initialError.getMessage().hashCode());
       }
 
       FirebaseAnalytics.getInstance(context).logEvent(Names.BYTES.name(), event);
@@ -289,6 +301,11 @@ import sockslib.server.msg.ServerReply;
 
     @Override
     public void onError(Pipe pipe, Exception exception) {
+      if (this.error != null) {
+        // When simulateReset is true, the simulated error can be followed by an actual error.
+        // We want to ignore the actual error so that the simulation works.
+        return;
+      }
       this.error = exception;
     }
   }

@@ -25,10 +25,12 @@ public enum Names {
   DNS_STATUS,
   DURATION,
   EARLY_RESET,
+  ERROR,
   LATENCY,
   PORT,
   RESULT,
   RETRY,
   SPLIT,
   TRANSACTION,
+  UPLOAD,
 }
