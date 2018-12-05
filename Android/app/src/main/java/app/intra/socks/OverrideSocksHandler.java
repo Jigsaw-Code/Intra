@@ -165,7 +165,7 @@ import sockslib.server.msg.ServerReply;
     if (listener != null) {
       // We had a functional socket long enough to record statistics.
       // Report the BYTES event :
-      // - VALUE : total transfer over the lifetime of a socket
+      // - VALUE : total bytes transferred during the lifetime of the socket
       // - UPLOAD : Total bytes uploaded on this socket
       // - PORT : TCP port number (i.e. protocol type)
       // - DURATION : socket lifetime in seconds
