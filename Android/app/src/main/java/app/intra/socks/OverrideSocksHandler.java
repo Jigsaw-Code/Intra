@@ -168,8 +168,8 @@ import sockslib.server.msg.ServerReply;
       // - VALUE : total transfer over the lifetime of a socket
       // - PORT : TCP port number (i.e. protocol type)
       // - DURATION: socket lifetime in seconds
-      // - LATENCY: TCP handshake latency in milliseconds
-      // - DELTARTT - Difference between data latency and TCP handshake latency, in milliseconds.
+      // - TCP_HANDSHAKE_MS : TCP handshake latency in milliseconds
+      // - FIRST_BYTE_MS : Time between socket open and first byte from server, in milliseconds.
 
       Bundle event = new Bundle();
       event.putInt(Param.VALUE, listener.uploadBytes + listener.downloadBytes);
@@ -184,11 +184,12 @@ import sockslib.server.msg.ServerReply;
       }
 
       if (tcpHandshakeMs >= 0) {
-        event.putInt(Names.LATENCY.name(), tcpHandshakeMs);
-        int dataLatencyMs = listener.getResponseTimeMs();
-        if (dataLatencyMs >= 0) {
-          event.putInt(Names.DELTARTT.name(), dataLatencyMs - tcpHandshakeMs);
-        }
+        event.putInt(Names.TCP_HANDSHAKE_MS.name(), tcpHandshakeMs);
+      }
+
+      int firstByteMs = listener.getFirstByteMs();
+      if (firstByteMs >= 0) {
+        event.putInt(Names.FIRST_BYTE_MS.name(), firstByteMs);
       }
 
       int durationMs = listener.getDurationMs();
@@ -263,7 +264,7 @@ import sockslib.server.msg.ServerReply;
       return (int)(stopTime - startTime);
     }
 
-    int getResponseTimeMs() {
+    int getFirstByteMs() {
       if (startTime < 0 || responseTime < 0) {
         return -1;
       }
