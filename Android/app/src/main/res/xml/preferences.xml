@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <app.intra.ServerChooser
+    <app.intra.ui.settings.ServerChooser
             android:key="pref_server_url"
             android:title="@string/server_choice"
             android:dialogTitle="@string/server_choice"/>

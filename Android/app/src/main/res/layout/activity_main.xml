@@ -40,7 +40,7 @@
   <!-- The NavigationView class supports a header, but not a footer.  To produce the desired footer
   behavior, we use an outer NavigationView that has no menu, but contains a scrollview that
   holds a constraint chain: the real navigation view, a spacer, and the footer elements. -->
-  <app.intra.PadNavigationView
+  <app.intra.ui.PadNavigationView
           android:id="@+id/outer_drawer"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
@@ -97,6 +97,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-  </app.intra.PadNavigationView>
+  </app.intra.ui.PadNavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

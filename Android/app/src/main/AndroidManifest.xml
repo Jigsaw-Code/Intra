@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="app.intra.MainActivity">
+        <activity android:name="app.intra.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -21,7 +21,7 @@
         </activity>
 
         <service
-            android:name="app.intra.DnsVpnService"
+            android:name="app.intra.sys.IntraVpnService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_VPN_SERVICE" >
@@ -30,7 +30,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="app.intra.AutoStarter" android:enabled="true">
+        <receiver android:name="app.intra.sys.AutoStarter" android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
