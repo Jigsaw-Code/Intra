@@ -3,7 +3,6 @@ package app.intra.socks;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import app.intra.util.Names;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.analytics.FirebaseAnalytics.Param;
@@ -13,9 +12,10 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import sockslib.server.Session;
 import sockslib.server.io.Pipe;
@@ -47,12 +47,13 @@ import sockslib.server.msg.ServerReply;
   // Protocol and error identification constants.
   private static final int HTTPS_PORT = 443;
   private static final int HTTP_PORT = 80;
-  // This is the actual string returned in an IOException when a TCP RST packet is received.
-  // It is used to detect TCP RST packets, and also to simulate a reset when SIMULATE_RESET is true.
-  private static final String RESET_MESSAGE = "Connection reset";
 
-  // Simulate reset events.  Set to true only for testing.
-  private static final boolean SIMULATE_RESET = false;
+  // Maximum time to wait for an HTTPS handshake response before split-retry, in milliseconds.
+  // This value is chosen conservatively to minimize false positives.
+  // TODO: Use an adaptive timeout based on the TCP handshake latency for a given socket.
+  private static final int HTTPS_TIMEOUT_MS = 10000;
+  private static final String TIMEOUT_MESSAGE = "HTTPS Server timeout";
+  private static final Timer TIMEOUTS = new Timer("HTTPS server timeout");
 
   void setContext(Context context) {
     this.context = context;
@@ -70,10 +71,13 @@ import sockslib.server.msg.ServerReply;
     // set default bind address.
     byte[] defaultAddress = {0, 0, 0, 0};
     bindAddress = InetAddress.getByAddress(defaultAddress);
+    int tcpHandshakeMs = -1;
     // DO connect
     try {
       // Connect directly.
+      long beforeConnect = SystemClock.elapsedRealtime();
       socket = new Socket(remoteServerAddress, remoteServerPort);
+      tcpHandshakeMs = (int)(SystemClock.elapsedRealtime() - beforeConnect);
       bindAddress = socket.getLocalAddress();
       bindPort = socket.getLocalPort();
       reply = ServerReply.SUCCEEDED;
@@ -117,15 +121,13 @@ import sockslib.server.msg.ServerReply;
 
     StatsListener listener = null;
     try {
-      listener = runPipes(upload, download, remoteServerPort, SIMULATE_RESET);
+      listener = runPipes(upload, download, remoteServerPort, HTTPS_TIMEOUT_MS);
       // We consider a termination event as a potentially recoverable failure if
       // (1) It is HTTPS
       // (2) Some data has been uploaded (i.e. the TLS ClientHello)
       // (3) No data has been received
-      // (4) The socket was terminated by a TCP RST
       // In this situation, the listener's uploadBuffer should be nonempty.
       if (remoteServerPort == HTTPS_PORT && listener.uploadBytes > 0 && listener.downloadBytes == 0
-          && listener.error != null && RESET_MESSAGE.equals(listener.error.getMessage())
           && listener.uploadBuffer != null) {
         // To attempt recovery, we
         // (1) Close the remote socket (which has already failed)
@@ -166,6 +168,8 @@ import sockslib.server.msg.ServerReply;
       // - VALUE : total transfer over the lifetime of a socket
       // - PORT : TCP port number (i.e. protocol type)
       // - DURATION: socket lifetime in seconds
+      // - TCP_HANDSHAKE_MS : TCP handshake latency in milliseconds
+      // - FIRST_BYTE_MS : Time between socket open and first byte from server, in milliseconds.
 
       Bundle event = new Bundle();
       event.putInt(Param.VALUE, listener.uploadBytes + listener.downloadBytes);
@@ -177,6 +181,15 @@ import sockslib.server.msg.ServerReply;
           port = -1;
         }
         event.putInt(Names.PORT.name(), port);
+      }
+
+      if (tcpHandshakeMs >= 0) {
+        event.putInt(Names.TCP_HANDSHAKE_MS.name(), tcpHandshakeMs);
+      }
+
+      int firstByteMs = listener.getFirstByteMs();
+      if (firstByteMs >= 0) {
+        event.putInt(Names.FIRST_BYTE_MS.name(), firstByteMs);
       }
 
       int durationMs = listener.getDurationMs();
@@ -198,6 +211,7 @@ import sockslib.server.msg.ServerReply;
   private static class StatsListener implements PipeListener {
     // System clock start and stop time for this socket pair.
     long startTime = -1;
+    long responseTime = -1;
     long stopTime = -1;
 
     // If non-null, the socket was closed with an error.
@@ -209,9 +223,11 @@ import sockslib.server.msg.ServerReply;
     int downloadBytes = 0;
 
     // Server port, for protocol identification.
-    int port;
+    final int port;
 
-    boolean simulateReset;
+    // Initial server response timeout.  -1 means disabled  (no timeout).
+    final int httpsTimeoutMs;
+    TimerTask timeoutTask;
 
     // The upload buffer is only intended to hold the first flight from the client.
     private static final int MAX_BUFFER = 1024;
@@ -233,9 +249,9 @@ import sockslib.server.msg.ServerReply;
       return stopped;
     }
 
-    StatsListener(int port, boolean simulateReset) {
+    StatsListener(int port, int httpsTimeoutMs) {
       this.port = port;
-      this.simulateReset = simulateReset;
+      this.httpsTimeoutMs = httpsTimeoutMs;
       if (port == HTTPS_PORT) {
         uploadBuffer = ByteBuffer.allocateDirect(MAX_BUFFER);
       }
@@ -246,6 +262,13 @@ import sockslib.server.msg.ServerReply;
         return -1;
       }
       return (int)(stopTime - startTime);
+    }
+
+    int getFirstByteMs() {
+      if (startTime < 0 || responseTime < 0) {
+        return -1;
+      }
+      return (int)(responseTime - startTime);
     }
 
     @Override
@@ -269,27 +292,54 @@ import sockslib.server.msg.ServerReply;
         downloadBytes += bufferLength;
         // Free memory in uploadBuffer, since it's no longer needed.
         uploadBuffer = null;
+        if (responseTime < 0) {
+          responseTime = SystemClock.elapsedRealtime();
+        }
+        stopTimeout();
       } else {
         uploadBytes += bufferLength;
         if (uploadBuffer != null) {
           try {
             uploadBuffer.put(buffer, 0, bufferLength);
+            startTimeout(pipe);
           } catch (Exception e) {
             uploadBuffer = null;
           }
         }
         ++uploadCount;
-        if (simulateReset) {
-          pipe.removePipeListener(this);
-          onError(pipe, new Exception(RESET_MESSAGE));
-          onStop(pipe);
-        }
       }
     }
 
     @Override
     public void onError(Pipe pipe, Exception exception) {
       this.error = exception;
+    }
+
+    private void startTimeout(final Pipe pipe) {
+      if (httpsTimeoutMs < 0) {
+        return;
+      }
+
+      // Get rid of any existing task.
+      stopTimeout();
+
+      final StatsListener listener = this;
+      timeoutTask = new TimerTask() {
+        @Override
+        public void run() {
+          pipe.removePipeListener(listener);
+          onError(pipe, new Exception(TIMEOUT_MESSAGE));
+          onStop(pipe);
+        }
+      };
+      TIMEOUTS.schedule(timeoutTask, httpsTimeoutMs);
+    }
+
+    private void stopTimeout() {
+      if (timeoutTask != null) {
+        timeoutTask.cancel();
+      }
+      timeoutTask = null;
     }
   }
 
@@ -298,14 +348,13 @@ import sockslib.server.msg.ServerReply;
    * @param upload A pipe that has not yet been started
    * @param download A pipe that has not yet been started
    * @param port The remote server port number
-   * @param simulateReset Whether to simulate a reset event on every new HTTPS socket.  Test-only.
+   * @param httpsTimeoutMs How long to wait for a response from an HTTPS server.
    * @throws IOException if there is a network error
    * @throws InterruptedException if this thread is interrupted.
    * @return A StatsListener containing final stats on the socket, which has now been closed.
    */
-  private static StatsListener runPipes(final Pipe upload, final Pipe download, int port, boolean simulateReset) throws InterruptedException {
-
-    StatsListener listener = new StatsListener(port, simulateReset && port == HTTPS_PORT);
+  private static StatsListener runPipes(final Pipe upload, final Pipe download, int port, int httpsTimeoutMs) throws InterruptedException {
+    StatsListener listener = new StatsListener(port, httpsTimeoutMs);
     upload.addPipeListener(listener);
     download.addPipeListener(listener);
 
@@ -361,7 +410,7 @@ import sockslib.server.msg.ServerReply;
       // Send the remainder in a second packet.
       socketUpload.write(listener.uploadBuffer.array(), offset + split, length - split);
 
-      StatsListener newListener = runPipes(upload, download, listener.port, false);
+      StatsListener newListener = runPipes(upload, download, listener.port, -1);
 
       // Account for the retried segment.
       newListener.uploadBytes += length;
