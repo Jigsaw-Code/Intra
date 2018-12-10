@@ -63,12 +63,22 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
   private static final int HTTPS_PORT = 443;
   private static final int HTTP_PORT = 80;
 
-  // Maximum time to wait for an HTTPS handshake response before split-retry, in milliseconds.
-  // This value is chosen conservatively to minimize false positives.
-  // TODO: Use an adaptive timeout based on the TCP handshake latency for a given socket.
-  private static final int HTTPS_TIMEOUT_MS = 10000;
+  // Error string when the HTTPS timeout is exceeded.
   private static final String TIMEOUT_MESSAGE = "HTTPS Server timeout";
+
+  // Timer thread for keeping track of socket timeouts.
   private static final Timer TIMEOUTS = new Timer("HTTPS server timeout");
+
+  /**
+   * @param tcpHandshakeMs The duration of the TCP handshake for this socket (typically 1 RTT).
+   * @return Maximum time to wait for an HTTPS handshake response before engaging split-retry.
+   */
+  private static int httpsTimeoutMs(int tcpHandshakeMs) {
+    // These values were chosen to have a <1% false positive rate based on test data.
+    // False positives trigger an unnecessary retry, which can make connections slower, so they are
+    // worth avoiding.  However, overly long timeouts make retry slower and less useful.
+    return 2 * tcpHandshakeMs + 1200;
+  }
 
   void setContext(Context context) {
     this.context = context;
@@ -136,7 +146,7 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
 
     StatsListener listener = null;
     try {
-      listener = runPipes(upload, download, remoteServerPort, HTTPS_TIMEOUT_MS);
+      listener = runPipes(upload, download, remoteServerPort, httpsTimeoutMs(tcpHandshakeMs));
       // We consider a termination event as a potentially recoverable failure if
       // (1) It is HTTPS
       // (2) Some data has been uploaded (i.e. the TLS ClientHello)
@@ -294,6 +304,7 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
     @Override
     public void onStop(Pipe pipe) {
       stopTime = SystemClock.elapsedRealtime();
+      stopTimeout();
       stopped = true;
       latch.countDown();
     }
@@ -351,10 +362,11 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
     }
 
     private void stopTimeout() {
+      TimerTask timeoutTask = this.timeoutTask;
+      this.timeoutTask = null;
       if (timeoutTask != null) {
         timeoutTask.cancel();
       }
-      timeoutTask = null;
     }
   }
 
