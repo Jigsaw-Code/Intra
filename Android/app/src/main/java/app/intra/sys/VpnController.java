@@ -39,7 +39,7 @@ public class VpnController {
 
   private IntraVpnService intraVpnService = null;
   private ServerConnection.State connectionState = null;
-  private DnsQueryTracker tracker = null;
+  private QueryTracker tracker = null;
 
   private VpnController() {}
 
@@ -61,9 +61,9 @@ public class VpnController {
     LocalBroadcastManager.getInstance(context).sendBroadcast(broadcast);
   }
 
-  public synchronized DnsQueryTracker getTracker(Context context) {
+  public synchronized QueryTracker getTracker(Context context) {
     if (tracker == null) {
-      tracker = new DnsQueryTracker(context);
+      tracker = new QueryTracker(context);
     }
     return tracker;
   }

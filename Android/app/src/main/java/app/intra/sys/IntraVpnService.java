@@ -479,7 +479,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     }
   }
 
-  private DnsQueryTracker getTracker() {
+  private QueryTracker getTracker() {
     return VpnController.getInstance().getTracker(this);
   }
 

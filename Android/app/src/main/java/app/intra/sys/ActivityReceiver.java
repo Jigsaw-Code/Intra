@@ -18,14 +18,18 @@ package app.intra.sys;
 import java.util.Collection;
 
 /**
- * Visitor interface for DnsQueryTracker's activity data.  This allows a class to get access
- * to the query activity without making a copy, while maintaining DnsQueryTracker's
- * synchronization.
+ * Interface for classes that can receive information about when recent events occurred.
+ *
+ * This class primarily serves to allow HistoryGraph to scan QueryTracker's activity data
+ * while QueryTracker holds a lock, without making an extra copy and without QueryTracker
+ * having to import HistoryGraph.
  */
-public interface DnsActivityReader {
+public interface ActivityReceiver {
   /**
    * @param activity The SystemClock.elapsedRealtime() timestamps of each event in the recent
-   *                 activity history.
+   *                 activity history as an unmodifiable collection.  The implementor must not
+   *                 retain the argument past the end of this call, as it is owned by the caller
+   *                 and may be modified.
    */
-  void read(Collection<Long> activity);
+  void receive(Collection<Long> activity);
 }

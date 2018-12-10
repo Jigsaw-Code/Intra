@@ -61,9 +61,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.Transaction;
-import app.intra.sys.DnsQueryTracker;
 import app.intra.sys.Names;
 import app.intra.sys.PersistentState;
+import app.intra.sys.QueryTracker;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
 import app.intra.ui.settings.SettingsFragment;
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity
     final CheckBox showHistory = (CheckBox) controlView.findViewById(R.id.show_history);
     showHistory.setChecked(isHistoryEnabled());
 
-    final DnsQueryTracker tracker = VpnController.getInstance().getTracker(this);
+    final QueryTracker tracker = VpnController.getInstance().getTracker(this);
     showHistory.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
           @Override
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity
     if (activityTimer == null) {
       activityTimer = new Timer();
     }
-    final DnsQueryTracker tracker = VpnController.getInstance().getTracker(this);
+    final QueryTracker tracker = VpnController.getInstance().getTracker(this);
     final Handler controlViewUpdateHandler = new Handler();
     final TextView qpmView = (TextView) controlView.findViewById(R.id.qpm);
     final Runnable doUpdate = new Runnable() {

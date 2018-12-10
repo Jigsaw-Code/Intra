@@ -30,7 +30,7 @@ import java.util.Queue;
  * transactions.
  * Thread-safe.
  */
-public class DnsQueryTracker {
+public class QueryTracker {
 
   private static final String NUM_REQUESTS = "numRequests";
 
@@ -42,7 +42,7 @@ public class DnsQueryTracker {
   private Queue<Long> recentActivity = new LinkedList<>();
   private boolean historyEnabled = false;
 
-  DnsQueryTracker(Context context) {
+  QueryTracker(Context context) {
     sync(context);
   }
 
@@ -54,8 +54,11 @@ public class DnsQueryTracker {
     return new LinkedList<>(recentTransactions);
   }
 
-  public synchronized void readInto(DnsActivityReader reader) {
-    reader.read(Collections.unmodifiableCollection(recentActivity));
+  /**
+   * Provide the receiver with temporary read-only access to the recent activity time-sequence.
+   */
+  public synchronized void showActivity(ActivityReceiver receiver) {
+    receiver.receive(Collections.unmodifiableCollection(recentActivity));
   }
 
   public synchronized int countQueriesSince(long startTime) {
@@ -112,7 +115,7 @@ public class DnsQueryTracker {
   public synchronized void sync(Context context) {
     // Restore number of requests from storage, or 0 if it isn't defined yet.
     SharedPreferences settings =
-        context.getSharedPreferences(DnsQueryTracker.class.getSimpleName(), MODE_PRIVATE);
+        context.getSharedPreferences(QueryTracker.class.getSimpleName(), MODE_PRIVATE);
     long storedNumRequests = settings.getLong(NUM_REQUESTS, 0);
     if (storedNumRequests >= numRequests) {
       numRequests = storedNumRequests;

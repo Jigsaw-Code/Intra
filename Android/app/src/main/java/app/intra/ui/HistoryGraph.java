@@ -26,8 +26,8 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
 import app.intra.R;
-import app.intra.sys.DnsActivityReader;
-import app.intra.sys.DnsQueryTracker;
+import app.intra.sys.ActivityReceiver;
+import app.intra.sys.QueryTracker;
 import app.intra.sys.VpnController;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,7 +38,7 @@ import java.util.Collection;
  * rendered as a QPS graph using a gradually diffusing gaussian convolution, reflecting the idea
  * that the more recent an event is, the more we care about the fine temporal detail.
  */
-public class HistoryGraph extends View implements DnsActivityReader {
+public class HistoryGraph extends View implements ActivityReceiver {
 
   private static final int WINDOW_MS = 60 * 1000;  // Show the last minute of activity
   private static final int RESOLUTION_MS = 100;  // Compute the QPS curve with 100ms granularity.
@@ -48,7 +48,7 @@ public class HistoryGraph extends View implements DnsActivityReader {
   private static final float BOTTOM_MARGIN_FRACTION = 0.05f;  // Space to reserve below y=0.
   private static final float RIGHT_MARGIN_FRACTION = 0.1f;  // Space to reserve right of t=0.
 
-  private DnsQueryTracker tracker;
+  private QueryTracker tracker;
   private Paint dataPaint;   // Paint for the QPS curve itself.
   private Paint pulsePaint;  // Paint for the radiating pulses that also serve as x-axis marks.
 
@@ -100,7 +100,7 @@ public class HistoryGraph extends View implements DnsActivityReader {
   }
 
   @Override
-  public void read(Collection<Long> activity) {
+  public void receive(Collection<Long> activity) {
     // Reset the curve, and populate it if there are any events in the window.
     curveIsEmpty = true;
     float scale = 1.0f / RESOLUTION_MS;
@@ -139,7 +139,7 @@ public class HistoryGraph extends View implements DnsActivityReader {
 
   // Updates the curve contents or returns false if there are no contents.
   private boolean updateCurve() {
-    tracker.readInto(this);
+    tracker.showActivity(this);
     return !curveIsEmpty;
   }
 
