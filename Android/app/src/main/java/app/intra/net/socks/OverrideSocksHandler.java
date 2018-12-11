@@ -174,6 +174,8 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
         // that the next transfer will be uploaded into the new socket instead of the old one.
         upload.setDestination(socketUpload);
 
+        // Retry the connection while splitting the first flight into smaller packets.
+        // The retry doesn't trigger further retries if it fails, so it doesn't apply a timeout.
         listener = splitRetry(upload, download, socketUpload, listener);
       }
     } catch (InterruptedException e) {
@@ -252,9 +254,12 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
 
     // Initial server response timeout.  -1 means disabled  (no timeout).
     final int httpsTimeoutMs;
+    // This task is only non-null during the interval when we have sent the first flight of an
+    // HTTPS connection and are waiting for a reply.
     TimerTask timeoutTask;
 
     // The upload buffer is only intended to hold the first flight from the client.
+    // It is only used for HTTPS, and is null after the first flight.
     private static final int MAX_BUFFER = 1024;
     private ByteBuffer uploadBuffer = null;
 
@@ -327,6 +332,8 @@ class OverrideSocksHandler extends UdpOverrideSocksHandler {
         if (uploadBuffer != null) {
           try {
             uploadBuffer.put(buffer, 0, bufferLength);
+            // uploadBuffer != null implies that this is the first flight of an HTTPS connection,
+            // which is the point at which we want to set a timeout.
             startTimeout(pipe);
           } catch (Exception e) {
             uploadBuffer = null;
