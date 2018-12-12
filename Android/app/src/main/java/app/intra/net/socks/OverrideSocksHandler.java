@@ -47,7 +47,7 @@ import sockslib.server.msg.ServerReply;
  * have both behaviors.  This class is separate from UdpOverrideSocksHandler to make the code more
  * comprehensible.
  */
-class OverrideSocksHandler extends UdpOverrideSocksHandler {
+public class OverrideSocksHandler extends UdpOverrideSocksHandler {
   // Names for the upload and download pipes for monitoring.
   private static final String UPLOAD = "upload";
   private static final String DOWNLOAD = "download";
