@@ -3,27 +3,27 @@
 
   <!-- Intro text -->
   <string name="intro_benefit_headline" description="Headline for intro page describing key benefit">
-    A safer route to a more open internet
+    More open internet access
   </string>
 
   <string name="intro_benefit_body" description="Body text for intro page describing key benefit">
-    When you use the internet, your device needs to look up addresses in an internet contact list. Sometimes your connection can give you the wrong address.
+    Intra protects you from DNS manipulation, a cyber attack used to block access to news sites, social media platforms and messaging apps.\n\nWhile Intra protects you against DNS manipulation, there are other, more complicated blocking techniques and attacks that Intra doesn\'t protect against.
   </string>
 
   <string name="intro_manipulation_headline" description="Headline for intro page describing manipulation">
-    Protection from wrong addresses
+    Protection from DNS manipulation
   </string>
 
   <string name="intro_manipulation_body" description="Body text for intro page describing manipulation">
-    Intra protects you from getting bad addresses that lead to dead ends (DNS manipulation) by encrypting your DNS connection.
+    Intra protects your connection to the Domain Name System (DNS), which provides the exact addresses you need to visit a website or open an app.\n\nIntra uses encryption to ensure that results can\’t be manipulated, helping you safely access the internet.
   </string>
 
   <string name="intro_details_headline" description="Headline for intro page describing permissions and privacy">
-    Intra needs to monitor network traffic to enable protection
+    One last thing&#8230;
   </string>
 
   <string name="intro_details_body" description="Body text for intro page describing permissions and privacy">
-    Tap OK when you see the connection request to get started. By default, your queries will be routed to Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>). You can choose another service in the app settings.
+    Tap OK to allow Intra to protect your DNS requests. By default, they will be routed to Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>). You can choose another service in the app settings.
   </string>
 
   <string name="intro_back" description="Button label to see the previous page of introduction">
@@ -262,12 +262,13 @@
   </string>
 
   <string name="insecure_server_headline">
-    Your network assigns you a DNS server without your input
+    You can choose your own DNS server
   </string>
 
   <string name="insecure_server_body">
-    When Intra is disabled, your device uses whichever DNS server the network operator tells it to
-    use.  This field shows the IP address of your default network\'s DNS server.
+    When Intra is disabled, most devices are pre-configured to use the DNS server your network
+    operator picks. This field shows the IP address your device is currently using. With Intra or
+    Android P, you can easily select a server of your choice.
   </string>
 
   <string name="unknown_server"
