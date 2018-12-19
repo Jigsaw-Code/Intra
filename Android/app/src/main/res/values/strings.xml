@@ -217,7 +217,7 @@
     what DNS queries you are making.  Intra implements the DNS over HTTPS protocol for encryption.
   </string>
 
-  <string name="insecure_transport_label"
+  <string name="default_transport_label"
           description="This text appears under the name of the DNS protocol in use when Intra is off.  Currently,
   that is usually 'unencrypted'.">
     Default transport
@@ -258,7 +258,7 @@
 
   <string name="insecure_server_label"
           description="This text appears under the name of the insecure server currently in use.">
-    Network-provided DNS server
+    Current DNS server
   </string>
 
   <string name="insecure_server_headline">
@@ -267,7 +267,7 @@
 
   <string name="insecure_server_body">
     When Intra is disabled, most devices are pre-configured to use the DNS server your network
-    operator picks. This field shows the IP address your device is currently using. With Intra or
+    operator picks. This field shows the DNS server your device is currently using. With Intra or
     Android P, you can easily select a server of your choice.
   </string>
 

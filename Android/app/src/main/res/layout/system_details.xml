@@ -214,12 +214,13 @@
                 android:layout_marginTop="32dp"
                 android:orientation="vertical"
                 android:background="@color/floating"
-                app:layout_constraintEnd_toStartOf="@+id/insecure_server_box"
+                app:layout_constraintEnd_toStartOf="@+id/default_server_box"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
+                    android:id="@+id/default_protocol_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
@@ -238,11 +239,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minLines="2"
-                    android:text="@string/insecure_transport_label"/>
+                    android:text="@string/default_transport_label"/>
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/insecure_server_box"
+                android:id="@+id/default_server_box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -259,6 +260,7 @@
                 app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
+                    android:id="@+id/default_server_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
@@ -267,7 +269,7 @@
                     tools:ignore="ContentDescription"/>
 
             <TextView
-                    android:id="@+id/insecure_server_value"
+                    android:id="@+id/default_server_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="none"

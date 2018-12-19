@@ -22,7 +22,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
@@ -46,12 +48,17 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
@@ -282,8 +289,8 @@ public class MainActivity extends AppCompatActivity
     setInfoClicker(R.id.qpm_box, InfoPage.RECENT_QUERIES);
     setInfoClicker(R.id.protocol_box, InfoPage.SECURE_PROTOCOL);
     setInfoClicker(R.id.server_box, InfoPage.SECURE_SERVER);
-    setInfoClicker(R.id.insecure_protocol_box, InfoPage.INSECURE_PROTOCOL);
-    setInfoClicker(R.id.insecure_server_box, InfoPage.INSECURE_SERVER);
+    setInfoClicker(R.id.default_protocol_box, InfoPage.DEFAULT_PROTOCOL);
+    setInfoClicker(R.id.default_server_box, InfoPage.DEFAULT_SERVER);
 
     // Restore number of requests.
     long numRequests = tracker.getNumRequests();
@@ -465,6 +472,12 @@ public class MainActivity extends AppCompatActivity
     if (linkProperties == null) {
       return null;
     }
+    if (VERSION.SDK_INT >= VERSION_CODES.P) {
+      String privateDnsServerName = linkProperties.getPrivateDnsServerName();
+      if (privateDnsServerName != null) {
+        return privateDnsServerName;
+      }
+    }
     for (InetAddress address : linkProperties.getDnsServers()) {
       // Show the first DNS server on the list.
       return address.getHostAddress();
@@ -629,13 +642,29 @@ public class MainActivity extends AppCompatActivity
       boolean tls = privateDnsMode != PrivateDnsMode.NONE;
       defaultProtocol.setText(tls ? R.string.tls_transport : R.string.insecure_transport);
 
-      String insecureServerAddress = getSystemDnsServer();
-      if (insecureServerAddress == null) {
-        insecureServerAddress = getResources().getText(R.string.unknown_server).toString();
+      ImageView defaultProtocolIcon = controlView.findViewById(R.id.default_protocol_icon);
+      defaultProtocolIcon.setImageResource(
+          tls ? R.drawable.ic_lock_black_24dp : R.drawable.ic_lock_open_black_24dp);
+      defaultProtocolIcon.setColorFilter(color, Mode.SRC_ATOP);
+
+      InfoPage protocolTarget = InfoPage.DEFAULT_PROTOCOL;
+      if (privateDnsMode == PrivateDnsMode.STRICT) {
+        protocolTarget = InfoPage.STRICT_MODE_PROTOCOL;
+      } else if (tls) {
+        protocolTarget = InfoPage.UPGRADED_PROTOCOL;
       }
-      TextView serverLabel = controlView.findViewById(R.id.insecure_server_value);
-      serverLabel.setText(insecureServerAddress);
-    }
+      setInfoClicker(R.id.default_protocol_box, protocolTarget);
+
+      String systemDnsServer = getSystemDnsServer();
+      if (systemDnsServer == null) {
+        systemDnsServer = getResources().getText(R.string.unknown_server).toString();
+      }
+      TextView serverLabel = controlView.findViewById(R.id.default_server_value);
+      serverLabel.setText(systemDnsServer);
+
+      ImageView defaultServerIcon = controlView.findViewById(R.id.default_server_icon);
+      defaultServerIcon.setColorFilter(color, Mode.SRC_ATOP);
+      }
   }
 
   @Override
@@ -721,12 +750,25 @@ public class MainActivity extends AppCompatActivity
         R.drawable.ic_server,
         R.string.server_headline,
         R.string.server_body),
-    INSECURE_PROTOCOL(false,
-        R.string.insecure_transport_label,
+    DEFAULT_PROTOCOL(false,
+        R.string.default_transport_label,
         R.drawable.ic_lock_open_black_24dp,
         R.string.insecure_transport_headline,
         R.string.insecure_transport_body),
-    INSECURE_SERVER(false,
+    // There are two DNS-over-TLS cases: upgraded (i.e. opportunistic) and strict mode.
+    // These are only shown on Android P, to users who are using DNS-over-TLS rare.  Rather than
+    // writing custom explanations for these rare cases, we just reuse the status indicator text.
+    UPGRADED_PROTOCOL(false,
+        R.string.default_transport_label,
+        R.drawable.ic_lock_black_24dp,
+        R.string.status_upgraded,
+        R.string.explanation_upgraded),
+    STRICT_MODE_PROTOCOL(true,
+        R.string.default_transport_label,
+        R.drawable.ic_lock_black_24dp,
+        R.string.status_strict,
+        R.string.explanation_strict),
+    DEFAULT_SERVER(false,
         R.string.insecure_server_label,
         R.drawable.ic_server,
         R.string.insecure_server_headline,
