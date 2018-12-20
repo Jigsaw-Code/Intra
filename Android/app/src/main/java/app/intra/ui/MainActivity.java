@@ -254,7 +254,6 @@ public class MainActivity extends AppCompatActivity
 
     // Set up the main UI
     final Switch switchButton = controlView.findViewById(R.id.dns_switch);
-    syncDnsStatus();
     switchButton.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
           @Override
@@ -297,6 +296,7 @@ public class MainActivity extends AppCompatActivity
     showNumRequests(numRequests);
 
     updateServerName();
+    syncDnsStatus();
 
     // Start updating the live Queries Per Minute value.
     startAnimation();
@@ -664,6 +664,9 @@ public class MainActivity extends AppCompatActivity
 
       ImageView defaultServerIcon = controlView.findViewById(R.id.default_server_icon);
       defaultServerIcon.setColorFilter(color, Mode.SRC_ATOP);
+
+      setInfoClicker(R.id.default_server_box, privateDnsMode == PrivateDnsMode.STRICT ?
+          InfoPage.STRICT_MODE_SERVER : InfoPage.DEFAULT_SERVER);
       }
   }
 
@@ -769,10 +772,15 @@ public class MainActivity extends AppCompatActivity
         R.string.status_strict,
         R.string.explanation_strict),
     DEFAULT_SERVER(false,
-        R.string.insecure_server_label,
+        R.string.default_server_label,
         R.drawable.ic_server,
         R.string.insecure_server_headline,
-        R.string.insecure_server_body);
+        R.string.insecure_server_body),
+    STRICT_MODE_SERVER(true,
+        R.string.default_server_label,
+        R.drawable.ic_server,
+        R.string.strict_mode_server_headline,
+        R.string.strict_mode_server_body);
 
     final boolean good;
     final @StringRes int title;

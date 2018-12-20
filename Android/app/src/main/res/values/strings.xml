@@ -256,7 +256,7 @@
     different server in the Settings menu.
   </string>
 
-  <string name="insecure_server_label"
+  <string name="default_server_label"
           description="This text appears under the name of the insecure server currently in use.">
     Current DNS server
   </string>
@@ -267,8 +267,17 @@
 
   <string name="insecure_server_body">
     When Intra is disabled, most devices are pre-configured to use the DNS server your network
-    operator picks. This field shows the DNS server your device is currently using. With Intra or
-    Android P, you can easily select a server of your choice.
+    operator picks. This field shows the IP address of the DNS server that your device is currently
+    using. With Intra or Android P, you can easily select a server of your choice.
+  </string>
+
+  <string name="strict_mode_server_headline">
+    You\'ve selected a secure server
+  </string>
+
+  <string name="strict_mode_server_body">
+    This field shows the name of the DNS server that you configured in Android\'s Private DNS
+    setting.  When Intra is disabled, your apps should send DNS queries to this server.
   </string>
 
   <string name="unknown_server"

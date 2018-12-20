@@ -285,7 +285,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minLines="2"
-                    android:text="@string/insecure_server_label"/>
+                    android:text="@string/default_server_label"/>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
