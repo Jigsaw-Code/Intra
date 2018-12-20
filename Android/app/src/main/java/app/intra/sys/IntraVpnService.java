@@ -29,6 +29,8 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -37,6 +39,7 @@ import androidx.annotation.WorkerThread;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.R;
 import app.intra.net.VpnAdapter;
+import app.intra.net.doh.CachingServerConnection;
 import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.StandardServerConnection;
 import app.intra.net.doh.Transaction;
@@ -48,6 +51,7 @@ import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.Calendar;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
@@ -220,7 +224,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // the current DNS configuration.
     Bundle bootstrap = new Bundle();
     long beforeBootstrap = SystemClock.elapsedRealtime();
-    final ServerConnection newConnection;
+    ServerConnection newConnection;
     if (equalUrls(url, null)) {
       // Use the Google Resolver
       AssetManager assets = this.getApplicationContext().getAssets();
@@ -236,6 +240,15 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       long afterBootStrap = SystemClock.elapsedRealtime();
       bootstrap.putInt(Names.LATENCY.name(), (int) (afterBootStrap - beforeBootstrap));
       firebaseAnalytics.logEvent(Names.BOOTSTRAP.name(), bootstrap);
+
+      if (VERSION.SDK_INT >= VERSION_CODES.N) {
+        // On Android >= N, we can use the Caffeine caching library to improve performance
+        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+        remoteConfig.activateFetched();
+        if (remoteConfig.getBoolean("cacheEnabled")) {
+          newConnection = new CachingServerConnection(newConnection);
+        }
+      }
     } else {
       controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
       firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);

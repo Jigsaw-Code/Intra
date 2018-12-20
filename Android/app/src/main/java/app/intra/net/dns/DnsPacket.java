@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.net.dns;
 
+import androidx.annotation.Nullable;
 import java.net.InetAddress;
 import java.net.ProtocolException;
 import java.net.UnknownHostException;
@@ -24,30 +25,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A representation of a DNS query or response packet.  This class provides read-only access to
- * the relevant contents of a DNS query packet.
+ * A representation of a DNS query or response packet.  This class provides access to
+ * the relevant contents of a DNS packet.
  */
 public class DnsPacket {
 
   private byte[] data;
+  private ByteBuffer body;
 
   private static final short TYPE_A = 1;
   private static final short TYPE_AAAA = 28;
 
-  private static class DnsQuestion {
-
-    String name;
-    short qtype;
-    short qclass;
-  }
-
   private static class DnsRecord {
-
     String name;
     short rtype;
     short rclass;
     int ttl;
     byte[] data;
+    ByteBuffer buffer;
+    int ttlOffset;
+
+    void reduceTTL(int amount) {
+      if (amount == 0) {
+        return;
+      }
+      ttl = Math.max(0, ttl - amount);
+      buffer.position(ttlOffset);
+      buffer.putInt(ttl);
+    }
   }
 
   private short id;
@@ -59,7 +64,7 @@ public class DnsPacket {
   private boolean ra;
   private byte z;
   private byte rcode;
-  private DnsQuestion[] question;
+  private Question[] question;
   private DnsRecord[] answer;
   private DnsRecord[] authority;
   private DnsRecord[] additional;
@@ -106,9 +111,12 @@ public class DnsPacket {
     DnsRecord[] dest = new DnsRecord[numRecords];
     for (int i = 0; i < dest.length; ++i) {
       DnsRecord r = new DnsRecord();
+      r.buffer = src.slice();
+      int startPosition = src.position();
       r.name = readName(src);
       r.rtype = src.getShort();
       r.rclass = src.getShort();
+      r.ttlOffset = src.position() - startPosition;
       r.ttl = src.getInt();
       r.data = new byte[src.getShort()];
       src.get(r.data);
@@ -129,6 +137,11 @@ public class DnsPacket {
   public DnsPacket(byte[] data) throws ProtocolException {
     this.data = data;
     ByteBuffer buffer = ByteBuffer.wrap(data);
+    try {
+      this.body = ByteBuffer.wrap(data, 2, data.length - 2);
+    } catch (IndexOutOfBoundsException e) {
+      throw new ProtocolException("Packet extremely short");
+    }
     try {
       id = buffer.getShort();
       // First flag byte: QR, Opcode (4 bits), AA, RD, RA
@@ -161,12 +174,9 @@ public class DnsPacket {
       short numAuthorities = buffer.getShort();
       short numAdditional = buffer.getShort();
 
-      question = new DnsQuestion[numQuestions];
+      question = new Question[numQuestions];
       for (short i = 0; i < numQuestions; ++i) {
-        question[i] = new DnsQuestion();
-        question[i].name = readName(buffer);
-        question[i].qtype = buffer.getShort();
-        question[i].qclass = buffer.getShort();
+        question[i] = new Question(readName(buffer), buffer.getShort(), buffer.getShort());
       }
       answer = readRecords(buffer, numAnswers);
       authority = readRecords(buffer, numAuthorities);
@@ -188,18 +198,12 @@ public class DnsPacket {
     return qr;
   }
 
-  public String getQueryName() {
+
+  public Question getQuestion() {
     if (question.length > 0) {
-      return question[0].name;
+      return question[0];
     }
     return null;
-  }
-
-  public short getQueryType() {
-    if (question.length > 0) {
-      return question[0].qtype;
-    }
-    return 0;
   }
 
   public List<InetAddress> getResponseAddresses() {
@@ -215,5 +219,51 @@ public class DnsPacket {
       }
     }
     return addresses;
+  }
+
+  public int getTTL() {
+    boolean hasTTL = false;
+    int minTTL = Integer.MAX_VALUE;
+    for (DnsRecord[] src : new DnsRecord[][]{answer, authority, additional}) {
+      for (DnsRecord r : src) {
+        minTTL = Math.min(minTTL, r.ttl);
+        hasTTL = true;
+      }
+    }
+    if (hasTTL) {
+      return minTTL;
+    }
+    return 0;
+  }
+
+  public void reduceTTL(int amount) {
+    for (DnsRecord[] src : new DnsRecord[][]{answer, authority, additional}) {
+      for (DnsRecord r : src) {
+        r.reduceTTL(amount);
+      }
+    }
+  }
+
+  public byte[] getData() {
+    return data;
+  }
+
+  public int length() {
+    return data.length;
+  }
+
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    if (!(obj instanceof DnsPacket)) {
+      return false;
+    }
+    DnsPacket other = (DnsPacket)obj;
+    // Equality ignores ID.
+    return body.equals(other.body);
+  }
+
+  @Override
+  public int hashCode() {
+    return body.hashCode();
   }
 }

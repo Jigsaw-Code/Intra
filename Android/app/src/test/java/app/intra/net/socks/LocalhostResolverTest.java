@@ -15,8 +15,9 @@ limitations under the License.
 */
 package app.intra.net.socks;
 
+import app.intra.net.dns.DnsPacket;
+import app.intra.net.dns.DnsUdpPacket;
 import app.intra.net.doh.Transaction;
-import app.intra.net.socks.LocalhostResolver;
 import app.intra.net.doh.ServerConnection;
 import app.intra.sys.IntraVpnService;
 import org.junit.After;
@@ -33,7 +34,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 
-import app.intra.net.dns.DnsUdpQuery;
 import app.intra.net.doh.IpTagInterceptor;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -56,9 +56,7 @@ public class LocalhostResolverTest {
   private ServerConnection mockConnection;
 
   @Captor
-  private ArgumentCaptor<DnsUdpQuery> queryCaptor;
-  @Captor
-  private ArgumentCaptor<byte[]> dataCaptor;
+  private ArgumentCaptor<DnsPacket> queryCaptor;
   @Captor
   private ArgumentCaptor<Callback> callbackCaptor;
   @Captor ArgumentCaptor<Transaction> transactionCaptor;
@@ -72,7 +70,7 @@ public class LocalhostResolverTest {
       0, 0,      // [6-7]   ANCOUNT (number of answers) = 0
       0, 0,      // [8-9]   NSCOUNT (number of authoritative answers) = 0
       0, 0,      // [10-11] ARCOUNT (number of additional records) = 0
-      // Start of first query
+      // Start of first question
       7, 'y', 'o', 'u', 't', 'u', 'b', 'e',
       3, 'c', 'o', 'm',
       0,  // null terminator of FQDN (DNS root)
@@ -80,7 +78,7 @@ public class LocalhostResolverTest {
       0, 1   // QCLASS = IN (Internet)
   };
 
-  private static final DnsUdpQuery QUERY = DnsUdpQuery.fromUdpBody(QUERY_DATA);
+  private static final DnsUdpPacket QUERY = DnsUdpPacket.fromUdpBody(QUERY_DATA);
 
   // This is a fake IP address for the remote DOH server.
   private static final String SERVER_IP = "any:string.will.do";
@@ -125,18 +123,10 @@ public class LocalhostResolverTest {
 
     // Expect a call to performDnsRequest
     verify(mockConnection, timeout(1000)).
-        performDnsRequest(queryCaptor.capture(), dataCaptor.capture(), callbackCaptor.capture());
+        performDnsRequest(queryCaptor.capture(), callbackCaptor.capture());
 
-    DnsUdpQuery query = queryCaptor.getValue();
-    assertEquals(QUERY.name, query.name);
-    assertEquals(QUERY.type, query.type);
-    assertEquals(QUERY.requestId, query.requestId);
-    assertEquals(clientSocket.getLocalAddress(), query.sourceAddress);
-    assertEquals((short)clientSocket.getLocalPort(), query.sourcePort);
-    assertEquals(resolver.getAddress().getAddress(), query.destAddress);
-    assertEquals((short)resolver.getAddress().getPort(), query.destPort);
-
-    assertArrayEquals(QUERY_DATA, dataCaptor.getValue());
+    DnsPacket query = queryCaptor.getValue();
+    assertEquals(QUERY.dns, query);
   }
 
   @Test
@@ -173,8 +163,8 @@ public class LocalhostResolverTest {
     verify(mockVpn).recordTransaction(transactionCaptor.capture());
 
     Transaction transaction = transactionCaptor.getValue();
-    assertEquals(QUERY.name, transaction.name);
-    assertEquals(QUERY.type, transaction.type);
+    assertEquals(QUERY.dns.getQuestion().name, transaction.name);
+    assertEquals(QUERY.dns.getQuestion().qtype, transaction.type);
     assertEquals(QUERY.timestamp, transaction.queryTime);
     assertEquals(SERVER_IP, transaction.serverIp);
     assertEquals(Transaction.Status.COMPLETE, transaction.status);
@@ -205,8 +195,8 @@ public class LocalhostResolverTest {
     verify(mockVpn).recordTransaction(transactionCaptor.capture());
 
     Transaction transaction = transactionCaptor.getValue();
-    assertEquals(QUERY.name, transaction.name);
-    assertEquals(QUERY.type, transaction.type);
+    assertEquals(QUERY.dns.getQuestion().name, transaction.name);
+    assertEquals(QUERY.dns.getQuestion().qtype, transaction.type);
     assertEquals(QUERY.timestamp, transaction.queryTime);
     assertEquals(SERVER_IP, transaction.serverIp);
     assertEquals(Transaction.Status.HTTP_ERROR, transaction.status);
@@ -226,9 +216,9 @@ public class LocalhostResolverTest {
     verify(mockVpn).recordTransaction(transactionCaptor.capture());
 
     Transaction transaction = transactionCaptor.getValue();
-    DnsUdpQuery query = DnsUdpQuery.fromUdpBody(QUERY_DATA);
-    assertEquals(query.name, transaction.name);
-    assertEquals(query.type, transaction.type);
+    DnsPacket query = new DnsPacket(QUERY_DATA);
+    assertEquals(query.getQuestion().name, transaction.name);
+    assertEquals(query.getQuestion().qtype, transaction.type);
     assertNull(transaction.serverIp);
     assertEquals(Transaction.Status.SEND_FAIL, transaction.status);
     assertNull(transaction.response);
@@ -247,9 +237,9 @@ public class LocalhostResolverTest {
     verify(mockVpn).recordTransaction(transactionCaptor.capture());
 
     Transaction transaction = transactionCaptor.getValue();
-    DnsUdpQuery query = DnsUdpQuery.fromUdpBody(QUERY_DATA);
-    assertEquals(query.name, transaction.name);
-    assertEquals(query.type, transaction.type);
+    DnsPacket query = new DnsPacket(QUERY_DATA);
+    assertEquals(query.getQuestion().name, transaction.name);
+    assertEquals(query.getQuestion().qtype, transaction.type);
     assertNull(transaction.serverIp);
     assertEquals(Transaction.Status.CANCELED, transaction.status);
     assertNull(transaction.response);
@@ -270,9 +260,9 @@ public class LocalhostResolverTest {
     verify(mockVpn, timeout(1000)).recordTransaction(transactionCaptor.capture());
 
     Transaction transaction = transactionCaptor.getValue();
-    DnsUdpQuery query = DnsUdpQuery.fromUdpBody(QUERY_DATA);
-    assertEquals(query.name, transaction.name);
-    assertEquals(query.type, transaction.type);
+    DnsPacket query = new DnsPacket(QUERY_DATA);
+    assertEquals(query.getQuestion().name, transaction.name);
+    assertEquals(query.getQuestion().qtype, transaction.type);
     assertNull(transaction.serverIp);
     assertEquals(Transaction.Status.SEND_FAIL, transaction.status);
     assertNull(transaction.response);

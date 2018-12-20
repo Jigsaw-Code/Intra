@@ -16,7 +16,7 @@ limitations under the License.
 package app.intra.net.socks;
 
 import android.util.Log;
-import app.intra.net.dns.DnsUdpQuery;
+import app.intra.net.dns.DnsUdpPacket;
 import app.intra.net.doh.Resolver;
 import app.intra.net.doh.ResponseWriter;
 import app.intra.net.doh.Transaction;
@@ -77,26 +77,26 @@ class LocalhostResolver extends Thread implements ResponseWriter {
 
     while (receive(packet)) {
       byte[] data = Arrays.copyOfRange(packet.getData(), packet.getOffset(), packet.getLength());
-      DnsUdpQuery dnsRequest = DnsUdpQuery.fromUdpBody(data);
-      if (dnsRequest == null) {
+      DnsUdpPacket udpQuery = DnsUdpPacket.fromUdpBody(data);
+      if (udpQuery == null) {
         LogWrapper.logcat(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
         continue;
       }
       Log.d(
           LOG_TAG,
           "NAME: "
-              + dnsRequest.name
+              + udpQuery.dns.getQuestion().name
               + " ID: "
-              + dnsRequest.requestId
+              + udpQuery.dns.getId()
               + " TYPE: "
-              + dnsRequest.type);
+              + udpQuery.dns.getQuestion().qtype);
 
-      dnsRequest.sourceAddress = packet.getAddress();
-      dnsRequest.destAddress = socket.getLocalAddress();
-      dnsRequest.sourcePort = (short)packet.getPort();
-      dnsRequest.destPort = (short)socket.getLocalPort();
+      udpQuery.sourceAddress = packet.getAddress();
+      udpQuery.destAddress = socket.getLocalAddress();
+      udpQuery.sourcePort = (short)packet.getPort();
+      udpQuery.destPort = (short)socket.getLocalPort();
 
-      Resolver.processQuery(vpnService.getServerConnection(), dnsRequest, data, this);
+      Resolver.processQuery(vpnService.getServerConnection(), udpQuery, this);
     }
   }
 
@@ -120,7 +120,7 @@ class LocalhostResolver extends Thread implements ResponseWriter {
   }
 
   @Override
-  public void sendResult(DnsUdpQuery query, Transaction transaction) {
+  public void sendResult(DnsUdpPacket query, Transaction transaction) {
     if (transaction.status == Transaction.Status.COMPLETE &&
         transaction.response != null) {
       // Construct a reply to the query's source port.

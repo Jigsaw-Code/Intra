@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-import app.intra.net.dns.DnsUdpQuery;
+import app.intra.net.dns.DnsUdpPacket;
 import app.intra.net.dns.DnsPacket;
 
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class StandardServerConnectionIntegrationTest {
         0, 0,      // [6-7]   ANCOUNT (number of answers) = 0
         0, 0,      // [8-9]   NSCOUNT (number of authoritative answers) = 0
         0, 0,      // [10-11] ARCOUNT (number of additional records) = 0
-        // Start of first query
+        // Start of first question
         7, 'y', 'o', 'u', 't', 'u', 'b', 'e',
         3, 'c', 'o', 'm',
         0,  // null terminator of FQDN (DNS root)
@@ -63,18 +63,16 @@ public class StandardServerConnectionIntegrationTest {
         StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsUdpQuery metadata = new DnsUdpQuery();
-        metadata.name = "youtube.com";
-        metadata.type = 1;
-        s.performDnsRequest(metadata, QUERY_DATA, cb);
+        DnsPacket query = new DnsPacket(QUERY_DATA);
+        s.performDnsRequest(query, cb);
         cb.semaphore.acquire();  // Wait for the response.
         assertNotNull(cb.response);
         assertEquals(200, cb.response.code());
         DnsPacket response = new DnsPacket(cb.response.body().bytes());
         assertEquals(0, response.getId());
         assertTrue(response.isResponse());
-        assertEquals("youtube.com.", response.getQueryName());
-        assertEquals(1, response.getQueryType());
+        assertEquals("youtube.com.", response.getQuestion().name);
+        assertEquals(1, response.getQuestion().qtype);
         assertFalse(response.getResponseAddresses().isEmpty());
     }
 }

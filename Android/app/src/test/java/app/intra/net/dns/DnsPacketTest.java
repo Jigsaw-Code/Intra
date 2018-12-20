@@ -33,7 +33,7 @@ public class DnsPacketTest {
         0, 0,      // [6-7]   ANCOUNT (number of answers) = 0
         0, 0,      // [8-9]   NSCOUNT (number of authoritative answers) = 0
         0, 0,      // [10-11] ARCOUNT (number of additional records) = 0
-        // Start of first query
+        // Start of first question
         5, 'm', 't', 'a', 'l', 'k',
         6, 'g', 'o', 'o', 'g', 'l', 'e',
         3, 'c', 'o', 'm',
@@ -45,8 +45,8 @@ public class DnsPacketTest {
     assertEquals(-27142, p.getId());
     assertTrue(p.isNormalQuery());
     assertFalse(p.isResponse());
-    assertEquals("mtalk.google.com.", p.getQueryName());
-    assertEquals(1, p.getQueryType());
+    assertEquals("mtalk.google.com.", p.getQuestion().name);
+    assertEquals(1, p.getQuestion().qtype);
     assertEquals(0, p.getResponseAddresses().size());
   }
 
@@ -59,7 +59,7 @@ public class DnsPacketTest {
         0, 2,        // [6-7]   ANCOUNT (number of answers) = 2
         0, 0,        // [8-9]   NSCOUNT (number of authoritative answers) = 0
         0, 0,        // [10-11] ARCOUNT (number of additional records) = 0
-        // First query
+        // First question
         5, 'm', 't', 'a', 'l', 'k',
         6, 'g', 'o', 'o', 'g', 'l', 'e',
         3, 'c', 'o', 'm',
@@ -87,10 +87,11 @@ public class DnsPacketTest {
     assertEquals(-27142, p.getId());
     assertFalse(p.isNormalQuery());
     assertTrue(p.isResponse());
-    assertEquals("mtalk.google.com.", p.getQueryName());
-    assertEquals(1, p.getQueryType());
+    assertEquals("mtalk.google.com.", p.getQuestion().name);
+    assertEquals(1, p.getQuestion().qtype);
     assertEquals(1, p.getResponseAddresses().size());
     assertEquals("173.194.204.188", p.getResponseAddresses().get(0).getHostAddress());
+    assertEquals(248, p.getTTL());
   }
 
   @Test
@@ -133,9 +134,10 @@ public class DnsPacketTest {
     assertEquals(-2288, p.getId());
     assertFalse(p.isNormalQuery());
     assertTrue(p.isResponse());
-    assertEquals("zzqubeqclggz.", p.getQueryName());
-    assertEquals(28, p.getQueryType());
+    assertEquals("zzqubeqclggz.", p.getQuestion().name);
+    assertEquals(28, p.getQuestion().qtype);
     assertEquals(0, p.getResponseAddresses().size());
+    assertEquals(86399, p.getTTL());
   }
 
   @Test
@@ -249,8 +251,123 @@ public class DnsPacketTest {
     assertEquals(18898, p.getId());
     assertFalse(p.isNormalQuery());
     assertTrue(p.isResponse());
-    assertEquals("cdn.krxd.net.", p.getQueryName());
-    assertEquals(28, p.getQueryType());
+    assertEquals("cdn.krxd.net.", p.getQuestion().name);
+    assertEquals(28, p.getQuestion().qtype);
     assertEquals(0, p.getResponseAddresses().size());
+    assertEquals(20, p.getTTL());
   }
+
+  @Test
+  public void testEquality() throws ProtocolException {
+    byte[] data = {
+        -107, -6,  // [0-1]   query ID
+        1, 0,      // [2-3]   flags, RD=1
+        0, 1,      // [4-5]   QDCOUNT (number of queries) = 1
+        0, 0,      // [6-7]   ANCOUNT (number of answers) = 0
+        0, 0,      // [8-9]   NSCOUNT (number of authoritative answers) = 0
+        0, 0,      // [10-11] ARCOUNT (number of additional records) = 0
+        // Start of first question
+        5, 'm', 't', 'a', 'l', 'k',
+        6, 'g', 'o', 'o', 'g', 'l', 'e',
+        3, 'c', 'o', 'm',
+        0,  // null terminator of FQDN (DNS root)
+        0, 1,  // QTYPE = A
+        0, 1   // QCLASS = IN (Internet)
+    };
+    byte[] data2 = Arrays.copyOf(data, data.length);
+    data2[1] += 1; // Alter query ID, which is ignored by the equality check
+
+    DnsPacket p = new DnsPacket(data);
+    DnsPacket p2 = new DnsPacket(data2);
+    assertEquals(p, p2);
+    assertEquals(p.hashCode(), p2.hashCode());
+  }
+
+  @Test
+  public void testInequality() throws ProtocolException {
+    byte[] data = {
+        -107, -6,  // [0-1]   query ID
+        1, 0,      // [2-3]   flags, RD=1
+        0, 1,      // [4-5]   QDCOUNT (number of queries) = 1
+        0, 0,      // [6-7]   ANCOUNT (number of answers) = 0
+        0, 0,      // [8-9]   NSCOUNT (number of authoritative answers) = 0
+        0, 0,      // [10-11] ARCOUNT (number of additional records) = 0
+        // Start of first question
+        5, 'm', 't', 'a', 'l', 'k',
+        6, 'g', 'o', 'o', 'g', 'l', 'e',
+        3, 'c', 'o', 'm',
+        0,  // null terminator of FQDN (DNS root)
+        0, 1,  // QTYPE = A
+        0, 1   // QCLASS = IN (Internet)
+    };
+    byte[] data2 = Arrays.copyOf(data, data.length);
+    data2[14] += 1;  // Alter qname
+
+    DnsPacket p = new DnsPacket(data);
+    DnsPacket p2 = new DnsPacket(data2);
+    assertNotEquals(p, p2);
+    assertNotEquals(p.hashCode(), p2.hashCode());  // This is not strictly guaranteed to hold.
+  }
+
+  private int readTTL(byte[] src, int offset) {
+    return ((src[offset] & 0xFF) << 24) |
+        ((src[offset + 1] & 0xFF) << 16) |
+        ((src[offset + 2] & 0xFF) << 8) |
+        (src[offset + 3] & 0xFF);
+  }
+
+  @Test
+  public void testTTL() throws ProtocolException {
+    byte[] data = {
+        -107, -6,    // [0-1]   query ID
+        -127, -128,  // [2-3]   flags: RD=1, QR=1, RA=1
+        0, 1,        // [4-5]   QDCOUNT (number of queries) = 1
+        0, 2,        // [6-7]   ANCOUNT (number of answers) = 2
+        0, 0,        // [8-9]   NSCOUNT (number of authoritative answers) = 0
+        0, 0,        // [10-11] ARCOUNT (number of additional records) = 0
+        // First question
+        5, 'm', 't', 'a', 'l', 'k',
+        6, 'g', 'o', 'o', 'g', 'l', 'e',
+        3, 'c', 'o', 'm',
+        0,  // null terminator of FQDN (DNS root)
+        0, 1,  // QTYPE = A
+        0, 1,  // QCLASS = IN (Internet)
+        // First answer
+        -64, 12,  // Compressed name reference, starting at byte 12: mtalk.google.com
+        0, 5,     // QTYPE = CNAME
+        0, 1,     // QCLASS = IN (Internet)
+        0, 0, 84, 44,  // TTL = 21548s
+        0, 17,    // RDLENGTH = 17
+        12, 'm', 'o', 'b', 'i', 'l', 'e', '-', 'g', 't', 'a', 'l', 'k',
+        1, 'l',
+        -64, 18,  // Compressed name reference to byte 18: google.com
+        // Second answer
+        -64, 46,      // Compressed name reference to byte 46: mobile-gtalk.l.google.com
+        0, 1,         // QTYPE = A
+        0, 1,         // QCLASS = IN (Internet)
+        0, 0, 0, -8,  // TTL = 248
+        0, 4,         // RDLEN = 4
+        -83, -62, -52, -68   // 173.194.204.188
+    };
+    assertEquals(21548, readTTL(data, 40));
+    assertEquals(248, readTTL(data, 69));
+    DnsPacket p = new DnsPacket(data);
+    assertEquals(248, p.getTTL());
+
+    p.reduceTTL(0);
+    assertEquals(21548, readTTL(data, 40));
+    assertEquals(248, readTTL(data, 69));
+    assertEquals(248, p.getTTL());
+
+    p.reduceTTL(48);
+    assertEquals(21500, readTTL(data, 40));
+    assertEquals(200, readTTL(data, 69));
+    assertEquals(200, p.getTTL());
+
+    p.reduceTTL(300);
+    assertEquals(21200, readTTL(data, 40));
+    assertEquals(0, readTTL(data, 69));
+    assertEquals(0, p.getTTL());
+  }
+
 }

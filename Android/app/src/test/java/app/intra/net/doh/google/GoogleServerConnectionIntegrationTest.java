@@ -15,11 +15,12 @@ limitations under the License.
 */
 package app.intra.net.doh.google;
 
+import app.intra.net.dns.DnsPacket;
+import app.intra.net.dns.DnsUdpPacket;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import app.intra.net.dns.DnsUdpQuery;
 import app.intra.net.doh.DualStackResult;
 import app.intra.net.doh.TestDnsCallback;
 
@@ -32,6 +33,20 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class GoogleServerConnectionIntegrationTest {
+    private static final byte[] QUERY_DATA = {
+        -107, -6,  // [0-1]   query ID
+        1, 0,      // [2-3]   flags, RD=1
+        0, 1,      // [4-5]   QDCOUNT (number of queries) = 1
+        0, 0,      // [6-7]   ANCOUNT (number of answers) = 0
+        0, 0,      // [8-9]   NSCOUNT (number of authoritative answers) = 0
+        0, 0,      // [10-11] ARCOUNT (number of additional records) = 0
+        // Start of first question
+        7, 'y', 'o', 'u', 't', 'u', 'b', 'e',
+        3, 'c', 'o', 'm',
+        0,  // null terminator of FQDN (DNS root)
+        0, 1,  // QTYPE = A
+        0, 1   // QCLASS = IN (Internet)
+    };
 
     private GoogleServerDatabase mockDb;
 
@@ -61,10 +76,8 @@ public class GoogleServerConnectionIntegrationTest {
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsUdpQuery metadata = new DnsUdpQuery();
-        metadata.name = "youtube.com";
-        metadata.type = 1;
-        s.performDnsRequest(metadata, new byte[0], cb);
+        DnsPacket query = new DnsPacket(QUERY_DATA);
+        s.performDnsRequest(query, cb);
         cb.semaphore.acquire();  // Wait for the response.
         assertNotNull(cb.response);
         assertEquals(200, cb.response.code());
@@ -133,10 +146,8 @@ public class GoogleServerConnectionIntegrationTest {
         assertNotNull(s);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsUdpQuery metadata = new DnsUdpQuery();
-        metadata.name = "youtube.com";
-        metadata.type = 1;
-        s.performDnsRequest(metadata, new byte[0], cb);
+        DnsPacket query = new DnsPacket(QUERY_DATA);
+        s.performDnsRequest(query, cb);
         cb.semaphore.acquire();  // Wait for the response.
         assertNotNull(cb.response);
         assertEquals(200, cb.response.code());

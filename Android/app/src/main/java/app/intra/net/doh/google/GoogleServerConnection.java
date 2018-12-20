@@ -18,7 +18,8 @@ package app.intra.net.doh.google;
 import android.util.Log;
 import androidx.annotation.WorkerThread;
 import app.intra.BuildConfig;
-import app.intra.net.dns.DnsUdpQuery;
+import app.intra.net.dns.DnsPacket;
+import app.intra.net.dns.Question;
 import app.intra.net.doh.DualStackResult;
 import app.intra.net.doh.IpTagInterceptor;
 import app.intra.net.doh.ServerConnection;
@@ -117,11 +118,14 @@ public class GoogleServerConnection implements ServerConnection {
   }
 
   @Override
-  public void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb) {
-    final int unsignedType = metadata.type & 0xffff; // Convert Java's signed short to unsigned int
+  public void performDnsRequest(final DnsPacket query, Callback cb) {
+    Question question = query.getQuestion();
+    final int unsignedType = question.qtype & 0xffff; // Convert Java's signed short to unsigned int
     String url =
         String.format(Locale.ROOT,
-            "https://%s/resolve?name=%s&type=%d&encoding=raw", HOSTNAME, urlEncode(metadata.name),
+            "https://%s/resolve?name=%s&type=%d&encoding=raw",
+            HOSTNAME,
+            urlEncode(question.name),
             unsignedType);
     Request request =
         new Request.Builder()
@@ -141,7 +145,7 @@ public class GoogleServerConnection implements ServerConnection {
    * Performs a synchronous JSON DNS request for |name| over HTTP using a provided client.
    *
    * @param name The domain name to look up
-   * @param type The query type string to look up, e.g. "AAAA". Case-insensitive.
+   * @param type The question type string to look up, e.g. "AAAA". Case-insensitive.
    * @return The entire JSON response, as a string.
    */
   private String performJsonDnsRequest(final String name, final String type) throws IOException {

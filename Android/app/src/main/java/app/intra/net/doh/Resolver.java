@@ -16,7 +16,9 @@ limitations under the License.
 package app.intra.net.doh;
 
 import android.util.Log;
-import app.intra.net.dns.DnsUdpQuery;
+import androidx.annotation.NonNull;
+import app.intra.net.dns.DnsUdpPacket;
+import app.intra.net.dns.Question;
 import app.intra.sys.LogWrapper;
 import com.google.firebase.crash.FirebaseCrash;
 import java.io.IOException;
@@ -34,16 +36,33 @@ public class Resolver {
   private static final String LOG_TAG = "Resolver";
 
   /**
+   * @param response HTTP response
+   * @return Elapsed time since this response's implied creation, in milliseconds.
+   */
+  static long getResponseAgeMs(Response response) {
+    int age = 0;
+    try {
+      String ageHeader = response.header("Age");
+      if (ageHeader != null) {
+        age = Integer.parseInt(ageHeader);
+      }
+    } catch (NumberFormatException e) {
+    }
+
+    long impliedDate = response.receivedResponseAtMillis() - age * 1000;
+    return System.currentTimeMillis() - impliedDate;
+  }
+
+  /**
    * Send a query.
    * @param serverConnection The connection to use for the query
-   * @param query The query information parsed from the packet
-   * @param dnsPacketData The raw data of the DNS query (starting with the ID number)
+   * @param query The parsed query packet
    * @param responseWriter The object that will receive the response when it's ready.
    */
-  public static void processQuery(ServerConnection serverConnection, DnsUdpQuery query,
-                           byte[] dnsPacketData, ResponseWriter responseWriter) {
+  public static void processQuery(ServerConnection serverConnection, DnsUdpPacket query,
+      ResponseWriter responseWriter) {
     try {
-      serverConnection.performDnsRequest(query, dnsPacketData,
+      serverConnection.performDnsRequest(query.dns,
           new Resolver.DnsResponseCallback(serverConnection, query, responseWriter));
     } catch (NullPointerException e) {
       Transaction transaction = new Transaction(query);
@@ -60,7 +79,7 @@ public class Resolver {
 
     private final ServerConnection serverConnection;
     private final ResponseWriter responseWriter;
-    private final DnsUdpQuery dnsUdpQuery;
+    private final DnsUdpPacket udpQuery;
     private final Transaction transaction;
 
     /**
@@ -70,10 +89,10 @@ public class Resolver {
      * port.
      * @param responseWriter Receives the response
      */
-    DnsResponseCallback(ServerConnection serverConnection, DnsUdpQuery request,
+    DnsResponseCallback(ServerConnection serverConnection, DnsUdpPacket request,
                         ResponseWriter responseWriter) {
       this.serverConnection = serverConnection;
-      dnsUdpQuery = request;
+      udpQuery = request;
       this.responseWriter = responseWriter;
       transaction = new Transaction(request);
     }
@@ -86,11 +105,11 @@ public class Resolver {
     }
 
     private void sendResult() {
-      responseWriter.sendResult(dnsUdpQuery, transaction);
+      responseWriter.sendResult(udpQuery, transaction);
     }
 
     @Override
-    public void onFailure(Call call, IOException e) {
+    public void onFailure(@NonNull Call call, @NonNull IOException e) {
       transaction.status = call.isCanceled() ?
           Transaction.Status.CANCELED : Transaction.Status.SEND_FAIL;
       LogWrapper.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
@@ -109,6 +128,7 @@ public class Resolver {
     // Populate |transaction| from the headers and body of |response|.
     private void processResponse(Response response) {
       transaction.serverIp = response.header(IpTagInterceptor.HEADER_NAME);
+      transaction.cacheStatus = response.header(CachingServerConnection.STATUS_HEADER);
       if (!response.isSuccessful()) {
         transaction.status = Transaction.Status.HTTP_ERROR;
         return;
@@ -121,28 +141,33 @@ public class Resolver {
         return;
       }
       try {
-        writeRequestIdToDnsResponse(dnsResponse, dnsUdpQuery.requestId);
+        writeRequestIdToDnsResponse(dnsResponse, udpQuery.dns.getId());
       } catch (BufferOverflowException e) {
         FirebaseCrash.logcat(Log.WARN, LOG_TAG, "ID replacement failed");
         transaction.status = Transaction.Status.BAD_RESPONSE;
         return;
       }
-      DnsUdpQuery parsedDnsResponse = DnsUdpQuery.fromUdpBody(dnsResponse);
+      DnsUdpPacket parsedDnsResponse = DnsUdpPacket.fromUdpBody(dnsResponse);
       if (parsedDnsResponse != null) {
-        Log.d(LOG_TAG, "RNAME: " + parsedDnsResponse.name + " NAME: " + dnsUdpQuery.name);
-        if (!dnsUdpQuery.name.equals(parsedDnsResponse.name)) {
-          FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
+        Question originalQuestion = udpQuery.dns.getQuestion();
+        Question echoQuestion = parsedDnsResponse.dns.getQuestion();
+        Log.d(LOG_TAG, "RNAME: " + echoQuestion.name + " NAME: " + originalQuestion.name);
+        if (!originalQuestion.equals(echoQuestion)) {
+          FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response.");
           transaction.status = Transaction.Status.BAD_RESPONSE;
           return;
         }
       }
 
+      // Update TTL based on how long the response has been in the local cache or an upstream cache.
+      parsedDnsResponse.dns.reduceTTL((int)(getResponseAgeMs(response) / 1000));
+
       transaction.status = Transaction.Status.COMPLETE;
-      transaction.response = dnsResponse;
+      transaction.response = parsedDnsResponse.dns.getData();
     }
 
     @Override
-    public void onResponse(Call call, Response response) {
+    public void onResponse(@NonNull Call call, @NonNull Response response) {
       processResponse(response);
       sendResult();
     }

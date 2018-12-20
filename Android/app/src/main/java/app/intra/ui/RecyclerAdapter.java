@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.dns.DnsPacket;
+import app.intra.net.doh.CachingServerConnection.Status;
 import com.google.common.net.InternetDomainName;
 import com.google.firebase.crash.FirebaseCrash;
 import java.io.IOException;
@@ -213,8 +214,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       int second = transaction.responseCalendar.get(Calendar.SECOND);
       time = String.format(Locale.ROOT, "%02d:%02d:%02d", hour, minute, second);
 
-      String template = activity.getResources().getString(R.string.latency_ms);
-      latency = String.format(template, transaction.responseTime - transaction.queryTime);
+      if (Status.HIT.id.equals(transaction.cacheStatus)) {
+        latency = "(cache hit)";
+      } else if (Status.PENDING.id.equals(transaction.cacheStatus)) {
+        latency = "(duplicate query)";
+      } else {
+        String template = activity.getResources().getString(R.string.latency_ms);
+        latency = String.format(template, transaction.responseTime - transaction.queryTime);
+      }
 
       typename = getTypeName(transaction.type);
 

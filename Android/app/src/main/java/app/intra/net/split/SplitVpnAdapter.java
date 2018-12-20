@@ -21,7 +21,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import app.intra.net.VpnAdapter;
-import app.intra.net.dns.DnsUdpQuery;
+import app.intra.net.dns.DnsUdpPacket;
 import app.intra.net.doh.Resolver;
 import app.intra.net.doh.ResponseWriter;
 import app.intra.net.doh.Transaction;
@@ -269,27 +269,26 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
           continue;
         }
 
-        DnsUdpQuery dnsRequest = DnsUdpQuery.fromUdpBody(udpPacket.data);
-        if (dnsRequest == null) {
+        DnsUdpPacket udpQuery = DnsUdpPacket.fromUdpBody(udpPacket.data);
+        if (udpQuery == null) {
           FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
           continue;
         }
         Log.d(
             LOG_TAG,
             "NAME: "
-                + dnsRequest.name
+                + udpQuery.dns.getQuestion().name
                 + " ID: "
-                + dnsRequest.requestId
+                + udpQuery.dns.getId()
                 + " TYPE: "
-                + dnsRequest.type);
+                + udpQuery.dns.getQuestion().qtype);
 
-        dnsRequest.sourceAddress = ipPacket.getSourceAddress();
-        dnsRequest.destAddress = ipPacket.getDestAddress();
-        dnsRequest.sourcePort = udpPacket.sourcePort;
-        dnsRequest.destPort = udpPacket.destPort;
+        udpQuery.sourceAddress = ipPacket.getSourceAddress();
+        udpQuery.destAddress = ipPacket.getDestAddress();
+        udpQuery.sourcePort = udpPacket.sourcePort;
+        udpQuery.destPort = udpPacket.destPort;
 
-        Resolver.processQuery(vpnService.getServerConnection(),
-            dnsRequest, udpPacket.data, this);
+        Resolver.processQuery(vpnService.getServerConnection(), udpQuery, this);
       } catch (Exception e) {
         if (!isInterrupted()) {
           FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Unexpected exception in UDP loop.");
@@ -319,25 +318,25 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
   }
 
   @Override
-  public void sendResult(DnsUdpQuery dnsUdpQuery, Transaction transaction) {
+  public void sendResult(DnsUdpPacket dnsUdpPacket, Transaction transaction) {
     if (transaction.response != null) {
       // Construct a reply to the query's source port by switching the source and destination.
       UdpPacket udpResponsePacket =
-          new UdpPacket(dnsUdpQuery.destPort, dnsUdpQuery.sourcePort, transaction.response);
+          new UdpPacket(dnsUdpPacket.destPort, dnsUdpPacket.sourcePort, transaction.response);
       byte[] rawUdpResponse = udpResponsePacket.getRawPacket();
 
       IpPacket ipPacket;
-      if (dnsUdpQuery.sourceAddress instanceof Inet4Address) {
+      if (dnsUdpPacket.sourceAddress instanceof Inet4Address) {
         ipPacket = new Ipv4Packet(
             UDP_PROTOCOL,
-            dnsUdpQuery.destAddress,
-            dnsUdpQuery.sourceAddress,
+            dnsUdpPacket.destAddress,
+            dnsUdpPacket.sourceAddress,
             rawUdpResponse);
       } else {
         ipPacket = new Ipv6Packet(
             UDP_PROTOCOL,
-            dnsUdpQuery.destAddress,
-            dnsUdpQuery.sourceAddress,
+            dnsUdpPacket.destAddress,
+            dnsUdpPacket.sourceAddress,
             rawUdpResponse);
       }
 

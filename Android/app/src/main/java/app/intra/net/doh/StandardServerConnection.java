@@ -16,7 +16,7 @@ limitations under the License.
 package app.intra.net.doh;
 
 import app.intra.BuildConfig;
-import app.intra.net.dns.DnsUdpQuery;
+import app.intra.net.dns.DnsPacket;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -89,7 +89,9 @@ public class StandardServerConnection implements ServerConnection {
   }
 
   @Override
-  public void performDnsRequest(DnsUdpQuery metadata, byte[] data, Callback cb) {
+  public void performDnsRequest(DnsPacket query, Callback cb) {
+    // Note: This modifies the data in place!
+    byte[] data = query.getData();
     // Zero out the ID
     data[0] = 0;
     data[1] = 0;

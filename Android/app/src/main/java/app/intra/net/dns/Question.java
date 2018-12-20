@@ -13,17 +13,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package app.intra.net.doh;
+package app.intra.net.dns;
 
-import app.intra.net.dns.DnsUdpPacket;
+import androidx.annotation.Nullable;
 
-/**
- * Interface representing the ability to receive DNS responses.
- */
-public interface ResponseWriter {
-  /**
-   * @param query The packet that was sent.
-   * @param transaction The record of the transaction, including the response if any.
-   */
-  void sendResult(DnsUdpPacket query, Transaction transaction);
+public class Question {
+  public final String name;
+  public final short qtype;
+  public final short qclass;
+
+  Question(String name, short qtype, short qclass) {
+    this.name = name;
+    this.qtype = qtype;
+    this.qclass = qclass;
+  }
+
+  @Override
+  public boolean equals(@Nullable Object obj) {
+    if (obj instanceof Question) {
+      Question other = (Question)obj;
+      return other.name.equals(name) && other.qtype == qtype && other.qclass == qclass;
+    }
+    return false;
+  }
 }

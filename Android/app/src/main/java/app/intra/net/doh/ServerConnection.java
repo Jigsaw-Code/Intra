@@ -15,7 +15,7 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
-import app.intra.net.dns.DnsUdpQuery;
+import app.intra.net.dns.DnsPacket;
 import okhttp3.Callback;
 
 /**
@@ -26,19 +26,18 @@ public interface ServerConnection {
   /**
    * null: There is no connection
    * NEW: The connection has not yet completed bootstrap.
-   * WORKING: The last query (or bootstrap) succeeded.
-   * FAILING: The last query (or bootstrap) failed.
+   * WORKING: The last question (or bootstrap) succeeded.
+   * FAILING: The last question (or bootstrap) failed.
    */
   enum State { NEW, WORKING, FAILING };
 
   /**
    * Performs a binary, asynchronous DNS request over HTTPS.
    *
-   * @param metadata Information about the request
-   * @param data The request body
+   * @param query The request body
    * @param cb An OkHttp response callback to receive the result.
    */
-  void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb);
+  void performDnsRequest(DnsPacket query, Callback cb);
 
   /**
    * @return The URL identifying this ServerConnection.
