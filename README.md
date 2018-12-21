@@ -14,6 +14,6 @@ Features:
 ## Android build instructions
 
 1. Clone this repo.
-2. Open the `Android/` directory in Android Studio 3.0 or later.
+2. Open the `Android/` directory in Android Studio 3.2 or later.
 3. Connect your phone
 4. Click the green "play" triangle button.
