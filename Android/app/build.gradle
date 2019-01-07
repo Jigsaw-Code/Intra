@@ -77,7 +77,6 @@ repositories {
 dependencies {
     // Third-party dependency: OkHttp3
     implementation fileTree(include: [
-            'caffeine-2.6.2.jar',
             'okhttp-3.11.0.jar',
             'okio-1.15.0.jar',
             'guava-26.0-android.jar'

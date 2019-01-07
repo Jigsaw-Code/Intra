@@ -16,15 +16,16 @@ limitations under the License.
 package app.intra.net.doh;
 
 import android.annotation.TargetApi;
+import android.os.AsyncTask;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import app.intra.net.dns.DnsPacket;
-import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.Expiry;
+import app.intra.net.doh.cache.AsyncLoadingCache;
+import app.intra.net.doh.cache.Expiry;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -104,41 +105,41 @@ public class CachingServerConnection implements ServerConnection {
       long remainingTtlMs = ttl * 1000 - Resolver.getResponseAgeMs(httpResult.response);
       return remainingTtlMs * 1_000_000;
     }
-
-    @Override
-    public long expireAfterRead(@NonNull DnsPacket query, @NonNull HttpResult httpResult,
-        long l, long l1) {
-      return Long.MAX_VALUE;
-    }
-
-    @Override
-    public long expireAfterUpdate(@NonNull DnsPacket query, @NonNull HttpResult httpResult,
-        long currentTime, long currentDuration) {
-      return expireAfterCreate(query, httpResult, currentTime);
-    }
   }
 
   public CachingServerConnection(ServerConnection impl) {
     this.impl = impl;
-    cache = Caffeine.newBuilder().
-        maximumSize(1000).
-        expireAfter(new DohExpiry()).
-        buildAsync((key, executor) -> forwardRequestToImpl(key));
+    cache = new AsyncLoadingCache<>((key) -> forwardRequestToImpl(key),
+        1000, new DohExpiry());
   }
 
-  @Override
-  public void performDnsRequest(final DnsPacket query, final Callback cb) {
-    CompletableFuture<HttpResult> entry = cache.getIfPresent(query);
-    final boolean keyIsPresent = entry != null;
-    final boolean valueIsPresent = entry != null && entry.isDone();
+  private class FollowupParams {
+    boolean keyIsPresent;
+    boolean valueIsPresent;
+    Callback cb;
+    Future<HttpResult> entry;
+  }
 
-    if (entry == null) {
-      entry = cache.get(query);
+  private static class FollowupTask extends AsyncTask<FollowupParams, Void, Void> {
+    @Override
+    public Void doInBackground(FollowupParams... params) {
+      for (FollowupParams p : params) {
+        try {
+          HttpResult httpResult = p.entry.get();  // Blocks for the network on a cache miss.
+          afterArrival(p.keyIsPresent, p.valueIsPresent, httpResult, p.cb);
+        } catch (Exception e) {
+          return null;
+        }
+      }
+      return null;
     }
 
-    entry.thenAccept(httpResult -> {
+    private void afterArrival(final boolean keyIsPresent, final boolean valueIsPresent, final HttpResult httpResult, final Callback cb) {
       if (httpResult.response != null) {
-        Status status = valueIsPresent ? Status.HIT : keyIsPresent ? Status.PENDING : Status.MISS;
+        CachingServerConnection.Status status =
+            valueIsPresent ? CachingServerConnection.Status.HIT
+                : keyIsPresent ? CachingServerConnection.Status.PENDING
+                    : CachingServerConnection.Status.MISS;
         try {
           cb.onResponse(httpResult.call, httpResult.getResponse(status));
         } catch (IOException e) {
@@ -147,7 +148,23 @@ public class CachingServerConnection implements ServerConnection {
       } else {
         cb.onFailure(httpResult.call, httpResult.exception);
       }
-    });
+    }
+  }
+
+  @Override
+  public void performDnsRequest(final DnsPacket query, final Callback cb) {
+    FollowupParams p = new FollowupParams();
+    p.cb = cb;
+    p.entry = cache.getIfPresent(query);
+    p.keyIsPresent = p.entry != null;
+    p.valueIsPresent = p.entry != null && p.entry.isDone();
+
+    if (p.entry == null) {
+      p.entry = cache.get(query);
+    }
+
+    FollowupTask followup = new FollowupTask();
+    followup.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, p);
   }
 
   private CompletableFuture<HttpResult> forwardRequestToImpl(final DnsPacket query) {
