@@ -100,7 +100,7 @@ public class CachingServerConnectionTest {
   @Before
   public void setUp() throws Exception {
     mockBackend = mock(ServerConnection.class);
-    testConnection = new CachingServerConnection(mockBackend);
+    testConnection = new CachingServerConnection(mockBackend, 256);
     query = new DnsPacket(QUERY_DATA);
   }
 

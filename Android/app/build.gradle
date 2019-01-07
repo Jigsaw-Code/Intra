@@ -77,7 +77,6 @@ repositories {
 dependencies {
     // Third-party dependency: OkHttp3
     implementation fileTree(include: [
-            'caffeine-2.6.2.jar',
             'okhttp-3.11.0.jar',
             'okio-1.15.0.jar',
             'guava-26.0-android.jar'
@@ -99,7 +98,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     // For Firebase Analytics, etc.
     implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.google.firebase:firebase-config:16.1.2'
     implementation 'com.google.firebase:firebase-perf:16.2.3'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     // For Sockslib

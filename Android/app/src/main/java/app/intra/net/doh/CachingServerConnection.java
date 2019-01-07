@@ -15,22 +15,22 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import app.intra.net.dns.DnsPacket;
-import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import com.github.benmanes.caffeine.cache.Expiry;
+import app.intra.net.doh.cache.AsyncLoadingCache;
+import app.intra.net.doh.cache.Expiry;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
 import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.concurrent.CompletableFuture;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-@TargetApi(VERSION_CODES.N)  // Caffeine needs CompletableFuture, which requires Android N.
 public class CachingServerConnection implements ServerConnection {
   static String STATUS_HEADER = "X-Intra-Cache-Status";
 
@@ -44,7 +44,7 @@ public class CachingServerConnection implements ServerConnection {
   }
 
   private final ServerConnection impl;
-  private final AsyncLoadingCache<DnsPacket, HttpResult> cache;
+  private AsyncLoadingCache<DnsPacket, HttpResult> cache;
 
   private static class HttpResult {
     final Call call;
@@ -86,8 +86,7 @@ public class CachingServerConnection implements ServerConnection {
   private static class DohExpiry implements Expiry<DnsPacket, HttpResult> {
 
     @Override
-    public long expireAfterCreate(@NonNull DnsPacket query, @NonNull HttpResult httpResult,
-        long currentTime) {
+    public long expireAfterCreate(@NonNull DnsPacket query, @NonNull HttpResult httpResult) {
       if (httpResult.response == null) {
         // If we didn't get a response, it's not cacheable.
         return 0;
@@ -102,33 +101,19 @@ public class CachingServerConnection implements ServerConnection {
       }
 
       long remainingTtlMs = ttl * 1000 - Resolver.getResponseAgeMs(httpResult.response);
-      return remainingTtlMs * 1_000_000;
-    }
-
-    @Override
-    public long expireAfterRead(@NonNull DnsPacket query, @NonNull HttpResult httpResult,
-        long l, long l1) {
-      return Long.MAX_VALUE;
-    }
-
-    @Override
-    public long expireAfterUpdate(@NonNull DnsPacket query, @NonNull HttpResult httpResult,
-        long currentTime, long currentDuration) {
-      return expireAfterCreate(query, httpResult, currentTime);
+      return remainingTtlMs;
     }
   }
 
-  public CachingServerConnection(ServerConnection impl) {
+  public CachingServerConnection(ServerConnection impl, int cacheSize) {
     this.impl = impl;
-    cache = Caffeine.newBuilder().
-        maximumSize(1000).
-        expireAfter(new DohExpiry()).
-        buildAsync((key, executor) -> forwardRequestToImpl(key));
+    cache = new AsyncLoadingCache<>((key) -> forwardRequestToImpl(key),
+        cacheSize, new DohExpiry());
   }
 
   @Override
   public void performDnsRequest(final DnsPacket query, final Callback cb) {
-    CompletableFuture<HttpResult> entry = cache.getIfPresent(query);
+    ListenableFuture<HttpResult> entry = cache.getIfPresent(query);
     final boolean keyIsPresent = entry != null;
     final boolean valueIsPresent = entry != null && entry.isDone();
 
@@ -136,31 +121,41 @@ public class CachingServerConnection implements ServerConnection {
       entry = cache.get(query);
     }
 
-    entry.thenAccept(httpResult -> {
-      if (httpResult.response != null) {
-        Status status = valueIsPresent ? Status.HIT : keyIsPresent ? Status.PENDING : Status.MISS;
-        try {
-          cb.onResponse(httpResult.call, httpResult.getResponse(status));
-        } catch (IOException e) {
-          cb.onFailure(httpResult.call, e);
+    Futures.addCallback(entry, new FutureCallback<HttpResult>() {
+      @Override
+      public void onSuccess(HttpResult httpResult) {
+        if (httpResult.response != null) {
+          CachingServerConnection.Status status =
+              valueIsPresent ? CachingServerConnection.Status.HIT
+                  : keyIsPresent ? CachingServerConnection.Status.PENDING
+                      : CachingServerConnection.Status.MISS;
+          try {
+            cb.onResponse(httpResult.call, httpResult.getResponse(status));
+          } catch (IOException e) {
+            cb.onFailure(httpResult.call, e);
+          }
+        } else {
+          cb.onFailure(httpResult.call, httpResult.exception);
         }
-      } else {
-        cb.onFailure(httpResult.call, httpResult.exception);
       }
-    });
+
+      @Override
+      public void onFailure(Throwable throwable) {
+      }
+    }, MoreExecutors.directExecutor());
   }
 
-  private CompletableFuture<HttpResult> forwardRequestToImpl(final DnsPacket query) {
-    CompletableFuture<HttpResult> ret = new CompletableFuture<>();
+  private ListenableFuture<HttpResult> forwardRequestToImpl(final DnsPacket query) {
+    SettableFuture<HttpResult> ret = SettableFuture.create();
     impl.performDnsRequest(query, new Callback() {
       @Override
       public void onFailure(@NonNull Call call, @NonNull IOException e) {
-        ret.complete(new HttpResult(call, e));
+        ret.set(new HttpResult(call, e));
       }
 
       @Override
       public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-        ret.complete(new HttpResult(call, response));
+        ret.set(new HttpResult(call, response));
       }
     });
     return ret;
@@ -174,5 +169,12 @@ public class CachingServerConnection implements ServerConnection {
   @Override
   public void reset() {
     impl.reset();
+  }
+
+  /**
+   * Clear all loaded entries from the cache to release memory.
+   */
+  public void clear() {
+    cache.invalidateAll();
   }
 }

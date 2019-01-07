@@ -28,7 +28,7 @@ import java.util.List;
  * A representation of a DNS query or response packet.  This class provides access to
  * the relevant contents of a DNS packet.
  */
-public class DnsPacket {
+public class DnsPacket implements Comparable<DnsPacket> {
 
   private byte[] data;
   private ByteBuffer body;
@@ -265,5 +265,10 @@ public class DnsPacket {
   @Override
   public int hashCode() {
     return body.hashCode();
+  }
+
+  @Override
+  public int compareTo(DnsPacket other) {
+    return body.compareTo(other.body);
   }
 }

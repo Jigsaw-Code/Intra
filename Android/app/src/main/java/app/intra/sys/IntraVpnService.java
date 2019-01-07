@@ -29,8 +29,6 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -51,7 +49,6 @@ import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.Calendar;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
@@ -241,14 +238,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       bootstrap.putInt(Names.LATENCY.name(), (int) (afterBootStrap - beforeBootstrap));
       firebaseAnalytics.logEvent(Names.BOOTSTRAP.name(), bootstrap);
 
-      if (VERSION.SDK_INT >= VERSION_CODES.N) {
-        // On Android >= N, we can use the Caffeine caching library to improve performance
-        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
-        remoteConfig.activateFetched();
-        if (remoteConfig.getBoolean("cacheEnabled")) {
-          newConnection = new CachingServerConnection(newConnection);
-        }
-      }
+      // Each cache entry costs about 4 KB of memory on average, so we want to be careful about
+      // not allowing the cache to be too large.
+      // TODO: Consider a remote configuration for experimenting with different cache sizes.
+      newConnection = new CachingServerConnection(newConnection, 256);
     } else {
       controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
       firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);
@@ -268,6 +261,14 @@ public class IntraVpnService extends VpnService implements NetworkListener,
         // current URL, so perform the update.
         serverConnection = newConnection;
       }
+    }
+  }
+
+  @Override
+  public void onTrimMemory(int level) {
+    if (level >= TRIM_MEMORY_RUNNING_LOW && serverConnection instanceof CachingServerConnection) {
+      // Be a good neighbor by clearing the cache when the phone is low on memory.
+      ((CachingServerConnection)serverConnection).clear();
     }
   }
 
