@@ -1,33 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">Njia salama zaidi ya kukuza intaneti wazi</string>
-  <string name="intro_benefit_body">Unapotumia intaneti, kifaa chako kinahitaji kutafuta anwani katika orodha ya anwani za intaneti. Wakati mwingine muunganisho wako unaweza kukupa anwani isiyo sahihi.</string>
-  <string name="intro_manipulation_headline">Ulinzi dhidi ya anwani zisizo sahihi</string>
-  <string name="intro_manipulation_body">Intra hukulinda dhidi ya kupata anwani mbaya zisizoelekea kokote (ughushi wa DNS) kwa kusimba muunganisho wako wa DNS kwa njia fiche.</string>
-  <string name="intro_details_headline">Intra inahitaji kufuatilia trafiki ya mtandao ili iweze kuweka ulinzi</string>
-  <string name="intro_details_body">Gusa \"Sawa\" ukiona ombi la kuunganisha ili uanze. Kwa chaguomsingi, hoja zako zitaelekezwa kwenye DNS ya Umma ya Google (<a href="https://developers.google.com/speed/public-dns/privacy">Sera ya Faragha</a>). Unaweza kuchagua kutumia huduma nyingine katika mipangilio ya programu.</string>
+  <string name="intro_benefit_headline">Uwazi zaidi katika ufikiaji wa intaneti</string>
+  <string name="intro_benefit_body">Intra hukulinda dhidi ya ughushi wa DNS, uvamizi wa kimtandao unaotumiwa kuzuia ufikiaji wa tovuti za habari, mitandao ya kijamii na programu za kutuma na kupokea ujumbe.\n\nIjapokuwa Intra hukulinda dhidi ya ughushi wa DNS, kuna mbinu zingine changamano za uzuiaji na uvamizi ambazo Intra haiwezi kukulinda dhidi yake.</string>
+  <string name="intro_manipulation_headline">Ulinzi dhidi ya ughushi wa DNS</string>
+  <string name="intro_manipulation_body">Intra hulinda muunganisho wako kwenye Mfumo wa Majina ya Vikoa (DNS), unaokupa anwani mahususi unazohitaji ili utembelee tovuti au programu.\n\nIntra hutumia usimbaji fiche kuhakikisha kuwa matokeo hayawezi kubadilishwa, hivyo kukuwezesha kufikia intaneti kwa njia salama.</string>
+  <string name="intro_details_headline">Jambo moja la mwisho…</string>
+  <string name="intro_details_body">Gusa Sawa ili uruhusu Intra ilinde maombi yako ya DNS. Kwa chaguomsingi, maombi yako yataelekezwa kwenye DNS ya Umma ya Google (<a href="https://developers.google.com/speed/public-dns/privacy">Sera ya Faragha</a>). Unaweza kuchagua kutumia huduma nyingine katika mipangilio ya programu.</string>
   <string name="intro_back">rudi nyuma</string>
   <string name="intro_next">endelea</string>
   <string name="intro_accept">kubali</string>
-  <string name="about_headline">Mfumo wa DNS ulio salama na wa kuaminika</string>
-  <string name="about_text">Intra hulinda maombi yako ya DNS kwa kuyapitisha kwenye muunganisho salama wa HTTPS. Hatua hii hupunguza
-    uwezekano wa ombi lako kutumwa kwa tovuti isiyo sahihi au shughuli zako za kuvinjari kuzuiwa au kufuatiliwa.</string>
-  <string name="privacy_text">Kwa chaguomsingi, hoja zako zitaelekezwa kwenye
-    <a href="https://developers.google.com/speed/public-dns/">DNS ya Umma ya Google</a>
-    (<a href="https://developers.google.com/speed/public-dns/privacy">Sera ya Faragha</a>).
-    Unaweza pia kutumia <a href="https://cloudflare-dns.com">Cloudflare</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Sera ya Faragha</a>)
-    au huduma yoyote nyingine ya DNS-inayopitia kwa-HTTPS.</string>
-  <string name="accept">Anza Kuitumia</string>
   <string name="drawer_open">Fungua menyu ya kusogeza</string>
   <string name="drawer_close">Funga menyu ya kusogeza</string>
   <string name="home">Mwanzo</string>
   <string name="settings">Mipangilio</string>
-  <string name="feedback">Tuma Maoni</string>
   <string name="support">Usaidizi</string>
   <string name="privacy_link">Sera ya Faragha</string>
   <string name="tos_link">Sheria na Masharti</string>
   <string name="source_code">Msimbo wa Asili</string>
-  <string name="short_credits_text">Intra ni mradi wa majaribio ya programu huria unaoendeshwa na <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
   <string name="credits_text">Intra imetengenezwa na <a href="https://jigsaw.google.com">Jigsaw</a>. Maelezo ya maeneo ya IP yanatokana na data
     kutoka DB-IP.com.</string>
   <string name="indicator_on">Imewashwa</string>
@@ -51,11 +39,33 @@
   <string name="explanation_failing">Onyo: Kuna matatizo ya kuchakata hoja. Unaweza kuchagua seva tofauti na uzime Intra kisha uiwashe tena.</string>
   <string name="system_details">Maelezo ya mfumo</string>
   <string name="num_requests">Maombi yote</string>
+  <string name="num_requests_headline">Hoja za DNS hutokea kifaa chako kinapotafuta anwani ya IP ya jina la kikoa</string>
+  <string name="num_requests_body">Thamani hii inaonyesha idadi kamili ya hoja za DNS ambazo kifaa chako kimetekeleza wakati intra
+    ilikuwa inatumika. Intra husimba hoja hizi kwa njia fiche na kuzituma kwenye seva ya kuaminika ili kuhakikisha kuwa
+    unapata matokeo halisi.</string>
   <string name="queries_per_minute">Maombi ya hivi punde</string>
+  <string name="queries_per_minute_headline">Hoja za DNS hutokea mwanzoni mwa kila muunganisho</string>
+  <string name="queries_per_minute_body">Thamani hii inaonyesha idadi ya hoja za DNS ambazo kifaa chako kimetekeleza katika dakika ya mwisho.
+    Unaweza kuhitaji zaidi ya hoja mia moja za DNS kupakia ukurasa changamano wa wavuti.</string>
   <string name="transport_label">Uhamishaji data uliosimbwa kwa njia fiche</string>
-  <string name="insecure_transport_label">Uhamishaji data usiosimbwa kwa njia fiche</string>
+  <string name="transport_headline">Usimbaji fiche hulinda hoja zako dhidi ya macho ya nje</string>
+  <string name="transport_body">Unapotumia Intra, hoja zako za DNS husimbwa kwa njia fiche, hivi kwamba ni wewe na seva yako ya DNS pekee mnaoweza kuona
+    hoja za DNS unazotuma. Intra hutekeleza DNS kupitia kwa itifaki ya HTTPS ili isimbwe kwa njia fiche.</string>
+  <string name="default_transport_label">Usafirishaji chaguomsingi</string>
+  <string name="insecure_transport">haijasimbwa kwa njia fiche</string>
+  <string name="insecure_transport_headline">DNS ya msingi haijasimbwa kwa njia fiche</string>
+  <string name="insecure_transport_body">Vifaa na mitandao mingi hutumia DNS ya msingi, ambayo haijasimbwa kwa njia fiche, kwa hivyo hoja zako za DNS zinaweza
+    kuangaliwa au kubadilishwa na yeyote aliye kwenye mtandao.  Baadhi ya vifaa hutumia DNS inayopitia kwa TLS, ambayo
+    husimba hoja zako kwa njia fiche lakini haiwezi kukulinda iwapo seva ni mbaya.</string>
   <string name="server_label">Seva salama ya DNS</string>
-  <string name="insecure_server_label">Seva ya DNS iliyotolewa na mtandao</string>
+  <string name="server_headline">Unastahili kutumia seva ya DNS inayoaminika</string>
+  <string name="server_body">Sehemu hii inaonyesha jina la seva salama ya DNS unayotumia.  Unaweza pia kubadilisha utumie
+    seva tofauti katika menyu ya Mipangilio.</string>
+  <string name="default_server_label">Seva ya sasa ya DNS</string>
+  <string name="insecure_server_headline">Unaweza kuchagua seva yako ya DNS</string>
+  <string name="insecure_server_body">Intra ikizimwa, vifaa vingi huwekewa mipangilio awali ili vitumie seva  ay DNS itakayochaguliwa na mtoa huduma wako wa mtandao. Sehemu hii huonyesha anwani ya IP ya seva ya DNS ambayo kifaa chako kinatumia kwa sasa. Ukiwa na Intra au Android P, unaweza kuchagua seva unayoipenda kwa urahisi.</string>
+  <string name="strict_mode_server_headline">Umechagua seva salama</string>
+  <string name="strict_mode_server_body">Sehemu hii inaonyesha jina la seva ya DNS uliyowekea mipangilio katika mipangilio ya Android ya DNS ya Faragha.  Intra ikizimwa, programu zako zinapaswa kutuma hoja za DNS kwa seva hii.</string>
   <string name="unknown_server">(seva isiyojulikana)</string>
   <string name="show_history">Onyesha maombi ya hivi majuzi</string>
   <string name="query_label">Ombi</string>
@@ -70,14 +80,8 @@
   <string name="excluded_apps">Programu zilizotengwa</string>
   <string name="excluded_apps_summary">Hoja za DNS kutoka kwenye programu zozote zilizochaguliwa hazitapitia kwenye Intra.  Ikiwa programu inaonekana
     kutooana na Intra, unaweza kuiongeza hapa.</string>
-  <string name="excluded_apps_title">Weka alama kwenye programu utakazotenga na Intra</string>
+  <string name="excluded_apps_title">Tia alama kwenye programu utakazotenga na Intra</string>
   <string name="old_android">Utendaji huu haupatikani kwenye toleo lako la Android.</string>
-  <string name="before_feedback">Tusaidie kuboresha Intra! Intra ni huduma changa na tunahitaji usaidizi wako kuiboresha.
-    Tueleze uzuri na upungufu wake.  Asante!</string>
-  <string name="feedback_hint">Maoni yako</string>
-  <string name="after_feedback">Maelezo haya yatatumwa kwa timu ya Intra.  Tafadhali usiweke taarifa yoyote ya binafsi
-    katika maoni yako.</string>
-  <string name="submit_feedback">Tuma</string>
   <string name="notification_title">Kipengle cha kulinda DNS kimewashwa</string>
   <string name="notification_content">Gusa ili ubadilishe mipangilio ya ulinzi wa DNS</string>
   <string name="channel_name">Arifa ya Kuonyesha Kipengele cha Kulinda DNS Kimewashwa</string>

@@ -1,32 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">更安全的路由助您开启更开放的互联网之旅</string>
-  <string name="intro_benefit_body">当您使用互联网时，您的设备需要在互联网连接列表中查找地址。有时您可能会连接到错误的地址。</string>
-  <string name="intro_manipulation_headline">防止连接到错误的地址</string>
-  <string name="intro_manipulation_body">Intra 可通过加密您的 DNS 连接，防止您连接到无果的错误地址（DNS 篡改）。</string>
-  <string name="intro_details_headline">Intra 需要监测网络流量，以开启保护功能</string>
-  <string name="intro_details_body">当您看到连接请求时，点按“确定”即可开始连接。默认将您的查询路由至 Google 公共 DNS（<a href="https://developers.google.com/speed/public-dns/privacy">隐私权政策</a>）。您可以在应用设置中选择其他服务。</string>
+  <string name="intro_benefit_headline">更开放的互联网访问权限</string>
+  <string name="intro_benefit_body">Intra 可以帮助您防止 DNS 篡改，这种网络攻击会阻止您访问新的网站、社交媒体平台和即时通讯应用。\n\n尽管 Intra 可以防止 DNS 篡改，但是无法针对其他更为复杂的屏蔽技术和攻击方式提供保护。</string>
+  <string name="intro_manipulation_headline">防止 DNS 篡改</string>
+  <string name="intro_manipulation_body">域名系统 (DNS) 为您访问网站或打开应用提供所需的确切地址。Intra 保护您和 DNS 之间的连接。\n\nIntra 使用加密技术确保网址不会被篡改，助您安全访问互联网。</string>
+  <string name="intro_details_headline">最后一点…</string>
+  <string name="intro_details_body">点按“确定”即可让 Intra 保护您的 DNS 请求。默认情况下，这些请求会路由至 Google 公共 DNS（<a href="https://developers.google.com/speed/public-dns/privacy">隐私权政策</a>）。您可以在应用设置中选择其他服务。</string>
   <string name="intro_back">上一页</string>
   <string name="intro_next">下一页</string>
   <string name="intro_accept">接受</string>
-  <string name="about_headline">安全可靠的 DNS</string>
-  <string name="about_text">Intra 通过安全的 HTTPS 连接为您的 DNS 查询建立路由，从而保护这些查询。这会减少将您定向至错误的网站或让您的浏览遭到屏蔽或监视的机率。</string>
-  <string name="privacy_text">默认将您的查询路由至
-    <a href="https://developers.google.com/speed/public-dns/">Google 公共 DNS</a>
-    （<a href="https://developers.google.com/speed/public-dns/privacy">隐私权政策</a>）。
-    您还可以选择使用 <a href="https://cloudflare-dns.com">Cloudflare</a>
-    （<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">隐私权政策</a>）
-    或任何其他 DNS-over-HTTPS 服务。</string>
-  <string name="accept">开始使用</string>
   <string name="drawer_open">打开抽屉式导航栏</string>
   <string name="drawer_close">关闭抽屉式导航栏</string>
   <string name="home">首页</string>
   <string name="settings">设置</string>
-  <string name="feedback">提交反馈</string>
   <string name="support">支持</string>
   <string name="privacy_link">隐私权政策</string>
   <string name="tos_link">服务条款</string>
   <string name="source_code">源代码</string>
-  <string name="short_credits_text">Intra 是由 <a href="https://jigsaw.google.com">Jigsaw</a> 推出的一款实验性开放源代码项目。</string>
   <string name="credits_text">Intra 由 <a href="https://jigsaw.google.com">Jigsaw</a> 开发。IP 位置基于 DB-IP.com 的数据。</string>
   <string name="indicator_on">开启</string>
   <string name="indicator_off">关闭</string>
@@ -47,11 +36,27 @@
   <string name="explanation_failing">警告：查询失败。您可能需要选择其他服务器或重启 Intra。</string>
   <string name="system_details">系统详细信息</string>
   <string name="num_requests">迄今为止的查询数</string>
+  <string name="num_requests_headline">您的设备查找域名的 IP 地址时执行的 DNS 查询数量</string>
+  <string name="num_requests_body">此值显示了在 Intra 启用期间您的设备执行的 DNS 查询总数。Intra 对这些查询进行加密并将其发送至可信服务器，以确保您获得的是真实可信的结果。</string>
   <string name="queries_per_minute">近期查询数</string>
+  <string name="queries_per_minute_headline">每个连接开始时执行的 DNS 查询数量</string>
+  <string name="queries_per_minute_body">此值显示了在最后一分钟内您的设备执行的 DNS 查询数。
+加载一个复杂网页可能需要执行超过一百个 DNS 查询。</string>
   <string name="transport_label">加密的传输</string>
-  <string name="insecure_transport_label">未加密的传输</string>
+  <string name="transport_headline">加密功能可防止他人窥视您的查询</string>
+  <string name="transport_body">使用 Intra 时，您的 DNS 查询受加密保护，因此只有您和您的 DNS 服务器可以看到您执行的 DNS 查询。Intra 会执行 DNS over HTTPS 协议进行加密。</string>
+  <string name="default_transport_label">默认传输</string>
+  <string name="insecure_transport">未加密</string>
+  <string name="insecure_transport_headline">基本 DNS 未加密</string>
+  <string name="insecure_transport_body">大多数设备和网络使用的是基本 DNS，并未加密。因此您的 DNS 查询可被网络上的任何人窥视或修改。部分新设备支持 DNS over TLS，可加密您的查询，但是无法防范恶意服务器的风险。</string>
   <string name="server_label">安全的 DNS 服务器</string>
-  <string name="insecure_server_label">网络提供的 DNS 服务器</string>
+  <string name="server_headline">推荐您使用值得信赖的 DNS 服务器</string>
+  <string name="server_body">此字段显示您正在使用的安全的 DNS 服务器名称。您也可以在“设置”菜单中更改为其他服务器。</string>
+  <string name="default_server_label">当前 DNS 服务器</string>
+  <string name="insecure_server_headline">您可以选择自己的 DNS 服务器</string>
+  <string name="insecure_server_body">如果停用 Intra，根据预设配置，大多数设备会使用您的网络运营商选择的 DNS 服务器。此字段会显示您的设备目前使用的 DNS 服务器的 IP 地址。通过 Intra 或 Android P，您可以轻松选择所需的服务器。</string>
+  <string name="strict_mode_server_headline">您已选择安全的服务器</string>
+  <string name="strict_mode_server_body">此字段会显示您在 Android 私有 DNS 设置中配置的 DNS 服务器的名称。如果停用 Intra，您的应用应该会将 DNS 查询发送至此服务器。</string>
   <string name="unknown_server">（未知服务器）</string>
   <string name="show_history">显示近期的查询</string>
   <string name="query_label">查询</string>
@@ -67,11 +72,6 @@
   <string name="excluded_apps_summary">来自所选应用的 DNS 查询将不通过 Intra 处理。如果某个应用与 Intra 不兼容，您可以将其添加至此处。</string>
   <string name="excluded_apps_title">将应用标记为从 Intra 中排除</string>
   <string name="old_android">您目前的 Android 版本尚不支持此功能。</string>
-  <string name="before_feedback">帮助我们改进 Intra！Intra 这款产品尚处于初级阶段，我们需要您的帮助让它更加完善。
-    请告诉我们它的优缺点，谢谢！</string>
-  <string name="feedback_hint">您的反馈</string>
-  <string name="after_feedback">此信息将会发送至 Intra 团队。请勿在反馈中加入任何个人信息。</string>
-  <string name="submit_feedback">提交</string>
   <string name="notification_title">DNS 保护已启用</string>
   <string name="notification_content">点按即可更改 DNS 保护设置</string>
   <string name="channel_name">DNS 保护启用通知</string>
