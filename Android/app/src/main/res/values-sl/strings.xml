@@ -1,0 +1,90 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Bolj odprt dostop do interneta</string>
+  <string name="intro_benefit_body">Aplikacija Intra vas varuje pred manipulacijo DNS, tj. kibernetskim napadom, ki blokira dostop do novičarskih spletnih mest, platform družbenih omrežij in aplikacij za sporočila.\n\nAplikacija Intra vas varuje pred manipulacijo DNS, vendar obstajajo tudi druge, zapletenejše tehnike in napadi za blokiranje, proti katerim aplikacija Intra ne zagotavlja varstva.</string>
+  <string name="intro_manipulation_headline">Varstvo pred manipulacijo DNS</string>
+  <string name="intro_manipulation_body">Aplikacija Intra varuje povezavo z imenskim sistemom DNS, v katerem se pridobijo natančni naslovi, ki jih potrebujete za obisk spletnega mesta ali odpiranje aplikacije.\n\nAplikacija Intra uporablja šifriranje za zagotavljanje, da rezultatov ni mogoče spreminjati, tako da lahko lažje dostopate do interneta.</string>
+  <string name="intro_details_headline">Še nekaj …</string>
+  <string name="intro_details_body">Dotaknite se gumba »V redu«, da zagotovite varovanje poizvedb DNS. Privzeto bodo preusmerjene v Googlov javni DNS (<a href="https://developers.google.com/speed/public-dns/privacy">pravilnik o zasebnosti</a>). V nastavitvah aplikacije lahko izberete drugo storitev.</string>
+  <string name="intro_back">nazaj</string>
+  <string name="intro_next">naprej</string>
+  <string name="intro_accept">sprejmi</string>
+  <string name="drawer_open">Odprite predal za krmarjenje</string>
+  <string name="drawer_close">Zaprite predal za krmarjenje</string>
+  <string name="home">Domača stran</string>
+  <string name="settings">Nastavitve</string>
+  <string name="support">Podpora</string>
+  <string name="privacy_link">Pravilnik o zasebnosti</string>
+  <string name="tos_link">Pogoji storitve</string>
+  <string name="source_code">Koda vira</string>
+  <string name="credits_text">Aplikacija Intra je bila ustvarjena v inkubatorju <a href="https://jigsaw.google.com">Jigsaw</a>. Lokacije IP temeljijo na podatkih 
+    s spletnega mesta DB-IP.com.</string>
+  <string name="indicator_on">Vklopljeno</string>
+  <string name="indicator_off">Izklopljeno</string>
+  <string name="status_exposed">Izpostavljeno</string>
+  <string name="explanation_exposed">Vaša povezava je izpostavljena napadom DNS.</string>
+  <string name="status_protected">Varovano</string>
+  <string name="explanation_protected">Povezava je zavarovana pred napadi DNS.</string>
+  <string name="status_upgraded">Ranljivo</string>
+  <string name="explanation_upgraded">Povezavo trenutno varuje Android Private DNS, vendar lahko napadalec onemogoči ali oslabi to varovanje.</string>
+  <string name="status_strict">Varovanje zagotavlja Android</string>
+  <string name="explanation_strict">Aplikacija Intra je zaznala, da je nastavitev Android Private DNS omogočena.  To pomeni, da je varovanje
+    za te poizvedbe že zagotovljeno, zato ni treba omogočiti aplikacije Intra.</string>
+  <string name="status_starting">Začenjanje …</string>
+  <string name="explanation_starting">Počakajte.  Aplikacija vzpostavlja povezavo s strežnikom.</string>
+  <string name="status_waiting">Čakanje …</string>
+  <string name="explanation_offline">Naprava je brez povezave.  Aplikacija Intra čaka na omrežno povezavo.</string>
+  <string name="explanation_vpn">Aplikacija Intra je zaznala drugo omrežje VPN v napravi.  Če omogočite aplikacijo Intra, bo to omrežje VPN onemogočeno.
+    Aplikacija Intra ni tako varna kot zaupanja vredno omrežje VPN.</string>
+  <string name="explanation_failing">Opozorilo: Poizvedbe niso uspešne.  Izberite drug strežnik in znova zaženite aplikacijo Intra.</string>
+  <string name="system_details">Podrobnosti o sistemu</string>
+  <string name="num_requests">Število poizvedb (od začetka)</string>
+  <string name="num_requests_headline">Poizvedbe DNS se izvajajo, ko naprava išče naslov IP za ime domene</string>
+  <string name="num_requests_body">Ta vrednost prikazuje skupno število poizvedb DNS, ki jih je izvedla naprava, ko je bila aplikacija Intra 
+    aktivna.  Aplikacija Intra šifrira te poizvedbe in jih pošlje v zaupanja vreden strežnik ter tako zagotovi, da prejmete overjene rezultate.</string>
+  <string name="queries_per_minute">Nedavne poizvedbe</string>
+  <string name="queries_per_minute_headline">Poizvedbe DNS se izvedejo na začetku vzpostavljanja posameznih povezav</string>
+  <string name="queries_per_minute_body">Ta vrednost prikazuje število poizvedb DNS, ki jih je vaša naprava izvedla v zadnji minuti.
+    Za nalaganje zapletene spletne strani je morda potrebno več kot sto poizvedb DNS.</string>
+  <string name="transport_label">Šifriran prenos</string>
+  <string name="transport_headline">Šifriranje varuje poizvedbe pred nepovabljeni opazovalci</string>
+  <string name="transport_body">Pri uporabi aplikacije Intra so vaše poizvedbe DNS šifrirane, tako da lahko poizvedbe DNS, ki jih izvajate, vidite samo vi in strežnik DNS.  Aplikacija Intra izvaja šifriranje poizvedb DNS prek protokola HTTPS.</string>
+  <string name="default_transport_label">Privzeti prenos</string>
+  <string name="insecure_transport">nešifrirano</string>
+  <string name="insecure_transport_headline">Osnovni DNS ni šifriran</string>
+  <string name="insecure_transport_body">Večina naprav in omrežij uporablja osnovni DNS, ki je šifriran, zato lahko vaše poizvedbe DNS opazuje ali spreminja poljubni uporabnik omrežja.  Nekatere nove naprave podpirajo DNS prek standarda TLS, ki
+    šifrira poizvedbe, vendar ne more zagotoviti varovanja, če je v strežniku zlonamerna programska oprema.</string>
+  <string name="server_label">Varen strežnik DNS</string>
+  <string name="server_headline">Zaslužite si uporabo zaupanja vrednega strežnika DNS</string>
+  <string name="server_body">V tem polju je prikazano ime varnega strežnika DNS, ki ga uporabljate.  V meniju za nastavitve lahko
+   spremenite izbiro in izberete drug strežnik.</string>
+  <string name="default_server_label">Trenutni strežnik DNS</string>
+  <string name="insecure_server_headline">Izberete lahko svoj strežnik DNS</string>
+  <string name="insecure_server_body">Večina naprav je vnaprej konfigurirana tako, da se ob onemogočenju aplikacije Intra uporabi strežnik
+    DNS, ki ga izbere vaš operater. To polje prikazuje naslov IP strežnika DNS, ki ga trenutno uporablja vaša
+    naprava. Z aplikacijo Intra ali Android P lahko preprosto izberete želeni strežnik.</string>
+  <string name="strict_mode_server_headline">Izbrali ste varen strežnik</string>
+  <string name="strict_mode_server_body">V tem polju je prikazano ime strežnika DNS, ki ste ga konfigurirali v nastavitvi Android Private DNS.  Ko je aplikacija Intra onemogočena, aplikacije pošiljajo poizvedbe DNS v ta strežnik.</string>
+  <string name="unknown_server">(neznan strežnik)</string>
+  <string name="show_history">Pokaži nedavne poizvedbe</string>
+  <string name="query_label">Poizvedba</string>
+  <string name="type_label">Vrsta</string>
+  <string name="latency_label">Zakasnitev</string>
+  <string name="resolver_label">Lokacija razreševalnika</string>
+  <string name="destination_label">Ciljni strežnik</string>
+  <string name="server_choice">Izberi šifriranje DNS prek strežnika HTTPS</string>
+  <string name="server_choice_summary">Trenutno strežnik %s</string>
+  <string name="server_choice_custom">URL strežnika po meri</string>
+  <string name="server_choice_warning">Veljavni naslov strežnika po meri se mora začeti s https:// URL</string>
+  <string name="excluded_apps">Izključene aplikacije</string>
+  <string name="excluded_apps_summary">Poizvedbe DNS iz katere koli izbrane aplikacije ne bodo izvedene prek aplikacije Intra.  Če se zdi aplikacija nezdružljiva
+    z aplikacijo Intra, jo lahko dodate tukaj.</string>
+  <string name="excluded_apps_title">Označevanje aplikacij, ki naj jih Intra izključi</string>
+  <string name="old_android">Ta funkcija ni na voljo v vaši različici Androida.</string>
+  <string name="notification_title">Varovanje DNS je aktivno</string>
+  <string name="notification_content">Dotaknite se, da spremenite nastavitev varovanja DNS</string>
+  <string name="channel_name">Obvestilo o aktivnem varovanju DNS</string>
+  <string name="channel_description">To obvestilo je prikazano, ko je varovanje DNS aktivno.</string>
+  <string name="warning_title">Opozorilo: Aplikacija Intra je deaktivirana</string>
+  <string name="warning_channel_name">Opozorilo</string>
+  <string name="warning_channel_description">Prikazano, kadar pride v aplikaciji Intra do težave.</string>
+</resources>

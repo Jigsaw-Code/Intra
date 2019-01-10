@@ -1,0 +1,94 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">دسترسی به موارد بیشتر از اینترنت آزاد</string>
+  <string name="intro_benefit_body">Intra شما را دربرابر دستکاری DNS، حملات سایبری با هدف مسدود کردن دسترسی به سایت‌های خبری، پلتفورم رسانه‌های اجتماعی، و برنامه‌های پیام‌رسانی، محافظت می‌کند.\n\nبااینکه Intra دربرابر دستکاری DNS محافظت می‌کند، روش‌های مسدودسازی و حملات پیچیده دیگر و بیشتری نیز وجود دارد که Intra از شما در برابر آن‌ها محافظت نمی‌کند.</string>
+  <string name="intro_manipulation_headline">محافظت دربرابر دستکاری DNS</string>
+  <string name="intro_manipulation_body">Intra از اتصال به «سیستم نام‌گذاری دامنه» (DNS) محافظت می‌کند، که نشانی‌های دقیقی را که برای بازدید از وب‌سایتی یا باز کردن برنامه‌ای به آن نیاز دارید ارائه می‌دهد.\n\nIntra برای رمز کردن استفاده می‌شود تا مطمئن شوید نتایج دست‌کاری نمی‌شود و کمک می‌کند دسترسی ایمنی به اینترنت داشته باشید.</string>
+  <string name="intro_details_headline">مورد آخر…</string>
+  <string name="intro_details_body">برای اجازه دادن به Intra برای محافظت از درخواست‌های DNS، روی «تأیید» ضربه بزنید. به‌طور پیش‌فرض، به «DNS عمومی Google» هدایت می‌شود (<a href="https://developers.google.com/speed/public-dns/privacy">خط‌مشی خصوصی</a>). در تنظیمات برنامه، می‌توانید سرویس دیگری انتخاب کنید.</string>
+  <string name="intro_back">برگشت</string>
+  <string name="intro_next">بعدی</string>
+  <string name="intro_accept">پذیرش</string>
+  <string name="drawer_open">کشوی پیمایش را باز کنید</string>
+  <string name="drawer_close">کشوی پیمایش را ببندید</string>
+  <string name="home">صفحه اصلی</string>
+  <string name="settings">تنظیمات</string>
+  <string name="support">پشتیبانی</string>
+  <string name="privacy_link">خط‌مشی رازداری</string>
+  <string name="tos_link">شرایط خدمات</string>
+  <string name="source_code">کد منبع</string>
+  <string name="credits_text">Intra ساخته <a href="https://jigsaw.google.com">Jigsaw</a> است. مکان‌های IP مبتنی بر داده‌های
+    موجود در DB-IP.com هستند.</string>
+  <string name="indicator_on">روشن</string>
+  <string name="indicator_off">خاموش</string>
+  <string name="status_exposed">فاقد حفاظت</string>
+  <string name="explanation_exposed">اتصالتان دربرابر مهاجمان DNS محافظت نمی‌شود.</string>
+  <string name="status_protected">محافظت‌شده</string>
+  <string name="explanation_protected">اتصالتان دربرابر مهاجمان DNS محافظت می‌شود.</string>
+  <string name="status_upgraded">آسیب‌پذیر</string>
+  <string name="explanation_upgraded">درحال‌حاضر DNS خصوصی Android از اتصالتان محافظت می‌کند، اما مهاجمی توانست این حفاظت را غیرفعال
+    یا تضعیف کند.</string>
+  <string name="status_strict">محافظت‌شده ازجانب Android</string>
+  <string name="explanation_strict">Intra تشخیص داده است که تنظیم «DNS خصوصی Android» فعال شده است.  این یعنی پُرسمان‌های
+      DNS شما ازقبل محافظت شده است، بنابراین لازم نیست Intra فعال شود.</string>
+  <string name="status_starting">درحال شروع…</string>
+  <string name="explanation_starting">صبور باشید.  Intra درحال ایجاد اتصال به سرور است.</string>
+  <string name="status_waiting">درانتظار…</string>
+  <string name="explanation_offline">دستگاه آفلاین است.  Intra درانتظار اتصال شبکه است.</string>
+  <string name="explanation_vpn">Intra در دستگاه شما VPN دیگری تشخیص داده است.  اگر Intra را فعال کنید، آن VPN غیرفعال می‌شود.
+    Intra به‌اندازه VPN مطمئن، امن نیست.</string>
+  <string name="explanation_failing">هشدار: پُرسمان‌ها بی‌نتیجه‌اند.  ممکن است بخواهید سرور متفاوتی انتخاب کنید و Intra را بازراه‌اندازی کنید.</string>
+  <string name="system_details">جزئیات سیستم</string>
+  <string name="num_requests">پُرسمان‌های درزمانی</string>
+  <string name="num_requests_headline">پُرسمان‌های DNS وقتی پیش می‌آیند که دستگاه برای نام دامنه، به نشانی IP مراجعه می‌کند</string>
+  <string name="num_requests_body">این مقدار تعداد کل پُرسمان‌های DNS را نشان می‌دهد که وقتی Intra فعال باشد، دستگاه آن‌ها را اجرا
+    می‌کند.  Intra این پُرسمان‌ها را رمز می‌کند و آن‌ها را به سرور مطمئنی ارسال می‌کند تا اطمینان یابید نتایج
+    موثقی دریافت می‌کنید.</string>
+  <string name="queries_per_minute">پُرسمان‌های اخیر</string>
+  <string name="queries_per_minute_headline">پُرسمان‌های DNS در ابتدای هر اتصال پیش می‌آیند</string>
+  <string name="queries_per_minute_body">این مقدار تعداد پُرسمان‌های DNS را نشان می‌دهد که دستگاه در آخرین دقایق اجرا کرده است.
+    بارگذاری صفحه وب پیچیده می‌تواند بیش از صد پُرسمان DNS لازم داشته باشد.</string>
+  <string name="transport_label">نقل‌وانتقال رمزشده</string>
+  <string name="transport_headline">رمز کردن از پُرسمان‌ها دربرابر ناظران کنجکاو محافظت می‌کند</string>
+  <string name="transport_body">وقتی از Intra‌ استفاده می‌کنید، پُرسمان‌های DNS رمز می‌شوند، بنابراین فقط شما و سرور DNS شما می‌توانید پُرسمان‌های
+    DNS را که ایجاد کرده‌اید، ببینید.  Intra برای رمز کردن، DNS را روی پروتکل HTTPS (اچ‌تی‌تی‌پی‌اس) اجرا می‌کند.</string>
+  <string name="default_transport_label">انتقال پیش‌فرض</string>
+  <string name="insecure_transport">رمزنشده</string>
+  <string name="insecure_transport_headline">DNS پایه رمزنشده است</string>
+  <string name="insecure_transport_body">بیشتر دستگاه‌ها و شبکه‌ها از DNS پایه استفاده می‌کنند، که رمزنشده است، بنابراین پُرسمان‌های DNS شما را همه افراد
+    موجود در شبکه می‌توانند مشاهده یا اصلاح کنند.  برخی دستگاه‌های جدید از DNS روی TLS پشتیبانی می‌کند که پُرسمان‌هایتان را رمز می‌کند، اما نمی‌تواند دربرابر سرورهای زیان‌بار از شما محافظت کند.</string>
+  <string name="server_label">سرور DNS امن</string>
+  <string name="server_headline">برای استفاده از سرور DNS موثق واجد شرایط‌اید</string>
+  <string name="server_body">این فیلد نام سرور DNS امنی را که استفاده می‌کنید نشان می‌دهد.  همچنین در منوی  «تنظیمات»
+     می‌توانید به سرور دیگری جابه‌جا شوید.</string>
+  <string name="default_server_label">سرور DNS کنونی</string>
+  <string name="insecure_server_headline">می‌توانید سرور DNS خود را انتخاب کنید</string>
+  <string name="insecure_server_body">وقتی Intra غیرفعال است، بیشتر دستگاه‌ها برای استفاده از سرور DNS که اپراتور شبکه‌تان
+    انتخاب می‌کند، از پیش پیکربندی می‌شود. این فیلد نشانی IP سرور DNS را نشان می‌دهد که دستگاهتان اکنون 
+    از آن استفاده می‌کند. با Intra یا Android P، به‌سادگی می‌توانید سرور مدنظرتان را انتخاب کنید.</string>
+  <string name="strict_mode_server_headline">سرور امنی انتخاب کرده‌اید</string>
+  <string name="strict_mode_server_body">این فیلد نام سرور DNS را که در تنظیم «DNS خصوصی Android» پیکربندی کرده‌اید،
+    نشان می‌دهد.  وقتی Intra غیرفعال است، برنامه‌هاتان باید پُرسمان‌های DNS را به این سرور ارسال کند.</string>
+  <string name="unknown_server">(سرور ناشناس)</string>
+  <string name="show_history">نمایش پُرسمان‌های اخیر</string>
+  <string name="query_label">پُرسمان</string>
+  <string name="type_label">نوع</string>
+  <string name="latency_label">تأخیر</string>
+  <string name="resolver_label">مکان تفکیک‌کننده</string>
+  <string name="destination_label">سرور مقصد</string>
+  <string name="server_choice">DNS‌ را روی «سرور HTTPS (اچ‌تی‌تی‌پی‌اس)» انتخاب کنید</string>
+  <string name="server_choice_summary">درحال‌حاضر %s</string>
+  <string name="server_choice_custom">نشانی وب سرور سفارشی</string>
+  <string name="server_choice_warning">سرور سفارشی باید نشانی وب https:// معتبری باشد</string>
+  <string name="excluded_apps">برنامه‌های مستثنا‌شده</string>
+  <string name="excluded_apps_summary">پُرسمان‌های DNS موجود در برنامه‌های انتخابی ازطریق Intra بررسی نمی‌شوند.  اگر برنامه‌ای با Intra ناسازگار
+    به‌نظر برسد، می‌توانید آن را اینجا اضافه کنید.</string>
+  <string name="excluded_apps_title">برنامه‌های موردنظر را برای مستثنا کردن از Intra، علامت بزنید</string>
+  <string name="old_android">این عملکرد در نسخه Android شما دردسترس نیست.</string>
+  <string name="notification_title">محافظت DNS فعال است</string>
+  <string name="notification_content">برای تغییر تنظیم محافظت DNS، ضربه بزنید</string>
+  <string name="channel_name">اعلان فعال بودن محافظت DNS</string>
+  <string name="channel_description">این اعلان وقتی محافظت DNS فعال باشد، نشان داده می‌شود.</string>
+  <string name="warning_title">هشدار: Intra غیرفعال شده است</string>
+  <string name="warning_channel_name">هشدار</string>
+  <string name="warning_channel_description">وقتی Intra با مشکلی مواجه شود، نشان داده می‌شود.</string>
+</resources>

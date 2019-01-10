@@ -1,0 +1,95 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Atviresnė interneto prieiga</string>
+  <string name="intro_benefit_body">„Intra“ apsaugo nuo DNS manipuliacijos – kibernetinės atakos, vykdomos siekiant užblokuoti prieigą prie naujienų svetainių, visuomeninės medijos platformų ir susirašinėjimo programų.\n\n„Intra“ apsaugo nuo DNS manipuliacijos, tačiau yra kitų, sudėtingesnių blokavimo technologijų ir atakų, nuo kurių „Intra“ neapsaugo.</string>
+  <string name="intro_manipulation_headline">Apsauga nuo DNS manipuliacijos</string>
+  <string name="intro_manipulation_body">„Intra“ apsaugo ryšį su domenų pavadinimų sistema (DNS), kuri suteikia tikslius adresus, reikalingus norint apsilankyti svetainėje arba atidaryti programą.\n\n„Intra“ naudoja šifruotę, kad nebūtų galima manipuliuoti rezultatais, ir taip padeda saugiai pasiekti internetą.</string>
+  <string name="intro_details_headline">Dar vienas dalykas…</string>
+  <string name="intro_details_body">Jei norite leisti programai „Intra“ apsaugoti DNS užklausas, palieskite „Gerai“. Pagal numatytuosius nustatymus užklausos bus nukreipiamos į „Google“ viešąją DNS (<a href="https://developers.google.com/speed/public-dns/privacy">privatumo politika</a>). Programos nustatymuose galite pasirinkti kitą serverį.</string>
+  <string name="intro_back">grįžti</string>
+  <string name="intro_next">kitas</string>
+  <string name="intro_accept">sutikti</string>
+  <string name="drawer_open">Atidarykite naršymo skydelį</string>
+  <string name="drawer_close">Uždarykite naršymo skydelį</string>
+  <string name="home">Pagrindinis ekranas</string>
+  <string name="settings">Nustatymai</string>
+  <string name="support">Palaikymas</string>
+  <string name="privacy_link">Privatumo politika</string>
+  <string name="tos_link">Paslaugų teikimo sąlygos</string>
+  <string name="source_code">Šaltinio kodas</string>
+  <string name="credits_text">Programą „Intra“ sukūrė <a href="https://jigsaw.google.com">„Jigsaw“</a>. IP vietovės paremtos duomenimis
+    iš DB-IP.com.</string>
+  <string name="indicator_on">Įjungta</string>
+  <string name="indicator_off">Išjungta</string>
+  <string name="status_exposed">Neapsaugota</string>
+  <string name="explanation_exposed">Ryšys neapsaugotas nuo DNS atakų.</string>
+  <string name="status_protected">Apsaugota</string>
+  <string name="explanation_protected">Ryšys apsaugotas nuo DNS atakų.</string>
+  <string name="status_upgraded">Pažeidžiama</string>
+  <string name="explanation_upgraded">Šiuo metu ryšį saugo privati „Android“ DNS, tačiau užpuolikas gali išjungti
+    šią apsaugą arba jai pakenkti.</string>
+  <string name="status_strict">Apsaugota „Android“</string>
+  <string name="explanation_strict">„Intra“ aptiko, kad įjungtas privačios „Android“ DNS nustatymas.  Tai reiškia, kad DNS
+    užklausos jau apsaugotos, todėl nebūtina įjungti „Intra“.</string>
+  <string name="status_starting">Paleidžiama…</string>
+  <string name="explanation_starting">Palūkėkite.  „Intra“ užmezga serverio ryšį.</string>
+  <string name="status_waiting">Laukiama…</string>
+  <string name="explanation_offline">Įrenginys neprijungtas.  „Intra“ laukia, kol bus prisijungta prie tinklo.</string>
+  <string name="explanation_vpn">„Intra“ jūsų įrenginyje aptiko kitą VPN.  Jei įjungsite „Intra“, šis VPN bus išjungtas.
+    „Intra“ nėra tokia saugi kaip patikimas VPN.</string>
+  <string name="explanation_failing">Įspėjimas: nepavyksta pateikti užklausų.  Gali reikėti pasirinkti kitą serverį ir paleisti „Intra“ iš naujo.</string>
+  <string name="system_details">Išsami sistemos informacija</string>
+  <string name="num_requests">Viso laiko užklausos</string>
+  <string name="num_requests_headline">DNS užklausos vykdomos, kai įrenginys ieško domeno pavadinimo IP adreso</string>
+  <string name="num_requests_body">Ši vertė nurodo, kiek DNS užklausų iš viso įvykdė įrenginys, kol „Intra“ buvo
+    aktyvi.  „Intra“ šifruoja šias užklausas ir siunčia jas į patikimą serverį, kad užtikrintų, jog
+    gaunate patikimus rezultatus.</string>
+  <string name="queries_per_minute">Naujausios užklausos</string>
+  <string name="queries_per_minute_headline">DNS užklausos vykdomos kiekvieno prisijungimo pradžioje</string>
+  <string name="queries_per_minute_body">Ši vertė nurodo, kiek DNS užklausų įrenginys įvykdė per pastarąją minutę.
+    Įkeliant sudėtingą svetainę gali prireikti daugiau nei šimto DNS užklausų.</string>
+  <string name="transport_label">Šifruotas perdavimas</string>
+  <string name="transport_headline">Šifruotė apsaugo užklausas nuo smalsių akių</string>
+  <string name="transport_body">Kai naudojate „Intra“, jūsų DNS užklausos yra šifruojamos, todėl tik jūs ir DNS serveris galite peržiūrėti,
+    kokias DNS užklausas kuriate.  Kad užšifruotų, „Intra“ vykdo DNS naudodama HTTPS protokolą.</string>
+  <string name="default_transport_label">Numatytasis perkėlimas</string>
+  <string name="insecure_transport">nešifruota</string>
+  <string name="insecure_transport_headline">Įprasta DNS yra nešifruota</string>
+  <string name="insecure_transport_body">Dauguma įrenginių ir tinklų naudoja įprastą DNS, kuri nėra šifruota, todėl DNS užklausas gali
+    stebėti arba keisti bet kokie prie tinklo prisijungę asmenys.  Kai kurie nauji įrenginiai palaiko DNS naudojant TLS, kuri
+    šifruoja užklausas, bet negali apsaugoti, jei serveris yra kenkėjiškas.</string>
+  <string name="server_label">Saugus DNS serveris</string>
+  <string name="server_headline">Nusipelnote naudoti patikimą DNS serverį</string>
+  <string name="server_body">Šiame lauke rodomas saugaus jūsų naudojamo DNS serverio pavadinimas.  Galite pakeisti į
+    kitą serverį nuėję į nustatymų meniu.</string>
+  <string name="default_server_label">Dabartinis DNS serveris</string>
+  <string name="insecure_server_headline">Galite pasirinkti savo DNS serverį</string>
+  <string name="insecure_server_body">Kai „Intra“ išjungta, dauguma įrenginių iš anksto sukonfigūruojami naudoti DNS serverį, kurį pasirenka
+    tinklo operatorius. Šiame lauke rodomas DNS serverio, kurį šiuo metu naudoja įrenginys,
+    IP adresas. Naudodami „Intra“ arba „Android P“, galite lengvai pasirinkti norimą serverį.</string>
+  <string name="strict_mode_server_headline">Pasirinkote saugų serverį</string>
+  <string name="strict_mode_server_body">Šiame lauke rodomas DNS serverio, kurį konfigūravote „Android“ privačios DNS
+    nustatyme, pavadinimas.  Kai „Intra“ išjungta, programos turėtų siųsti DNS užklausas į šį serverį.</string>
+  <string name="unknown_server">(nežinomas serveris)</string>
+  <string name="show_history">Rodyti naujausias užklausas</string>
+  <string name="query_label">Užklausa</string>
+  <string name="type_label">Tipas</string>
+  <string name="latency_label">Delsa</string>
+  <string name="resolver_label">Paieškos priemonės vieta</string>
+  <string name="destination_label">Paskirties serveris</string>
+  <string name="server_choice">Pasirinkite DNS naudodami HTTPS serverį</string>
+  <string name="server_choice_summary">Šiuo metu „%s“</string>
+  <string name="server_choice_custom">Tinkintas serverio URL</string>
+  <string name="server_choice_warning">Tinkintas serveris turi būti tinkamas https:// URL</string>
+  <string name="excluded_apps">Išskirtos programos</string>
+  <string name="excluded_apps_summary">Visų pasirinktų programų DNS užklausos nebus siunčiamos programai „Intra“.  Jei programa
+    nesuderinama su „Intra“, galite ją pridėti čia.</string>
+  <string name="excluded_apps_title">Pažymėkite programas, neįtrauktinas į „Intra“</string>
+  <string name="old_android">Ši funkcija negalima šios versijos „Android“ įrenginyje.</string>
+  <string name="notification_title">DNS apsauga aktyvi</string>
+  <string name="notification_content">Palieskite ir pakeiskite DNS apsaugos nustatymus</string>
+  <string name="channel_name">DNS apsaugos aktyvusis pranešimas</string>
+  <string name="channel_description">Šis pranešimas rodomas, kai įjungta DNS apsauga.</string>
+  <string name="warning_title">Įspėjimas: „Intra“ buvo išaktyvinta</string>
+  <string name="warning_channel_name">Įspėjimas</string>
+  <string name="warning_channel_description">Rodoma, kai „Intra“ susiduria su problema.</string>
+</resources>

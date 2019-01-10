@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="@id/status"
-            app:layout_constraintEnd_toEndOf="@id/status"
+            app:layout_constraintEnd_toStartOf="@id/dns_switch"
             app:layout_constraintTop_toBottomOf="@id/status"
             tools:text="@string/explanation_vpn"
             android:textColor="@color/indicator"/>
