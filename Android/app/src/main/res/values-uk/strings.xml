@@ -1,32 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">Безпечніший шлях до відкритого Інтернету</string>
-  <string name="intro_benefit_body">Коли ви користуєтесь Інтернетом, ваш пристрій має шукати адреси в списку інтернет-контактів. Іноді з’єднання може надати вам неправильну адресу.</string>
-  <string name="intro_manipulation_headline">Захист від неправильних адрес</string>
-  <string name="intro_manipulation_body">Додаток Intra шифрує DNS-з’єднання, захищаючи вас від отримання неправильних адрес, які ведуть у глухий кут (маніпуляція DNS).</string>
-  <string name="intro_details_headline">Щоб увімкнути захист, додатку Intra потрібно контролювати мережевий трафік</string>
-  <string name="intro_details_body">Торкніться \"OK\", коли побачите запит на з’єднання, щоб почати роботу. За умовчанням ваші запити будуть скеровуватися на загальнодоступні DNS-сервери Google (<a href="https://developers.google.com/speed/public-dns/privacy">Політика конфіденційності</a>). Ви також можете вибрати інший сервіс у налаштуваннях додатка.</string>
+  <string name="intro_benefit_headline">Більший доступ до Інтернету</string>
+  <string name="intro_benefit_body">Додаток Intra захищає вас від маніпуляцій із DNS – кібератак, які використовуються для блокування доступу до новинних сайтів, соціальних медійних платформ і додатків для обміну повідомленнями.\n\nХоча додаток Intra захищає вас від маніпуляцій із DNS, існують інші, складніші способи блокування й атак, проти яких Intra безсила.</string>
+  <string name="intro_manipulation_headline">Захист від маніпуляцій із DNS</string>
+  <string name="intro_manipulation_body">Додаток Intra захищає ваше з’єднання із системою доменних імен (DNS), яка надає точні адреси для відвідування веб-сайтів або відкриття додатків.\n\nДодаток Intra використовує шифрування, щоб забезпечити недоторканність результатів і надійний доступ до Інтернету.</string>
+  <string name="intro_details_headline">І наостанок…</string>
+  <string name="intro_details_body">Торкніться \"OK\", щоб захистити свої DNS-запити за допомогою додатка Intra. За умовчанням вони будуть скеровуватися на загальнодоступні DNS-сервери Google (<a href="https://developers.google.com/speed/public-dns/privacy">Політика конфіденційності</a>). Ви також можете вибрати інший сервіс у налаштуваннях додатка.</string>
   <string name="intro_back">назад</string>
   <string name="intro_next">далі</string>
   <string name="intro_accept">прийняти</string>
-  <string name="about_headline">Надійні та захищені DNS-сервери</string>
-  <string name="about_text">Intra захищає ваші DNS-запити, скеровуючи їх через безпечне з’єднання (HTTPS). Це знижує ймовірність вашого переходу на неправильний сайт або блокування чи відстеження ваших пошуків.</string>
-  <string name="privacy_text">За умовчанням ваші запити переспрямовуватимуться на
-    <a href="https://developers.google.com/speed/public-dns/">Загальнодоступні DNS-сервери Google</a>
-    (<a href="https://developers.google.com/speed/public-dns/privacy">Політика конфіденційності</a>).
-    Ви також можете використовувати <a href="https://cloudflare-dns.com">Cloudflare</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Політика конфіденційності</a>)
-    або іншу службу, що забезпечує DNS поверх HTTPS.</string>
-  <string name="accept">Почати</string>
   <string name="drawer_open">Відкрийте панель навігації</string>
   <string name="drawer_close">Закрийте панель навігації</string>
   <string name="home">Головна</string>
   <string name="settings">Налаштування</string>
-  <string name="feedback">Надіслати відгук</string>
   <string name="support">Підтримка</string>
   <string name="privacy_link">Політика конфіденційності</string>
   <string name="tos_link">Умови використання</string>
   <string name="source_code">Вихідний код</string>
-  <string name="short_credits_text">Intra – це експериментальний проект із відкритим кодом від компанії <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
   <string name="credits_text">Intra – розробка компанії <a href="https://jigsaw.google.com">Jigsaw</a>. Місцезнаходження IP-адрес базуються на даних сайту DB-IP.com.</string>
   <string name="indicator_on">Увімк.</string>
   <string name="indicator_off">Вимк.</string>
@@ -46,11 +35,28 @@
   <string name="explanation_failing">Застереження. Запити не виконуються. Виберіть інший сервер і перезапустіть додаток Intra.</string>
   <string name="system_details">Системні дані</string>
   <string name="num_requests">Усі запити</string>
+  <string name="num_requests_headline">DNS-запити надсилаються, коли ваш пристрій шукає IP-адресу для доменного імені</string>
+  <string name="num_requests_body">Це значення показує загальну кількість DNS-запитів, які ваш пристрій виконав, доки додаток Intra був активним. Intra шифрує ці запити й надсилає їх на надійний сервер, щоб забезпечити вас автентичними результатами.</string>
   <string name="queries_per_minute">Останні запити</string>
+  <string name="queries_per_minute_headline">DNS-запити надсилаються на початку кожного з’єднання</string>
+  <string name="queries_per_minute_body">Це значення показує кількість DNS-запитів, які ваш пристрій виконав протягом останньої хвилини. Для завантаження складної веб-сторінки може знадобитися більше сотні DNS-запитів.</string>
   <string name="transport_label">Шифроване передавання</string>
-  <string name="insecure_transport_label">Нешифроване передавання</string>
+  <string name="transport_headline">Шифрування захищає ваші запити від чужих очей</string>
+  <string name="transport_body">Доки додаток Intra активний, ваші DNS-запити шифруються, тому тільки ви й ваш DNS-сервер можете бачити, які DNS-запити надсилаються. Intra реалізує DNS через протокол HTTPS для шифрування.</string>
+  <string name="default_transport_label">Протокол за умовчанням</string>
+  <string name="insecure_transport">незашифрований</string>
+  <string name="insecure_transport_headline">Базовий DNS незашифровано</string>
+  <string name="insecure_transport_body">Більшість пристроїв і мереж використовують базові незашифровані DNS, тому ваші DNS-запити можуть перехоплюватись або змінюватися будь-ким у мережі. Деякі нові пристрої підтримують DNS через протокол TLS, який шифрує ваші запити, але не може захистити їх, якщо сервер зловмисний.</string>
   <string name="server_label">Захищений DNS-сервер</string>
-  <string name="insecure_server_label">DNS-сервер, визначений мережею</string>
+  <string name="server_headline">Використовуйте надійний DNS-сервер</string>
+  <string name="server_body">У цьому полі відображається назва використовуваного захищеного DNS-сервера. Ви також можете змінити сервер у меню \"Налаштування\".</string>
+  <string name="default_server_label">Поточний DNS-сервер</string>
+  <string name="insecure_server_headline">Ви можете вибрати власний DNS-сервер</string>
+  <string name="insecure_server_body">Коли додаток Intra вимкнено, більшість пристроїв (відповідно до попередніх налаштувань) використовують DNS-сервер,
+    указаний вашим оператором мережі. У цьому полі показується ІР-адреса DNS-сервера, який зараз використовує ваш
+    пристрій. У додатку Intra або операційній системі Android P можна легко вибрати будь-який інший сервер.</string>
+  <string name="strict_mode_server_headline">Ви вибрали захищений сервер</string>
+  <string name="strict_mode_server_body">У цьому полі показується назва DNS-сервера, який ви вказали в налаштуванні \"Приватна DNS\" на пристрої Android.  Якщо вимкнути додаток Intra, ваші додатки надсилатимуть DNS-запити на цей сервер.</string>
   <string name="unknown_server">(невідомий сервер)</string>
   <string name="show_history">Показувати останні запити</string>
   <string name="query_label">Запит</string>
@@ -67,10 +73,6 @@
     несумісним з Intra, можете додати його тут.</string>
   <string name="excluded_apps_title">Позначте, що виключити з Intra</string>
   <string name="old_android">Ця функція недоступна у вашій версії Android.</string>
-  <string name="before_feedback">Допоможіть нам удосконалити систему Intra. Зараз Intra перебуває на ранній стадії розробки, тож нам потрібна ваша допомога, щоб покращити цю систему. Розкажіть нам, які функції працюють, а які – ні. Дякуємо!</string>
-  <string name="feedback_hint">Ваш відгук</string>
-  <string name="after_feedback">Ваш відгук буде надіслано команді проекту Intra. Не вказуйте свою особисту інформацію у відгуку.</string>
-  <string name="submit_feedback">Надіслати</string>
   <string name="notification_title">Захист DNS увімкнено</string>
   <string name="notification_content">Торкніться, щоб змінити налаштування захисту DNS</string>
   <string name="channel_name">Сповіщення про наявність захисту DNS</string>

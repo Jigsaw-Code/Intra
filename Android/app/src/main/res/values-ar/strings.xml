@@ -1,33 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">مسار أكثر أمانًا لمزيد من الحماية للإنترنت المفتوح</string>
-  <string name="intro_benefit_body">عند استخدام الإنترنت، يبحث جهازك عن العناوين في إحدى قوائم جهات الاتصال على الإنترنت. وفي بعض الأحيان، قد ينتُج عن الاتصال عنوان خاطئ.</string>
-  <string name="intro_manipulation_headline">الحماية من العناوين الخاطئة</string>
-  <string name="intro_manipulation_body">تحميك أداة Intra من الوصول إلى عناوين خاطئة تؤدي إلى نهايات مُغلقة (التلاعب بنظام أسماء النطاقات)، وذلك من خلال تشفير اتصالك بنظام أسماء النطاقات.</string>
-  <string name="intro_details_headline">تحتاج أداة Intra مراقبة حركة بيانات الشبكة من أجل تفعيل الحماية</string>
-  <string name="intro_details_body">انقر على \"موافق\" عند رؤية طلب الاتصال للبدء. سيتم توجيه طلبات بحثك تلقائيًا إلى \"نظام أسماء النطاقات العام من Google\" (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>). ويمكنك اختيار خدمة أخرى من إعدادات التطبيق.</string>
+  <string name="intro_benefit_headline">اتصال أكثر أمانًا بالإنترنت</string>
+  <string name="intro_benefit_body">تحمي أداة Intra اتصالك من التلاعب بنظام أسماء النطاقات، وفيه تُستخدَم هجمة إلكترونية لحظر الوصول إلى مواقع الأخبار ومنصَّات وسائل التواصل الاجتماعي وتطبيقات المُراسلة.\n\nوعلى الرغم من قدرة Intra على حمايتك من التلاعب بنظام أسماء النطاقات، توجد أساليب وهَجَمات أكثر تعقيدًا للحظر لا تستطيع Intra حماية اتصالك منها.</string>
+  <string name="intro_manipulation_headline">الحماية من التلاعب بنظام أسماء النطاقات</string>
+  <string name="intro_manipulation_body">تحمي Intra اتصالك بنظام أسماء النطاقات (DNS) الذي يمنحك العناوين الدقيقة التي تحتاج إليها لزيارة موقع إلكتروني محدَّد أو فتح أحد التطبيقات.\n\nتستخدم هذه الأداة ميزة التشفير لضمان عدم التلاعب بالنتائج، مما يساعدك على الاتصال بالإنترنت بأمان.</string>
+  <string name="intro_details_headline">هناك شيء أخير…</string>
+  <string name="intro_details_body">انقر على \"موافق\" للسماح لأداة Intra بحماية طلبات بحث نظام أسماء النطاقات لديك. سيتم توجيه هذه الطلبات تلقائيًا إلى \"نظام أسماء النطاقات العام من Google\" (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>). ويمكنك اختيار خدمة أخرى من إعدادات التطبيق.</string>
   <string name="intro_back">السابق</string>
   <string name="intro_next">التالي</string>
   <string name="intro_accept">قبول</string>
-  <string name="about_headline">نظام أسماء نطاقات موثوق وآمن</string>
-  <string name="about_text">تحمي أداة Intra طلبات نظام أسماء النطاقات من خلال توجيهها عبر اتصال HTTPS آمن. ويؤدي ذلك إلى
-    تقليل احتمال انتقالك إلى موقع إلكتروني خطأ أو حظر ما تتصفّحه أو مراقبته.</string>
-  <string name="privacy_text">سيتم توجيه طلبات البحث بشكلٍ تلقائي إلى
-    <a href="https://developers.google.com/speed/public-dns/">نظام أسماء النطاقات العام من Google</a>
-    (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>).
-    يمكنك أيضًا اختيار استخدام خدمة <a href="https://cloudflare-dns.com">Cloudflare</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">سياسة الخصوصية</a>)
-    أو أي خدمة أخرى لنظام أسماء النطاقات على بروتوكول HTTPS.</string>
-  <string name="accept">البدء</string>
   <string name="drawer_open">فتح لائحة التنقّل</string>
   <string name="drawer_close">إغلاق لائحة التنقّل</string>
   <string name="home">الشاشة الرئيسية</string>
   <string name="settings">الإعدادات</string>
-  <string name="feedback">إرسال ملاحظات</string>
   <string name="support">الدعم</string>
   <string name="privacy_link">سياسة الخصوصية</string>
   <string name="tos_link">بنود الخدمة</string>
   <string name="source_code">رمز المصدر</string>
-  <string name="short_credits_text">أداة Intra مشروع تجريبي مفتوح المصدر مُقدَّم من <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
   <string name="credits_text">أنشأت <a href="https://jigsaw.google.com">Jigsaw</a> أداة Intra. وتستند مواقع IP إلى البيانات المأخوذة
 
     من DB-IP.com.</string>
@@ -52,11 +40,29 @@
   <string name="explanation_failing">تحذير: يتعذّر إجراء طلبات البحث. يمكنك اختيار خادم مختلف وإعادة تشغيل Intra.</string>
   <string name="system_details">تفاصيل النظام</string>
   <string name="num_requests">الطلبات حتى الآن</string>
+  <string name="num_requests_headline">يتم تنفيذ طلبات بحث نظام أسماء النطاقات عند بحث جهازك عن عنوان IP لاسم أحد النطاقات</string>
+  <string name="num_requests_body">تعرِض هذه القيمة إجمالي عدد طلبات بحث نظام أسماء النطاقات التي نفَّذها جهازك أثناء نشاط أداة Intra. وتعمل الأداة على تشفير طلبات البحث المعنية وإرسالها إلى خادِم موثوق به للتأكُّد من حصولك على نتائج حقيقية.</string>
   <string name="queries_per_minute">الطلبات الحديثة</string>
+  <string name="queries_per_minute_headline">تنفيذ طلبات بحث نظام أسماء النطاقات في بداية كل اتصال</string>
+  <string name="queries_per_minute_body">تعرِض هذه القيمة عدد طلبات بحث نظام أسماء النطاقات التي نفَّذها جهازك في الدقيقة الأخيرة. قد يتطلّب تحميل صفحة ويب معقّدة أكثر من مئة طلب بحث لنظام أسماء النطاقات.</string>
   <string name="transport_label">النقل المشفر</string>
-  <string name="insecure_transport_label">النقل غير المشفر</string>
+  <string name="transport_headline">التشفير يحمي طلبات بحثك من المتطفّلين</string>
+  <string name="transport_body">عندما تستخدم Intra، يتم تشفير طلبات بحث نظام أسماء النطاقات، بحيث تتمكّن أنت وخادِم نظام أسماء النطاقات فقط من الاطلّاع على طلبات بحث نظام أسماء النطاقات التي تنفِّذها. وتنفِّذ Intra هذه الطلبات عبر بروتوكول HTTPS لتشفيرها.</string>
+  <string name="default_transport_label">بروتوكول النقل التلقائي</string>
+  <string name="insecure_transport">غير مُشفَّر</string>
+  <string name="insecure_transport_headline">نظام أسماء النطاقات الأساسي غير مُشفَّر</string>
+  <string name="insecure_transport_body">تستخدم معظم الأجهزة والشبكات نظام أسماء نطاقات أساسي، ويكون غير مُشفَّر لذلك يمكن لأي مستخدم على الشبكة مراقبة طلبات بحث نظام أسماء النطاقات أو تعديلها. تسمح بعض الأجهزة الجديدة بانتقال نظام أسماء النطاقات عبر طبقة النقل الآمنة التي تشفِّر طلبات بحثك ولكن لا يمكنها حمايتك إذا كان الخادِم ضارًا.</string>
   <string name="server_label">خادم نظام أسماء النطاقات الآمن</string>
-  <string name="insecure_server_label">خادم نظام أسماء النطاقات الوارد من الشبكة</string>
+  <string name="server_headline">موثوق به</string>
+  <string name="server_body">يعرض هذا الحقل اسم الخادِم الآمن لنظام أسماء النطاقات الذي تستخدمه. يمكنك أيضًا التغيير إلى خادِم مختلف في قائمة \"الإعدادات\".</string>
+  <string name="default_server_label">خادم نظام أسماء النطاقات الحالي</string>
+  <string name="insecure_server_headline">يمكنك اختيار خادم نظام أسماء النطاقات الذي تريد استخدامه</string>
+  <string name="insecure_server_body">عند إيقاف Intra، يتم إجراء ضبط مسبق لمعظم الأجهزة لكي تستخدم خادم نظام أسماء النطاقات الذي اختاره
+    مشغِّل الشبكة. يعرض هذا الحقل عنوان IP لخادم نظام أسماء النطاقات الذي يستخدمه جهازك
+    حاليًا. باستخدام Intra أو Android P، يمكنك بسهولة اختيار الخادم الذي تريده.</string>
+  <string name="strict_mode_server_headline">لقد اخترت خادمًا آمنًا</string>
+  <string name="strict_mode_server_body">يعرض هذا الحقل اسم خادم نظام أسماء النطاقات الذي ضبطته في إعداد نظام أسماء النطاقات الخاص على نظام
+    التشغيل Android.  عند إيقاف أداة Intra، سترسل تطبيقاتك طلبات بحث نظام أسماء النطاقات إلى هذا الخادم.</string>
   <string name="unknown_server">(خادم غير معروف)</string>
   <string name="show_history">إظهار الطلبات الحديثة</string>
   <string name="query_label">الطلب</string>
@@ -73,12 +79,6 @@
     غير متوافق مع Intra، يمكنك إضافته هنا.</string>
   <string name="excluded_apps_title">تمييز التطبيقات المطلوب استبعادها من Intra</string>
   <string name="old_android">هذه الوظيفة غير متوفّرة على إصدار نظام تشغيل Android عندك.</string>
-  <string name="before_feedback">ساعدنا على تحسين Intra! ما زال Intra منتجًا في طور النشوء ونحن بحاجة لمساعدتك لتحسينه.
-    يُرجى إعلامنا بميزاته التي تعمل بشكلٍ جيد وما به من أعطال. شكرًا لك!</string>
-  <string name="feedback_hint">ملاحظاتك</string>
-  <string name="after_feedback">سيتم إرسال هذه المعلومات إلى فريق عمل Intra. يُرجى عدم إضافة أي بيانات شخصية
-    إلى ملاحظاتك.</string>
-  <string name="submit_feedback">إرسال</string>
   <string name="notification_title">إعداد حماية نظام أسماء النطاقات نشط</string>
   <string name="notification_content">انقر لتغيير إعداد حماية نظام أسماء النطاقات</string>
   <string name="channel_name">إشعار الحماية النشطة لنظام أسماء النطاقات</string>

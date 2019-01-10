@@ -22,7 +22,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
@@ -37,7 +39,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,12 +48,17 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.PreferenceManager;
@@ -248,7 +254,6 @@ public class MainActivity extends AppCompatActivity
 
     // Set up the main UI
     final Switch switchButton = controlView.findViewById(R.id.dns_switch);
-    syncDnsStatus();
     switchButton.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
           @Override
@@ -278,16 +283,29 @@ public class MainActivity extends AppCompatActivity
           }
         });
 
+    // Set up click listeners for the info boxes.
+    setInfoClicker(R.id.lifetime_queries_box, InfoPage.LIFETIME_QUERIES);
+    setInfoClicker(R.id.qpm_box, InfoPage.RECENT_QUERIES);
+    setInfoClicker(R.id.protocol_box, InfoPage.SECURE_PROTOCOL);
+    setInfoClicker(R.id.server_box, InfoPage.SECURE_SERVER);
+    setInfoClicker(R.id.default_protocol_box, InfoPage.DEFAULT_PROTOCOL);
+    setInfoClicker(R.id.default_server_box, InfoPage.DEFAULT_SERVER);
+
     // Restore number of requests.
     long numRequests = tracker.getNumRequests();
     showNumRequests(numRequests);
 
     updateServerName();
+    syncDnsStatus();
 
     // Start updating the live Queries Per Minute value.
     startAnimation();
 
     return controlView;
+  }
+
+  private void setInfoClicker(final @IdRes int id, final InfoPage page) {
+    controlView.findViewById(id).setOnClickListener(view -> showInfo(page));
   }
 
   private void updateServerName() {
@@ -454,6 +472,12 @@ public class MainActivity extends AppCompatActivity
     if (linkProperties == null) {
       return null;
     }
+    if (VERSION.SDK_INT >= VERSION_CODES.P) {
+      String privateDnsServerName = linkProperties.getPrivateDnsServerName();
+      if (privateDnsServerName != null) {
+        return privateDnsServerName;
+      }
+    }
     for (InetAddress address : linkProperties.getDnsServers()) {
       // Show the first DNS server on the list.
       return address.getHostAddress();
@@ -614,13 +638,36 @@ public class MainActivity extends AppCompatActivity
     View insecureSystemDetails = controlView.findViewById(R.id.insecure_system_details);
     insecureSystemDetails.setVisibility(status.on ? View.GONE : View.VISIBLE);
     if (!status.on) {
-      String insecureServerAddress = getSystemDnsServer();
-      if (insecureServerAddress == null) {
-        insecureServerAddress = getResources().getText(R.string.unknown_server).toString();
+      TextView defaultProtocol = controlView.findViewById(R.id.default_protocol);
+      boolean tls = privateDnsMode != PrivateDnsMode.NONE;
+      defaultProtocol.setText(tls ? R.string.tls_transport : R.string.insecure_transport);
+
+      ImageView defaultProtocolIcon = controlView.findViewById(R.id.default_protocol_icon);
+      defaultProtocolIcon.setImageResource(
+          tls ? R.drawable.ic_lock_black_24dp : R.drawable.ic_lock_open_black_24dp);
+      defaultProtocolIcon.setColorFilter(color, Mode.SRC_ATOP);
+
+      InfoPage protocolTarget = InfoPage.DEFAULT_PROTOCOL;
+      if (privateDnsMode == PrivateDnsMode.STRICT) {
+        protocolTarget = InfoPage.STRICT_MODE_PROTOCOL;
+      } else if (tls) {
+        protocolTarget = InfoPage.UPGRADED_PROTOCOL;
       }
-      TextView serverLabel = controlView.findViewById(R.id.insecure_server_value);
-      serverLabel.setText(insecureServerAddress);
-    }
+      setInfoClicker(R.id.default_protocol_box, protocolTarget);
+
+      String systemDnsServer = getSystemDnsServer();
+      if (systemDnsServer == null) {
+        systemDnsServer = getResources().getText(R.string.unknown_server).toString();
+      }
+      TextView serverLabel = controlView.findViewById(R.id.default_server_value);
+      serverLabel.setText(systemDnsServer);
+
+      ImageView defaultServerIcon = controlView.findViewById(R.id.default_server_icon);
+      defaultServerIcon.setColorFilter(color, Mode.SRC_ATOP);
+
+      setInfoClicker(R.id.default_server_box, privateDnsMode == PrivateDnsMode.STRICT ?
+          InfoPage.STRICT_MODE_SERVER : InfoPage.DEFAULT_SERVER);
+      }
   }
 
   @Override
@@ -648,11 +695,13 @@ public class MainActivity extends AppCompatActivity
         .commit();
   }
 
-  private void chooseView(int id) {
+  private View chooseView(int id) {
     View home = findViewById(R.id.frame_main);
     View settings = findViewById(R.id.settings);
+    View info = findViewById(R.id.info_page);
     home.setVisibility(View.GONE);
     settings.setVisibility(View.GONE);
+    info.setVisibility(View.GONE);
 
     View selected = findViewById(id);
     selected.setVisibility(View.VISIBLE);
@@ -670,7 +719,7 @@ public class MainActivity extends AppCompatActivity
 
     // Close the drawer
     DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_main);
-    drawerLayout.closeDrawer(Gravity.START);
+    drawerLayout.closeDrawer(GravityCompat.START);
 
     // Show an arrow on non-home screens.  See https://stackoverflow.com/questions/27742074
     if (id == R.id.frame_main) {
@@ -680,6 +729,89 @@ public class MainActivity extends AppCompatActivity
       drawerToggle.setDrawerIndicatorEnabled(false);
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
+    return selected;
+  }
+
+  private enum InfoPage {
+    LIFETIME_QUERIES(true,
+        R.string.num_requests,
+        R.drawable.ic_dns,
+        R.string.num_requests_headline,
+        R.string.num_requests_body),
+    RECENT_QUERIES(true,
+        R.string.queries_per_minute,
+        R.drawable.ic_trending_up_black_24dp,
+        R.string.queries_per_minute_headline,
+        R.string.queries_per_minute_body),
+    SECURE_PROTOCOL(true,
+        R.string.transport_label,
+        R.drawable.ic_lock_black_24dp,
+        R.string.transport_headline,
+        R.string.transport_body),
+    SECURE_SERVER(true,
+        R.string.server_label,
+        R.drawable.ic_server,
+        R.string.server_headline,
+        R.string.server_body),
+    DEFAULT_PROTOCOL(false,
+        R.string.default_transport_label,
+        R.drawable.ic_lock_open_black_24dp,
+        R.string.insecure_transport_headline,
+        R.string.insecure_transport_body),
+    // There are two DNS-over-TLS cases: upgraded (i.e. opportunistic) and strict mode.
+    // These are only shown on Android P, to users who are using DNS-over-TLS rare.  Rather than
+    // writing custom explanations for these rare cases, we just reuse the status indicator text.
+    UPGRADED_PROTOCOL(false,
+        R.string.default_transport_label,
+        R.drawable.ic_lock_black_24dp,
+        R.string.status_upgraded,
+        R.string.explanation_upgraded),
+    STRICT_MODE_PROTOCOL(true,
+        R.string.default_transport_label,
+        R.drawable.ic_lock_black_24dp,
+        R.string.status_strict,
+        R.string.explanation_strict),
+    DEFAULT_SERVER(false,
+        R.string.default_server_label,
+        R.drawable.ic_server,
+        R.string.insecure_server_headline,
+        R.string.insecure_server_body),
+    STRICT_MODE_SERVER(true,
+        R.string.default_server_label,
+        R.drawable.ic_server,
+        R.string.strict_mode_server_headline,
+        R.string.strict_mode_server_body);
+
+    final boolean good;
+    final @StringRes int title;
+    final @DrawableRes int drawable;
+    final @StringRes int headline;
+    final @StringRes int body;
+    InfoPage(boolean good, int title, int drawable, int headline, int body) {
+      this.title = title;
+      this.good = good;
+      this.drawable = drawable;
+      this.headline = headline;
+      this.body = body;
+    }
+  }
+
+  private void showInfo(InfoPage page) {
+    View view = chooseView(R.id.info_page);
+
+    ActionBar actionBar = getSupportActionBar();
+    actionBar.setTitle(page.title);
+
+    ImageView image = view.findViewById(R.id.info_image);
+    image.setImageResource(page.drawable);
+    int color = ContextCompat.getColor(this, page.good ? R.color.accent_good : R.color.accent_bad);
+    ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color));
+
+    TextView headline = view.findViewById(R.id.info_headline);
+    headline.setText(page.headline);
+
+    TextView body = view.findViewById(R.id.info_body);
+    body.setText(page.body);
   }
 
   // Hyperlinks need to be filled in whenever the layout is instantiated.

@@ -1,39 +1,27 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">Une méthode d\'accès plus sûre à un Internet plus ouvert</string>
-  <string name="intro_benefit_body">Lorsque votre appareil se connecte à Internet, il doit rechercher des adresses dans une liste de contacts Internet. Or, il arrive que l\'adresse ainsi récupérée soit incorrecte.</string>
-  <string name="intro_manipulation_headline">Protection contre les adresses incorrectes</string>
-  <string name="intro_manipulation_body">Intra vous empêche de récupérer des adresses incorrectes menant à une impasse (manipulation DNS) en chiffrant votre connexion DNS.</string>
-  <string name="intro_details_headline">Pour activer la protection, Intra doit surveiller le trafic réseau</string>
-  <string name="intro_details_body">Pour démarrer, appuyez sur \"OK\" lorsque la demande de connexion s\'affiche. Par défaut, vos requêtes sont routées vers le DNS public de Google (<a href="https://developers.google.com/speed/public-dns/privacy">Règles de confidentialité</a>). Vous pouvez choisir un autre service dans les paramètres de l\'application.</string>
+  <string name="intro_benefit_headline">Un accès Internet plus ouvert</string>
+  <string name="intro_benefit_body">Intra vous protège contre la manipulation DNS, une technique de piratage visant à bloquer l\'accès aux sites de presse, aux plates-formes de médias sociaux et aux applications de messagerie.\n\nIl existe cependant des types d\'attaques et de techniques de blocage plus complexes que la manipulation DNS, contre lesquels Intra ne vous protège pas.</string>
+  <string name="intro_manipulation_headline">Protection contre la manipulation DNS</string>
+  <string name="intro_manipulation_body">Intra protège la connexion au système de noms de domaine (DNS) qui fournit les adresses exactes dont vous avez besoin pour consulter un site Internet ou pour ouvrir une application.\n\nIntra recourt au chiffrement pour empêcher toute manipulation des résultats, et pour sécuriser votre accès à Internet.</string>
+  <string name="intro_details_headline">Une dernière chose…</string>
+  <string name="intro_details_body">Appuyez sur \"OK\" pour permettre à Intra de protéger vos requêtes DNS. Celles-ci seront routées par défaut vers le DNS public de Google (<a href="https://developers.google.com/speed/public-dns/privacy">Règles de confidentialité</a>). Vous pouvez choisir un autre service dans les paramètres de l\'application.</string>
   <string name="intro_back">précédent</string>
   <string name="intro_next">suivant</string>
   <string name="intro_accept">accepter</string>
-  <string name="about_headline">Un DNS sans censure et sécurisé</string>
-  <string name="about_text">Intra protège vos requêtes DNS en les routant via une connexion HTTPS sécurisée. Les risques
-    que vous soyez redirigé vers le mauvais site ou que votre navigation soit bloquée ou épiée sont ainsi réduits.</string>
-  <string name="privacy_text">Par défaut, vos requêtes seront transmises au
-    <a href="https://developers.google.com/speed/public-dns/">DNS public Google</a>
-    (<a href="https://developers.google.com/speed/public-dns/privacy">Règles de confidentialité</a>).
-    Vous pouvez également choisir d\'utiliser <a href="https://cloudflare-dns.com">Cloudflare</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Règles de confidentialité</a>)
-    ou tout autre service DNS over HTTPS (DoH).</string>
-  <string name="accept">Commencer</string>
   <string name="drawer_open">Ouvrir le panneau de navigation</string>
   <string name="drawer_close">Fermer le panneau de navigation</string>
   <string name="home">Accueil</string>
   <string name="settings">Paramètres</string>
-  <string name="feedback">Envoyer des commentaires</string>
   <string name="support">Assistance</string>
   <string name="privacy_link">Règles de confidentialité</string>
   <string name="tos_link">Conditions d\'utilisation</string>
   <string name="source_code">Code source</string>
-  <string name="short_credits_text">Intra est un projet Open Source expérimental développé par <a href="https://jigsaw.google.com">Jigsaw</a>.</string>
   <string name="credits_text">Intra est développé par <a href="https://jigsaw.google.com">Jigsaw</a>. Les emplacements IP sont basés sur les données
     issues de DB-IP.com.</string>
   <string name="indicator_on">Activé</string>
   <string name="indicator_off">Désactivé</string>
   <string name="status_exposed">Exposées</string>
-  <string name="explanation_exposed">Votre connexion est vulnérable aux attaques DNS.</string>
+  <string name="explanation_exposed">Votre connexion est exposée aux attaques DNS.</string>
   <string name="status_protected">Protégées</string>
   <string name="explanation_protected">Votre connexion est protégée contre les attaques DNS.</string>
   <string name="status_upgraded">Vulnérables</string>
@@ -51,11 +39,33 @@
   <string name="explanation_failing">Avertissement : Échec des requêtes. Vous pouvez choisir un autre serveur et redémarrer Intra.</string>
   <string name="system_details">Détails du système</string>
   <string name="num_requests">Requêtes protégées jusqu\'à maintenant</string>
+  <string name="num_requests_headline">Des requêtes DNS sont envoyées lorsqu\'un appareil recherche l\'adresse IP d\'un nom de domaine</string>
+  <string name="num_requests_body">Cette valeur indique le nombre total de requêtes DNS envoyées par votre appareil alors qu\'Intra était
+    actif. Intra chiffre ces requêtes et les envoie vers un serveur de confiance afin de vous
+    garantir des résultats authentiques.</string>
   <string name="queries_per_minute">Requêtes récentes</string>
+  <string name="queries_per_minute_headline">Des requêtes DNS sont envoyées à chaque nouvelle connexion</string>
+  <string name="queries_per_minute_body">Cette valeur indique le nombre de requêtes DNS envoyées par votre appareil pendant la dernière minute.
+    Le chargement d\'une page Web complexe peut nécessiter plus d\'une centaine de requêtes DNS.</string>
   <string name="transport_label">Transport chiffré</string>
-  <string name="insecure_transport_label">Transport non chiffré</string>
+  <string name="transport_headline">Le chiffrement protège vos requêtes des regards indiscrets</string>
+  <string name="transport_body">Lorsque vous utilisez Intra, vos requêtes DNS sont chiffrées afin que seuls vous et le serveur DNS
+     puissiez les voir. Pour le chiffrement, Intra utilise le protocole HTTPS.</string>
+  <string name="default_transport_label">Trafic par défaut</string>
+  <string name="insecure_transport">non chiffré</string>
+  <string name="insecure_transport_headline">Les connexions DNS de base ne sont pas chiffrées</string>
+  <string name="insecure_transport_body">La plupart des appareils et des réseaux utilisent des connexions DNS de base, non chiffrées. Vos requêtes DNS peuvent donc être
+    observées et modifiées par toute personne sur le réseau. Certains appareils sont compatibles avec le protocole DNS sur TLS, qui
+    chiffre vos requêtes, mais n\'est pas en mesure de vous protéger en cas de connexion à un serveur malveillant.</string>
   <string name="server_label">Serveur DNS sécurisé</string>
-  <string name="insecure_server_label">Serveur DNS fourni par le réseau</string>
+  <string name="server_headline">Vous méritez un serveur DNS fiable</string>
+  <string name="server_body">Ce champ indique le nom du serveur DNS sécurisé que vous utilisez. Vous pouvez également changer de serveur
+    depuis le menu \"Paramètres\".</string>
+  <string name="default_server_label">Serveur DNS actuel</string>
+  <string name="insecure_server_headline">Vous pouvez choisir votre propre serveur DNS</string>
+  <string name="insecure_server_body">Quand Intra est désactivé, la plupart des appareils utilise par défaut le serveur DNS choisi par votre opérateur réseau. Ce champ indique l\'adresse IP du serveur DNS que votre appareil utilise actuellement. Avec Intra ou Android P, vous pouvez facilement sélectionner le serveur de votre choix.</string>
+  <string name="strict_mode_server_headline">Vous avez sélectionné un serveur sécurisé</string>
+  <string name="strict_mode_server_body">Ce champ indique le nom du serveur DNS que vous avez configuré dans le paramètre \"DNS privé\" d\'Android.  Quand Intra est désactivé, vos applications envoient les requêtes DNS à ce serveur.</string>
   <string name="unknown_server">(serveur inconnu)</string>
   <string name="show_history">Afficher les requêtes récentes</string>
   <string name="query_label">Requête</string>
@@ -72,11 +82,6 @@
     pas compatible avec Intra, vous pouvez l\'ajouter ici.</string>
   <string name="excluded_apps_title">Marquer les applications à exclure d\'Intra</string>
   <string name="old_android">Cette fonctionnalité n\'est pas disponible sur votre version d\'Android.</string>
-  <string name="before_feedback">Aidez-nous à améliorer Intra. Intra est une version préliminaire et nous avons besoin de vos commentaires pour l\'améliorer.
-    Indiquez-nous ce qui marche et ce qui ne marche pas. Merci !</string>
-  <string name="feedback_hint">Vos commentaires</string>
-  <string name="after_feedback">Ces commentaires vont être envoyés à l\'équipe Intra. Veuillez ne pas y inclure d\'informations personnelles.</string>
-  <string name="submit_feedback">Envoyer</string>
   <string name="notification_title">Protection DNS active</string>
   <string name="notification_content">Appuyez sur la notification pour modifier le paramètre relatif à la protection DNS</string>
   <string name="channel_name">Notification Protection DNS active</string>

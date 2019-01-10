@@ -1,27 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">よりオープンなインターネットへは、より安全なルートで</string>
-  <string name="intro_benefit_body">インターネットを使う端末は、インターネットの連絡先リストに含まれるアドレスを調べるため、場合によっては、接続で不正なアドレスが取得されることがあります。</string>
-  <string name="intro_manipulation_headline">不正なアドレスからの保護</string>
-  <string name="intro_manipulation_body">Intra は DNS 接続を暗号化することによって、間違ったサイトに誘導する（DNS 操作）不正アドレスを取得しないように保護します。</string>
-  <string name="intro_details_headline">保護を有効にするには、Intra でネットワーク トラフィックをモニタリングする必要があります</string>
-  <string name="intro_details_body">開始するための接続リクエストが表示されたら [OK] をタップします。デフォルトでは、クエリは Google Public DNS（<a href="https://developers.google.com/speed/public-dns/privacy">プライバシー ポリシー</a>）にルーティングされます。アプリの設定で他のサービスを選択することもできます。</string>
+  <string name="intro_benefit_headline">よりオープンなインターネットへのアクセス</string>
+  <string name="intro_benefit_body">Intra を使用すると、DNS 操作（ニュースサイト、ソーシャル メディア プラットフォーム、メッセージ アプリへのアクセスをブロックするサイバー攻撃）から保護されます。\n\nDNS 操作からは保護されますが、その他に複雑なブロック技術や攻撃方法が存在し、Intra はそれらには対応していません。</string>
+  <string name="intro_manipulation_headline">DNS 操作からの保護</string>
+  <string name="intro_manipulation_body">Intra により、ウェブサイトにアクセスしたり、アプリを開いたりする際に必要な IP アドレスを提供するドメインネーム システム（DNS）への接続が保護されます。\n\nIntra を使用すると暗号化によって接続が操作されないように保護され、インターネットに安全にアクセスできるようになります。</string>
+  <string name="intro_details_headline">権限とプライバシー</string>
+  <string name="intro_details_body">[OK] をタップすると、DNS リクエストが保護されるようになります。デフォルトでは、リクエストは Google Public DNS（<a href="https://developers.google.com/speed/public-dns/privacy">プライバシー ポリシー</a>）にルーティングされます。アプリの設定で他のサービスを選択することもできます。</string>
   <string name="intro_back">戻る</string>
   <string name="intro_next">次へ</string>
   <string name="intro_accept">同意する</string>
-  <string name="about_headline">信頼性が高く、安全な DNS</string>
-  <string name="about_text">Intra は安全な HTTPS 接続を経由してルーティングすることで、DNS クエリを保護します。これにより、間違ったサイトに送信される可能性が減り、ブラウジングがブロックされたり監視されたりすることも少なくなります。</string>
-  <string name="privacy_text">デフォルトでは、クエリは <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>（<a href="https://developers.google.com/speed/public-dns/privacy">プライバシー ポリシー</a>）にルーティングされます。<a href="https://cloudflare-dns.com">Cloudflare</a>（<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">プライバシー ポリシー</a>）またはその他の任意の DNS over HTTPS サービスを使用することもできます。</string>
-  <string name="accept">使ってみる</string>
   <string name="drawer_open">ナビゲーション ドロワーを開く</string>
   <string name="drawer_close">ナビゲーション ドロワーを閉じる</string>
   <string name="home">ホーム</string>
   <string name="settings">設定</string>
-  <string name="feedback">フィードバックを送信</string>
   <string name="support">サポート</string>
   <string name="privacy_link">プライバシー ポリシー</string>
   <string name="tos_link">利用規約</string>
   <string name="source_code">ソースコード</string>
-  <string name="short_credits_text">Intra は <a href="https://jigsaw.google.com">Jigsaw</a> による試験運用段階のオープンソース プロジェクトです。</string>
   <string name="credits_text">Intra は <a href="https://jigsaw.google.com">Jigsaw</a> で開発されたものです。IP 位置情報は DB-IP.com から取得したデータに基づいています。</string>
   <string name="indicator_on">オン</string>
   <string name="indicator_off">オフ</string>
@@ -44,11 +38,33 @@
   <string name="explanation_failing">警告: クエリが失敗しています。別のサーバーを選択して Intra を再起動することをおすすめします。</string>
   <string name="system_details">システムの詳細</string>
   <string name="num_requests">これまでのクエリ</string>
+  <string name="num_requests_headline">IP アドレスでドメイン名を検索すると DNS クエリが発生</string>
+  <string name="num_requests_body">この値は、Intra がアクティブになっている間にデバイスで実行された DNS クエリの合計数を
+    表します。Intra によってこれらのクエリが暗号化され、信頼済みのサーバーに送信され
+    適切なクエリ結果が得られるようになります。</string>
   <string name="queries_per_minute">最近のクエリ</string>
+  <string name="queries_per_minute_headline">DNS クエリは接続の開始時に発生</string>
+  <string name="queries_per_minute_body">この値は、最後の 1 分間にデバイスで実行された DNS クエリの数を表します。
+    複雑なウェブページの読み込みの場合、100 件以上の DNS クエリが発生することがあります。</string>
   <string name="transport_label">暗号化された通信</string>
-  <string name="insecure_transport_label">暗号化されていない通信</string>
+  <string name="transport_headline">暗号化によって不正な操作からクエリを保護</string>
+  <string name="transport_body">Intra を使用すると、DNS クエリが暗号化され、ユーザーと該当の DNS サーバーのみが
+    DNS クエリの内容を認識することができます。Intra には、DNS over HTTPS プロトコルが実装され、暗号化に対応しています。</string>
+  <string name="default_transport_label">デフォルトの通信</string>
+  <string name="insecure_transport">暗号化なし</string>
+  <string name="insecure_transport_headline">基本的な DNS は暗号化に未対応</string>
+  <string name="insecure_transport_body">ほとんどのデバイスとネットワークでは暗号化に対応しない、基本的な DNS が使用されています。そのため、ネットワークで何者かによって DNS クエリが
+    監視または変更される恐れがあります。新しいデバイスの中には、DNS over TLS をサポートするものがあります。
+    DNS over TLS ではクエリが暗号化されますが、信頼できないサーバーの場合、通信は保護されません。</string>
   <string name="server_label">安全な DNS サーバー</string>
-  <string name="insecure_server_label">ネットワークから提供された DNS サーバー</string>
+  <string name="server_headline">信頼できる DNS サーバーの使用</string>
+  <string name="server_body">この欄にはユーザーが使用している安全な DNS サーバーの名前が表示されます。[設定] メニューで
+    別のサーバーに変更することもできます。</string>
+  <string name="default_server_label">現在の DNS サーバー</string>
+  <string name="insecure_server_headline">独自の DNS サーバーを選択できます</string>
+  <string name="insecure_server_body">Intra が無効になっている場合、ほとんどのデバイスは、ネットワークの運用担当者が選択した DNS サーバーを使用するように事前に設定されています。この項目には、お使いのデバイスで現在使用している DNS サーバーの IP アドレスが表示されます。Intra や Android P を使用して、お好きなサーバーを簡単に選択できます。</string>
+  <string name="strict_mode_server_headline">安全なサーバーを選択しました</string>
+  <string name="strict_mode_server_body">この項目には、Android のプライベート DNS で設定された DNS サーバーの名前が表示されます。Intra が無効になっている場合、このサーバーに対してアプリから DNS クエリを送信する必要があります。</string>
   <string name="unknown_server">（不明なサーバー）</string>
   <string name="show_history">最近のクエリを表示する</string>
   <string name="query_label">クエリ</string>
@@ -64,10 +80,6 @@
   <string name="excluded_apps_summary">選択したアプリの DNS クエリは Intra を利用しません。アプリが Intra に対応していないと思われる場合は、ここで追加できます。</string>
   <string name="excluded_apps_title">Intra の対象外とするアプリの指定</string>
   <string name="old_android">この機能は、お使いの Android のバージョンではご利用いただけません。</string>
-  <string name="before_feedback">Intra の改善にご協力ください。Intra は初期段階のサービスであるため、改善にご協力いただけると幸いです。良かった点や改善してほしい点についてご意見をお聞かせください。どうぞよろしくお願いいたします。</string>
-  <string name="feedback_hint">フィードバック</string>
-  <string name="after_feedback">この情報は Intra チームに送信されます。フィードバックに個人情報を含めないようにしてください。</string>
-  <string name="submit_feedback">送信</string>
   <string name="notification_title">DNS 保護が有効です</string>
   <string name="notification_content">タップすると、DNS 保護の設定が変わります</string>
   <string name="channel_name">DNS 保護が有効な場合の通知</string>

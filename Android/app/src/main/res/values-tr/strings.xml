@@ -1,33 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">Daha açık bir internet deneyimi için daha güvenli bir rota</string>
-  <string name="intro_benefit_body">İnterneti kullandığınızda cihazınızın, adresleri internet iletişim listesinden araması gerekir. Bazen bağlantınız size yanlış adres sunabilir.</string>
-  <string name="intro_manipulation_headline">Yanlış adreslerden korunma</string>
-  <string name="intro_manipulation_body">Intra, DNS bağlantınızı şifreleyerek, çıkmaz yola yönlendiren (DNS manipülasyonu) hatalı adresler almanızı önler.</string>
-  <string name="intro_details_headline">Koruma sağlamak için Intra\'nın ağ trafiğini izlemesi gerekir</string>
-  <string name="intro_details_body">Başlamak için, bağlantı isteğini gördüğünüzde Tamam\'a dokunun. Varsayılan olarak, sorgularınız Google Açık DNS\'e (<a href="https://developers.google.com/speed/public-dns/privacy">Gizlilik Politikası</a>) yönlendirilir. Uygulama ayarlarında başka bir hizmet seçebilirsiniz.</string>
+  <string name="intro_benefit_headline">Daha açık internet erişimi</string>
+  <string name="intro_benefit_body">Intra sizi, haber sitelerine, sosyal medya platformlarına ve mesajlaşma uygulamalarına erişimi engellemek için kullanılan bir siber saldırı olan DNS manipülasyonuna karşı korur.\n\nIntra sizi DNS manipülasyonuna karşı korusa da, Intra\'nın koruma sağlayamayacağı diğer, daha karmaşık engelleme teknikleri ve saldırıları vardır.</string>
+  <string name="intro_manipulation_headline">DNS manipülasyonundan koruma</string>
+  <string name="intro_manipulation_body">Intra, bir web sitesini ziyaret etmek veya bir uygulamayı açmak için ihtiyaç duyduğunuz tam adresleri sağlayan Alan Adı Sistemi (DNS) ile kurduğunuz bağlantıyı korur.\n\nIntra, sonuçların manipüle edilememesi için şifreleme kullanır ve internete güvenle erişmenize yardımcı olur.</string>
+  <string name="intro_details_headline">Son bir şey daha…</string>
+  <string name="intro_details_body">Intra\'nın DNS isteklerinizi korumasına izin vermek için Tamam\'a dokunun. Varsayılan olarak, istekleriniz Google Açık DNS\'e (<a href="https://developers.google.com/speed/public-dns/privacy">Gizlilik Politikası</a>) yönlendirilir. Uygulama ayarlarında başka bir hizmet seçebilirsiniz.</string>
   <string name="intro_back">geri</string>
   <string name="intro_next">sonraki</string>
   <string name="intro_accept">kabul et</string>
-  <string name="about_headline">Güvenilir ve güvenli DNS</string>
-  <string name="about_text">Intra, DNS sorgularınızı güvenli bir HTTPS bağlantısı üzerinden yönlendirerek korur. Bu, yanlış bir siteye
-    yönlendirilmeniz veya tarama deneyiminizin engellenmesi ya da izlenmesi riskini azaltır.</string>
-  <string name="privacy_text">Varsayılan olarak sorgularınız
-    <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>\'e
-    (<a href="https://developers.google.com/speed/public-dns/privacy">Gizlilik Politikası</a>) yönlendirilir.
-    Dilerseniz <a href="https://cloudflare-dns.com">Cloudflare</a>\'i
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Gizlilik Politikası</a>)
-    veya diğer herhangi bir HTTPS üzerinden DNS hizmetini kullanmayı da tercih edebilirsiniz.</string>
-  <string name="accept">Başla</string>
   <string name="drawer_open">Gezinme çekmecesini açın</string>
   <string name="drawer_close">Gezinme çekmecesini kapatın</string>
   <string name="home">Ana ekran</string>
   <string name="settings">Ayarlar</string>
-  <string name="feedback">Geri Bildirim Gönder</string>
   <string name="support">Destek</string>
   <string name="privacy_link">Gizlilik Politikası</string>
   <string name="tos_link">Kullanım Şartları</string>
   <string name="source_code">Kaynak Kodu</string>
-  <string name="short_credits_text">Intra, <a href="https://jigsaw.google.com">Jigsaw</a>\'un sunduğu açık kaynaklı, deneysel bir projedir.</string>
   <string name="credits_text">Intra, <a href="https://jigsaw.google.com">Jigsaw</a> tarafından geliştirilmiştir. IP konumları,
     DB-IP.com sitesinden alınan verilere dayanır.</string>
   <string name="indicator_on">Açık</string>
@@ -51,11 +39,36 @@
   <string name="explanation_failing">Uyarı: Sorgular başarısız oluyor. Farklı bir sunucu seçmeyi ve Intra\'yı yeniden başlatmayı deneyin.</string>
   <string name="system_details">Sistem ayrıntıları</string>
   <string name="num_requests">Şimdiye kadar korunan sorguların sayısı</string>
+  <string name="num_requests_headline">Cihazınız bir alan adı için IP adresi aradığında oluşan DNS sorgularının sayısı</string>
+  <string name="num_requests_body">Bu değer, Intra etkinken cihazınızın gerçekleştirdiği DNS sorgularının toplam sayısını gösterir.
+    Intra, özgün sonuçlar aldığınızdan emin olmak için, bu sorguları şifreler ve güvenilir bir
+    sunucuya gönderir.</string>
   <string name="queries_per_minute">Yeni korunmaya başlayan sorguların sayısı</string>
+  <string name="queries_per_minute_headline">Her bağlantının başında oluşan DNS sorgularının sayısı</string>
+  <string name="queries_per_minute_body">Bu değer, cihazınızın son bir dakika içinde gerçekleştirdiği DNS sorgularının sayısını gösterir.
+    Karmaşık yapıda bir web sayfasının yüklenmesi, yüzden fazla DNS sorgusu gerektirebilir.</string>
   <string name="transport_label">Şifreli aktarım</string>
-  <string name="insecure_transport_label">Şifresiz aktarım</string>
+  <string name="transport_headline">Şifreleme, sorgularınızı meraklı gözlerden korur</string>
+  <string name="transport_body">Intra\'yı kullandığınızda DNS sorgularınız şifrelenir. Böylece, yapmakta olduğunuz DNS sorgularını yalnızca siz ve
+    DNS sunucunuz görebilir. Intra, şifreleme için HTTPS üzerinden DNS protokolünü uygular.</string>
+  <string name="default_transport_label">Varsayılan taşıma</string>
+  <string name="insecure_transport">şifrelenmemiş</string>
+  <string name="insecure_transport_headline">Temel DNS şifresizdir</string>
+  <string name="insecure_transport_body">Çoğu cihaz ve ağ, şifresiz temel DNS kullanır. Dolayısıyla, DNS sorgularınız ağdaki herhangi biri
+    tarafından görülebilir ve değiştirilebilir. Bazı yeni cihazlar, sorgularınızı şifreleyen ancak sunucu
+    kötü amaçlıysa sizi koruyamayan TLS üzerinden DNS\'i destekler.</string>
   <string name="server_label">Güvenli DNS sunucusu</string>
-  <string name="insecure_server_label">Ağ üzerinden sağlanan DNS sunucusu</string>
+  <string name="server_headline">Güvenilir bir DNS sunucusu kullanmayı hak ediyorsunuz</string>
+  <string name="server_body">Bu alanda, kullanmakta olduğunuz güvenli DNS sunucusunun adı gösterilir. Bu alanın değerini,
+    Ayarlar menüsünde farklı bir sunucuyla da değiştirebilirsiniz.</string>
+  <string name="default_server_label">Geçerli DNS sunucusu</string>
+  <string name="insecure_server_headline">Kendi DNS sunucunuzu seçebilirsiniz</string>
+  <string name="insecure_server_body">Intra devre dışı bırakıldığında çoğu cihaz, ağ operatörünüzün seçtiği DNS sunucusunu
+    kullanacak şekilde önceden yapılandırılır. Bu alanda, cihazınızın kullanmakta olduğu DNS sunucusunun IP adresi
+    gösterilir. Intra veya Android P ile, istediğiniz sunucuyu kolayca seçebilirsiniz.</string>
+  <string name="strict_mode_server_headline">Güvenli bir sunucu seçtiniz</string>
+  <string name="strict_mode_server_body">Bu alanda, Android\'deki Gizli DNS ayarında yapılandırdığınız DNS sunucusunun adı
+    gösterilir.  Intra devre dışı bırakıldığında, uygulamalarınız DNS sorgularını bu sunucuya göndermelidir.</string>
   <string name="unknown_server">(bilinmeyen sunucu)</string>
   <string name="show_history">Son sorguları göster</string>
   <string name="query_label">Sorgu</string>
@@ -72,12 +85,6 @@
     uyumlu olmayan bir uygulama varsa buraya ekleyebilirsiniz.</string>
   <string name="excluded_apps_title">Intra\'da hariç tutulacak uygulamaları işaretleyin</string>
   <string name="old_android">Sahip olduğunuz Android sürümünde bu işlev kullanılamaz.</string>
-  <string name="before_feedback">Intra\'yı daha iyi hale getirmemize yardımcı olun! Intra geliştirme aşamasında olan bir üründür. Ürünün daha kullanışlı hale getirilmesi için yardımınıza ihtiyacımız var.
-    Bize, çalışan veya çalışmayan özellikleri bildirmenizi rica ediyoruz. Teşekkürler!</string>
-  <string name="feedback_hint">Geri bildiriminiz</string>
-  <string name="after_feedback">Bu bilgiler Intra ekibine gönderilecektir. Lütfen geri bildiriminize kişisel bilgiler
-    eklemeyin.</string>
-  <string name="submit_feedback">Gönder</string>
   <string name="notification_title">DNS koruması etkin</string>
   <string name="notification_content">DNS koruması ayarını değiştirmek için dokunun</string>
   <string name="channel_name">DNS Koruması Etkin Bildirimi</string>

@@ -3,27 +3,27 @@
 
   <!-- Intro text -->
   <string name="intro_benefit_headline" description="Headline for intro page describing key benefit">
-    A safer route to a more open internet
+    More open internet access
   </string>
 
   <string name="intro_benefit_body" description="Body text for intro page describing key benefit">
-    When you use the internet, your device needs to look up addresses in an internet contact list. Sometimes your connection can give you the wrong address.
+    Intra protects you from DNS manipulation, a cyber attack used to block access to news sites, social media platforms and messaging apps.\n\nWhile Intra protects you against DNS manipulation, there are other, more complicated blocking techniques and attacks that Intra doesn\'t protect against.
   </string>
 
   <string name="intro_manipulation_headline" description="Headline for intro page describing manipulation">
-    Protection from wrong addresses
+    Protection from DNS manipulation
   </string>
 
   <string name="intro_manipulation_body" description="Body text for intro page describing manipulation">
-    Intra protects you from getting bad addresses that lead to dead ends (DNS manipulation) by encrypting your DNS connection.
+    Intra protects your connection to the Domain Name System (DNS), which provides the exact addresses you need to visit a website or open an app.\n\nIntra uses encryption to ensure that results can\’t be manipulated, helping you safely access the internet.
   </string>
 
   <string name="intro_details_headline" description="Headline for intro page describing permissions and privacy">
-    Intra needs to monitor network traffic to enable protection
+    One last thing&#8230;
   </string>
 
   <string name="intro_details_body" description="Body text for intro page describing permissions and privacy">
-    Tap OK when you see the conection request to get started. By default, your queries will be routed to Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>). You can choose another service in the app settings.
+    Tap OK to allow Intra to protect your DNS requests. By default, they will be routed to Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>). You can choose another service in the app settings.
   </string>
 
   <string name="intro_back" description="Button label to see the previous page of introduction">
@@ -37,30 +37,6 @@
   <string name="intro_accept"
           description="Button label to acknowledge legal terms and VPN access permission request">
     accept
-  </string>
-
-  <string name="about_headline"
-          description="Headline for the welcome screen.">Honest and secure DNS</string>
-
-  <string name="about_text"
-          description="Text for the welcome screen.">
-    Intra protects your DNS queries by routing them over a secure HTTPS connection. This reduces the
-    chance that you will be sent to the wrong site, or have your browsing blocked or observed.
-  </string>
-
-  <string name="privacy_text"
-          description="Privacy text for the welcome screen.">
-    By default, your queries will be routed to
-    <a href="https://developers.google.com/speed/public-dns/">Google Public DNS</a>
-    (<a href="https://developers.google.com/speed/public-dns/privacy">Privacy Policy</a>).
-    You can also choose to use <a href="https://cloudflare-dns.com">Cloudflare</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">Privacy Policy</a>)
-    or any other DNS-over-HTTPS service.
-  </string>
-
-  <string name="accept"
-          description="Button label to exit the welcome screen.">
-    Get Started
   </string>
 
   <string name="drawer_open"
@@ -83,11 +59,6 @@
     Settings
   </string>
 
-  <string name="feedback"
-          description="Menu entry for sending error reports and complaints to the developers.">
-    Submit Feedback
-  </string>
-
   <string name="support"
           description="Menu entry that links to documentation and interactive support.">
     Support
@@ -106,11 +77,6 @@
   <string name="source_code"
           description="Link to the source code for this app.">
     Source Code
-  </string>
-
-  <string name="short_credits_text"
-          description="Jigsaw credits. 'Jigsaw' and 'Intra' are not translatable.">
-    Intra is an experimental open source project by <a href="https://jigsaw.google.com">Jigsaw</a>.
   </string>
 
   <string name="credits_text"
@@ -212,9 +178,28 @@
     Lifetime queries
   </string>
 
+  <string name="num_requests_headline">
+    DNS queries happen when your device looks up the IP address for a domain name
+  </string>
+
+  <string name="num_requests_body">
+    This value shows the total number of DNS queries that your device has performed while Intra was
+    active.  Intra encrypts these queries and sends them to a trusted server to make sure you\'re
+    getting authentic results.
+  </string>
+
   <string name="queries_per_minute"
           description="This text appears under the number of queries protected in the past minute.">
     Recent queries
+  </string>
+
+  <string name="queries_per_minute_headline">
+    DNS queries happen at the beginning of each connection
+  </string>
+
+  <string name="queries_per_minute_body">
+    This value shows the number of DNS queries that your device has performed in the last minute.
+    Loading a complex webpage can require over a hundred DNS queries.
   </string>
 
   <string name="transport_label"
@@ -223,10 +208,38 @@
     Encrypted transport
   </string>
 
-  <string name="insecure_transport_label"
-          description="This text appears under the name of the insecure protocol currently in use.  Currently,
-  that is always 'dns'.">
-    Unencrypted transport
+  <string name="transport_headline">
+    Encryption protects your queries from prying eyes
+  </string>
+
+  <string name="transport_body">
+    When you use Intra, your DNS queries are encrypted, so that only you and your DNS server can see
+    what DNS queries you are making.  Intra implements the DNS over HTTPS protocol for encryption.
+  </string>
+
+  <string name="default_transport_label"
+          description="This text appears under the name of the DNS protocol in use when Intra is off.  Currently,
+  that is usually 'unencrypted'.">
+    Default transport
+  </string>
+
+  <string name="insecure_transport" description="Indicates that normal, insecure DNS is in use.">
+    unencrypted
+  </string>
+
+  <string name="tls_transport" description="Indicates that 'DNS over TLS' protocol is in use"
+      translatable="false">
+    tls
+  </string>
+
+  <string name="insecure_transport_headline">
+    Basic DNS is unencrypted
+  </string>
+
+  <string name="insecure_transport_body">
+    Most devices and networks use basic DNS, which is unencrypted, so your DNS queries could be
+    observed or modified by anyone on the network.  Some new devices support DNS over TLS, which
+    encrypts your queries but can\'t protect you if the server is malicious.
   </string>
 
   <string name="server_label"
@@ -234,9 +247,37 @@
     Secure DNS server
   </string>
 
-  <string name="insecure_server_label"
+  <string name="server_headline">
+    You deserve to use a trustworthy DNS server
+  </string>
+
+  <string name="server_body">
+    This field shows the name of the secure DNS server that you\'re using.  You can also change to a
+    different server in the Settings menu.
+  </string>
+
+  <string name="default_server_label"
           description="This text appears under the name of the insecure server currently in use.">
-    Network-provided DNS server
+    Current DNS server
+  </string>
+
+  <string name="insecure_server_headline">
+    You can choose your own DNS server
+  </string>
+
+  <string name="insecure_server_body">
+    When Intra is disabled, most devices are pre-configured to use the DNS server your network
+    operator picks. This field shows the IP address of the DNS server that your device is currently
+    using. With Intra or Android P, you can easily select a server of your choice.
+  </string>
+
+  <string name="strict_mode_server_headline">
+    You\'ve selected a secure server
+  </string>
+
+  <string name="strict_mode_server_body">
+    This field shows the name of the DNS server that you configured in Android\'s Private DNS
+    setting.  When Intra is disabled, your apps should send DNS queries to this server.
   </string>
 
   <string name="unknown_server"
@@ -320,28 +361,6 @@
   <string name="old_android"
           description="Shown when a user-interface element requires a newer OS version">
     This functionality is not available on your version of Android.
-  </string>
-
-  <string name="before_feedback"
-          description="Text that appears above the feedback text entry field.">
-    Help us improve Intra! Intra is an early-stage product and we need your help to make it better.
-    Tell us what\'s working, and what\'s not.  Thanks!
-  </string>
-
-  <string name="feedback_hint"
-          description="Hint that appears in the text field where the user will type their complaint or error.">
-    Your feedback
-  </string>
-
-  <string name="after_feedback"
-          description="Text that appears after the feedback text entry field, warning users not to include
-  personally identifying information that could violate their privacy.">
-    This information will be sent to the Intra team.  Please do not include any personal information
-    in your feedback.
-  </string>
-
-  <string name="submit_feedback" description="Text on the button to submit feedback.">
-    Submit
   </string>
 
   <string name="notification_title"
