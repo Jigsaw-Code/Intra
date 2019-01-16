@@ -37,12 +37,12 @@ public class DnsPacket implements Comparable<DnsPacket> {
   private static final short TYPE_AAAA = 28;
 
   private static class DnsRecord {
+    ByteBuffer buffer;
     String name;
     short rtype;
     short rclass;
     int ttl;
     byte[] data;
-    ByteBuffer buffer;
     int ttlOffset;
 
     void reduceTTL(int amount) {

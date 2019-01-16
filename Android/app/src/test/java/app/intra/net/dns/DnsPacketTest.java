@@ -281,6 +281,7 @@ public class DnsPacketTest {
     DnsPacket p2 = new DnsPacket(data2);
     assertEquals(p, p2);
     assertEquals(p.hashCode(), p2.hashCode());
+    assertEquals(0, p.compareTo(p2));
   }
 
   @Test
@@ -307,6 +308,8 @@ public class DnsPacketTest {
     DnsPacket p2 = new DnsPacket(data2);
     assertNotEquals(p, p2);
     assertNotEquals(p.hashCode(), p2.hashCode());  // This is not strictly guaranteed to hold.
+    assertEquals(-1, p.compareTo(p2));
+    assertEquals(1, p2.compareTo(p));
   }
 
   private int readTTL(byte[] src, int offset) {

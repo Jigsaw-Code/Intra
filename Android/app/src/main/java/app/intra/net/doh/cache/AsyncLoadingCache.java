@@ -16,12 +16,16 @@ limitations under the License.
 package app.intra.net.doh.cache;
 
 import android.os.SystemClock;
+import android.util.Log;
+import app.intra.BuildConfig;
+import app.intra.sys.LogWrapper;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -35,6 +39,8 @@ import java.util.TreeSet;
  * All timestamps are monotonic time from time.read().
  */
 public class AsyncLoadingCache<K extends Comparable<K>, V> {
+
+  private static final String LOG_TAG = "AsyncLoadingCache";
 
   /**
    * A Tracker represents a key-value pair after the value has loaded.  Once a value has loaded,
@@ -107,6 +113,41 @@ public class AsyncLoadingCache<K extends Comparable<K>, V> {
     this.loader = loader;
     this.maxItems = maxItems;
     this.expiry = expiry;
+    checkInvariants();
+  }
+
+  private void checkInvariants() {
+    int N = trackers.size();  // Number of items stored in the cache.
+    boolean consistentSizes = expirationQueue.size() == N &&
+        evictionQueue.size() == N &&
+        N <= values.size() &&
+        N <= maxItems;
+    if (!consistentSizes) {
+      String msg = String.format(Locale.ROOT, "Cache size error: %d %d %d %d %d",
+          N, expirationQueue.size(), evictionQueue.size(), values.size(), maxItems);
+      Log.e(LOG_TAG, msg);
+      LogWrapper.report(new InternalError(msg));
+    } else if (BuildConfig.DEBUG) {
+      // Deep consistency check.  May be slow.
+      for (Tracker tracker : expirationQueue) {
+        if (trackers.get(tracker.key) != tracker) {
+          throw new InternalError("expiration-trackers referential inconsistency");
+        }
+        if (!values.get(tracker.key).isDone()) {
+          throw new InternalError("expiration-values referential inconsistency");
+        }
+      }
+      for (Tracker tracker : evictionQueue) {
+        if (trackers.get(tracker.key) != tracker) {
+          throw new InternalError("eviction-trackers inconsistency");
+        }
+      }
+      for (ListenableFuture<V> value : values.values()) {
+        if (value == null) {
+          throw new InternalError("null future");
+        }
+      }
+    }
   }
 
   /**
@@ -158,6 +199,7 @@ public class AsyncLoadingCache<K extends Comparable<K>, V> {
     long now = time.read();
     expire(now);  // Avoid returning expired results.
     markUsed(key, now);
+    checkInvariants();
     return values.get(key);
   }
 
@@ -166,6 +208,8 @@ public class AsyncLoadingCache<K extends Comparable<K>, V> {
    */
   private synchronized void abortLoad(K key) {
     values.remove(key);
+    checkInvariants();
+
   }
 
   /**
@@ -182,6 +226,7 @@ public class AsyncLoadingCache<K extends Comparable<K>, V> {
     // Expire before eviction to minimize unnecessary eviction.
     expire(now);
     evict();
+    checkInvariants();
   }
 
   // From Caffeine's AsyncLoadingCache API
@@ -214,6 +259,8 @@ public class AsyncLoadingCache<K extends Comparable<K>, V> {
         abortLoad(key);
       }
     }, MoreExecutors.directExecutor());
+
+    checkInvariants();
     return value;
   }
 
@@ -226,6 +273,7 @@ public class AsyncLoadingCache<K extends Comparable<K>, V> {
     trackers.clear();
     evictionQueue.clear();
     expirationQueue.clear();
+    checkInvariants();
   }
 
 }

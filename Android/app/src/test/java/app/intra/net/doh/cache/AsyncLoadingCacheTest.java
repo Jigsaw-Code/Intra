@@ -104,6 +104,7 @@ public class AsyncLoadingCacheTest {
     loader.map.get("a").set(value);
     assertTrue(f.isDone());
     assertEquals(value, f.get());
+    assertNotNull(cache.getIfPresent("a"));
 
     time += 10;
 
@@ -136,6 +137,14 @@ public class AsyncLoadingCacheTest {
     assertEquals(value, f.get());
     // Now the least recently used entry has been evicted.
     assertNull(cache.getIfPresent("1"));
+
+    // The other entries remain
+    assertNotNull(cache.getIfPresent("0"));
+    assertNotNull(cache.getIfPresent("a"));
+    for (int i = 2; i < limit; ++i) {
+      String key = Integer.toString(i);
+      assertNotNull(cache.getIfPresent(key));
+    }
   }
 
   @Test

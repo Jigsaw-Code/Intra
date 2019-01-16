@@ -34,7 +34,7 @@ public interface ServerConnection {
   /**
    * Performs a binary, asynchronous DNS request over HTTPS.
    *
-   * @param query The request body
+   * @param query The DNS query to send.
    * @param cb An OkHttp response callback to receive the result.
    */
   void performDnsRequest(DnsPacket query, Callback cb);

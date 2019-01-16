@@ -141,6 +141,8 @@ public class CachingServerConnection implements ServerConnection {
 
       @Override
       public void onFailure(Throwable throwable) {
+        // This is expected to be unreachable, because forwardRequestToImpl never returns a
+        // failing Future.
       }
     }, MoreExecutors.directExecutor());
   }
