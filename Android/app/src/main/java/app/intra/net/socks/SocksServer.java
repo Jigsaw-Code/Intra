@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.util.concurrent.Executors;
 import sockslib.server.BasicSocksProxyServer;
 import sockslib.server.SocksHandler;
 
@@ -42,7 +43,12 @@ class SocksServer extends BasicSocksProxyServer {
   private final Context context;
 
   SocksServer(Context context, InetSocketAddress fakeDns, InetSocketAddress trueDns) {
-    super(OverrideSocksHandler.class);
+    // BasicSocksProxyServer uses a default thread pool of size 100, resulting in a limit of 100
+    // active sockets, including DNS queries.  Once the limit is reached, subsequent new sockets
+    // are queued until an existing socket decides to close.  To avoid imposing long delays on
+    // pending network requests, we replace the default thread pool with one that does not have a
+    // size limit.
+    super(OverrideSocksHandler.class, Executors.newCachedThreadPool());
     this.fakeDns = fakeDns;
     this.trueDns = trueDns;
     this.context = context;
