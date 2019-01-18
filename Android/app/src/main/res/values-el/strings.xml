@@ -1,0 +1,95 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Πιο ανοιχτή πρόσβαση στο διαδίκτυο</string>
+  <string name="intro_benefit_body">Το Intra σάς προστατεύει από την παραποίηση DNS, μια ηλεκτρονική επίθεση που χρησιμοποιείται για τον αποκλεισμό της πρόσβασης σε ιστοτόπους ειδήσεων, πλατφόρμες μέσων κοινωνικής δικτύωσης και εφαρμογές ανταλλαγής μηνυμάτων.\n\nΠαρόλο που το Intra σάς προστατεύει από παραποίηση DNS, υπάρχουν άλλες πιο σύνθετες τεχνικές αποκλεισμού και επιθέσεις από τις οποίες το Intra δεν σας προστατεύει.</string>
+  <string name="intro_manipulation_headline">Προστασία από παραποίηση DNS</string>
+  <string name="intro_manipulation_body">Το Intra προστατεύει τη σύνδεσή σας στο Domain Name System (DNS), το οποίο παρέχει τις ακριβείς διευθύνσεις που χρειάζεστε για να επισκεφτείτε έναν ιστότοπο ή να ανοίξετε μια εφαρμογή.\n\nΤο Intra χρησιμοποιεί κρυπτογράφηση για να διασφαλίσει ότι τα αποτελέσματα δεν μπορούν να παραποιηθούν, βοηθώντας σας να αποκτήσετε ασφαλή πρόσβαση στο διαδίκτυο.</string>
+  <string name="intro_details_headline">Κάτι ακόμα…</string>
+  <string name="intro_details_body">Πατήστε OK για να επιτρέψετε στο Intra να προστατεύει τα αιτήματα DNS σας. Από προεπιλογή, θα δρομολογούνται στο Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Πολιτική απορρήτου</a>). Μπορείτε να επιλέξτε μια άλλη υπηρεσία στις ρυθμίσεις της εφαρμογής.</string>
+  <string name="intro_back">πίσω</string>
+  <string name="intro_next">επόμενο</string>
+  <string name="intro_accept">αποδοχή</string>
+  <string name="drawer_open">Άνοιγμα συρταριού πλοήγησης</string>
+  <string name="drawer_close">Κλείσιμο συρταριού πλοήγησης</string>
+  <string name="home">Αρχική</string>
+  <string name="settings">Ρυθμίσεις</string>
+  <string name="support">Υποστήριξη</string>
+  <string name="privacy_link">Πολιτική απορρήτου</string>
+  <string name="tos_link">Όροι Παροχής Υπηρεσιών</string>
+  <string name="source_code">Πηγαίος κώδικας</string>
+  <string name="credits_text">Το Intra δημιουργήθηκε από τη <a href="https://jigsaw.google.com">Jigsaw</a>. Οι τοποθεσίες IP βασίζονται σε δεδομένα
+    από το DB-IP.com.</string>
+  <string name="indicator_on">Ενεργό</string>
+  <string name="indicator_off">Ανενεργό</string>
+  <string name="status_exposed">Σε κίνδυνο</string>
+  <string name="explanation_exposed">Η σύνδεσή σας κινδυνεύει από επιθέσεις DNS.</string>
+  <string name="status_protected">Προστατεύεται</string>
+  <string name="explanation_protected">Η σύνδεσή σας προστατεύεται από επιθέσεις DNS.</string>
+  <string name="status_upgraded">Ευπάθεια</string>
+  <string name="explanation_upgraded">Η σύνδεσή σας προστατεύεται από το Ιδιωτικό DNS του Android αλλά ένας εισβολέας θα μπορούσε να απενεργοποιήσει
+    ή να υπονομεύσει αυτήν την προστασία.</string>
+  <string name="status_strict">Προστατεύεται από το Android</string>
+  <string name="explanation_strict">Το Intra εντόπισε ότι η ρύθμιση \"Ιδιωτικό DNS του Android\" είναι ενεργοποιημένη.  Αυτό σημαίνει ότι τα ερωτήματα DNS
+    προστατεύονται ήδη και δεν χρειάζεται να ενεργοποιήσετε το Intra.</string>
+  <string name="status_starting">Εκκίνηση…</string>
+  <string name="explanation_starting">Περιμένετε.  Το Intra δημιουργεί μια σύνδεση με τον διακομιστή.</string>
+  <string name="status_waiting">Αναμονή…</string>
+  <string name="explanation_offline">Η συσκευή σας είναι εκτός σύνδεσης.  Το Intra αναμένει μια σύνδεση δικτύου.</string>
+  <string name="explanation_vpn">Το Intra εντόπισε ένα άλλο VPN στη συσκευή σας.  Αν ενεργοποιήσετε το Intra, αυτό το VPN θα απενεργοποιηθεί.
+    Το Intra δεν είναι το ίδιο ασφαλές με ένα αξιόπιστο VPN.</string>
+  <string name="explanation_failing">Προειδοποίηση: Τα ερωτήματα αποτυγχάνουν.  Εξετάστε το ενδεχόμενο επιλογής ενός διαφορετικού διακομιστή και επανεκκίνησης του Intra.</string>
+  <string name="system_details">Λεπτομέρειες συστήματος</string>
+  <string name="num_requests">Ερωτήματα έως τώρα</string>
+  <string name="num_requests_headline">Τα ερωτήματα DNS πραγματοποιούνται όταν η συσκευή σας αναζητά τη διεύθυνση IP για ένα όνομα τομέα</string>
+  <string name="num_requests_body">Αυτή η τιμή εμφανίζει τον συνολικό αριθμό ερωτημάτων DNS που πραγματοποίησε η συσκευή σας όταν το Intra ήταν
+    ενεργό.  Το Intra κρυπτογραφεί αυτά τα ερωτήματα και τα στέλνει σε έναν αξιόπιστο διακομιστή για να διασφαλίσει ότι
+    λαμβάνετε αυθεντικά αποτελέσματα.</string>
+  <string name="queries_per_minute">Πρόσφατα ερωτήματα</string>
+  <string name="queries_per_minute_headline">Τα ερωτήματα DNS πραγματοποιούνται στην αρχή κάθε σύνδεσης</string>
+  <string name="queries_per_minute_body">Αυτή η τιμή εμφανίζει τον αριθμό των ερωτημάτων DNS που η συσκευή σας πραγματοποίησε το τελευταίο λεπτό.
+    Μπορεί να χρειαστούν περισσότερα από εκατό ερωτήματα DNS για τη φόρτωση μιας σύνθετης ιστοσελίδας.</string>
+  <string name="transport_label">Κρυπτογραφημένη μεταφορά</string>
+  <string name="transport_headline">Η κρυπτογράφηση προστατεύει τα ερωτήματά σας από άλλους</string>
+  <string name="transport_body">Όταν χρησιμοποιείτε το Intra, τα ερωτήματα DNS κρυπτογραφούνται έτσι ώστε μόνο εσείς και ο διακομιστής DNS να βλέπετε
+    τα ερωτήματα DNS που υποβάλετε.  Το Intra υλοποιεί το πρωτόκολλο DNS μέσω HTTPS για κρυπτογράφηση.</string>
+  <string name="default_transport_label">Προεπιλεγμένη μεταφορά</string>
+  <string name="insecure_transport">μη κρυπτογραφημένο</string>
+  <string name="insecure_transport_headline">Το βασικό DNS δεν είναι κρυπτογραφημένο</string>
+  <string name="insecure_transport_body">Οι περισσότερες συσκευές και τα δίκτυα χρησιμοποιούν βασικό DNS που δεν κρυπτογραφείται, επομένως, τα ερωτήματα DNS θα μπορούσαν να
+    παρακολουθούνται ή να τροποποιηθούν από οποιονδήποτε στο δίκτυο.  Μερικές νέες συσκευές υποστηρίζουν το πρωτόκολλο DNS μέσω TLS το οποίο
+    κρυπτογραφεί τα ερωτήματά σας αλλά δεν μπορεί να σας προστατέψει αν ο διακομιστής είναι κακόβουλος.</string>
+  <string name="server_label">Ασφαλής διακομιστής DNS</string>
+  <string name="server_headline">Σας αξίζει να χρησιμοποιείτε έναν αξιόπιστο διακομιστή DNS</string>
+  <string name="server_body">Αυτό το πεδίο εμφανίζει το όνομα του ασφαλούς διακομιστή DNS που χρησιμοποιείτε.  Επίσης, μπορείτε να μεταβείτε σε έναν
+    διαφορετικό διακομιστή στο μενού Ρυθμίσεις.</string>
+  <string name="default_server_label">Τρέχων διακομιστής DNS</string>
+  <string name="insecure_server_headline">Μπορείτε να επιλέξετε τον δικό σας διακομιστή DNS</string>
+  <string name="insecure_server_body">Όταν το Intra είναι απενεργοποιημένο, οι περισσότερες συσκευές διαμορφώνονται εκ των προτέρων έτσι ώστε να χρησιμοποιούν τον διακομιστή DNS που επιλέγει η
+    εταιρεία δικτύου σας. Αυτό το πεδίο εμφανίζει τη διεύθυνση IP του διακομιστή DNS που χρησιμοποιεί η συσκευή σας
+    αυτήν τη στιγμή. Με το Intra ή το Android P, μπορείτε εύκολα να επιλέξετε έναν διακομιστή.</string>
+  <string name="strict_mode_server_headline">Έχετε επιλέξει έναν ασφαλή διακομιστή</string>
+  <string name="strict_mode_server_body">Αυτό το πεδίο εμφανίζει το όνομα του διακομιστή DNS που διαμορφώσατε στη ρύθμιση \"Ιδιωτικό DNS\" του
+    Android.  Όταν το Intra είναι απενεργοποιημένο, οι εφαρμογές σας θα πρέπει να στέλνουν ερωτήματα DNS σε αυτόν τον διακομιστή.</string>
+  <string name="unknown_server">(άγνωστος διακομιστής)</string>
+  <string name="show_history">Εμφάνιση πρόσφατων ερωτημάτων</string>
+  <string name="query_label">Ερώτημα</string>
+  <string name="type_label">Τύπος</string>
+  <string name="latency_label">Λανθάνων χρόνος</string>
+  <string name="resolver_label">Τοποθεσία εργαλείου επίλυσης</string>
+  <string name="destination_label">Διακομιστής προορισμού</string>
+  <string name="server_choice">Επιλογή διακομιστή DNS μέσω HTTPS</string>
+  <string name="server_choice_summary">Αυτήν τη στιγμή %s</string>
+  <string name="server_choice_custom">URL προσαρμοσμένου διακομιστή</string>
+  <string name="server_choice_warning">Ο προσαρμοσμένος διακομιστής πρέπει να είναι ένα έγκυρο URL https://</string>
+  <string name="excluded_apps">Εφαρμογές που εξαιρούνται</string>
+  <string name="excluded_apps_summary">Τα ερωτήματα DNS από οποιεσδήποτε επιλεγμένες εφαρμογές δεν μεταβιβάζονται μέσω του Intra.  Αν μια εφαρμογή φαίνεται
+    να μην είναι συμβατή με το Intra, μπορείτε να την προσθέσετε εδώ.</string>
+  <string name="excluded_apps_title">Επισήμανση εφαρμογών για εξαίρεση από το Intra</string>
+  <string name="old_android">Αυτή η λειτουργία δεν είναι διαθέσιμη στην έκδοση Android που διαθέτετε.</string>
+  <string name="notification_title">Η προστασία DNS είναι ενεργή</string>
+  <string name="notification_content">Πατήστε για να αλλάξετε τη ρύθμιση προστασίας DNS</string>
+  <string name="channel_name">Ειδοποίηση ενεργούς προστασίας DNS</string>
+  <string name="channel_description">Αυτή η ειδοποίηση εμφανίζεται όταν η προστασία DNS είναι ενεργή.</string>
+  <string name="warning_title">Προειδοποίηση: Το Intra έχει απενεργοποιηθεί</string>
+  <string name="warning_channel_name">Προειδοποίηση</string>
+  <string name="warning_channel_description">Εμφανίζεται όταν το Intra αντιμετωπίζει κάποιο πρόβλημα.</string>
+</resources>

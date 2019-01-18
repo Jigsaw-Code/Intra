@@ -1,0 +1,95 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Mere åben internetadgang</string>
+  <string name="intro_benefit_body">Intra beskytter dig mod DNS-manipulation, et cyberangreb, der bruges til at blokere adgang til nyhedswebsites, sociale medier og apps til beskeder.\n\nSelvom Intra beskytter dig mod DNS-manipulation, er der andre mere komplicerede blokeringsteknikker og angreb, som Intra ikke beskytter imod.</string>
+  <string name="intro_manipulation_headline">Beskyttelse mod DNS-manipulation</string>
+  <string name="intro_manipulation_body">Intra beskytter din forbindelse til domænenavnesystemet (DNS), der leverer de nøjagtige adresser, som du skal bruge til at besøge et website eller åbne en app.\n\nIntra anvender kryptering til at sikre, at der ikke kan manipuleres med resultaterne, hvilket giver dig en mere sikker internetadgang.</string>
+  <string name="intro_details_headline">Én sidste ting…</string>
+  <string name="intro_details_body">Tryk på OK for at give Intra tilladelse til at beskytte dine DNS-anmodninger. De dirigeres som standard til Googles offentlige DNS-tjeneste (se <a href="https://developers.google.com/speed/public-dns/privacy">privatlivspolitikken</a>). Du kan vælge en anden tjeneste i appindstillingerne.</string>
+  <string name="intro_back">tilbage</string>
+  <string name="intro_next">næste</string>
+  <string name="intro_accept">acceptér</string>
+  <string name="drawer_open">Åbn sidemenu</string>
+  <string name="drawer_close">Luk sidemenu</string>
+  <string name="home">Startside</string>
+  <string name="settings">Indstillinger</string>
+  <string name="support">Support</string>
+  <string name="privacy_link">Privatlivspolitik</string>
+  <string name="tos_link">Servicevilkår</string>
+  <string name="source_code">Kildekode</string>
+  <string name="credits_text">Intra er udviklet af <a href="https://jigsaw.google.com">Jigsaw</a>. IP-placeringer er baseret på data
+    fra DB-IP.com.</string>
+  <string name="indicator_on">Til</string>
+  <string name="indicator_off">Fra</string>
+  <string name="status_exposed">Udsat</string>
+  <string name="explanation_exposed">Din forbindelse er sårbar over for DNS-angreb.</string>
+  <string name="status_protected">Beskyttet</string>
+  <string name="explanation_protected">Din forbindelse er beskyttet mod DNS-angreb.</string>
+  <string name="status_upgraded">Sårbar</string>
+  <string name="explanation_upgraded">Din forbindelse beskyttes i øjeblikket af Android Private DNS, men en hacker kan deaktivere
+    eller underminere denne beskyttelse.</string>
+  <string name="status_strict">Beskyttes af Android</string>
+  <string name="explanation_strict">Intra har registreret, at indstillingen for Android Private DNS er aktiveret.  Det betyder, at dine DNS-forespørgsler
+    allerede beskyttes, og du behøver derfor ikke at aktivere Intra.</string>
+  <string name="status_starting">Starter…</string>
+  <string name="explanation_starting">Vent et øjeblik.  Intra opretter serverforbindelse.</string>
+  <string name="status_waiting">Venter…</string>
+  <string name="explanation_offline">Din enhed er offline.  Intra venter på en netværksforbindelse.</string>
+  <string name="explanation_vpn">Intra har registreret et andet VPN-netværk på din enhed.  Hvis du aktiverer Intra, deaktiveres det pågældende VPN-netværk.
+    Intra er ikke lige så sikkert som et godkendt VPN-netværk.</string>
+  <string name="explanation_failing">Advarsel! Forespørgsler kan ikke udføres.  Prøv at vælge en anden server og genstarte Intra.</string>
+  <string name="system_details">Systemoplysninger</string>
+  <string name="num_requests">Levetidsforespørgsler</string>
+  <string name="num_requests_headline">DNS-forespørgsler udføres, når din enhed søger efter IP-adressen til et domænenavn</string>
+  <string name="num_requests_body">Denne værdi viser det samlede antal DNS-forespørgsler, din enhed har udført, mens Intra var
+    aktivt.  Intra krypterer disse forespørgsler og sender dem til en godkendt server for at sørge for, at du
+    modtager autentiske resultater.</string>
+  <string name="queries_per_minute">Seneste forespørgsler</string>
+  <string name="queries_per_minute_headline">DNS-forespørgsler udføres ved begyndelsen af hver forbindelse</string>
+  <string name="queries_per_minute_body">Denne værdi viser antallet af DNS-forespørgsler, din enhed har udført inden for det seneste minut.
+    Indlæsningen af en kompleks side kan kræve mere end hundrede DNS-forespørgsler.</string>
+  <string name="transport_label">Krypteret trafik</string>
+  <string name="transport_headline">Kryptering beskytter dine forespørgsler mod nysgerrige blikke</string>
+  <string name="transport_body">Når du bruger Intra, krypteres dine DNS-forespørgsler, så det kun er dig og din DNS-server, der kan se,
+    hvilke DNS-forespørgsler du laver.  Intra implementerer DNS via HTTPS-protokollen for at kryptere forespørgsler.</string>
+  <string name="default_transport_label">Standardtrafik</string>
+  <string name="insecure_transport">ikke krypteret</string>
+  <string name="insecure_transport_headline">Grundlæggende DNS er ikke krypteret</string>
+  <string name="insecure_transport_body">De fleste enheder og netværk anvender grundlæggende DNS, som ikke er krypteret, så dine DNS-forespørgsler kan
+    observeres eller ændres af hvem som helst på netværket.  Visse nye enheder understøtter DNS via TLS, der
+    krypterer dine forespørgsler, men som ikke kan beskytte dig, hvis serveren er ondsindet.</string>
+  <string name="server_label">Sikker DNS-server</string>
+  <string name="server_headline">Du fortjener at bruge en pålidelig DNS-server</string>
+  <string name="server_body">Dette felt indeholder navnet på den sikre DNS-server, som du bruger.  Du kan også skifte til en
+    anden server i menuen Indstillinger.</string>
+  <string name="default_server_label">Aktuel DNS-server</string>
+  <string name="insecure_server_headline">Du kan vælge din egen DNS-server</string>
+  <string name="insecure_server_body">Når Intra er deaktiveret, er de fleste enheder forudkonfigureret til at bruge den DNS-server, som din
+    netværksudbyder vælger. Dette felt indeholder IP-adressen på den DNS-server, din enhed benytter
+    i øjeblikket. Med Intra eller Android P kan du nemt selv vælge en server.</string>
+  <string name="strict_mode_server_headline">Du har valgt en sikker server</string>
+  <string name="strict_mode_server_body">Dette felt indeholder navnet på den DNS-server, som du har konfigureret i Android-indstillingen
+    Privat DNS.  Når Intra er deaktiveret, bør dine apps sende DNS-forespørgsler til denne server.</string>
+  <string name="unknown_server">(ukendt server)</string>
+  <string name="show_history">Vis seneste forespørgsler</string>
+  <string name="query_label">Forespørgsel</string>
+  <string name="type_label">Type</string>
+  <string name="latency_label">Forsinkelse</string>
+  <string name="resolver_label">Resolver-placering</string>
+  <string name="destination_label">Destinationsserver</string>
+  <string name="server_choice">Vælg DNS via HTTPS-serveren</string>
+  <string name="server_choice_summary">I øjeblikket %s</string>
+  <string name="server_choice_custom">Tilpasset serverwebadresse</string>
+  <string name="server_choice_warning">Den tilpassede server skal være en gyldig server af typen https:// Webadresse</string>
+  <string name="excluded_apps">Ekskluderede apps</string>
+  <string name="excluded_apps_summary">DNS-forespørgsler fra de apps, du har ekskluderet, gennemgås ikke af Intra.  Hvis en app ikke lader til at være
+    kompatibel med Intra, kan du tilføje den her.</string>
+  <string name="excluded_apps_title">Markér apps, der skal ekskluderes fra Intra</string>
+  <string name="old_android">Denne funktionalitet findes ikke i din version af Android.</string>
+  <string name="notification_title">DNS-beskyttelse er aktiv</string>
+  <string name="notification_content">Tryk for at skifte indstilling for DNS-beskyttelse</string>
+  <string name="channel_name">Notifikation om aktiv DNS-beskyttelse</string>
+  <string name="channel_description">Denne notifikation vises, når DNS-beskyttelsen er aktiv.</string>
+  <string name="warning_title">Advarsel! Intra er blevet deaktiveret</string>
+  <string name="warning_channel_name">Advarsel</string>
+  <string name="warning_channel_description">Vises, når Intra registrerer et problem.</string>
+</resources>

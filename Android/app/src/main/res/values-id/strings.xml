@@ -1,0 +1,92 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Akses internet yang lebih terbuka</string>
+  <string name="intro_benefit_body">Intra melindungi Anda dari manipulasi DNS, yaitu serangan cyber yang dilakukan untuk memblokir akses ke situs berita, platform media sosial, dan aplikasi pesan.\n\nMeskipun Anda terlindungi dari manipulasi DNS, Intra tidak menyediakan perlindungan terhadap serangan dan teknik pemblokiran lain yang lebih rumit.</string>
+  <string name="intro_manipulation_headline">Perlindungan dari manipulasi DNS</string>
+  <string name="intro_manipulation_body">Intra melindungi sambungan Anda ke Domain Name System (DNS), yang memberikan alamat persis yang diperlukan untuk mengakses situs atau membuka aplikasi.\n\nIntra menggunakan enkripsi guna memastikan agar hasil tidak dapat dimanipulasi, sehingga Anda bisa mengakses internet dengan aman.</string>
+  <string name="intro_details_headline">Satu lagi…</string>
+  <string name="intro_details_body">Tap Oke untuk mengizinkan Intra melindungi permintaan DNS Anda. Secara default, permintaan tersebut akan dirutekan ke Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Kebijakan Privasi</a>). Anda dapat memilih layanan lain di setelan aplikasi.</string>
+  <string name="intro_back">kembali</string>
+  <string name="intro_next">berikutnya</string>
+  <string name="intro_accept">setuju</string>
+  <string name="drawer_open">Buka panel navigasi</string>
+  <string name="drawer_close">Tutup panel navigasi</string>
+  <string name="home">Beranda</string>
+  <string name="settings">Setelan</string>
+  <string name="support">Dukungan</string>
+  <string name="privacy_link">Kebijakan Privasi</string>
+  <string name="tos_link">Persyaratan Layanan</string>
+  <string name="source_code">Kode Sumber</string>
+  <string name="credits_text">Intra dibuat oleh <a href="https://jigsaw.google.com">Jigsaw</a>. Lokasi IP diperoleh berdasarkan data
+    dari DB-IP.com.</string>
+  <string name="indicator_on">Aktif</string>
+  <string name="indicator_off">Nonaktif</string>
+  <string name="status_exposed">Rawan</string>
+  <string name="explanation_exposed">Sambungan Anda terekspos terhadap serangan DNS.</string>
+  <string name="status_protected">Terlindungi</string>
+  <string name="explanation_protected">Sambungan Anda terlindungi dari serangan terhadap DNS.</string>
+  <string name="status_upgraded">Rentan</string>
+  <string name="explanation_upgraded">Saat ini sambungan Anda dilindungi dengan DNS Pribadi Android, tetapi penyerang dapat menonaktifkan
+    atau melemahkan perlindungan tersebut.</string>
+  <string name="status_strict">Dilindungi oleh Android</string>
+  <string name="explanation_strict">Intra mendeteksi bahwa setelan DNS Pribadi Android diaktifkan.  Hal ini berarti kueri DNS Anda
+    sudah dilindungi, sehingga Intra tidak perlu diaktifkan.</string>
+  <string name="status_starting">Memulai…</string>
+  <string name="explanation_starting">Tunggu sebentar.  Intra sedang menyambungkan ke server.</string>
+  <string name="status_waiting">Menunggu…</string>
+  <string name="explanation_offline">Perangkat Anda sedang offline.  Intra menunggu sambungan jaringan.</string>
+  <string name="explanation_vpn">Intra mendeteksi VPN lain di perangkat Anda.  Jika Anda mengaktifkan Intra, VPN tersebut akan dinonaktifkan.
+    Perlu diketahui bahwa Intra tidak seaman VPN tepercaya.</string>
+  <string name="explanation_failing">Peringatan: Kueri gagal.  Anda dapat memilih server lain dan memulai ulang Intra.</string>
+  <string name="system_details">Detail sistem</string>
+  <string name="num_requests">Kueri hingga saat ini</string>
+  <string name="num_requests_headline">Kueri DNS dijalankan saat perangkat Anda mencari alamat IP untuk nama domain</string>
+  <string name="num_requests_body">Nilai ini menunjukkan jumlah total kueri DNS yang dijalankan perangkat Anda selama Intra
+    aktif.  Intra mengenkripsi kueri tersebut dan mengirimnya ke server tepercaya guna memastikan Anda
+    mendapatkan hasil yang asli.</string>
+  <string name="queries_per_minute">Kueri terbaru</string>
+  <string name="queries_per_minute_headline">Kueri DNS diproses pada awal setiap sambungan</string>
+  <string name="queries_per_minute_body">Nilai ini menunjukkan jumlah kueri DNS yang dijalankan perangkat Anda dalam satu menit terakhir.
+    Untuk memuat halaman dengan konten yang kompleks mungkin diperlukan lebih dari seratus kueri DNS.</string>
+  <string name="transport_label">Transmisi dienkripsi</string>
+  <string name="transport_headline">Enkripsi melindungi kueri Anda dari orang-orang yang ingin melihatnya</string>
+  <string name="transport_body">Dengan menggunakan Intra, kueri DNS Anda akan dienkripsi, sehingga hanya Anda dan server DNS yang mengetahui
+    kueri DNS yang Anda buat.  Intra menerapkan protokol DNS over HTTPS untuk enkripsi.</string>
+  <string name="default_transport_label">Transmisi default</string>
+  <string name="insecure_transport">tidak dienkripsi</string>
+  <string name="insecure_transport_headline">DNS Dasar tidak dienkripsi</string>
+  <string name="insecure_transport_body">Sebagian besar perangkat dan jaringan menggunakan DNS dasar yang tidak dienkripsi, sehingga kueri DNS Anda dapat
+    dilihat atau diubah oleh orang lain di jaringan tersebut.  Beberapa perangkat baru telah mendukung DNS over TLS, yang
+    mengenkripsi kueri tetapi tidak dapat melindungi Anda jika server berbahaya.</string>
+  <string name="server_label">Server DNS aman</string>
+  <string name="server_headline">Anda berhak menggunakan server DNS tepercaya</string>
+  <string name="server_body">Kolom ini menampilkan nama server DNS aman yang Anda gunakan.  Anda juga dapat berpindah ke
+    server lain melalui menu Setelan.</string>
+  <string name="default_server_label">Server DNS saat ini</string>
+  <string name="insecure_server_headline">Anda dapat memilih server DNS Anda sendiri</string>
+  <string name="insecure_server_body">Jika Intra dinonaktifkan, sebagian besar perangkat telah dikonfigurasi sebelumnya untuk menggunakan server DNS yang dipilih oleh operator jaringan Anda. Kolom ini menampilkan alamat IP server DNS yang saat ini digunakan perangkat Anda. Dengan Intra atau Android P, Anda dapat memilih server yang diinginkan dengan mudah.</string>
+  <string name="strict_mode_server_headline">Anda telah memilih server yang aman.</string>
+  <string name="strict_mode_server_body">Kolom ini menampilkan nama server DNS yang Anda konfigurasikan di setelan DNS Pribadi Android.  Jika Intra dinonaktifkan, aplikasi Anda akan mengirimkan kueri DNS ke server ini.</string>
+  <string name="unknown_server">(server tidak dikenal)</string>
+  <string name="show_history">Tampilkan kueri terbaru</string>
+  <string name="query_label">Kueri</string>
+  <string name="type_label">Jenis</string>
+  <string name="latency_label">Latensi</string>
+  <string name="resolver_label">Lokasi resolver</string>
+  <string name="destination_label">Server tujuan</string>
+  <string name="server_choice">Pilih Server DNS over HTTPS</string>
+  <string name="server_choice_summary">Saat ini %s</string>
+  <string name="server_choice_custom">URL server kustom</string>
+  <string name="server_choice_warning">Server kustom harus berupa URL https:// yang valid</string>
+  <string name="excluded_apps">Aplikasi yang dikecualikan</string>
+  <string name="excluded_apps_summary">Kueri DNS dari aplikasi yang dipilih tidak akan melalui Intra.  Jika ada aplikasi yang sepertinya
+    tidak kompatibel dengan Intra, Anda dapat menambahkannya di sini.</string>
+  <string name="excluded_apps_title">Tandai aplikasi untuk dikecualikan dari Intra</string>
+  <string name="old_android">Fungsi ini tidak tersedia di versi Android Anda.</string>
+  <string name="notification_title">Perlindungan DNS aktif</string>
+  <string name="notification_content">Tap untuk mengubah setelan perlindungan DNS</string>
+  <string name="channel_name">Notifikasi Perlindungan DNS Aktif</string>
+  <string name="channel_description">Notifikasi ini ditampilkan saat perlindungan DNS aktif.</string>
+  <string name="warning_title">Peringatan: Intra telah dinonaktifkan</string>
+  <string name="warning_channel_name">Peringatan</string>
+  <string name="warning_channel_description">Ditampilkan ketika Intra mengalami masalah.</string>
+</resources>

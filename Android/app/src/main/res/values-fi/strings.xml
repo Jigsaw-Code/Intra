@@ -1,0 +1,90 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Avoimempi internetin käyttö</string>
+  <string name="intro_benefit_body">Intra suojaa sinua DNS:n manipuloinnilta eli kyberhyökkäyksiltä, joiden tarkoituksena on estää uutissivustojen, sosiaalisen median alustojen ja viestisovellusten käyttö.\n\nVaikka Intra suojaa sinua DNS:n manipuloinnilta, se ei suojaa sinua monilta monimutkaisimmilta estotekniikoilta ja hyökkäyksiltä.</string>
+  <string name="intro_manipulation_headline">Suojautuminen DNS:n manipuloinnilta</string>
+  <string name="intro_manipulation_body">Intra suojaa yhteytesi DNS-järjestelmään, joka tarjoaa sinulle tarkat osoitteet, jotka tarvitset sivustojen käyttämiseen tai sovellusten avaamiseen.\n\nIntra varmistaa salauksen avulla, että tuloksia ei voi manipuloida. Tämän ansiosta voit käyttää internetiä turvallisesti.</string>
+  <string name="intro_details_headline">Huomioitavaa</string>
+  <string name="intro_details_body">Napauttamalla OK voit sallia, että Intra suojaa DNS-pyyntösi. Oletuksena ne reititetään Googlen julkiseen nimipalveluun (<a href="https://developers.google.com/speed/public-dns/privacy">Tietosuojakäytäntö</a>). Voit valita toisen palvelun sovelluksen asetuksista.</string>
+  <string name="intro_back">takaisin</string>
+  <string name="intro_next">seuraava</string>
+  <string name="intro_accept">hyväksy</string>
+  <string name="drawer_open">Avaa navigoinnin vetopaneeli</string>
+  <string name="drawer_close">Sulje navigoinnin vetopaneeli</string>
+  <string name="home">Etusivu</string>
+  <string name="settings">Asetukset</string>
+  <string name="support">Tuki</string>
+  <string name="privacy_link">Tietosuojakäytäntö</string>
+  <string name="tos_link">Käyttöehdot</string>
+  <string name="source_code">Lähdekoodi</string>
+  <string name="credits_text">Intran tekijä on <a href="https://jigsaw.google.com">Jigsaw</a>. IP-sijannit perustuvat
+    DB-IP.comin dataan.</string>
+  <string name="indicator_on">Käytössä</string>
+  <string name="indicator_off">Pois käytöstä</string>
+  <string name="status_exposed">Alttiina</string>
+  <string name="explanation_exposed">Yhteytesi on alttiina DNS-hyökkäyksille.</string>
+  <string name="status_protected">Suojattu</string>
+  <string name="explanation_protected">Yhteytesi on suojattu DNS-hyökkäyksiltä.</string>
+  <string name="status_upgraded">Haavoittuvainen</string>
+  <string name="explanation_upgraded">Android Private DNS suojaa tällä hetkellä yhteyttäsi, mutta hyökkääjä voi poistaa
+    sen käytöstä tai heikentää sitä.</string>
+  <string name="status_strict">Android-suojaus</string>
+  <string name="explanation_strict">Intra on havainnut, että Android Private DNS ‑asetus on otettu käyttöön.  Tämä tarkoittaa, että
+    DNS-kyselysi on jo suojattu, joten Intraa ei tarvitse ottaa käyttöön.</string>
+  <string name="status_starting">Käynnistetään…</string>
+  <string name="explanation_starting">Odota hetki.  Intra muodostaa palvelinyhteyden.</string>
+  <string name="status_waiting">Odotetaan…</string>
+  <string name="explanation_offline">Laitteesi on offline-tilassa.  Intra odottaa verkkoyhteyttä.</string>
+  <string name="explanation_vpn">Intra on tunnistanut toisen VPN:n laitteessasi.  Jos otat Intran käyttöön, kyseinen VPN poistetaan käytöstä.
+    Intra ei ole yhtä turvallinen kuin luotettu VPN.</string>
+  <string name="explanation_failing">Varoitus: Kyselyt epäonnistuvat.  Sinun kannatta ehkä vaihtaa palvelinta ja käynnistää Intra uudelleen.</string>
+  <string name="system_details">Järjestelmän tiedot</string>
+  <string name="num_requests">Kyselyjä tähän asti</string>
+  <string name="num_requests_headline">DNS-kyselyjä suoritetaan, kun laitteesi etsii jonkin verkkotunnuksen IP-osoitetta.</string>
+  <string name="num_requests_body">Tämä arvo osoittaa, kuinka monta DNS-kyselyä laitteesi on suorittanut Intran ollessa käytössä.  Intra salaa nämä kyselyt ja lähettää ne luotettuun palvelimeen, jotta saat varmasti aitoja tuloksia.</string>
+  <string name="queries_per_minute">Äskettäiset kyselyt</string>
+  <string name="queries_per_minute_headline">DNS-kyselyt suoritetaan kunkin yhteyden muodostamisvaiheessa</string>
+  <string name="queries_per_minute_body">Tämä arvo osoittaa, kuinka monta DNS-kyselyä laitteesi on suorittanut edellisen minuutin aikana.
+    Monimutkaisen verkkosivun lataaminen voi edellyttää yli sata DNS-kyselyä.</string>
+  <string name="transport_label">Salattu siirto</string>
+  <string name="transport_headline">Salaus suojaa kyselysi urkinnalta</string>
+  <string name="transport_body">Käyttäessäsi Intraa DNS-kyselysi salataan, jolloin tekemäsi DNS-kyselyt ovat vain sinun ja DNS-palvelimesi tiedossa.  Intra käyttää DNS over HTTPS ‑protokollaa salaukseen.</string>
+  <string name="default_transport_label">Oletussiirto</string>
+  <string name="insecure_transport">salaamaton</string>
+  <string name="insecure_transport_headline">Perus-DNS on salaamaton</string>
+  <string name="insecure_transport_body">Useimmat laitteet ja verkot käyttävät perustasoista DNS:ää, joka on suojaamaton, joten kuka tahansa verkon käyttäjä voi
+    tarkkailla tai muokata DNS-kyselyjäsi.  Osa uusista laitteista tukee DNS over TLS ‑protokollaa,
+    joka salaa kyselysi mutta ei suojaa haitalliselta palvelimelta.</string>
+  <string name="server_label">Suojattu DNS-palvelin</string>
+  <string name="server_headline">Sinä ansaitset käyttöösi luotettavan DNS-palvelimen</string>
+  <string name="server_body">Tässä kentässä näkyy käyttämäsi suojatun DNS-palvelimen nimi.  Voit myös vaihtaa
+    palvelinta Asetukset-valikosta.</string>
+  <string name="default_server_label">Nykyinen DNS-palvelin</string>
+  <string name="insecure_server_headline">Voit valita oman DNS-palvelimesi</string>
+  <string name="insecure_server_body">Kun Intra on poistettu käytöstä, useimmat laitteet on esimääritetty käyttämään verkko-operaattorisi
+    valitsemaa DNS-palvelinta. Tässä kentässä näkyy laitteesi tällä hetkellä käyttämän DNS-palvelimen IP-osoite. Kun Intra tai Android P on käytössä, voit valita helposti haluamasi palvelimen.</string>
+  <string name="strict_mode_server_headline">Olet valinnut suojatun palvelimen</string>
+  <string name="strict_mode_server_body">Tässä kentässä näkyy sen DNS-palvelimen nimi, jonka määritit Android Private DNS ‑asetuksessa.  Kun Intra on poistettu käytöstä, sovelluksesi lähettävät DNS-kyselyjä tälle palvelimelle.</string>
+  <string name="unknown_server">(tuntematon palvelin)</string>
+  <string name="show_history">Näytä äskettäiset kyselyt</string>
+  <string name="query_label">Kysely</string>
+  <string name="type_label">Tyyppi</string>
+  <string name="latency_label">Viive</string>
+  <string name="resolver_label">Ratkaisijan sijainti</string>
+  <string name="destination_label">Kohdepalvelin</string>
+  <string name="server_choice">Valitse DNS over HTTPS ‑palvelin</string>
+  <string name="server_choice_summary">Tällä hetkellä %s</string>
+  <string name="server_choice_custom">Muokatun palvelimen URL-osoite</string>
+  <string name="server_choice_warning">Muokatun palvelimen on oltava kelvollinen https://-alkuinen URL-osoite</string>
+  <string name="excluded_apps">Pois suljetut sovellukset</string>
+  <string name="excluded_apps_summary">Minkä tahansa valitun sovelluksen DNS-kyselyt eivät kulje Intran kautta.  Jos sovellus
+    ei ole yhteensopiva Intran kanssa, voit lisätä sen tässä.</string>
+  <string name="excluded_apps_title">Merkitse sovellukset, jotka jätetään pois Intrasta</string>
+  <string name="old_android">Tämä toiminto ei ole saatavana käyttämässäsi Android-versiossa.</string>
+  <string name="notification_title">DNS-suojaus on käytössä</string>
+  <string name="notification_content">Vaihda DNS-suojausasetusta napauttamalla</string>
+  <string name="channel_name">DNS-suojaus käytössä ‑ilmoitus</string>
+  <string name="channel_description">Tämä ilmoitus näkyy, kun DNS-suojaus on käytössä.</string>
+  <string name="warning_title">Varoitus: Intra on poistettu käytöstä</string>
+  <string name="warning_channel_name">Varoitus</string>
+  <string name="warning_channel_description">Tämä näytetään, kun Intra on kohdannut virheen.</string>
+</resources>

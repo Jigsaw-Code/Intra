@@ -1,0 +1,92 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Mai mult acces liber la internet</string>
+  <string name="intro_benefit_body">Intra vă protejează împotriva manipulării DNS, un atac cibernetic folosit pentru a bloca accesul la site-uri de știri, platforme de rețele sociale și aplicații de mesagerie.\n\nDeși Intra vă protejează împotriva manipulării sistemului DNS, există și alte tehnici de blocare mai complicate și atacuri împotriva cărora aplicația Intra nu vă protejează.</string>
+  <string name="intro_manipulation_headline">Protecție împotriva manipulării DNS</string>
+  <string name="intro_manipulation_body">Intra vă protejează conexiunea la Sistemul denumirilor de domenii (DNS), care vă oferă adresele exacte de care aveți nevoie pentru a accesa un site sau pentru a deschide o aplicație.\n\nIntra folosește criptarea pentru a se asigura că rezultatele nu pot fi manipulate, ajutându-vă să accesați internetul în condiții de siguranță.</string>
+  <string name="intro_details_headline">Un ultim aspect de reținut…</string>
+  <string name="intro_details_body">Atingeți OK pentru a permite aplicației Intra să vă protejeze solicitările DNS. În mod prestabilit, acestea vor fi direcționate către DNS public Google (<a href="https://developers.google.com/speed/public-dns/privacy">Politica de confidențialitate</a>). Puteți alege alt serviciu din setările aplicației.</string>
+  <string name="intro_back">înapoi</string>
+  <string name="intro_next">înainte</string>
+  <string name="intro_accept">accept</string>
+  <string name="drawer_open">Deschideți panoul de navigare</string>
+  <string name="drawer_close">Închideți panoul de navigare</string>
+  <string name="home">Pagina principală</string>
+  <string name="settings">Setări</string>
+  <string name="support">Asistență</string>
+  <string name="privacy_link">Politica de confidențialitate</string>
+  <string name="tos_link">Termeni și condiții</string>
+  <string name="source_code">Cod sursă</string>
+  <string name="credits_text">Intra a fost creată de <a href="https://jigsaw.google.com">Jigsaw</a>. Locațiile IP se bazează pe date
+    din DB-IP.com.</string>
+  <string name="indicator_on">Activat</string>
+  <string name="indicator_off">Dezactivat</string>
+  <string name="status_exposed">Expuse</string>
+  <string name="explanation_exposed">Conexiunea dvs. este expusă atacurilor DNS.</string>
+  <string name="status_protected">Protejate</string>
+  <string name="explanation_protected">Conexiunea este protejată împotriva atacurilor DNS.</string>
+  <string name="status_upgraded">Vulnerabil</string>
+  <string name="explanation_upgraded">Momentan, conexiunea dvs. este protejată de DNS privat de la Android, însă un atacator ar putea dezactiva
+    sau compromite această protecție.</string>
+  <string name="status_strict">Protejat de Android</string>
+  <string name="explanation_strict">Intra a detectat că setarea DNS privat de la Android este activată.  Aceasta înseamnă că interogările
+    DNS sunt protejate deja. Prin urmare, nu trebuie să activați Intra.</string>
+  <string name="status_starting">Se pornește…</string>
+  <string name="explanation_starting">Așteptați.  Intra stabilește o conexiune la server.</string>
+  <string name="status_waiting">Se așteaptă…</string>
+  <string name="explanation_offline">Dispozitivul dvs. este offline.  Intra așteaptă o conexiune la rețea.</string>
+  <string name="explanation_vpn">Intra a detectat altă rețea VPN pe dispozitiv.  Dacă activați aplicația Intra, rețeaua VPN va fi dezactivată.
+    Intra nu este la fel de sigură ca o rețea VPN de încredere.</string>
+  <string name="explanation_failing">Avertisment: Interogările nu pot fi efectuate.  Este recomandat să alegi alt server și să repornești Intra.</string>
+  <string name="system_details">Detaliile sistemului</string>
+  <string name="num_requests">Număr total de interogări</string>
+  <string name="num_requests_headline">Interogările DNS au loc când dispozitivul caută adresa IP pentru un nume de domeniu</string>
+  <string name="num_requests_body">Valoarea indică numărul total de interogări DNS efectuate de dispozitivul dvs. cât timp Intra a fost
+    activă.  Intra criptează aceste interogări și le trimite către un server de încredere pentru a vă garanta
+    obținerea unor rezultate autentice.</string>
+  <string name="queries_per_minute">Interogări recente</string>
+  <string name="queries_per_minute_headline">Interogările DNS au loc la începutul fiecărei conexiuni.</string>
+  <string name="queries_per_minute_body">Valoarea afișează numărul de interogări DNS pe care dispozitivul dvs. le-a efectuat în ultimul minut.
+    Încărcarea unei pagini web complexe poate necesita peste o sută de interogări DNS.</string>
+  <string name="transport_label">Transport criptat</string>
+  <string name="transport_headline">Criptarea vă protejează interogările împotriva privirilor curioase.</string>
+  <string name="transport_body">Când folosiți Intra, interogările DNS sunt criptate astfel încât numai dvs. și serverul dvs. DNS puteți vedea
+    interogările DNS pe care le faceți.  Intra implementează DNS peste protocolul HTTPS în vederea criptării.</string>
+  <string name="default_transport_label">Transport prestabilit</string>
+  <string name="insecure_transport">necriptat</string>
+  <string name="insecure_transport_headline">DNS de bază este necriptat</string>
+  <string name="insecure_transport_body">Majoritatea dispozitivelor și a rețelelor folosesc un DNS de bază, care este necriptat, astfel încât interogările DNS ar putea fi
+    observate sau modificate de orice utilizator din rețea.  Unele dispozitive noi sunt compatibile cu DNS peste protocolul TLS, care
+    vă criptează interogările, dar nu vă poate proteja dacă serverul este rău-intenționat.</string>
+  <string name="server_label">Server DNS securizat</string>
+  <string name="server_headline">Meritați să folosiți un server DNS de încredere</string>
+  <string name="server_body">Acest câmp afișează numele serverului DNS securizat pe care îl folosiți.  Puteți să schimbați și cu
+    un server diferit în meniul Setări.</string>
+  <string name="default_server_label">Server DNS actual</string>
+  <string name="insecure_server_headline">Puteți alege propriul server DNS</string>
+  <string name="insecure_server_body">Când Intra este dezactivată, majoritatea dispozitivelor sunt configurate în prealabil pentru a folosi serverul DNS ales de operatorul dvs. de rețea. Acest câmp indică adresa IP a serverului DNS pe care dispozitivul dvs. îl folosește în acest moment. Folosind Intra sau Android P, puteți selecta cu ușurință serverul dorit.</string>
+  <string name="strict_mode_server_headline">Ați selectat un server sigur</string>
+  <string name="strict_mode_server_body">Acest câmp indică numele serverului DNS pe care l-ați configurat în setarea DNS privată pe Android.  Când Intra este dezactivată, aplicațiile dvs. ar trebui să trimită interogări DNS către acest server.</string>
+  <string name="unknown_server">(server necunoscut)</string>
+  <string name="show_history">Afișați interogările recente</string>
+  <string name="query_label">Interogare</string>
+  <string name="type_label">Tip</string>
+  <string name="latency_label">Latență</string>
+  <string name="resolver_label">Locația rezolvatorului</string>
+  <string name="destination_label">Server de destinație</string>
+  <string name="server_choice">Selectați DNS peste serverul HTTPS</string>
+  <string name="server_choice_summary">În acest moment, %s</string>
+  <string name="server_choice_custom">Adresă URL de server personalizat</string>
+  <string name="server_choice_warning">Serverul personalizat trebuie să fie o adresă URL https:// validă</string>
+  <string name="excluded_apps">Aplicații excluse</string>
+  <string name="excluded_apps_summary">Interogările DNS din aplicațiile selectate nu vor trece prin Intra.  Dacă o aplicație pare să fie
+    incompatibilă cu Intra, o puteți adăuga aici.</string>
+  <string name="excluded_apps_title">Marcați aplicațiile pentru a le exclude din Intra</string>
+  <string name="old_android">Această funcționalitate nu este disponibilă în versiunea dvs. de Android.</string>
+  <string name="notification_title">Protecția DNS este activă</string>
+  <string name="notification_content">Atingeți pentru a modifica setarea de protecție DNS</string>
+  <string name="channel_name">Notificarea privind starea activă a protecției DNS</string>
+  <string name="channel_description">Notificarea se afișează când protecția DNS este activă.</string>
+  <string name="warning_title">Avertisment: Intra a fost dezactivată</string>
+  <string name="warning_channel_name">Avertisment</string>
+  <string name="warning_channel_description">Se afișează când Intra a întâmpinat o eroare.</string>
+</resources>

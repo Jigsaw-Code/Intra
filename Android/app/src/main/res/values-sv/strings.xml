@@ -1,0 +1,95 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Bättre åtkomst till internet</string>
+  <string name="intro_benefit_body">Intra skyddar mot DNS-manipulering, en attack som används för att blockera åtkomsten till nyhetswebbplatser, social media och meddelandeappar.\n\nMed Intra skyddas du mot DNS-manipulering, men det finns andra och mer avancerade blockeringsmetoder och -attacker som Intra inte skyddar mot.</string>
+  <string name="intro_manipulation_headline">Skydd mot DNS-manipulation</string>
+  <string name="intro_manipulation_body">Med Intra skyddas din anslutning till domännamnssystemet (DNS) som tillhandahåller den precisa adressen som behövs för att besöka en webbplats eller öppna en app.\n\nKryptering används i Intra för att säkerställa att dessa inte kan manipuleras så att du tryggt kan använda internet.</string>
+  <string name="intro_details_headline">En sak till …</string>
+  <string name="intro_details_body">Tryck på OK om du vill skydda dina DNS-förfrågningar med Intra. Förfrågningarna dirigeras via Google Public DNS som standard (<a href="https://developers.google.com/speed/public-dns/privacy">sekretesspolicy</a>). Du kan välja en annan tjänst i appinställningarna.</string>
+  <string name="intro_back">tillbaka</string>
+  <string name="intro_next">nästa</string>
+  <string name="intro_accept">godkänn</string>
+  <string name="drawer_open">Öppna navigeringspanelen</string>
+  <string name="drawer_close">Stäng navigeringspanelen</string>
+  <string name="home">Startsida</string>
+  <string name="settings">Inställningar</string>
+  <string name="support">Support</string>
+  <string name="privacy_link">Sekretesspolicy</string>
+  <string name="tos_link">Användarvillkor</string>
+  <string name="source_code">Källkod</string>
+  <string name="credits_text">Intra har skapats av <a href="https://jigsaw.google.com">Jigsaw</a>. IP-bestämda platser baseras på data
+    från DB-IP.com.</string>
+  <string name="indicator_on">På</string>
+  <string name="indicator_off">Av</string>
+  <string name="status_exposed">Sårbar</string>
+  <string name="explanation_exposed">Din aslutning är sårbar för DNS-attacker.</string>
+  <string name="status_protected">Skyddad</string>
+  <string name="explanation_protected">Anslutningen skyddas mot DNS-attacker.</string>
+  <string name="status_upgraded">Riskabel</string>
+  <string name="explanation_upgraded">Anslutningen skyddas för närvarade av privat DNS i Android, men skyddet kan inaktiveras
+    eller försvagas med hjälp av en attack.</string>
+  <string name="status_strict">Skyddas av Android</string>
+  <string name="explanation_strict">Intra har identifierat att inställningen för privat DNS i Android är aktiverad.  Detta innebär att dina DNS-förfrågningar
+    redan skyddas. Du behöver inte aktivera Intra.</string>
+  <string name="status_starting">Startar …</string>
+  <string name="explanation_starting">Ett ögonblick.  Serveranslutning upprättas i Intra.</string>
+  <string name="status_waiting">Väntar …</string>
+  <string name="explanation_offline">Din enhet är offline.  Intra väntar på en nätverksanslutning.</string>
+  <string name="explanation_vpn">En annan VPN på enheten har identifierats av Intra.  Om du aktiverar Intra inaktiveras din VPN.
+    En betrodd VPN är säkrare än Intra.</string>
+  <string name="explanation_failing">Varning! Förfrågningar besvaras inte.  Du kan byta till en annan server och starta om Intra.</string>
+  <string name="system_details">Systemuppgifter</string>
+  <string name="num_requests">Förfrågningar sedan början</string>
+  <string name="num_requests_headline">DNS-förfrågningar innebär att enheten slår upp en domäns IP-adress</string>
+  <string name="num_requests_body">Det här värdet visar antalet DNS-förfrågningar som har gjorts på din enhet medan Intra är
+    aktivt.  Förfrågningarna krypteras i Intra och skickas till en betrodd server för att säkerställa att du
+    får genuina resultat.</string>
+  <string name="queries_per_minute">Senaste förfrågningarna</string>
+  <string name="queries_per_minute_headline">DNS-förfrågningar görs i början av varje anslutning</string>
+  <string name="queries_per_minute_body">Det här värdet visar antalet DNS-förfrågningar som har gjorts på din enhet under den senaste minuten.
+    Det kan krävas över hundra DNS-förfrågningar för att läsa in en avancerad webbsida.</string>
+  <string name="transport_label">Krypterad överföring</string>
+  <string name="transport_headline">Med kryptering skyddas dina förfrågningar från obehöriga</string>
+  <string name="transport_body">Dina DNS-förfrågningar krypteras när du använder Intra så att bara du och DNS-servern kan visa
+    vilka DNS-förfrågningar du gör.  Protokollet DNS över HTTPS används för kryptering i Intra.</string>
+  <string name="default_transport_label">Standardöverföring</string>
+  <string name="insecure_transport">okrypterad</string>
+  <string name="insecure_transport_headline">Grundläggande DNS är okrypterat</string>
+  <string name="insecure_transport_body">Okrypterad, grundläggande DNS används för de flesta nätverk och enheter. Detta innebär att dina DNS-förfrågningar kan
+    visas eller ändras av vem som helst i nätverket.  Stöd för DNS över TLS finns på en del nya enheter. Då krypteras
+    dina förfrågningar men du skyddas inte mot skadliga servrar.</string>
+  <string name="server_label">Säker DNS-server</string>
+  <string name="server_headline">Du måste kunna lita på din DNS-server</string>
+  <string name="server_body">I det här fältet visas namnet på den säkra DNS-servern du använder.  Du kan även byta till
+    en annan server i menyn Inställningar.</string>
+  <string name="default_server_label">Aktuell DNS-server</string>
+  <string name="insecure_server_headline">Du kan välja din egen DNS-server</string>
+  <string name="insecure_server_body">När Intra är inaktiverat är de flesta enheter automatiskt konfigurerade att använda den DNS-server som
+    nätverksleverantören väljer. I det här fältet visas IP-adressen för den DNS-server that som enheten använder
+    för närvarande. Med Intra eller Android P är det enkelt att välja vilken server du vill.</string>
+  <string name="strict_mode_server_headline">Du har valt en säker server</string>
+  <string name="strict_mode_server_body">I det här fältet visas namnet på den DNS-server som du har konfigurerat i inställningen för privat DNS
+    i Android.  När Intra har inaktiverats skickar dina appar DNS-förfrågningar till denna server.</string>
+  <string name="unknown_server">(okänd server)</string>
+  <string name="show_history">Visa de senaste förfrågningarna</string>
+  <string name="query_label">Förfrågan</string>
+  <string name="type_label">Typ</string>
+  <string name="latency_label">Latens</string>
+  <string name="resolver_label">Upplösarens plats</string>
+  <string name="destination_label">Målserver</string>
+  <string name="server_choice">Välj server för DNS över HTTPS</string>
+  <string name="server_choice_summary">Nuvarande: %s</string>
+  <string name="server_choice_custom">Anpassad serverwebbadress</string>
+  <string name="server_choice_warning">Anpassad server måste ha en giltig https://-adress Webbadress</string>
+  <string name="excluded_apps">Uteslutna appar</string>
+  <string name="excluded_apps_summary">DNS-förfrågningar från valda appar görs inte via Intra.  Du kan lägga till appar
+    som inte verkar vara kompatibla med Intra här.</string>
+  <string name="excluded_apps_title">Markera de appar som ska uteslutas från Intra</string>
+  <string name="old_android">Den här funktionen är inte tillgänglig i din version av Android.</string>
+  <string name="notification_title">DNS-skydd är aktivt</string>
+  <string name="notification_content">Tryck för att ändra inställning för DNS-skydd</string>
+  <string name="channel_name">Aktivitetsavisering för DNS-skydd</string>
+  <string name="channel_description">Den här aviseringen visas när DNS-skyddet är aktivt.</string>
+  <string name="warning_title">Varning! Intra har inaktiverats</string>
+  <string name="warning_channel_name">Varning</string>
+  <string name="warning_channel_description">Visas när ett problem har uppstått i Intra.</string>
+</resources>

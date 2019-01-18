@@ -1,0 +1,89 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">ज़्यादा खुला इंटरनेट एक्सेस</string>
+  <string name="intro_benefit_body">Intra आपको DNS फेरबदल से सुरक्षित रखता है. DNS फेरबदल एक तरह का साइबर हमला है, जिसका इस्तेमाल नई साइटों, सोशल मीडिया प्लैटफ़ॉर्म, और मैसेज सेवा ऐप्लिकेशन के एक्सेस को ब्लॉक करने में किया जाता है.\n\nIntra आपको DNS फेरबदल से सुरक्षित रखता है. हालांकि, ब्लॉक करने और हमले संबंधी ऐसी दूसरी ज़्यादा जटिल तकनीकें हैं, जिनसे Intra आपको सुरक्षित नहीं रख पाता.</string>
+  <string name="intro_manipulation_headline">DNS फेरबदल से सुरक्षा</string>
+  <string name="intro_manipulation_body">Intra आपके कनेक्शन को डोमेन नाम सिस्टम (DNS) के लिए सुरक्षित रखता है, जो किसी वेबसाइट या कोई ऐप्लिकेशन खोलने के लिए आपको एकदम सही पता देता है.\n\nIntra यह पक्का करने के लिए एन्क्रिप्शन का इस्तेमाल करता है कि नतीजों में फेरबदल नहीं किया जा सके, साथ ही यह आपको सुरक्षित ढंग से इंटरनेट को एक्सेस करने में मदद करता है.</string>
+  <string name="intro_details_headline">एक आखिरी बात…</string>
+  <string name="intro_details_body">Intra को आपके DNS अनुरोधों को सुरक्षित करने की अनुमति देने के लिए \'ठीक है\' पर टैप करें. डिफ़ॉल्ट रूप से, उन्हें Google की सार्वजनिक DNS सेवा (<a href="https://developers.google.com/speed/public-dns/privacy">निजता नीति</a>) पर रूट कर दिया जाएगा. आप ऐप्लिकेशन सेटिंग में दूसरी सेवा चुन सकते हैं.</string>
+  <string name="intro_back">वापस</string>
+  <string name="intro_next">आगे</string>
+  <string name="intro_accept">स्वीकार करें</string>
+  <string name="drawer_open">नेविगेशन पैनल खोलें</string>
+  <string name="drawer_close">नेविगेशन पैनल बंद करें</string>
+  <string name="home">होम पेज</string>
+  <string name="settings">सेटिंग</string>
+  <string name="support">सहायता</string>
+  <string name="privacy_link">निजता नीति</string>
+  <string name="tos_link">सेवा की शर्तें</string>
+  <string name="source_code">स्रोत कोड</string>
+  <string name="credits_text">Intra को <a href="https://jigsaw.google.com">Jigsaw</a> ने बनाया है. IP जगहें
+    DB-IP.com के डेटा पर आधारित होती हैं.</string>
+  <string name="indicator_on">चालू</string>
+  <string name="indicator_off">बंद</string>
+  <string name="status_exposed">प्रदर्शित किया गया</string>
+  <string name="explanation_exposed">आपके कनेक्शन को DNS हमलों का जोखिम है.</string>
+  <string name="status_protected">सुरक्षित</string>
+  <string name="explanation_protected">आपका कनेक्शन DNS हमलों से सुरक्षित है.</string>
+  <string name="status_upgraded">जोखिम में</string>
+  <string name="explanation_upgraded">अभी आपका कनेक्शन Android निजी DNS से सुरक्षित है, लेकिन कोई हमलावर इस सुरक्षा को बंद
+    या कमज़ोर कर सकता है.</string>
+  <string name="status_strict">Android की सुरक्षा</string>
+  <string name="explanation_strict">Intra ने इस बात का पता लगाया कि Android निजी DNS सेटिंग चालू है.  इसका मतलब है कि आपकी DNS
+    क्वेरी पहले से सुरक्षित हैं, इसलिए Intra को चालू करने की कोई ज़रूरत नहीं है.</string>
+  <string name="status_starting">शुरू हो रहा है…</string>
+  <string name="explanation_starting">देखते रहें!  Intra एक सर्वर कनेक्शन बना रहा है.</string>
+  <string name="status_waiting">इंतज़ार किया जा रहा है…</string>
+  <string name="explanation_offline">आपका डिवाइस ऑफ़लाइन है.  Intra, नेटवर्क कनेक्शन का इंतज़ार कर रहा है.</string>
+  <string name="explanation_vpn">Intra को आपके डिवाइस पर किसी दूसरे VPN का पता लगा.  अगर आप Intra चालू करते हैं, तो वह VPN बंद कर दिया जाएगा.
+    Intra किसी भरोसेमंद VPN जितना सुरक्षित नहीं है.</string>
+  <string name="explanation_failing">चेतावनी : क्वेरी विफल हो रही हैं.  आप कोई अलग सर्वर चुन सकते हैं और Intra को रीस्टार्ट कर सकते हैं.</string>
+  <string name="system_details">सिस्टम की जानकारी</string>
+  <string name="num_requests">हमेशा के लिए क्वेरी</string>
+  <string name="num_requests_headline">DNS क्वेरी तब होती हैं जब आपका डिवाइस किसी डोमेन नाम के लिए IP पता खोजता है</string>
+  <string name="num_requests_body">यह मान DNS क्वेरी की कुल संख्या दिखाता है जिसे आपके डिवाइस ने Intra के चालू रहने के दौरान की है.  Intra इन क्वेरी को एन्क्रिप्ट करता है और यह पक्का करने के लिए उन्हें भरोसेमंद सर्वर पर भेजता है कि आपको
+    प्रामाणिक नतीजे मिल रहे हैं.</string>
+  <string name="queries_per_minute">हाल ही की क्वेरी</string>
+  <string name="queries_per_minute_headline">DNS क्वेरी हर कनेक्शन की शुरुआत में होती हैं</string>
+  <string name="queries_per_minute_body">यह मान DNS क्वेरी की वह संख्या दिखाता है जिन्हें आपका डिवाइस आखिरी समय में करता है.
+    जटिल वेबपेज को लोड करने के लिए सैकड़ों DNS क्वेरी की ज़रूरत हो सकती है.</string>
+  <string name="transport_label">एन्क्रिप्ट किया गया ट्रांसपोर्ट</string>
+  <string name="transport_headline">एन्क्रिप्शन जासूसी करने वालों से आपकी क्वेरी की सुरक्षा करता है</string>
+  <string name="transport_body">जब आप Intra का इस्तेमाल करते हैं, तो आपकी DNS क्वेरी एन्क्रिप्ट हो जाती हैं, ताकि सिर्फ़ आप और DNS सर्वर यह देख सकें कि आप कौनसी DNS क्वेरी कर रहे हैं.  Intra एन्क्रिप्शन के लिए DNS पर HTTPS प्रोटोकॉल को लागू करता है.</string>
+  <string name="default_transport_label">डिफ़ॉल्ट ट्रांसपोर्ट</string>
+  <string name="insecure_transport">एन्क्रिप्ट नहीं किया गया</string>
+  <string name="insecure_transport_headline">मूल DNS एन्क्रिप्ट नहीं किया गया है</string>
+  <string name="insecure_transport_body">ज़्यादातर डिवाइस और नेटवर्क मूल DNS का इस्तेमाल करते हैं, जो एन्क्रिप्ट किया गया नहीं होता, इसलिए नेटवर्क का कोई भी व्यक्ति आपकी DNS क्वेरी की निगरानी कर सकता है या उन्हें बदल सकता है.  कुछ नए डिवाइस TLS के बजाए DNS पर काम करते हैं, जो
+    आपकी क्वेरी को एन्क्रिप्ट करता है, लेकिन अगर सर्वर नुकसान पहुंचाने वाला है, तो आपकी सुरक्षा नहीं कर सकता.</string>
+  <string name="server_label">सुरक्षित DNS सर्वर</string>
+  <string name="server_headline">आपको एक भरोसेमंद DNS सर्वर का इस्तेमाल करना चाहिए</string>
+  <string name="server_body">यह फ़ील्ड उस सुरक्षित DNS सर्वर का नाम दिखाता है जिसका आप अभी इस्तेमाल कर रहे हैं.  आप सेटिंग मेन्यू में
+    किसी अलग सर्वर में भी बदल सकते हैं.</string>
+  <string name="default_server_label">मौजूदा DNS सर्वर</string>
+  <string name="insecure_server_headline">आप खुद का DNS सर्वर चुन सकते हैं</string>
+  <string name="insecure_server_body">जब Intra बंद होता है, तो ज़्यादातर डिवाइस उन DNS सर्वर का इस्तेमाल करने के लिए पहले से कॉन्फ़िगर होते हैं, जिन्हें आपका नेटवर्क ऑपरेटर चुनता है. यह फ़ील्ड उस DNS सर्वर का आईपी पता दिखाता है जिसका इस्तेमाल आपका डिवाइस अभी कर रहा है. Intra या Android P के साथ, आप आसानी से अपनी पसंद का सर्वर चुन सकते हैं.</string>
+  <string name="strict_mode_server_headline">आपने एक सुरक्षित सर्वर चुना है</string>
+  <string name="strict_mode_server_body">यह फ़ील्ड उस DNS सर्वर का नाम दिखाता है जिसे आपने Android की निजी DNS सेटिंग में कॉन्फ़िगर किया है.  जब Intra बंद होता है, तो आपके ऐप्लिकेशन इस सर्वर को DNS क्वेरी भेजेंगे.</string>
+  <string name="unknown_server">(अनजान सर्वर)</string>
+  <string name="show_history">हाल ही की क्वेरी दिखाएं</string>
+  <string name="query_label">क्वेरी</string>
+  <string name="type_label">प्रकार</string>
+  <string name="latency_label">इंतज़ार का समय</string>
+  <string name="resolver_label">रिज़ॉल्वर स्थान</string>
+  <string name="destination_label">मंज़िल सर्वर</string>
+  <string name="server_choice">HTTPS सर्वर के बजाए DNS चुनें</string>
+  <string name="server_choice_summary">अभी %s</string>
+  <string name="server_choice_custom">कस्टम सर्वर यूआरएल</string>
+  <string name="server_choice_warning">कस्टम सर्वर एक मान्य https:// यूआरएल होना चाहिए</string>
+  <string name="excluded_apps">अलग रखे गए ऐप्लिकेशन</string>
+  <string name="excluded_apps_summary">किसी भी चुने गए ऐप्लिकेशन की DNS क्वेरी Intra से होकर नहीं गुजरेगी.  अगर कोई ऐप्लिकेशन
+    Intra से असंगत लग रहा है, तो आप उसे यहां जोड़ सकते हैं.</string>
+  <string name="excluded_apps_title">ऐप्लिकेशन को Intra से बाहर रखने के लिए चिह्नित करें</string>
+  <string name="old_android">यह सुविधा आपके Android के वर्शन के लिए मौजूद नहीं है.</string>
+  <string name="notification_title">DNS सुरक्षा चालू है</string>
+  <string name="notification_content">DNS सुरक्षा सेटिंग बदलने के लिए टैप करें</string>
+  <string name="channel_name">DNS सुरक्षा चालू सूचना</string>
+  <string name="channel_description">DNS सुरक्षा के चालू होने पर यह सूचना दिखाई देती है.</string>
+  <string name="warning_title">चेतावनी : Intra को बंद किया गया है</string>
+  <string name="warning_channel_name">चेतावनी</string>
+  <string name="warning_channel_description">जब Intra को कोई समस्या होती है तब दिखाया जाता है.</string>
+</resources>

@@ -1,0 +1,95 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Acesso mais aberto à Internet</string>
+  <string name="intro_benefit_body">O Intra protege-o da manipulação de DNS, um ciberataque utilizado para bloquear o acesso a novos sites, plataformas de redes sociais e aplicações de mensagens.\n\nEmbora o Intra o proteja da manipulação de DNS, existem outras técnicas de bloqueio e ataques mais complicados dos quais o Intra não o protege.</string>
+  <string name="intro_manipulation_headline">Proteção contra a manipulação de DNS</string>
+  <string name="intro_manipulation_body">O Intra protege a sua ligação ao Sistema de Nomes de Domínio (DNS), que fornece os endereços exatos de que precisa para visitar um website ou abrir uma aplicação.\n\nO Intra utiliza a encriptação para garantir que não é possível manipular os resultados, o que o ajuda a aceder à Internet em segurança.</string>
+  <string name="intro_details_headline">Uma última coisa…</string>
+  <string name="intro_details_body">Toque em OK para permitir que o Intra proteja os seus pedidos DNS. Por predefinição, serão encaminhados para o DNS público da Google (<a href="https://developers.google.com/speed/public-dns/privacy">Política de Privacidade</a>). Pode escolher outro serviço nas definições da aplicação.</string>
+  <string name="intro_back">anterior</string>
+  <string name="intro_next">seguinte</string>
+  <string name="intro_accept">aceitar</string>
+  <string name="drawer_open">Abrir a gaveta de navegação</string>
+  <string name="drawer_close">Fechar gaveta de navegação</string>
+  <string name="home">Página inicial</string>
+  <string name="settings">Definições</string>
+  <string name="support">Apoio técnico</string>
+  <string name="privacy_link">Política de Privacidade</string>
+  <string name="tos_link">Termos de Utilização</string>
+  <string name="source_code">Código-fonte</string>
+  <string name="credits_text">O Intra foi criado pela <a href="https://jigsaw.google.com">Jigsaw</a>. As localizações IP são baseadas nos dados
+    da DB-IP.com.</string>
+  <string name="indicator_on">Ativado</string>
+  <string name="indicator_off">Desativado</string>
+  <string name="status_exposed">Expostas</string>
+  <string name="explanation_exposed">A sua ligação está exposta a ataques de DNS.</string>
+  <string name="status_protected">Protegido</string>
+  <string name="explanation_protected">A sua ligação está protegida contra ataques de DNS.</string>
+  <string name="status_upgraded">Vulnerável</string>
+  <string name="explanation_upgraded">A sua ligação encontra-se protegida pelo DNS Privado do Android, mas um atacante pode
+    desativar ou comprometer esta proteção.</string>
+  <string name="status_strict">Protegida pelo Android</string>
+  <string name="explanation_strict">O Intra detetou que a definição de DNS Privado do Android está ativada.  Isto significa que as suas
+    consultas DNS já estão protegidas, não é necessário ativar o Intra.</string>
+  <string name="status_starting">A iniciar…</string>
+  <string name="explanation_starting">Aguarde.  O Intra está a estabelecer uma ligação ao servidor.</string>
+  <string name="status_waiting">A aguardar…</string>
+  <string name="explanation_offline">O seu dispositivo está offline.  O Intra está a aguardar por uma ligação de rede.</string>
+  <string name="explanation_vpn">O Intra detetou outra VPN no seu dispositivo.  Se ativar o Intra, essa VPN será desativada.
+    O Intra não é tão seguro como uma VPN fidedigna.</string>
+  <string name="explanation_failing">Aviso: As consultas estão a falhar.  É recomendável que opte por um servidor diferente e reinicie o Intra.</string>
+  <string name="system_details">Detalhes do sistema</string>
+  <string name="num_requests">Consultas desde sempre</string>
+  <string name="num_requests_headline">As consultas DNS ocorrem quando o seu dispositivo procura um nome de domínio no endereço IP.</string>
+  <string name="num_requests_body">Este valor indica o número total de consultas DNS que o seu dispositivo realizou enquanto o Intra
+    esteve ativo.  O Intra encripta estas consultas e envia-as a um servidor fidedigno para garantir que está
+    a obter resultados autênticos.</string>
+  <string name="queries_per_minute">Consultas recentes</string>
+  <string name="queries_per_minute_headline">As consultas DNS ocorrem no início de cada ligação.</string>
+  <string name="queries_per_minute_body">Este valor apresenta o número de consultas DNS que o seu dispositivo realizou no último minuto.
+    O carregamento de uma página Web complexa pode exigir mais de cem consultas DNS.</string>
+  <string name="transport_label">Transporte encriptado</string>
+  <string name="transport_headline">A encriptação protege a confidencialidade das suas consultas</string>
+  <string name="transport_body">Quando utiliza o Intra, as suas consultas de DNS são encriptadas para que apenas o utilizador e o seu servidor DNS possam ver
+    as consultas DNS que está a efetuar.  O Intra implementa o protocolo DNS over HTTPS para encriptação.</string>
+  <string name="default_transport_label">Transporte predefinido</string>
+  <string name="insecure_transport">não encriptado</string>
+  <string name="insecure_transport_headline">O DNS básico não está encriptado</string>
+  <string name="insecure_transport_body">A maioria dos dispositivos e redes utilizam um DNS básico, que não é encriptado, por isso as suas consultas DNS podem ser
+    observadas ou modificadas por qualquer pessoa que se encontre na rede.  Alguns dispositivos novos suportam DNS over TLS,
+    que encripta as suas consultas mas não consegue protegê-lo se o servidor for malicioso.</string>
+  <string name="server_label">Servidor DNS seguro</string>
+  <string name="server_headline">Merece utilizar um servidor DNS de confiança.</string>
+  <string name="server_body">Este campo apresenta o nome do servidor DNS seguro que está a utilizar.  Também pode mudar para um
+    servidor diferente no menu Definições.</string>
+  <string name="default_server_label">Servidor DNS atual</string>
+  <string name="insecure_server_headline">Pode escolher o seu próprio servidor DNS</string>
+  <string name="insecure_server_body">Quando o Intra está desativado, a maioria dos dispositivos é pré-configurada para utilizar o servidor DNS escolhido pelo seu
+    operador de rede. Este campo mostra o endereço IP do servidor DNS que o seu dispositivo está a
+    utilizar. Com o Intra ou o Android P, pode selecionar facilmente um servidor da sua escolha.</string>
+  <string name="strict_mode_server_headline">Selecionou um servidor seguro</string>
+  <string name="strict_mode_server_body">Este campo apresenta o nome do servidor DNS que configurou na definição de DNS Privado do
+    Android.  Quando o Intra está desativado, as suas aplicações devem enviar consultas DNS a este servidor.</string>
+  <string name="unknown_server">(servidor desconhecido)</string>
+  <string name="show_history">Mostrar consultas recentes</string>
+  <string name="query_label">Consulta</string>
+  <string name="type_label">Tipo</string>
+  <string name="latency_label">Latência</string>
+  <string name="resolver_label">Localização do resolvedor</string>
+  <string name="destination_label">Servidor de destino</string>
+  <string name="server_choice">Selecionar Servidor DNS over HTTPS</string>
+  <string name="server_choice_summary">Atualmente %s</string>
+  <string name="server_choice_custom">URL de servidor personalizado</string>
+  <string name="server_choice_warning">O servidor personalizado tem de ser um https:// válido URL</string>
+  <string name="excluded_apps">Aplicações excluídas</string>
+  <string name="excluded_apps_summary">As consultas DNS das aplicações selecionadas não passam pelo Intra.  Se uma aplicação aparentar ser
+    incompatível com o Intra, pode adicioná-la aqui.</string>
+  <string name="excluded_apps_title">Marcar aplicações para exclusão do Intra</string>
+  <string name="old_android">Esta funcionalidade não está disponível na sua versão do Android.</string>
+  <string name="notification_title">A proteção de DNS está ativa</string>
+  <string name="notification_content">Toque para alterar a definição de proteção DNS</string>
+  <string name="channel_name">Notificação de proteção DNS ativa</string>
+  <string name="channel_description">Esta notificação é apresentada quando a proteção de DNS está ativa.</string>
+  <string name="warning_title">Aviso: o Intra foi desativado</string>
+  <string name="warning_channel_name">Aviso</string>
+  <string name="warning_channel_description">Apresentado quando o Intra encontra um problema.</string>
+</resources>

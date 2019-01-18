@@ -1,0 +1,91 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Higit pang bukas na access sa internet</string>
+  <string name="intro_benefit_body">Pinoprotektahan ka ng Intra mula sa pagmamanipula ng DNS, isang cyber attack na ginagamit para i-block ang access sa mga site ng balita, social media platform, at mga app sa pagmemensahe.\n\nHabang pinoprotektahan ka ng Intra laban sa pagmamanipula ng DNS, may iba pang higit na kumplikadong mga pamamaraan ng pag-block at pang-aatake na hindi napoprotektahan ng Intra.</string>
+  <string name="intro_manipulation_headline">Proteksyon mula sa pagmamanipula ng DNS</string>
+  <string name="intro_manipulation_body">Pinoprotektahan ng Intra ang iyong koneksyon sa Domain Name System (DNS), na nagbibigay ng mga eksaktong address na kailangan mo para bumisita sa isang website o buksan ang isang app.\n\nGumagamit ang Intra ng pag-encrypt para matiyak na hindi maaaring manipulahin ang mga resulta, na tutulong sa iyong ligtas na ma-access ang internet.</string>
+  <string name="intro_details_headline">Isa na lang…</string>
+  <string name="intro_details_body">I-tap ang OK para payagan ang Intra na protektahan ang iyong mga kahilingan sa DNS. Bilang default, idadaan ang mga ito sa Pampublikong DNS ng Google (<a href="https://developers.google.com/speed/public-dns/privacy">Patakaran sa Privacy</a>). Maaari kang pumili ng ibang serbisyo sa mga setting ng app.</string>
+  <string name="intro_back">bumalik</string>
+  <string name="intro_next">susunod</string>
+  <string name="intro_accept">tanggapin</string>
+  <string name="drawer_open">Buksan ang navigation drawer</string>
+  <string name="drawer_close">Isara ang navigation drawer</string>
+  <string name="home">Home</string>
+  <string name="settings">Mga Setting</string>
+  <string name="support">Suporta</string>
+  <string name="privacy_link">Patakaran sa Privacy</string>
+  <string name="tos_link">Mga Tuntunin ng Serbisyo</string>
+  <string name="source_code">Source Code</string>
+  <string name="credits_text">Ang Intra ay ginawa ng <a href="https://jigsaw.google.com">Jigsaw</a>. Ang mga lokasyon ng IP ay batay sa data
+    na mula sa DB-IP.com.</string>
+  <string name="indicator_on">Naka-on</string>
+  <string name="indicator_off">Naka-off</string>
+  <string name="status_exposed">Nakalantad</string>
+  <string name="explanation_exposed">Nakalantad ang iyong koneksyon sa mga pang-aatake ng DNS.</string>
+  <string name="status_protected">Protektado</string>
+  <string name="explanation_protected">Ang iyong koneksyon ay pinoprotektahan mula sa mga pang-aatake ng DNS.</string>
+  <string name="status_upgraded">Mahina</string>
+  <string name="explanation_upgraded">Kasalukuyang pinoprotektahan ang iyong koneksyon ng Pribadong DNS ng Android, ngunit maaaring i-disable
+    o pahinain ng isang nang-aatake ang proteksyong ito.</string>
+  <string name="status_strict">Pinoprotektahan ng Android</string>
+  <string name="explanation_strict">Na-detect ng Intra na naka-enable ang setting ng Pribadong DNS ng Android.  Nangangahulugan ito na ang iyong mga query sa DNS
+    ay pinoprotektahan na, kaya hindi na kailangang i-enable ang Intra.</string>
+  <string name="status_starting">Sinisimulan…</string>
+  <string name="explanation_starting">Maghintay.  Bumubuo ang Intra ng koneksyon sa server.</string>
+  <string name="status_waiting">Naghihintay…</string>
+  <string name="explanation_offline">Offline ang iyong device.  Naghihintay ng koneksyon ng network ang Intra.</string>
+  <string name="explanation_vpn">May na-detect ang Intra na isa pang VPN sa iyong device.  Kung ie-enable mo ang Intra, idi-disable ang VPN na iyon.
+    Ang Intra ay hindi kasing secure ng isang pinagkakatiwalaang VPN.</string>
+  <string name="explanation_failing">Babala: Hindi matagumpay ang mga query.  Maaaring gustuhin mong pumili ng ibang server at i-restart ang Intra.</string>
+  <string name="system_details">Mga detalye ng system</string>
+  <string name="num_requests">Panghabambuhay na mga query</string>
+  <string name="num_requests_headline">Nangyayari ang mga query sa DNS kapag hinahanap ng iyong device ang IP address para sa isang domain name</string>
+  <string name="num_requests_body">Ipinapakita ng value na ito ang kabuuang bilang ng mga query sa DNS na ginawa ng iyong device habang aktibo ang Intra.  Ini-encrypt ng Intra ang mga query na ito at ipinapadala ang mga ito sa isang pinagkakatiwalaang server para tiyakin na
+    nakakakuha ka ng mga tunay na resulta.</string>
+  <string name="queries_per_minute">Mga kamakailang query</string>
+  <string name="queries_per_minute_headline">Nangyayari ang mga query sa DNS sa simula ng bawat koneksyon</string>
+  <string name="queries_per_minute_body">Ipinapakita ng value na ito ang bilang ng mga query sa DNS na ginawa ng iyong device sa huling pagkakataon.
+    Ang pag-load ng masalimuot na webpage ay maaaring mangailangan ng higit sa isang daan na query sa DNS.</string>
+  <string name="transport_label">Naka-encrypt na paghahatid</string>
+  <string name="transport_headline">Pinoprotektahan ng pag-encrypt ang iyong mga query mula sa mga mapang-usisang mata</string>
+  <string name="transport_body">Kapag ginagamit mo ang Intra, ini-encrypt ang iyong mga query sa DNS, para ikaw lang at ang iyong DNS server ang
+    makakakita ng mga query sa DNS na ginagawa mo.  Ipinapatupad ng Intra ang DNS sa HTTPS na protocol para sa pag-encrypt.</string>
+  <string name="default_transport_label">Default na paghahatid</string>
+  <string name="insecure_transport">hindi naka-encrypt</string>
+  <string name="insecure_transport_headline">Hindi naka-encrypt ang Basic na DNS</string>
+  <string name="insecure_transport_body">Ang karamihan ng device at network ay gumagamit ng basic na DNS, na hindi naka-encrypt, kaya ang iyong mga query sa DNS ay maaaring
+    obserbahan o baguhin ng sinumang nasa network.  Sinusuportahan ng ilang bagong device ang DNS kaysa sa TLS, na
+    nag-eencrypt sa iyong mga query ngunit hindi ka mapoprotektahan kung nakakapinsala ang server.</string>
+  <string name="server_label">Secure na DNS server</string>
+  <string name="server_headline">Nararapat kang gumamit ng mapagkakatiwalaang DNS server</string>
+  <string name="server_body">Ipinapakita ng field na ito ang pangalan ng secure na DNS server na ginagamit mo.  Maaari ka ring lumipat sa
+    ibang server sa menu ng Mga Setting.</string>
+  <string name="default_server_label">Kasalukuyang DNS server</string>
+  <string name="insecure_server_headline">Maaari kang pumili ng sarili mong DNS server</string>
+  <string name="insecure_server_body">Kapag naka-disable ang Intra, ang karamihan ng device ay na-configure na nang maaga para gamitin ang DNS server na pipiliin ng iyong operator ng network. Ipinapakita ng field na ito ang IP address ng DNS server na kasalukuyang ginagamit ng iyong device. Sa Intra o Android P, madali kang makakapili ng server na gusto mo.</string>
+  <string name="strict_mode_server_headline">Pumili ka ng isang secure na server</string>
+  <string name="strict_mode_server_body">Ipinapakita ng field na ito ang pangalan ng DNS server na na-configure mo sa setting ng Pribadong DNS ng Android.  Kapag naka-disable ang Intra, ang iyong mga app ay dapat magpadala ng mga query sa DNS sa server na ito.</string>
+  <string name="unknown_server">(hindi kilalang server)</string>
+  <string name="show_history">Ipakita ang mga kamakailang query</string>
+  <string name="query_label">Query</string>
+  <string name="type_label">Uri</string>
+  <string name="latency_label">Latency</string>
+  <string name="resolver_label">Lokasyon ng resolver</string>
+  <string name="destination_label">Server ng patutunguhan</string>
+  <string name="server_choice">Piliin ang DNS kaysa sa HTTPS na Server</string>
+  <string name="server_choice_summary">Kasalukuyan ay %s</string>
+  <string name="server_choice_custom">Custom na URL ng server</string>
+  <string name="server_choice_warning">Ang custom na server ay dapat isang valid na https:// URL</string>
+  <string name="excluded_apps">Mga hindi kasamang app</string>
+  <string name="excluded_apps_summary">Ang mga query sa DNS mula sa anumang piling app ay hindi sasailalim sa Intra.  Kung ang isang app ay mukhang
+    hindi compatible sa Intra, maaari mo itong idagdag dito.</string>
+  <string name="excluded_apps_title">Markahan ang mga app para hindi isama sa Intra</string>
+  <string name="old_android">Hindi available ang functionality na ito sa iyong bersyon ng Android.</string>
+  <string name="notification_title">Aktibo ang proteksyon ng DNS</string>
+  <string name="notification_content">I-tap para baguhin ang setting ng proteksyon ng DNS</string>
+  <string name="channel_name">Notification para sa Aktibong Proteksyon ng DNS</string>
+  <string name="channel_description">Lumalabas ang notification na ito habang aktibo ang proteksyon ng DNS.</string>
+  <string name="warning_title">Babala: Na-deactivate na ang Intra</string>
+  <string name="warning_channel_name">Babala</string>
+  <string name="warning_channel_description">Ipinapakita kapag nagkaroon ng problema ang Intra.</string>
+</resources>
