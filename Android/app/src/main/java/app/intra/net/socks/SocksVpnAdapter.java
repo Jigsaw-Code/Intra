@@ -105,7 +105,11 @@ public class SocksVpnAdapter extends VpnAdapter {
     final String fakeDnsIp = LanIp.DNS.make(IPV4_TEMPLATE);
     final String fakeDnsAddress = fakeDnsIp + ":" + DNS_DEFAULT_PORT;
     final String ipv4Router = LanIp.ROUTER.make(IPV4_TEMPLATE);
-    final String ipv6Router = LanIp.ROUTER.make(IPV6_TEMPLATE);
+    // Disable IPv6 due to apparent lack of Happy Eyeballs fallback in the Facebook apps, when
+    // using Intra on IPv4-only networks.
+    // TODO: Re-enable IPv6 once we solve this compatibility problem.  This might require swapping
+    // the tunfd to enable/disable v6 when moving between v4only and non-v4only networks.
+    final String ipv6Router = null;
 
     // Proxy parameters
     InetSocketAddress fakeDns = new InetSocketAddress(fakeDnsIp, DNS_DEFAULT_PORT);
