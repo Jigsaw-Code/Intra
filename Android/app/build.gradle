@@ -21,8 +21,8 @@ android {
         applicationId "app.intra"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 29
-        versionName "1.0.10"
+        versionCode 30
+        versionName "1.1.0"
         vectorDrawables.useSupportLibrary = true
         // Fix a build error related to having log4j in the classpath.
         javaCompileOptions {
