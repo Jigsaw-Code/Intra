@@ -257,6 +257,7 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
     // This task is only non-null during the interval when we have sent the first flight of an
     // HTTPS connection and are waiting for a reply.
     TimerTask timeoutTask;
+    boolean timeoutExceeded = false;
 
     // The upload buffer is only intended to hold the first flight from the client.
     // It is only used for HTTPS, and is null after the first flight.
@@ -360,6 +361,7 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
       timeoutTask = new TimerTask() {
         @Override
         public void run() {
+          timeoutExceeded = true;
           pipe.removePipeListener(listener);
           onError(pipe, new Exception(TIMEOUT_MESSAGE));
           onStop(pipe);
@@ -421,10 +423,13 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
     // Prepare an EARLY_RESET event to collect metrics on success rates for splitting:
     // - BYTES : Amount uploaded before reset
     // - CHUNKS : Number of upload writes before reset
+    // - TIMEOUT : Whether the initial connection failed with a timeout.
+    // - SPLIT : Number of bytes included in the first retry segment
     // - RETRY : 1 if retry succeeded, otherwise 0
     Bundle event = new Bundle();
     event.putInt(Names.BYTES.name(), listener.uploadBytes);
     event.putInt(Names.CHUNKS.name(), listener.uploadCount);
+    event.putInt(Names.TIMEOUT.name(), listener.timeoutExceeded ? 1 : 0);
 
     try {
 
