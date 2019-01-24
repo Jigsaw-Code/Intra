@@ -31,6 +31,7 @@ public enum Names {
   RESULT,
   RETRY,
   SPLIT,
+  TIMEOUT,
   TCP_HANDSHAKE_MS,
   TRANSACTION,
 }
