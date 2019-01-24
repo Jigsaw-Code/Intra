@@ -444,20 +444,18 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
       // Send the remainder in a second packet.
       socketUpload.write(listener.uploadBuffer.array(), offset + split, length - split);
 
-      StatsListener newListener = runPipes(upload, download, listener.port, -1);
+      listener = runPipes(upload, download, listener.port, -1);
 
       // Account for the retried segment.
-      newListener.uploadBytes += length;
-      newListener.uploadCount += 2;
+      listener.uploadBytes += length;
+      listener.uploadCount += 2;
 
-      event.putInt(Names.RETRY.name(), newListener.downloadBytes > 0 ? 1 : 0);
-      FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
-
-      return newListener;
+      event.putInt(Names.RETRY.name(), listener.downloadBytes > 0 ? 1 : 0);
     } catch (IOException e) {
       // Retry failed.
       event.putInt(Names.RETRY.name(), 0);
     }
+    FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
     return listener;
   }
 }
