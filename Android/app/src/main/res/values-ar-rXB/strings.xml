@@ -1,32 +1,21 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">‏‮A‬‏ ‏‮safer‬‏ ‏‮route‬‏ ‏‮to‬‏ ‏‮a‬‏ ‏‮more‬‏ ‏‮open‬‏ ‏‮internet‬‏</string>
-  <string name="intro_benefit_body">‏‮When‬‏ ‏‮you‬‏ ‏‮use‬‏ ‏‮the‬‏ ‏‮internet‬‏, ‏‮your‬‏ ‏‮device‬‏ ‏‮needs‬‏ ‏‮to‬‏ ‏‮look‬‏ ‏‮up‬‏ ‏‮addresses‬‏ ‏‮in‬‏ ‏‮an‬‏ ‏‮internet‬‏ ‏‮contact‬‏ ‏‮list‬‏. ‏‮Sometimes‬‏ ‏‮your‬‏ ‏‮connection‬‏ ‏‮can‬‏ ‏‮give‬‏ ‏‮you‬‏ ‏‮the‬‏ ‏‮wrong‬‏ ‏‮address‬‏.</string>
-  <string name="intro_manipulation_headline">‏‮Protection‬‏ ‏‮from‬‏ ‏‮wrong‬‏ ‏‮addresses‬‏</string>
-  <string name="intro_manipulation_body">‏‮Intra‬‏ ‏‮protects‬‏ ‏‮you‬‏ ‏‮from‬‏ ‏‮getting‬‏ ‏‮bad‬‏ ‏‮addresses‬‏ ‏‮that‬‏ ‏‮lead‬‏ ‏‮to‬‏ ‏‮dead‬‏ ‏‮ends‬‏ (‏‮DNS‬‏ ‏‮manipulation‬‏) ‏‮by‬‏ ‏‮encrypting‬‏ ‏‮your‬‏ ‏‮DNS‬‏ ‏‮connection‬‏.</string>
-  <string name="intro_details_headline">‏‮Intra‬‏ ‏‮needs‬‏ ‏‮to‬‏ ‏‮monitor‬‏ ‏‮network‬‏ ‏‮traffic‬‏ ‏‮to‬‏ ‏‮enable‬‏ ‏‮protection‬‏</string>
-  <string name="intro_details_body">‏‮Tap‬‏ ‏‮OK‬‏ ‏‮when‬‏ ‏‮you‬‏ ‏‮see‬‏ ‏‮the‬‏ ‏‮conection‬‏ ‏‮request‬‏ ‏‮to‬‏ ‏‮get‬‏ ‏‮started‬‏. ‏‮By‬‏ ‏‮default‬‏, ‏‮your‬‏ ‏‮queries‬‏ ‏‮will‬‏ ‏‮be‬‏ ‏‮routed‬‏ ‏‮to‬‏ ‏‮Google‬‏ ‏‮Public‬‏ ‏‮DNS‬‏ (<a href="https://developers.google.com/speed/public-dns/privacy">‏‮Privacy‬‏ ‏‮Policy‬‏</a>). ‏‮You‬‏ ‏‮can‬‏ ‏‮choose‬‏ ‏‮another‬‏ ‏‮service‬‏ ‏‮in‬‏ ‏‮the‬‏ ‏‮app‬‏ ‏‮settings‬‏.</string>
-  <string name="intro_back">back</string>
-  <string name="intro_next">next</string>
-  <string name="intro_accept">accept</string>
-  <string name="about_headline">‏‮Honest‬‏ ‏‮and‬‏ ‏‮secure‬‏ ‏‮DNS‬‏</string>
-  <string name="about_text">‏‮Intra‬‏ ‏‮protects‬‏ ‏‮your‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮by‬‏ ‏‮routing‬‏ ‏‮them‬‏ ‏‮over‬‏ ‏‮a‬‏ ‏‮secure‬‏ ‏‮HTTPS‬‏ ‏‮connection‬‏. ‏‮This‬‏ ‏‮reduces‬‏ ‏‮the‬‏
-    ‏‮chance‬‏ ‏‮that‬‏ ‏‮you‬‏ ‏‮will‬‏ ‏‮be‬‏ ‏‮sent‬‏ ‏‮to‬‏ ‏‮the‬‏ ‏‮wrong‬‏ ‏‮site‬‏, ‏‮or‬‏ ‏‮have‬‏ ‏‮your‬‏ ‏‮browsing‬‏ ‏‮blocked‬‏ ‏‮or‬‏ ‏‮observed‬‏.</string>
-  <string name="privacy_text">‏‮By‬‏ ‏‮default‬‏, ‏‮your‬‏ ‏‮queries‬‏ ‏‮will‬‏ ‏‮be‬‏ ‏‮routed‬‏ ‏‮to‬‏
-    <a href="https://developers.google.com/speed/public-dns/">‏‮Google‬‏ ‏‮Public‬‏ ‏‮DNS‬‏</a>
-    (<a href="https://developers.google.com/speed/public-dns/privacy">‏‮Privacy‬‏ ‏‮Policy‬‏</a>).
-    ‏‮You‬‏ ‏‮can‬‏ ‏‮also‬‏ ‏‮choose‬‏ ‏‮to‬‏ ‏‮use‬‏ <a href="https://cloudflare-dns.com">‏‮Cloudflare‬‏</a>
-    (<a href="https://developers.cloudflare.com/1.1.1.1/commitment-to-privacy/privacy-policy/privacy-policy/">‏‮Privacy‬‏ ‏‮Policy‬‏</a>)
-    ‏‮or‬‏ ‏‮any‬‏ ‏‮other‬‏ ‏‮DNS‬‏-‏‮over‬‏-‏‮HTTPS‬‏ ‏‮service‬‏.</string>
-  <string name="accept">‏‮Get‬‏ ‏‮Started‬‏</string>
+  <string name="intro_benefit_headline">‏‮More‬‏ ‏‮open‬‏ ‏‮internet‬‏ ‏‮access‬‏</string>
+  <string name="intro_benefit_body">‏‮Intra‬‏ ‏‮protects‬‏ ‏‮you‬‏ ‏‮from‬‏ ‏‮DNS‬‏ ‏‮manipulation‬‏, ‏‮a‬‏ ‏‮cyber‬‏ ‏‮attack‬‏ ‏‮used‬‏ ‏‮to‬‏ ‏‮block‬‏ ‏‮access‬‏ ‏‮to‬‏ ‏‮news‬‏ ‏‮sites‬‏, ‏‮social‬‏ ‏‮media‬‏ ‏‮platforms‬‏ ‏‮and‬‏ ‏‮messaging‬‏ ‏‮apps‬‏.\‏‮n‬‏\‏‮nWhile‬‏ ‏‮Intra‬‏ ‏‮protects‬‏ ‏‮you‬‏ ‏‮against‬‏ ‏‮DNS‬‏ ‏‮manipulation‬‏, ‏‮there‬‏ ‏‮are‬‏ ‏‮other‬‏, ‏‮more‬‏ ‏‮complicated‬‏ ‏‮blocking‬‏ ‏‮techniques‬‏ ‏‮and‬‏ ‏‮attacks‬‏ ‏‮that‬‏ ‏‮Intra‬‏ ‏‮doesn‬‏\'‏‮t‬‏ ‏‮protect‬‏ ‏‮against‬‏.</string>
+  <string name="intro_manipulation_headline">‏‮Protection‬‏ ‏‮from‬‏ ‏‮DNS‬‏ ‏‮manipulation‬‏</string>
+  <string name="intro_manipulation_body">‏‮Intra‬‏ ‏‮protects‬‏ ‏‮your‬‏ ‏‮connection‬‏ ‏‮to‬‏ ‏‮the‬‏ ‏‮Domain‬‏ ‏‮Name‬‏ ‏‮System‬‏ (‏‮DNS‬‏), ‏‮which‬‏ ‏‮provides‬‏ ‏‮the‬‏ ‏‮exact‬‏ ‏‮addresses‬‏ ‏‮you‬‏ ‏‮need‬‏ ‏‮to‬‏ ‏‮visit‬‏ ‏‮a‬‏ ‏‮website‬‏ ‏‮or‬‏ ‏‮open‬‏ ‏‮an‬‏ ‏‮app‬‏.\‏‮n‬‏\‏‮nIntra‬‏ ‏‮uses‬‏ ‏‮encryption‬‏ ‏‮to‬‏ ‏‮ensure‬‏ ‏‮that‬‏ ‏‮results‬‏ ‏‮can‬‏\’‏‮t‬‏ ‏‮be‬‏ ‏‮manipulated‬‏, ‏‮helping‬‏ ‏‮you‬‏ ‏‮safely‬‏ ‏‮access‬‏ ‏‮the‬‏ ‏‮internet‬‏.</string>
+  <string name="intro_details_headline">‏‮One‬‏ ‏‮last‬‏ ‏‮thing‬‏…</string>
+  <string name="intro_details_body">‏‮Tap‬‏ ‏‮OK‬‏ ‏‮to‬‏ ‏‮allow‬‏ ‏‮Intra‬‏ ‏‮to‬‏ ‏‮protect‬‏ ‏‮your‬‏ ‏‮DNS‬‏ ‏‮requests‬‏. ‏‮By‬‏ ‏‮default‬‏, ‏‮they‬‏ ‏‮will‬‏ ‏‮be‬‏ ‏‮routed‬‏ ‏‮to‬‏ ‏‮Google‬‏ ‏‮Public‬‏ ‏‮DNS‬‏ (<a href="https://developers.google.com/speed/public-dns/privacy">‏‮Privacy‬‏ ‏‮Policy‬‏</a>). ‏‮You‬‏ ‏‮can‬‏ ‏‮choose‬‏ ‏‮another‬‏ ‏‮service‬‏ ‏‮in‬‏ ‏‮the‬‏ ‏‮app‬‏ ‏‮settings‬‏.</string>
+  <string name="intro_back">‏‮back‬‏</string>
+  <string name="intro_next">‏‮next‬‏</string>
+  <string name="intro_accept">‏‮accept‬‏</string>
   <string name="drawer_open">‏‮Open‬‏ ‏‮navigation‬‏ ‏‮drawer‬‏</string>
   <string name="drawer_close">‏‮Close‬‏ ‏‮navigation‬‏ ‏‮drawer‬‏</string>
   <string name="home">‏‮Home‬‏</string>
   <string name="settings">‏‮Settings‬‏</string>
-  <string name="feedback">‏‮Submit‬‏ ‏‮Feedback‬‏</string>
+  <string name="support">‏‮Support‬‏</string>
   <string name="privacy_link">‏‮Privacy‬‏ ‏‮Policy‬‏</string>
   <string name="tos_link">‏‮Terms‬‏ ‏‮of‬‏ ‏‮Service‬‏</string>
   <string name="source_code">‏‮Source‬‏ ‏‮Code‬‏</string>
-  <string name="short_credits_text">‏‮Intra‬‏ ‏‮is‬‏ ‏‮an‬‏ ‏‮experimental‬‏ ‏‮open‬‏ ‏‮source‬‏ ‏‮project‬‏ ‏‮by‬‏ <a href="https://jigsaw.google.com">‏‮Jigsaw‬‏</a>.</string>
   <string name="credits_text">‏‮Intra‬‏ ‏‮was‬‏ ‏‮made‬‏ ‏‮by‬‏ <a href="https://jigsaw.google.com">‏‮Jigsaw‬‏</a>. ‏‮IP‬‏ ‏‮locations‬‏ ‏‮are‬‏ ‏‮based‬‏ ‏‮on‬‏ ‏‮data‬‏
     ‏‮from‬‏ ‏‮DB‬‏-‏‮IP‬‏.‏‮com‬‏.</string>
   <string name="indicator_on">‏‮On‬‏</string>
@@ -50,11 +39,36 @@
   <string name="explanation_failing">‏‮Warning‬‏: ‏‮Queries‬‏ ‏‮are‬‏ ‏‮failing‬‏.  ‏‮You‬‏ ‏‮may‬‏ ‏‮want‬‏ ‏‮to‬‏ ‏‮choose‬‏ ‏‮a‬‏ ‏‮different‬‏ ‏‮server‬‏ ‏‮and‬‏ ‏‮restart‬‏ ‏‮Intra‬‏.</string>
   <string name="system_details">‏‮System‬‏ ‏‮details‬‏</string>
   <string name="num_requests">‏‮Lifetime‬‏ ‏‮queries‬‏</string>
+  <string name="num_requests_headline">‏‮DNS‬‏ ‏‮queries‬‏ ‏‮happen‬‏ ‏‮when‬‏ ‏‮your‬‏ ‏‮device‬‏ ‏‮looks‬‏ ‏‮up‬‏ ‏‮the‬‏ ‏‮IP‬‏ ‏‮address‬‏ ‏‮for‬‏ ‏‮a‬‏ ‏‮domain‬‏ ‏‮name‬‏</string>
+  <string name="num_requests_body">‏‮This‬‏ ‏‮value‬‏ ‏‮shows‬‏ ‏‮the‬‏ ‏‮total‬‏ ‏‮number‬‏ ‏‮of‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮that‬‏ ‏‮your‬‏ ‏‮device‬‏ ‏‮has‬‏ ‏‮performed‬‏ ‏‮while‬‏ ‏‮Intra‬‏ ‏‮was‬‏
+    ‏‮active‬‏.  ‏‮Intra‬‏ ‏‮encrypts‬‏ ‏‮these‬‏ ‏‮queries‬‏ ‏‮and‬‏ ‏‮sends‬‏ ‏‮them‬‏ ‏‮to‬‏ ‏‮a‬‏ ‏‮trusted‬‏ ‏‮server‬‏ ‏‮to‬‏ ‏‮make‬‏ ‏‮sure‬‏ ‏‮you‬‏\'‏‮re‬‏
+    ‏‮getting‬‏ ‏‮authentic‬‏ ‏‮results‬‏.</string>
   <string name="queries_per_minute">‏‮Recent‬‏ ‏‮queries‬‏</string>
+  <string name="queries_per_minute_headline">‏‮DNS‬‏ ‏‮queries‬‏ ‏‮happen‬‏ ‏‮at‬‏ ‏‮the‬‏ ‏‮beginning‬‏ ‏‮of‬‏ ‏‮each‬‏ ‏‮connection‬‏</string>
+  <string name="queries_per_minute_body">‏‮This‬‏ ‏‮value‬‏ ‏‮shows‬‏ ‏‮the‬‏ ‏‮number‬‏ ‏‮of‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮that‬‏ ‏‮your‬‏ ‏‮device‬‏ ‏‮has‬‏ ‏‮performed‬‏ ‏‮in‬‏ ‏‮the‬‏ ‏‮last‬‏ ‏‮minute‬‏.
+    ‏‮Loading‬‏ ‏‮a‬‏ ‏‮complex‬‏ ‏‮webpage‬‏ ‏‮can‬‏ ‏‮require‬‏ ‏‮over‬‏ ‏‮a‬‏ ‏‮hundred‬‏ ‏‮DNS‬‏ ‏‮queries‬‏.</string>
   <string name="transport_label">‏‮Encrypted‬‏ ‏‮transport‬‏</string>
-  <string name="insecure_transport_label">‏‮Unencrypted‬‏ ‏‮transport‬‏</string>
+  <string name="transport_headline">‏‮Encryption‬‏ ‏‮protects‬‏ ‏‮your‬‏ ‏‮queries‬‏ ‏‮from‬‏ ‏‮prying‬‏ ‏‮eyes‬‏</string>
+  <string name="transport_body">‏‮When‬‏ ‏‮you‬‏ ‏‮use‬‏ ‏‮Intra‬‏, ‏‮your‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮are‬‏ ‏‮encrypted‬‏, ‏‮so‬‏ ‏‮that‬‏ ‏‮only‬‏ ‏‮you‬‏ ‏‮and‬‏ ‏‮your‬‏ ‏‮DNS‬‏ ‏‮server‬‏ ‏‮can‬‏ ‏‮see‬‏
+    ‏‮what‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮you‬‏ ‏‮are‬‏ ‏‮making‬‏.  ‏‮Intra‬‏ ‏‮implements‬‏ ‏‮the‬‏ ‏‮DNS‬‏ ‏‮over‬‏ ‏‮HTTPS‬‏ ‏‮protocol‬‏ ‏‮for‬‏ ‏‮encryption‬‏.</string>
+  <string name="default_transport_label">‏‮Default‬‏ ‏‮transport‬‏</string>
+  <string name="insecure_transport">‏‮unencrypted‬‏</string>
+  <string name="insecure_transport_headline">‏‮Basic‬‏ ‏‮DNS‬‏ ‏‮is‬‏ ‏‮unencrypted‬‏</string>
+  <string name="insecure_transport_body">‏‮Most‬‏ ‏‮devices‬‏ ‏‮and‬‏ ‏‮networks‬‏ ‏‮use‬‏ ‏‮basic‬‏ ‏‮DNS‬‏, ‏‮which‬‏ ‏‮is‬‏ ‏‮unencrypted‬‏, ‏‮so‬‏ ‏‮your‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮could‬‏ ‏‮be‬‏
+    ‏‮observed‬‏ ‏‮or‬‏ ‏‮modified‬‏ ‏‮by‬‏ ‏‮anyone‬‏ ‏‮on‬‏ ‏‮the‬‏ ‏‮network‬‏.  ‏‮Some‬‏ ‏‮new‬‏ ‏‮devices‬‏ ‏‮support‬‏ ‏‮DNS‬‏ ‏‮over‬‏ ‏‮TLS‬‏, ‏‮which‬‏
+    ‏‮encrypts‬‏ ‏‮your‬‏ ‏‮queries‬‏ ‏‮but‬‏ ‏‮can‬‏\'‏‮t‬‏ ‏‮protect‬‏ ‏‮you‬‏ ‏‮if‬‏ ‏‮the‬‏ ‏‮server‬‏ ‏‮is‬‏ ‏‮malicious‬‏.</string>
   <string name="server_label">‏‮Secure‬‏ ‏‮DNS‬‏ ‏‮server‬‏</string>
-  <string name="insecure_server_label">‏‮Network‬‏-‏‮provided‬‏ ‏‮DNS‬‏ ‏‮server‬‏</string>
+  <string name="server_headline">‏‮You‬‏ ‏‮deserve‬‏ ‏‮to‬‏ ‏‮use‬‏ ‏‮a‬‏ ‏‮trustworthy‬‏ ‏‮DNS‬‏ ‏‮server‬‏</string>
+  <string name="server_body">‏‮This‬‏ ‏‮field‬‏ ‏‮shows‬‏ ‏‮the‬‏ ‏‮name‬‏ ‏‮of‬‏ ‏‮the‬‏ ‏‮secure‬‏ ‏‮DNS‬‏ ‏‮server‬‏ ‏‮that‬‏ ‏‮you‬‏\'‏‮re‬‏ ‏‮using‬‏.  ‏‮You‬‏ ‏‮can‬‏ ‏‮also‬‏ ‏‮change‬‏ ‏‮to‬‏ ‏‮a‬‏
+    ‏‮different‬‏ ‏‮server‬‏ ‏‮in‬‏ ‏‮the‬‏ ‏‮Settings‬‏ ‏‮menu‬‏.</string>
+  <string name="default_server_label">‏‮Current‬‏ ‏‮DNS‬‏ ‏‮server‬‏</string>
+  <string name="insecure_server_headline">‏‮You‬‏ ‏‮can‬‏ ‏‮choose‬‏ ‏‮your‬‏ ‏‮own‬‏ ‏‮DNS‬‏ ‏‮server‬‏</string>
+  <string name="insecure_server_body">‏‮When‬‏ ‏‮Intra‬‏ ‏‮is‬‏ ‏‮disabled‬‏, ‏‮most‬‏ ‏‮devices‬‏ ‏‮are‬‏ ‏‮pre‬‏-‏‮configured‬‏ ‏‮to‬‏ ‏‮use‬‏ ‏‮the‬‏ ‏‮DNS‬‏ ‏‮server‬‏ ‏‮your‬‏ ‏‮network‬‏
+    ‏‮operator‬‏ ‏‮picks‬‏. ‏‮This‬‏ ‏‮field‬‏ ‏‮shows‬‏ ‏‮the‬‏ ‏‮IP‬‏ ‏‮address‬‏ ‏‮of‬‏ ‏‮the‬‏ ‏‮DNS‬‏ ‏‮server‬‏ ‏‮that‬‏ ‏‮your‬‏ ‏‮device‬‏ ‏‮is‬‏ ‏‮currently‬‏
+    ‏‮using‬‏. ‏‮With‬‏ ‏‮Intra‬‏ ‏‮or‬‏ ‏‮Android‬‏ ‏‮P‬‏, ‏‮you‬‏ ‏‮can‬‏ ‏‮easily‬‏ ‏‮select‬‏ ‏‮a‬‏ ‏‮server‬‏ ‏‮of‬‏ ‏‮your‬‏ ‏‮choice‬‏.</string>
+  <string name="strict_mode_server_headline">‏‮You‬‏\'‏‮ve‬‏ ‏‮selected‬‏ ‏‮a‬‏ ‏‮secure‬‏ ‏‮server‬‏</string>
+  <string name="strict_mode_server_body">‏‮This‬‏ ‏‮field‬‏ ‏‮shows‬‏ ‏‮the‬‏ ‏‮name‬‏ ‏‮of‬‏ ‏‮the‬‏ ‏‮DNS‬‏ ‏‮server‬‏ ‏‮that‬‏ ‏‮you‬‏ ‏‮configured‬‏ ‏‮in‬‏ ‏‮Android‬‏\'‏‮s‬‏ ‏‮Private‬‏ ‏‮DNS‬‏
+    ‏‮setting‬‏.  ‏‮When‬‏ ‏‮Intra‬‏ ‏‮is‬‏ ‏‮disabled‬‏, ‏‮your‬‏ ‏‮apps‬‏ ‏‮should‬‏ ‏‮send‬‏ ‏‮DNS‬‏ ‏‮queries‬‏ ‏‮to‬‏ ‏‮this‬‏ ‏‮server‬‏.</string>
   <string name="unknown_server">(‏‮unknown‬‏ ‏‮server‬‏)</string>
   <string name="show_history">‏‮Show‬‏ ‏‮recent‬‏ ‏‮queries‬‏</string>
   <string name="query_label">‏‮Query‬‏</string>
@@ -71,12 +85,6 @@
     ‏‮incompatible‬‏ ‏‮with‬‏ ‏‮Intra‬‏, ‏‮you‬‏ ‏‮can‬‏ ‏‮add‬‏ ‏‮it‬‏ ‏‮here‬‏.</string>
   <string name="excluded_apps_title">‏‮Mark‬‏ ‏‮apps‬‏ ‏‮to‬‏ ‏‮exclude‬‏ ‏‮from‬‏ ‏‮Intra‬‏</string>
   <string name="old_android">‏‮This‬‏ ‏‮functionality‬‏ ‏‮is‬‏ ‏‮not‬‏ ‏‮available‬‏ ‏‮on‬‏ ‏‮your‬‏ ‏‮version‬‏ ‏‮of‬‏ ‏‮Android‬‏.</string>
-  <string name="before_feedback">‏‮Help‬‏ ‏‮us‬‏ ‏‮improve‬‏ ‏‮Intra‬‏! ‏‮Intra‬‏ ‏‮is‬‏ ‏‮an‬‏ ‏‮early‬‏-‏‮stage‬‏ ‏‮product‬‏ ‏‮and‬‏ ‏‮we‬‏ ‏‮need‬‏ ‏‮your‬‏ ‏‮help‬‏ ‏‮to‬‏ ‏‮make‬‏ ‏‮it‬‏ ‏‮better‬‏.
-    ‏‮Tell‬‏ ‏‮us‬‏ ‏‮what‬‏\'‏‮s‬‏ ‏‮working‬‏, ‏‮and‬‏ ‏‮what‬‏\'‏‮s‬‏ ‏‮not‬‏.  ‏‮Thanks‬‏!</string>
-  <string name="feedback_hint">‏‮Your‬‏ ‏‮feedback‬‏</string>
-  <string name="after_feedback">‏‮This‬‏ ‏‮information‬‏ ‏‮will‬‏ ‏‮be‬‏ ‏‮sent‬‏ ‏‮to‬‏ ‏‮the‬‏ ‏‮Intra‬‏ ‏‮team‬‏.  ‏‮Please‬‏ ‏‮do‬‏ ‏‮not‬‏ ‏‮include‬‏ ‏‮any‬‏ ‏‮personal‬‏ ‏‮information‬‏
-    ‏‮in‬‏ ‏‮your‬‏ ‏‮feedback‬‏.</string>
-  <string name="submit_feedback">‏‮Submit‬‏</string>
   <string name="notification_title">‏‮DNS‬‏ ‏‮protection‬‏ ‏‮is‬‏ ‏‮active‬‏</string>
   <string name="notification_content">‏‮Tap‬‏ ‏‮to‬‏ ‏‮change‬‏ ‏‮DNS‬‏ ‏‮protection‬‏ ‏‮setting‬‏</string>
   <string name="channel_name">‏‮DNS‬‏ ‏‮Protection‬‏ ‏‮Active‬‏ ‏‮Notification‬‏</string>
