@@ -23,6 +23,7 @@ public enum Names {
   BYTES,
   CHUNKS,
   DNS_STATUS,
+  DOWNLOAD,
   DURATION,
   EARLY_RESET,
   FIRST_BYTE_MS,
@@ -34,4 +35,5 @@ public enum Names {
   TIMEOUT,
   TCP_HANDSHAKE_MS,
   TRANSACTION,
+  UPLOAD,
 }
