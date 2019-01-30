@@ -199,7 +199,8 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
       // - FIRST_BYTE_MS : Time between socket open and first byte from server, in milliseconds.
 
       Bundle event = new Bundle();
-      event.putInt(Param.VALUE, listener.uploadBytes + listener.downloadBytes);
+      event.putLong(Names.UPLOAD.name(), listener.uploadBytes);
+      event.putLong(Names.DOWNLOAD.name(), listener.downloadBytes);
 
       int port = listener.port;
       if (port >= 0) {
