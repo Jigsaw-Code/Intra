@@ -4,3 +4,4 @@ of https://github.com/fengyouchao/sockslib, with the following changes:
  * Any files related to MongoDB or JDBC have been removed, as these are not relevant to Intra.
  * Small fixes for https://github.com/fengyouchao/sockslib/issues/14 and related issues in
    StreamPipe.java.
+ * Workaround for a NullPointerException in Android's DatagramSocket.receive().
