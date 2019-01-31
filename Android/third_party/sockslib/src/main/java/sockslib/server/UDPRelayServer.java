@@ -148,7 +148,13 @@ public class UDPRelayServer implements Runnable {
       byte[] buffer = new byte[bufferSize];
       while (running) {
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-        server.receive(packet);
+        try {
+          server.receive(packet);
+        } catch (NullPointerException e) {
+          // Workaround for an Android platform bug: sending on a closed socket can produce a
+          // NullPointerException instead of an IOException.  See https://android.googlesource.com/platform/libcore/+/6dd21e692ae87b75e49b23ffbecc6964604f466a%5E%21/
+          throw new IOException(e);
+        }
         if (isFromClient(packet)) {
           datagramPacketHandler.decapsulate(packet);
           server.send(packet);
