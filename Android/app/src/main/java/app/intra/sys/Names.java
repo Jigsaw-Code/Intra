@@ -35,5 +35,6 @@ public enum Names {
   TIMEOUT,
   TCP_HANDSHAKE_MS,
   TRANSACTION,
+  UDP,
   UPLOAD,
 }

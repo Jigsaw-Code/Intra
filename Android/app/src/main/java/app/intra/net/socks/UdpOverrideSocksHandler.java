@@ -15,11 +15,19 @@ limitations under the License.
 */
 package app.intra.net.socks;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.os.SystemClock;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+
+import app.intra.sys.Names;
 import sockslib.common.Socks5DatagramPacketHandler;
 import sockslib.common.SocksException;
 import sockslib.server.Session;
@@ -39,10 +47,18 @@ class UdpOverrideSocksHandler extends Socks5Handler {
   // SOCKS protocol version
   protected static final int VERSION = 0x5;
 
+  // UDP is often used for one-off messages and pings.  The relative overhead of reporting metrics
+  // on these short messages would be large, so we only report metrics on sockets that transfer at
+  // least this many bytes.
+  private static final int TRANSFER_METRICS_THRESHOLD = 10000;
+
   // DNS redirection information, used to move UDP packets from the nominal DNS server (port 53 on
   // some random IP address) to the true DNS server (a high-numbered port on localhost).
   private InetSocketAddress fakeDns = null;
   private InetSocketAddress trueDns = null;
+
+  // Used to report metrics to Firebase.
+  protected Context context;
 
   // This class is instantiated by a call to newInstance() in
   // BasicSocksProxyServer.createSocksHandler() (i.e. via the default constructor).
@@ -58,6 +74,10 @@ class UdpOverrideSocksHandler extends Socks5Handler {
     this.trueDns = trueDns;
   }
 
+  void setContext(Context context) {
+    this.context = context;
+  }
+
   @Override
   public void doUDPAssociate(Session session, CommandMessage commandMessage) throws IOException {
     // Construct a UDP relay server, just like upstream.
@@ -68,8 +88,11 @@ class UdpOverrideSocksHandler extends Socks5Handler {
     // Reduce buffer size  (The default is 5 MB, which causes OOM crashes.)
     udpRelayServer.setBufferSize(BUFFER_SIZE);
 
+    DnsPacketHandler dnsPacketHandler = new DnsPacketHandler();
+    long startTimeMs = SystemClock.elapsedRealtime();
+
     // Replace its datagram packet handler with one that will perform DNS address replacement.
-    udpRelayServer.setDatagramPacketHandler(new DnsPacketHandler());
+    udpRelayServer.setDatagramPacketHandler(dnsPacketHandler);
 
     // Start the server.
     InetSocketAddress socketAddress = (InetSocketAddress) udpRelayServer.start();
@@ -89,14 +112,29 @@ class UdpOverrideSocksHandler extends Socks5Handler {
     }
     session.close();
     udpRelayServer.stop();
+
+    long totalBytes = dnsPacketHandler.getNonDnsUpload() + dnsPacketHandler.getNonDnsDownload();
+    if (totalBytes > TRANSFER_METRICS_THRESHOLD) {
+      Bundle event = new Bundle();
+      event.putLong(Names.UPLOAD.name(), dnsPacketHandler.getNonDnsUpload());
+      event.putLong(Names.DOWNLOAD.name(), dnsPacketHandler.getNonDnsDownload());
+      event.putLong(Names.DURATION.name(), (SystemClock.elapsedRealtime() - startTimeMs) / 1000);
+      FirebaseAnalytics.getInstance(context).logEvent(Names.UDP.name(), event);
+    }
   }
 
   private class DnsPacketHandler extends Socks5DatagramPacketHandler {
+    // Count the total bytes transferred, excluding communication with Intra's virtual DNS server.
+    private long nonDnsUpload = 0;
+    private long nonDnsDownload = 0;
+
     @Override
     public void decapsulate(DatagramPacket packet) throws SocksException {
       super.decapsulate(packet);
       if (packet.getSocketAddress().equals(fakeDns)) {
         packet.setSocketAddress(trueDns);
+      } else {
+        nonDnsUpload += packet.getLength();
       }
     }
 
@@ -105,8 +143,18 @@ class UdpOverrideSocksHandler extends Socks5Handler {
         SocksException {
       if (packet.getSocketAddress().equals(trueDns)) {
         packet.setSocketAddress(fakeDns);
+      } else {
+        nonDnsDownload += packet.getLength();
       }
       return super.encapsulate(packet, destination);
+    }
+
+    long getNonDnsUpload() {
+      return nonDnsUpload;
+    }
+
+    long getNonDnsDownload() {
+      return nonDnsDownload;
     }
   }
 }

@@ -80,10 +80,6 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
     return 2 * tcpHandshakeMs + 1200;
   }
 
-  void setContext(Context context) {
-    this.context = context;
-  }
-
   @Override
   public void doConnect(Session session, CommandMessage commandMessage) throws IOException {
     ServerReply reply = null;
