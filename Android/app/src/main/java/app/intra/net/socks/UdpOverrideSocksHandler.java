@@ -50,7 +50,7 @@ class UdpOverrideSocksHandler extends Socks5Handler {
   // UDP is often used for one-off messages and pings.  The relative overhead of reporting metrics
   // on these short messages would be large, so we only report metrics on sockets that transfer at
   // least this many bytes.
-  private static final int TRANSFER_METRICS_THRESHOLD = 10000;
+  private static final int TRANSFER_METRICS_THRESHOLD_BYTES = 10000;
 
   // DNS redirection information, used to move UDP packets from the nominal DNS server (port 53 on
   // some random IP address) to the true DNS server (a high-numbered port on localhost).
@@ -113,11 +113,11 @@ class UdpOverrideSocksHandler extends Socks5Handler {
     session.close();
     udpRelayServer.stop();
 
-    long totalBytes = dnsPacketHandler.getNonDnsUpload() + dnsPacketHandler.getNonDnsDownload();
-    if (totalBytes > TRANSFER_METRICS_THRESHOLD) {
+    long totalBytes = dnsPacketHandler.getNonDnsUploadNumBytes() + dnsPacketHandler.getNonDnsDownloadNumBytes();
+    if (totalBytes > TRANSFER_METRICS_THRESHOLD_BYTES) {
       Bundle event = new Bundle();
-      event.putLong(Names.UPLOAD.name(), dnsPacketHandler.getNonDnsUpload());
-      event.putLong(Names.DOWNLOAD.name(), dnsPacketHandler.getNonDnsDownload());
+      event.putLong(Names.UPLOAD.name(), dnsPacketHandler.getNonDnsUploadNumBytes());
+      event.putLong(Names.DOWNLOAD.name(), dnsPacketHandler.getNonDnsDownloadNumBytes());
       event.putLong(Names.DURATION.name(), (SystemClock.elapsedRealtime() - startTimeMs) / 1000);
       FirebaseAnalytics.getInstance(context).logEvent(Names.UDP.name(), event);
     }
@@ -125,8 +125,8 @@ class UdpOverrideSocksHandler extends Socks5Handler {
 
   private class DnsPacketHandler extends Socks5DatagramPacketHandler {
     // Count the total bytes transferred, excluding communication with Intra's virtual DNS server.
-    private long nonDnsUpload = 0;
-    private long nonDnsDownload = 0;
+    private long nonDnsUploadNumBytes = 0;
+    private long nonDnsDownloadNumBytes = 0;
 
     @Override
     public void decapsulate(DatagramPacket packet) throws SocksException {
@@ -134,7 +134,7 @@ class UdpOverrideSocksHandler extends Socks5Handler {
       if (packet.getSocketAddress().equals(fakeDns)) {
         packet.setSocketAddress(trueDns);
       } else {
-        nonDnsUpload += packet.getLength();
+        nonDnsUploadNumBytes += packet.getLength();
       }
     }
 
@@ -144,17 +144,17 @@ class UdpOverrideSocksHandler extends Socks5Handler {
       if (packet.getSocketAddress().equals(trueDns)) {
         packet.setSocketAddress(fakeDns);
       } else {
-        nonDnsDownload += packet.getLength();
+        nonDnsDownloadNumBytes += packet.getLength();
       }
       return super.encapsulate(packet, destination);
     }
 
-    long getNonDnsUpload() {
-      return nonDnsUpload;
+    long getNonDnsUploadNumBytes() {
+      return nonDnsUploadNumBytes;
     }
 
-    long getNonDnsDownload() {
-      return nonDnsDownload;
+    long getNonDnsDownloadNumBytes() {
+      return nonDnsDownloadNumBytes;
     }
   }
 }
