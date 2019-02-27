@@ -47,17 +47,18 @@ public class GoogleServerConnectionIntegrationTest {
 
     @Test
     public void testGet() throws Exception {
-        when(mockDb.lookup("dns.google.com")).thenReturn(Arrays.asList(InetAddress.getAllByName
-                ("dns.google.com")));
+        when(mockDb.lookup(GoogleServerConnection.TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getAllByName
+                (GoogleServerConnection.HOSTNAME)));
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
         assertNotNull(s);
         verify(mockDb, times(1)).setPreferred(any(DualStackResult.class));
+        verify(mockDb, never()).lookup(GoogleServerConnection.HOSTNAME);
     }
 
     @Test
     public void testPerformDnsRequest() throws Exception {
-        when(mockDb.lookup("dns.google.com")).thenReturn(Arrays.asList(InetAddress.getAllByName
-                ("dns.google.com")));
+        when(mockDb.lookup(GoogleServerConnection.TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getAllByName
+          (GoogleServerConnection.HOSTNAME)));
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
 
         TestDnsCallback cb = new TestDnsCallback();
@@ -71,22 +72,24 @@ public class GoogleServerConnectionIntegrationTest {
         assertTrue(cb.response.body().contentLength() > 6);
 
         verify(mockDb, times(1)).setPreferred(any(DualStackResult.class));
+        verify(mockDb, never()).lookup(GoogleServerConnection.HOSTNAME);
     }
 
     @Test
     public void testGetSomeBadAddresses() throws Exception {
-        when(mockDb.lookup("dns.google.com")).thenReturn(Arrays.asList(InetAddress.getByName
-                ("192.0.2.1"), InetAddress.getByName("dns.google.com")));
+        when(mockDb.lookup(GoogleServerConnection.TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getByName
+                ("192.0.2.1"), InetAddress.getByName(GoogleServerConnection.HOSTNAME)));
 
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
         assertNotNull(s);
 
         verify(mockDb, times(1)).setPreferred(any(DualStackResult.class));
+        verify(mockDb, never()).lookup(GoogleServerConnection.HOSTNAME);
     }
 
     @Test
     public void testGetAllBadAddresses() throws Exception {
-        when(mockDb.lookup("dns.google.com")).thenReturn(Arrays.asList(InetAddress.getByName
+        when(mockDb.lookup(GoogleServerConnection.TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getByName
                 ("192.0.2.1")));
 
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
@@ -97,26 +100,27 @@ public class GoogleServerConnectionIntegrationTest {
     @Test
     public void testGetIpV4() throws Exception {
         Inet4Address address = null;
-        for (InetAddress a : InetAddress.getAllByName("dns.google.com")) {
+        for (InetAddress a : InetAddress.getAllByName(GoogleServerConnection.HOSTNAME)) {
             if (a instanceof Inet4Address) {
                 address = (Inet4Address) a;
                 break;
             }
         }
         assertNotNull("Client has no IPv4 support!", address);
-        when(mockDb.lookup("dns.google.com")).thenReturn(Arrays.asList(InetAddress.getByName
+        when(mockDb.lookup(GoogleServerConnection.TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getByName
                 ("192.0.2.1"), address));
 
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);
         assertNotNull(s);
 
         verify(mockDb, times(1)).setPreferred(any(DualStackResult.class));
+        verify(mockDb, never()).lookup(GoogleServerConnection.HOSTNAME);
     }
 
     @Test
     public void testGetIpV6() throws Exception {
         Inet6Address address = null;
-        for (InetAddress a : InetAddress.getAllByName("dns.google.com")) {
+        for (InetAddress a : InetAddress.getAllByName(GoogleServerConnection.HOSTNAME)) {
             if (a instanceof Inet6Address) {
                 address = (Inet6Address) a;
                 break;
@@ -126,7 +130,7 @@ public class GoogleServerConnectionIntegrationTest {
             // No IPv6 support.
             return;
         }
-        when(mockDb.lookup("dns.google.com")).thenReturn(Arrays.asList(InetAddress.getByName
+        when(mockDb.lookup(GoogleServerConnection.TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getByName
                 ("192.0.2.1"), address));
 
         GoogleServerConnection s = GoogleServerConnection.get(mockDb);

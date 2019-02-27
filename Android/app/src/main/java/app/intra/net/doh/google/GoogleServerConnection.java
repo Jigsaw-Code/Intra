@@ -45,7 +45,8 @@ public class GoogleServerConnection implements ServerConnection {
 
   private static final String LOG_TAG = "GoogleServerConnection";
 
-  private static final String HOSTNAME = "dns.google.com";
+  static final String HOSTNAME = "dns.google.com";
+  static final String TLS_HOSTNAME = "google.com";
 
   // Client, with DNS fixed to the selectedServer.  Initialized by bootstrap.
   private OkHttpClient client = null;
@@ -121,11 +122,12 @@ public class GoogleServerConnection implements ServerConnection {
     final int unsignedType = metadata.type & 0xffff; // Convert Java's signed short to unsigned int
     String url =
         String.format(Locale.ROOT,
-            "https://%s/resolve?name=%s&type=%d&encoding=raw", HOSTNAME, urlEncode(metadata.name),
+            "https://%s/resolve?name=%s&type=%d&encoding=raw", TLS_HOSTNAME, urlEncode(metadata.name),
             unsignedType);
     Request request =
         new Request.Builder()
             .url(url)
+            .header("Host", HOSTNAME)
             .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
             .build();
     client.newCall(request).enqueue(cb);
@@ -145,9 +147,9 @@ public class GoogleServerConnection implements ServerConnection {
    * @return The entire JSON response, as a string.
    */
   private String performJsonDnsRequest(final String name, final String type) throws IOException {
-    String url = String.format("https://%s/resolve?name=%s&type=%s", HOSTNAME, urlEncode(name),
+    String url = String.format("https://%s/resolve?name=%s&type=%s", TLS_HOSTNAME, urlEncode(name),
         type);
-    Request request = new Request.Builder().url(url).build();
+    Request request = new Request.Builder().url(url).header("Host", HOSTNAME).build();
     Response response = client.newCall(request).execute();
     return response.body().string();
   }
