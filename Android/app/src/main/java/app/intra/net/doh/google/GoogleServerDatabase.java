@@ -43,7 +43,8 @@ public class GoogleServerDatabase implements Dns {
   private static final String LOG_TAG = "GoogleServerDatabase";
 
   // Max number of these IP addresses, selected at random, to attempt before declaring failure.
-  private static final int MAX_ATTEMPTS = 10;
+  // TODO(alalama): reduce after inspecting BOOTSTRAP_FAILURE events.
+  private static final int MAX_ATTEMPTS = 1000;
 
   /**
    * "Good" names to try first, in this order.  Better to use a name than a hardcoded IP, and
@@ -71,6 +72,9 @@ public class GoogleServerDatabase implements Dns {
     DiversitySampler sampler6 = new DiversitySampler(secondTier6);
     DiversitySampler sampler4 = new DiversitySampler(secondTier4);
     for (int i = 0; i < MAX_ATTEMPTS; ++i) {
+      if (i >= secondTier4.size() && i >= secondTier6.size()) {
+        return;
+      }
       // Alternately try IPv6 and IPv4 addresses
       if (i < secondTier6.size()) {
         tryOrder.add(sampler6.choose());
