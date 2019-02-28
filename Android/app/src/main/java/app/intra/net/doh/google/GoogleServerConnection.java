@@ -95,6 +95,11 @@ public class GoogleServerConnection implements ServerConnection {
     return new DualStackResult(names4, names6);
   }
 
+  // Returns whether the connection bootstrapped using the fallback TLS hostname.
+  public boolean didBootstrapWithFallback() {
+    return FALLBACK_TLS_HOSTNAME.equals(tlsHostname);
+  }
+
   private String[] resolve(final String name, final String type) {
     String response;
     try {
