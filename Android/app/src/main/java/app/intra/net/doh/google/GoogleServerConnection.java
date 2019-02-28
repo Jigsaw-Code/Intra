@@ -100,8 +100,14 @@ public class GoogleServerConnection implements ServerConnection {
     try {
       response = performJsonDnsRequest(name, type);
     } catch (IOException e) {
-      // No working connection
-      return null;
+      // Retry with fallback hostname.
+      tlsHostname = FALLBACK_TLS_HOSTNAME;
+      try {
+        response = performJsonDnsRequest(name, type);
+      } catch (IOException fallbackE) {
+        // No working connection
+        return null;
+      }
     }
     if (response == null) {
       return null;  // Unexpected
@@ -126,14 +132,10 @@ public class GoogleServerConnection implements ServerConnection {
     Callback fallbackCb = new Callback() {
       @Override
       public void onFailure(Call call, IOException e) {
-        if (isConnectionBlocked(e)) {
-          tlsHostname = PRIMARY_TLS_HOSTNAME.equals(tlsHostname) ? FALLBACK_TLS_HOSTNAME : PRIMARY_TLS_HOSTNAME;
-          reset();
-          Request fallbackRequest = buildDnsRequest(metadata);
-          client.newCall(fallbackRequest).enqueue(cb);
-        } else {
-          cb.onFailure(call, e);
-        }
+        tlsHostname = PRIMARY_TLS_HOSTNAME.equals(tlsHostname) ? FALLBACK_TLS_HOSTNAME : PRIMARY_TLS_HOSTNAME;
+        reset();
+        Request fallbackRequest = buildDnsRequest(metadata);
+        client.newCall(fallbackRequest).enqueue(cb);
       }
 
       @Override
@@ -156,13 +158,6 @@ public class GoogleServerConnection implements ServerConnection {
         .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
         .build();
   }
-
-  private static  boolean isConnectionBlocked(final IOException e) {
-    final String message = e.getMessage();
-    return "Connection refused".equals(message) || "Operation timed out".equals(message) ||
-        "Connection timed out".equals(message);
-  }
-
 
   @Override
   public String getUrl() {
