@@ -16,6 +16,7 @@ limitations under the License.
 package app.intra.net.doh.google;
 
 import android.util.Log;
+
 import androidx.annotation.WorkerThread;
 import app.intra.BuildConfig;
 import app.intra.net.dns.DnsUdpQuery;
@@ -46,11 +47,13 @@ public class GoogleServerConnection implements ServerConnection {
   private static final String LOG_TAG = "GoogleServerConnection";
 
   static final String HTTP_HOSTNAME = "dns.google.com";
-  static final String TLS_HOSTNAME = "google.com";
+  static final String PRIMARY_TLS_HOSTNAME = HTTP_HOSTNAME;
+  static final String FALLBACK_TLS_HOSTNAME = "google.com";
 
   // Client, with DNS fixed to the selectedServer.  Initialized by bootstrap.
   private OkHttpClient client = null;
   final private GoogleServerDatabase db;
+  private String tlsHostname = PRIMARY_TLS_HOSTNAME;
 
   /**
    * Gets a working GoogleServerConnection, or null if the GoogleServerConnection cannot be made to
@@ -119,19 +122,47 @@ public class GoogleServerConnection implements ServerConnection {
 
   @Override
   public void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb) {
+    Request request = buildDnsRequest(metadata);
+    Callback fallbackCb = new Callback() {
+      @Override
+      public void onFailure(Call call, IOException e) {
+        if (isConnectionBlocked(e)) {
+          tlsHostname = PRIMARY_TLS_HOSTNAME.equals(tlsHostname) ? FALLBACK_TLS_HOSTNAME : PRIMARY_TLS_HOSTNAME;
+          reset();
+          Request fallbackRequest = buildDnsRequest(metadata);
+          client.newCall(fallbackRequest).enqueue(cb);
+        } else {
+          cb.onFailure(call, e);
+        }
+      }
+
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
+        cb.onResponse(call, response);
+      }
+    };
+    client.newCall(request).enqueue(fallbackCb);
+  }
+
+  private Request buildDnsRequest(final DnsUdpQuery metadata) {
     final int unsignedType = metadata.type & 0xffff; // Convert Java's signed short to unsigned int
     String url =
-        String.format(Locale.ROOT,
-            "https://%s/resolve?name=%s&type=%d&encoding=raw", TLS_HOSTNAME, urlEncode(metadata.name),
-            unsignedType);
-    Request request =
-        new Request.Builder()
-            .url(url)
-            .header("Host", HTTP_HOSTNAME)
-            .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
-            .build();
-    client.newCall(request).enqueue(cb);
+      String.format(Locale.ROOT,
+        "https://%s/resolve?name=%s&type=%d&encoding=raw", tlsHostname, urlEncode(metadata.name),
+        unsignedType);
+    return new Request.Builder()
+        .url(url)
+        .header("Host", HTTP_HOSTNAME)
+        .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
+        .build();
   }
+
+  private static  boolean isConnectionBlocked(final IOException e) {
+    final String message = e.getMessage();
+    return "Connection refused".equals(message) || "Operation timed out".equals(message) ||
+        "Connection timed out".equals(message);
+  }
+
 
   @Override
   public String getUrl() {
@@ -147,7 +178,7 @@ public class GoogleServerConnection implements ServerConnection {
    * @return The entire JSON response, as a string.
    */
   private String performJsonDnsRequest(final String name, final String type) throws IOException {
-    String url = String.format("https://%s/resolve?name=%s&type=%s", TLS_HOSTNAME, urlEncode(name),
+    String url = String.format("https://%s/resolve?name=%s&type=%s", tlsHostname, urlEncode(name),
         type);
     Request request = new Request.Builder().url(url).header("Host", HTTP_HOSTNAME).build();
     Response response = client.newCall(request).execute();
