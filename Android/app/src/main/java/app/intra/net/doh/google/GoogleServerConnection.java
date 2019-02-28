@@ -16,7 +16,6 @@ limitations under the License.
 package app.intra.net.doh.google;
 
 import android.util.Log;
-
 import androidx.annotation.WorkerThread;
 import app.intra.BuildConfig;
 import app.intra.net.dns.DnsUdpQuery;
@@ -31,6 +30,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -53,16 +53,20 @@ public class GoogleServerConnection implements ServerConnection {
   // Client, with DNS fixed to the selectedServer.  Initialized by bootstrap.
   private OkHttpClient client = null;
   final private GoogleServerDatabase db;
+  final private Interceptor interceptor;
   private String tlsHostname = PRIMARY_TLS_HOSTNAME;
 
   /**
    * Gets a working GoogleServerConnection, or null if the GoogleServerConnection cannot be made to
    * work. Blocks for the duration of bootstrap if it has not yet succeeded. This method performs
    * network activity, so it cannot be called on the application's main thread.
+   *
+   * @param db GoogleServerDatabase provides the IP addresses for this connection.
+   * @param interceptor Interceptor user defined interceptor; useful for testing, may be null.
    */
   @WorkerThread
-  public static GoogleServerConnection get(GoogleServerDatabase db) {
-    GoogleServerConnection s = new GoogleServerConnection(db);
+  public static GoogleServerConnection get(GoogleServerDatabase db, Interceptor interceptor) {
+    GoogleServerConnection s = new GoogleServerConnection(db, interceptor);
     DualStackResult redirects = s.bootstrap();
     if (redirects == null) {
       return null;  // No working server.
@@ -71,8 +75,9 @@ public class GoogleServerConnection implements ServerConnection {
     return s;
   }
 
-  private GoogleServerConnection(GoogleServerDatabase db) {
+  private GoogleServerConnection(GoogleServerDatabase db, Interceptor interceptor) {
     this.db = db;
+    this.interceptor = interceptor;
     reset();
   }
 
@@ -212,11 +217,15 @@ public class GoogleServerConnection implements ServerConnection {
   @Override
   public void reset() {
     OkHttpClient oldClient = client;
-    client = new OkHttpClient.Builder()
+    OkHttpClient.Builder builder = new OkHttpClient.Builder()
         .dns(db)
         .connectTimeout(3, TimeUnit.SECONDS)  // Detect blocked connections.  TODO: tune.
-        .addNetworkInterceptor(new IpTagInterceptor())
-        .build();
+        .addNetworkInterceptor(new IpTagInterceptor());
+    if (interceptor != null) {
+      builder.addNetworkInterceptor(interceptor);
+    }
+
+    client = builder.build();
     if (oldClient != null) {
       for (Call call : oldClient.dispatcher().queuedCalls()) {
         call.cancel();
