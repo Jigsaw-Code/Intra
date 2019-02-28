@@ -45,7 +45,7 @@ public class GoogleServerConnection implements ServerConnection {
 
   private static final String LOG_TAG = "GoogleServerConnection";
 
-  static final String HOSTNAME = "dns.google.com";
+  static final String HTTP_HOSTNAME = "dns.google.com";
   static final String TLS_HOSTNAME = "google.com";
 
   // Client, with DNS fixed to the selectedServer.  Initialized by bootstrap.
@@ -80,11 +80,11 @@ public class GoogleServerConnection implements ServerConnection {
    * @return The a list of preferred IPs, or null if the connection failed.
    */
   private DualStackResult bootstrap() {
-    String[] names4 = resolve(HOSTNAME, "A");
+    String[] names4 = resolve(HTTP_HOSTNAME, "A");
     if (names4 == null || names4.length == 0) {
       return null;
     }
-    String[] names6 = resolve(HOSTNAME, "AAAA");
+    String[] names6 = resolve(HTTP_HOSTNAME, "AAAA");
     if (names6 == null) {
       names6 = new String[0];
     }
@@ -127,7 +127,7 @@ public class GoogleServerConnection implements ServerConnection {
     Request request =
         new Request.Builder()
             .url(url)
-            .header("Host", HOSTNAME)
+            .header("Host", HTTP_HOSTNAME)
             .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
             .build();
     client.newCall(request).enqueue(cb);
@@ -149,7 +149,7 @@ public class GoogleServerConnection implements ServerConnection {
   private String performJsonDnsRequest(final String name, final String type) throws IOException {
     String url = String.format("https://%s/resolve?name=%s&type=%s", TLS_HOSTNAME, urlEncode(name),
         type);
-    Request request = new Request.Builder().url(url).header("Host", HOSTNAME).build();
+    Request request = new Request.Builder().url(url).header("Host", HTTP_HOSTNAME).build();
     Response response = client.newCall(request).execute();
     return response.body().string();
   }
