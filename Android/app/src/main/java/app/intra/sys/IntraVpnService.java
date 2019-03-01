@@ -227,7 +227,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       final GoogleServerConnection googleServerConnection =
           GoogleServerConnection.get(new GoogleServerDatabase(this, assets), null);
       if (googleServerConnection != null && googleServerConnection.didBootstrapWithFallback()) {
-        bootstrap.putBoolean(Names.FALLBACK_HOSTNAME.name(), true);
+        bootstrap.putString(Names.FALLBACK.name(), Names.ALTERNATE_HOSTNAME.name());
       }
       newConnection = googleServerConnection;
     } else {
