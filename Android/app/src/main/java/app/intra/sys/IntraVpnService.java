@@ -224,7 +224,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     if (equalUrls(url, null)) {
       // Use the Google Resolver
       AssetManager assets = this.getApplicationContext().getAssets();
-      newConnection = GoogleServerConnection.get(new GoogleServerDatabase(this, assets));
+      final GoogleServerConnection googleServerConnection =
+          GoogleServerConnection.get(new GoogleServerDatabase(this, assets), null);
+      if (googleServerConnection != null && googleServerConnection.didBootstrapWithFallback()) {
+        bootstrap.putString(Names.FALLBACK.name(), Names.ALTERNATE_HOSTNAME.name());
+      }
+      newConnection = googleServerConnection;
     } else {
       newConnection = StandardServerConnection.get(url);
     }

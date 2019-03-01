@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -45,20 +46,27 @@ public class GoogleServerConnection implements ServerConnection {
 
   private static final String LOG_TAG = "GoogleServerConnection";
 
-  private static final String HOSTNAME = "dns.google.com";
+  static final String HTTP_HOSTNAME = "dns.google.com";
+  static final String PRIMARY_TLS_HOSTNAME = HTTP_HOSTNAME;
+  static final String FALLBACK_TLS_HOSTNAME = "google.com";
 
   // Client, with DNS fixed to the selectedServer.  Initialized by bootstrap.
   private OkHttpClient client = null;
   final private GoogleServerDatabase db;
+  final private Interceptor interceptor;
+  private String tlsHostname = PRIMARY_TLS_HOSTNAME;
 
   /**
    * Gets a working GoogleServerConnection, or null if the GoogleServerConnection cannot be made to
    * work. Blocks for the duration of bootstrap if it has not yet succeeded. This method performs
    * network activity, so it cannot be called on the application's main thread.
+   *
+   * @param db GoogleServerDatabase provides the IP addresses for this connection.
+   * @param interceptor Interceptor user defined interceptor; useful for testing, may be null.
    */
   @WorkerThread
-  public static GoogleServerConnection get(GoogleServerDatabase db) {
-    GoogleServerConnection s = new GoogleServerConnection(db);
+  public static GoogleServerConnection get(GoogleServerDatabase db, Interceptor interceptor) {
+    GoogleServerConnection s = new GoogleServerConnection(db, interceptor);
     DualStackResult redirects = s.bootstrap();
     if (redirects == null) {
       return null;  // No working server.
@@ -67,8 +75,9 @@ public class GoogleServerConnection implements ServerConnection {
     return s;
   }
 
-  private GoogleServerConnection(GoogleServerDatabase db) {
+  private GoogleServerConnection(GoogleServerDatabase db, Interceptor interceptor) {
     this.db = db;
+    this.interceptor = interceptor;
     reset();
   }
 
@@ -79,11 +88,11 @@ public class GoogleServerConnection implements ServerConnection {
    * @return The a list of preferred IPs, or null if the connection failed.
    */
   private DualStackResult bootstrap() {
-    String[] names4 = resolve(HOSTNAME, "A");
+    String[] names4 = resolve(HTTP_HOSTNAME, "A");
     if (names4 == null || names4.length == 0) {
       return null;
     }
-    String[] names6 = resolve(HOSTNAME, "AAAA");
+    String[] names6 = resolve(HTTP_HOSTNAME, "AAAA");
     if (names6 == null) {
       names6 = new String[0];
     }
@@ -91,13 +100,24 @@ public class GoogleServerConnection implements ServerConnection {
     return new DualStackResult(names4, names6);
   }
 
+  // Returns whether the connection bootstrapped using the fallback TLS hostname.
+  public boolean didBootstrapWithFallback() {
+    return FALLBACK_TLS_HOSTNAME.equals(tlsHostname);
+  }
+
   private String[] resolve(final String name, final String type) {
     String response;
     try {
       response = performJsonDnsRequest(name, type);
     } catch (IOException e) {
-      // No working connection
-      return null;
+      // Retry with fallback hostname.
+      tlsHostname = FALLBACK_TLS_HOSTNAME;
+      try {
+        response = performJsonDnsRequest(name, type);
+      } catch (IOException fallbackE) {
+        // No working connection
+        return null;
+      }
     }
     if (response == null) {
       return null;  // Unexpected
@@ -118,17 +138,35 @@ public class GoogleServerConnection implements ServerConnection {
 
   @Override
   public void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb) {
+    Request request = buildDnsRequest(metadata);
+    Callback fallbackCb = new Callback() {
+      @Override
+      public void onFailure(Call call, IOException e) {
+        tlsHostname = PRIMARY_TLS_HOSTNAME.equals(tlsHostname) ? FALLBACK_TLS_HOSTNAME : PRIMARY_TLS_HOSTNAME;
+        reset();
+        Request fallbackRequest = buildDnsRequest(metadata);
+        client.newCall(fallbackRequest).enqueue(cb);
+      }
+
+      @Override
+      public void onResponse(Call call, Response response) throws IOException {
+        cb.onResponse(call, response);
+      }
+    };
+    client.newCall(request).enqueue(fallbackCb);
+  }
+
+  private Request buildDnsRequest(final DnsUdpQuery metadata) {
     final int unsignedType = metadata.type & 0xffff; // Convert Java's signed short to unsigned int
     String url =
-        String.format(Locale.ROOT,
-            "https://%s/resolve?name=%s&type=%d&encoding=raw", HOSTNAME, urlEncode(metadata.name),
-            unsignedType);
-    Request request =
-        new Request.Builder()
-            .url(url)
-            .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
-            .build();
-    client.newCall(request).enqueue(cb);
+      String.format(Locale.ROOT,
+        "https://%s/resolve?name=%s&type=%d&encoding=raw", tlsHostname, urlEncode(metadata.name),
+        unsignedType);
+    return new Request.Builder()
+        .url(url)
+        .header("Host", HTTP_HOSTNAME)
+        .header("User-Agent", String.format("Jigsaw-DNS/%s", BuildConfig.VERSION_NAME))
+        .build();
   }
 
   @Override
@@ -145,9 +183,9 @@ public class GoogleServerConnection implements ServerConnection {
    * @return The entire JSON response, as a string.
    */
   private String performJsonDnsRequest(final String name, final String type) throws IOException {
-    String url = String.format("https://%s/resolve?name=%s&type=%s", HOSTNAME, urlEncode(name),
+    String url = String.format("https://%s/resolve?name=%s&type=%s", tlsHostname, urlEncode(name),
         type);
-    Request request = new Request.Builder().url(url).build();
+    Request request = new Request.Builder().url(url).header("Host", HTTP_HOSTNAME).build();
     Response response = client.newCall(request).execute();
     return response.body().string();
   }
@@ -179,11 +217,15 @@ public class GoogleServerConnection implements ServerConnection {
   @Override
   public void reset() {
     OkHttpClient oldClient = client;
-    client = new OkHttpClient.Builder()
+    OkHttpClient.Builder builder = new OkHttpClient.Builder()
         .dns(db)
         .connectTimeout(3, TimeUnit.SECONDS)  // Detect blocked connections.  TODO: tune.
-        .addNetworkInterceptor(new IpTagInterceptor())
-        .build();
+        .addNetworkInterceptor(new IpTagInterceptor());
+    if (interceptor != null) {
+      builder.addNetworkInterceptor(interceptor);
+    }
+
+    client = builder.build();
     if (oldClient != null) {
       for (Call call : oldClient.dispatcher().queuedCalls()) {
         call.cancel();

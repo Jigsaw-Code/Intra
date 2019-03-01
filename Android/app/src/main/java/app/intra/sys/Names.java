@@ -18,6 +18,7 @@ package app.intra.sys;
 // Names for intents and events that are used by multiple components and must agree.
 // Each name is used to generate a string.
 public enum Names {
+  ALTERNATE_HOSTNAME,
   BOOTSTRAP,
   BOOTSTRAP_FAILED,
   BYTES,
@@ -26,6 +27,7 @@ public enum Names {
   DOWNLOAD,
   DURATION,
   EARLY_RESET,
+  FALLBACK,
   FIRST_BYTE_MS,
   LATENCY,
   PORT,
