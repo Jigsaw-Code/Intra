@@ -65,6 +65,7 @@ public class ServerChooser extends DialogPreference {
         context.getResources().getString(R.string.server_choice_summary);
     defaultDomain =
         context.getResources().getString(R.string.domain0);
+    setPositiveButtonText(R.string.intro_accept);
   }
 
   @Override

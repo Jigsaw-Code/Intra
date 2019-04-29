@@ -24,11 +24,15 @@ import static org.junit.Assert.assertFalse;
 import app.intra.net.dns.DnsUdpQuery;
 import app.intra.net.dns.DnsPacket;
 
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 
 public class StandardServerConnectionIntegrationTest {
 
     private static final String CLOUDFLARE_URL = "https://cloudflare-dns.com/dns-query";
+    private static final List<InetAddress> EMPTY_LIST = new ArrayList<>();
 
     private static final byte[] QUERY_DATA = {
         -107, -6,  // [0-1]   query ID
@@ -48,19 +52,19 @@ public class StandardServerConnectionIntegrationTest {
 
     @Test
     public void testGet() throws Exception {
-        StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL);
+        StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL, EMPTY_LIST);
         assertNotNull(s);
     }
 
     @Test
     public void testGetBadUrl() throws Exception {
-        assertNull(StandardServerConnection.get("ftp://www.example.com"));
-        assertNull(StandardServerConnection.get("https://www.example"));
+        assertNull(StandardServerConnection.get("ftp://www.example.com", EMPTY_LIST));
+        assertNull(StandardServerConnection.get("https://www.example", EMPTY_LIST));
     }
 
     @Test
     public void testPerformDnsRequest() throws Exception {
-        StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL);
+        StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL, EMPTY_LIST);
 
         TestDnsCallback cb = new TestDnsCallback();
         DnsUdpQuery metadata = new DnsUdpQuery();

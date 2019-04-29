@@ -18,12 +18,18 @@ package app.intra.ui.settings;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceDialogFragmentCompat;
@@ -36,10 +42,23 @@ import java.net.URL;
  */
 
 public class ServerChooserFragment extends PreferenceDialogFragmentCompat
-    implements RadioGroup.OnCheckedChangeListener, TextWatcher, EditText.OnEditorActionListener {
+    implements RadioGroup.OnCheckedChangeListener, TextWatcher, EditText.OnEditorActionListener,
+    OnItemSelectedListener {
     private RadioGroup buttons = null;
-    private EditText text = null;
+
+    // Builtin servers
+    private Spinner spinner = null;
+    private TextView description = null;
+    private TextView serverWebsite = null;
+
+    // Custom server
+    private EditText customServerUrl = null;
     private TextView warning = null;
+
+    // Builtin server resources, initialized in onBindDialogView.
+    private String[] urls = null;
+    private String[] descriptions = null;
+    private String[] websiteLinks = null;
 
     static ServerChooserFragment newInstance(String key) {
         final ServerChooserFragment fragment = new ServerChooserFragment();
@@ -51,19 +70,20 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
 
     private String getUrl() {
         int checkedId = buttons.getCheckedRadioButtonId();
-        if (checkedId == R.id.pref_server_google) {
-            return getResources().getString(R.string.url0);
-        } else if (checkedId == R.id.pref_server_cloudflare) {
-            return getResources().getString(R.string.url1);
-        } else {
-            return text.getText().toString();
+        if (checkedId == R.id.pref_server_custom) {
+            return customServerUrl.getText().toString();
         }
+
+        return urls[spinner.getSelectedItemPosition()];
     }
 
     private void updateUI() {
         int checkedId = buttons.getCheckedRadioButtonId();
         boolean custom = checkedId == R.id.pref_server_custom;
-        text.setEnabled(custom);
+        customServerUrl.setEnabled(custom);
+        spinner.setEnabled(!custom);
+        description.setEnabled(!custom);
+        serverWebsite.setEnabled(!custom);
         if (custom) {
             setValid(checkUrl(Untemplate.strip(getUrl())));
         } else {
@@ -119,24 +139,86 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
     }
 
     @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        onBuiltinServerSelected(i);
+    }
+
+    private void onBuiltinServerSelected(int i) {
+        description.setText(descriptions[i]);
+
+        // Update website text with a link pointing to the correct website.
+        // The string resource contains a dummy hyperlink that must be replaced with a new link to
+        // the correct destination.
+        CharSequence template = getResources().getText(R.string.server_choice_website_notice);
+        SpannableStringBuilder websiteMessage = new SpannableStringBuilder(template);
+
+        // Trim leading whitespace introduced by indentation in strings.xml.
+        while (Character.isWhitespace(websiteMessage.charAt(0))) {
+            websiteMessage.delete(0, 1);
+        }
+
+        // Replace hyperlink with a new link for the current URL.
+        URLSpan templateLink =
+            websiteMessage.getSpans(0, websiteMessage.length(), URLSpan.class)[0];
+        int linkStart = websiteMessage.getSpanStart(templateLink);
+        int linkEnd = websiteMessage.getSpanEnd(templateLink);
+        websiteMessage.removeSpan(templateLink);
+        websiteMessage.setSpan(new URLSpan(websiteLinks[i]), linkStart, linkEnd, 0);
+
+        serverWebsite.setText(websiteMessage);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        updateUI();
+    }
+
+    @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
         ServerChooser preference = (ServerChooser) getPreference();
         String url = preference.getUrl();
+
+        urls = getResources().getStringArray(R.array.urls);
+        descriptions = getResources().getStringArray(R.array.descriptions);
+        websiteLinks = getResources().getStringArray(R.array.server_websites);
+
         buttons = view.findViewById(R.id.pref_server_radio_group);
-        text = view.findViewById(R.id.custom_server_url);
+        spinner = view.findViewById(R.id.builtin_server_spinner);
+        description = view.findViewById(R.id.server_description);
+        serverWebsite = view.findViewById(R.id.server_website);
+        customServerUrl = view.findViewById(R.id.custom_server_url);
         warning = view.findViewById(R.id.url_warning);
-        if (url == null || url.equals(getResources().getString(R.string.url0))) {
-            buttons.check(R.id.pref_server_google);
-        } else if (url.equals(getResources().getString(R.string.url1))) {
-            buttons.check(R.id.pref_server_cloudflare);
+
+        // Make website link clickable.
+        serverWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // Check if we are using one of the built-in servers.
+        int index = -1;
+        if (url == null || url.isEmpty()) {
+            // TODO: Remove special case once Google DNS moves to standard DOH.
+            index = 0;
+        } else {
+            for (int i = 1; i < urls.length; ++i) {
+                if (urls[i].equals(url)) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+
+        if (index >= 0) {
+            buttons.check(R.id.pref_server_builtin);
+            spinner.setSelection(index);
+            onBuiltinServerSelected(index);
         } else {
             buttons.check(R.id.pref_server_custom);
-            text.setText(url);
+            customServerUrl.setText(url);
         }
         buttons.setOnCheckedChangeListener(this);
-        text.addTextChangedListener(this);
-        text.setOnEditorActionListener(this);
+        spinner.setOnItemSelectedListener(this);
+        customServerUrl.addTextChangedListener(this);
+        customServerUrl.setOnEditorActionListener(this);
         updateUI();
     }
 
@@ -146,8 +228,8 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
             ServerChooser preference = (ServerChooser) getPreference();
             preference.setUrl(getUrl());
         }
-        text.removeTextChangedListener(this);
-        text.setOnEditorActionListener(null);
+        customServerUrl.removeTextChangedListener(this);
+        customServerUrl.setOnEditorActionListener(null);
         buttons.setOnCheckedChangeListener(null);
     }
 

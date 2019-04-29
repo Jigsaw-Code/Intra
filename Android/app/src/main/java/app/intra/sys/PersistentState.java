@@ -17,6 +17,7 @@ package app.intra.sys;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import app.intra.R;
@@ -78,7 +79,7 @@ public class PersistentState {
 
     // There is no URL setting, so read the legacy server name.
     SharedPreferences settings = getInternalState(context);
-    String defaultDomain = context.getResources().getStringArray(R.array.domains)[0];
+    String defaultDomain = context.getResources().getString(R.string.domain0);
     String domain = settings.getString(SERVER_KEY, defaultDomain);
 
     if (domain == null) {
@@ -87,12 +88,19 @@ public class PersistentState {
       return;
     }
 
-    // Get the corresponding URL.
-    String[] domains = context.getResources().getStringArray(R.array.domains);
+    // Special case: url 0 is the nonstandard DoH service on dns.google.com.
+    // TODO: Remove this special case once dns.google.com transitions to standard DoH.
     String[] urls = context.getResources().getStringArray(R.array.urls);
     String url = null;
-    for (int i = 0; i < domains.length; ++i) {
-      if (domains[i].equals(domain)) {
+    if (domain.equals(defaultDomain)) {
+      url = urls[0];
+    }
+
+    // Look for the corresponding URL among the other builtin servers.
+    for (int i = 1; i < urls.length; ++i) {
+      Uri parsed = Uri.parse(urls[i]);
+
+      if (domain.equals(parsed.getHost())) {
         url = urls[i];
         break;
       }

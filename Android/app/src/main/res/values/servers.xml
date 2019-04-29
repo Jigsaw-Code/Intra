@@ -1,19 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Each DOH server is defined by a domain (which is shown to the user) and a URL (which is
-  the actual DOH endpoint).  However, Google DNS uses a pre-standardization version of DOH, and
-  has additional bootstrap optimizations beyond standard URL connection.  We indicate this special
-  case by leaving the URL blank. -->
+  <!-- Each DOH server is defined by a URL (which is the actual DOH endpoint).  However, Google DNS
+   uses a pre-standardization version of DOH, and has additional bootstrap optimizations beyond
+   standard URL connection.  We indicate this special case by leaving the URL blank, and maintaining
+   this "domain0" value instead. TODO: Remove "domain0" once Google launches standard DOH. -->
   <string name="domain0" translatable="false">dns.google.com</string>
   <string name="url0" translatable="false"></string>
-  <string name="domain1" translatable="false">cloudflare-dns.com</string>
+  <string name="name0" translatable="false">Google Public DNS</string>
+  <string name="ips0" translatable="false"></string>
+  <string name="description0">Major global resolver operated by Google.</string>
+  <string name="website0" translatable="false">https://developers.google.com/speed/public-dns/</string>
+
   <string name="url1" translatable="false">https://cloudflare-dns.com/dns-query</string>
-  <string-array name="domains">
-    <item>@string/domain0</item>
-    <item>@string/domain1</item>
-  </string-array>
+  <string name="name1" translatable="false">Cloudflare 1.1.1.1 DNS</string>
+  <string name="ips1" translatable="false">1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001</string>
+  <string name="description1">Major global resolver operated by Cloudflare.</string>
+  <string name="website1" translatable="false">https://cloudflare-dns.com/</string>
+
+  <string name="url2" translatable="false">https://dns.quad9.net/dns-query</string>
+  <string name="name2" translatable="false">Quad9 Secure DNS</string>
+  <string name="ips2" translatable="false">9.9.9.9,149,112.112.112,2620:fe::fe,2620:fe::fe:9</string>
+  <string name="description2">Large global resolver from IBM and Packet Clearinghouse.  Blocks malicious domains.</string>
+  <string name="website2" translatable="false">https://www.quad9.net/</string>
+
+  <string name="url3" translatable="false">https://doh.cleanbrowsing.org/doh/security-filter/</string>
+  <string name="name3" translatable="false">CleanBrowsing Security Filter</string>
+  <string name="ips3" translatable="false">185.228.168.9,185.228.169.9,2a0d:2a00:1::2,2a0d:2a00:2::2</string>
+  <string name="description3">Global DNS filtering provider.  Blocks malicious domains.</string>
+  <string name="website3" translatable="false">https://cleanbrowsing.org/</string>
+
+  <string name="url4" translatable="false">https://doh.appliedprivacy.net/query</string>
+  <string name="name4" translatable="false">Foundation for Applied Privacy</string>
+  <string name="ips4" translatable="false">37.252.185.229,2a00:63c1:a:229::2</string>
+  <string name="description4">Server in Austria operated by a non-profit privacy group.</string>
+  <string name="website4" translatable="false">https://appliedprivacy.net/services/dns/</string>
+
+  <string name="url5" translatable="false">https://doh.powerdns.org/</string>
+  <string name="name5" translatable="false">PowerDNS</string>
+  <string name="ips5" translatable="false">136.144.215.158,2a01:7c8:d002:1ef:5054:ff:fe40:3703</string>
+  <string name="description5">Server in the Netherlands, operated by an open-source DNS company.</string>
+  <string name="website5" translatable="false">https://www.powerdns.com/</string>
+
+  <string name="url6" translatable="false">https://doh.dns.sb/dns-query</string>
+  <string name="name6" translatable="false">DNS.SB</string>
+  <string name="ips6" translatable="false">cloudflare.net</string>
+  <string name="description6">Operated by xTom and other international hosting providers.  Uses Cloudflare\'s CDN.</string>
+  <string name="website6" translatable="false">https://dns.sb/</string>
+
   <string-array name="urls">
     <item>@string/url0</item>
     <item>@string/url1</item>
+    <item>@string/url2</item>
+    <item>@string/url3</item>
+    <item>@string/url4</item>
+    <item>@string/url5</item>
+    <item>@string/url6</item>
   </string-array>
+  <string-array name="names">
+    <item>@string/name0</item>
+    <item>@string/name1</item>
+    <item>@string/name2</item>
+    <item>@string/name3</item>
+    <item>@string/name4</item>
+    <item>@string/name5</item>
+    <item>@string/name6</item>
+  </string-array>
+  <string-array name="ips">
+    <item>@string/ips0</item>
+    <item>@string/ips1</item>
+    <item>@string/ips2</item>
+    <item>@string/ips3</item>
+    <item>@string/ips4</item>
+    <item>@string/ips5</item>
+    <item>@string/ips6</item>
+  </string-array>
+  <string-array name="descriptions">
+    <item>@string/description0</item>
+    <item>@string/description1</item>
+    <item>@string/description2</item>
+    <item>@string/description3</item>
+    <item>@string/description4</item>
+    <item>@string/description5</item>
+    <item>@string/description6</item>
+  </string-array>
+  <string-array name="server_websites">
+    <item>@string/website0</item>
+    <item>@string/website1</item>
+    <item>@string/website2</item>
+    <item>@string/website3</item>
+    <item>@string/website4</item>
+    <item>@string/website5</item>
+    <item>@string/website6</item>
+  </string-array>
+
 </resources>

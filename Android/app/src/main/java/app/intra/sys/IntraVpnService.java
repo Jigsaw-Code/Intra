@@ -48,7 +48,13 @@ import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -184,6 +190,28 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     return serverConnection;
   }
 
+  private Collection<InetAddress> getKnownIps(String url) {
+    String[] urls = getResources().getStringArray(R.array.urls);
+    String[] ips = getResources().getStringArray(R.array.ips);
+    for (int i = 0; i < urls.length; ++i) {
+      // TODO: Consider relaxing this equality condition to a match on
+      // just the domain.
+      if (urls[i].equals(url)) {
+        String[] ipStrings = ips[i].split(",");
+        List<InetAddress> ret = new ArrayList<>();
+        for (int j = 0; j < ipStrings.length; ++j) {
+          try {
+            ret.addAll(Arrays.asList(InetAddress.getAllByName(ipStrings[j])));
+          } catch (IOException e) {
+            Log.e(LOG_TAG, "Invalid IP address in servers resource");
+          }
+        }
+        return ret;
+      }
+    }
+    return new ArrayList<>();
+  }
+
   @WorkerThread
   private void updateServerConnection() {
     // This method consists of three steps:
@@ -231,7 +259,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       }
       newConnection = googleServerConnection;
     } else {
-      newConnection = StandardServerConnection.get(url);
+      Collection<InetAddress> ips = getKnownIps(url);
+      newConnection = StandardServerConnection.get(url, ips);
     }
 
     if (newConnection != null) {

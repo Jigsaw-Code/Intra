@@ -19,6 +19,7 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class DualStackResult {
     }
   }
 
-  DualStackResult(List<InetAddress> addresses) {
+  DualStackResult(Collection<InetAddress> addresses) {
     for (InetAddress address : addresses) {
       if (address instanceof Inet4Address) {
         v4.add(address);
