@@ -8,18 +8,18 @@
   <string name="url0" translatable="false"></string>
   <string name="name0" translatable="false">Google Public DNS</string>
   <string name="ips0" translatable="false"></string>
-  <string name="description0">Major global resolver operated by Google.</string>
+  <string name="description0">Large global resolver operated by Google.</string>
   <string name="website0" translatable="false">https://developers.google.com/speed/public-dns/</string>
 
   <string name="url1" translatable="false">https://cloudflare-dns.com/dns-query</string>
   <string name="name1" translatable="false">Cloudflare 1.1.1.1 DNS</string>
   <string name="ips1" translatable="false">1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001</string>
-  <string name="description1">Major global resolver operated by Cloudflare.</string>
+  <string name="description1">Large global resolver operated by Cloudflare.</string>
   <string name="website1" translatable="false">https://cloudflare-dns.com/</string>
 
   <string name="url2" translatable="false">https://dns.quad9.net/dns-query</string>
   <string name="name2" translatable="false">Quad9 Secure DNS</string>
-  <string name="ips2" translatable="false">9.9.9.9,149,112.112.112,2620:fe::fe,2620:fe::fe:9</string>
+  <string name="ips2" translatable="false">9.9.9.9,149.112.112.112,2620:fe::fe,2620:fe::fe:9</string>
   <string name="description2">Large global resolver from IBM and Packet Clearinghouse.  Blocks malicious domains.</string>
   <string name="website2" translatable="false">https://www.quad9.net/</string>
 
@@ -38,7 +38,7 @@
   <string name="url5" translatable="false">https://doh.powerdns.org/</string>
   <string name="name5" translatable="false">PowerDNS</string>
   <string name="ips5" translatable="false">136.144.215.158,2a01:7c8:d002:1ef:5054:ff:fe40:3703</string>
-  <string name="description5">Server in the Netherlands, operated by an open-source DNS company.</string>
+  <string name="description5">Server in the Netherlands, operated by an open-source DNS software company.</string>
   <string name="website5" translatable="false">https://www.powerdns.com/</string>
 
   <string name="url6" translatable="false">https://doh.dns.sb/dns-query</string>
