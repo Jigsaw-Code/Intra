@@ -59,6 +59,9 @@ public class ServerChooser extends DialogPreference {
   }
 
   private void initialize(Context context) {
+    // Setting the key in code here, with the same value as in preferences.xml, allows this
+    // preference to be initialized both declaratively (from XML) and imperatively (from Java).
+    setKey(context.getResources().getString(R.string.server_choice_key));
     setPersistent(true);
     setDialogLayoutResource(R.layout.servers);
     summaryTemplate =

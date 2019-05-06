@@ -148,8 +148,13 @@
   </string>
 
   <string name="status_waiting"
-          description="This text appears during the connection process if Intra needs user permission or the phone is offline.">
+      description="This text appears during the connection process if Intra needs user permission or the phone is offline.">
     Waiting&#8230;
+  </string>
+
+  <string name="status_failing"
+      description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]">
+    Failing
   </string>
 
   <string name="explanation_offline"
@@ -164,7 +169,11 @@
   </string>
 
   <string name="explanation_failing">
-    Warning: Queries are failing.  You may want to choose a different server and restart Intra.
+    Warning: Queries are failing.  You may want to choose a different server or restart Intra.
+  </string>
+
+  <string name="button_failing" description="Label for a button to change the selected server. [CHAR_LIMIT=NONE]">
+    Try a different server
   </string>
 
   <string name="system_details"
@@ -322,6 +331,8 @@
           translatable="false">
     <xliff:g example="29" id="time">%d</xliff:g> ms
   </string>
+
+  <string name="server_choice_key" translatable="false">pref_server_url</string>
 
   <string name="server_choice" description="Title of the setting to choose your server">
     Select DNS over HTTPS Server
