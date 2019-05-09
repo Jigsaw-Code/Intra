@@ -28,8 +28,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.dns.DnsPacket;
+import com.crashlytics.android.Crashlytics;
 import com.google.common.net.InternetDomainName;
-import com.google.firebase.crash.FirebaseCrash;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ProtocolException;
@@ -87,7 +87,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     try {
       countryMap = new CountryMap(activity.getAssets());
     } catch (IOException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
     }
   }
 

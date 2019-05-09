@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 // See https://developer.android.com/studio/publish/app-signing#secure-shared-keystore
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -107,7 +108,7 @@ dependencies {
     // For Firebase Analytics, etc.
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-perf:16.2.5'  // Last version to support API <17
-    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
     // For Sockslib
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-android:1.7.25'

@@ -18,7 +18,7 @@ package app.intra.net.doh;
 import android.util.Log;
 import app.intra.net.dns.DnsUdpQuery;
 import app.intra.sys.LogWrapper;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.nio.BufferOverflowException;
@@ -95,11 +95,11 @@ public class Resolver {
           Transaction.Status.CANCELED : Transaction.Status.SEND_FAIL;
       LogWrapper.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
       if (e instanceof SocketTimeoutException) {
-        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
+        Crashlytics.log(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
         try {
           serverConnection.reset();
         } catch (NullPointerException npe) {
-          FirebaseCrash.logcat(Log.WARN, LOG_TAG,
+          Crashlytics.log(Log.WARN, LOG_TAG,
               "Unlikely race: Null server connection at reset.");
         }
       }
@@ -123,7 +123,7 @@ public class Resolver {
       try {
         writeRequestIdToDnsResponse(dnsResponse, dnsUdpQuery.requestId);
       } catch (BufferOverflowException e) {
-        FirebaseCrash.logcat(Log.WARN, LOG_TAG, "ID replacement failed");
+        Crashlytics.log(Log.WARN, LOG_TAG, "ID replacement failed");
         transaction.status = Transaction.Status.BAD_RESPONSE;
         return;
       }
@@ -131,7 +131,7 @@ public class Resolver {
       if (parsedDnsResponse != null) {
         Log.d(LOG_TAG, "RNAME: " + parsedDnsResponse.name + " NAME: " + dnsUdpQuery.name);
         if (!dnsUdpQuery.name.equals(parsedDnsResponse.name)) {
-          FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
+          Crashlytics.log(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
           transaction.status = Transaction.Status.BAD_RESPONSE;
           return;
         }
