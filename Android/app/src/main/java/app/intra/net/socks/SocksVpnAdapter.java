@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
 import app.intra.net.VpnAdapter;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.LogWrapper;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -169,7 +169,7 @@ public class SocksVpnAdapter extends VpnAdapter {
           .addDisallowedApplication(vpnService.getPackageName())
           .establish();
     } catch (Exception e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
       return null;
     }
   }

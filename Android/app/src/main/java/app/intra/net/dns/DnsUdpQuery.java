@@ -18,7 +18,7 @@ package app.intra.net.dns;
 import android.os.SystemClock;
 import android.util.Log;
 import app.intra.sys.LogWrapper;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import java.net.InetAddress;
 import java.net.ProtocolException;
 
@@ -49,14 +49,14 @@ public class DnsUdpQuery {
       return null;
     }
     if (!dnsPacket.isNormalQuery() && !dnsPacket.isResponse()) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Dropping strange DNS query");
+      Crashlytics.log(Log.INFO, LOG_TAG, "Dropping strange DNS query");
       return null;
     }
 
     dnsUdpQuery.type = dnsPacket.getQueryType();
     dnsUdpQuery.name = dnsPacket.getQueryName();
     if (dnsUdpQuery.name == null || dnsUdpQuery.type == 0) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "No question in DNS packet");
+      Crashlytics.log(Log.INFO, LOG_TAG, "No question in DNS packet");
       return null;
     }
     dnsUdpQuery.requestId = dnsPacket.getId();

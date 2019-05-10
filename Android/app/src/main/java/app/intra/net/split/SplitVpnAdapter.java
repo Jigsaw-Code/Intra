@@ -26,7 +26,7 @@ import app.intra.net.doh.Resolver;
 import app.intra.net.doh.ResponseWriter;
 import app.intra.net.doh.Transaction;
 import app.intra.sys.IntraVpnService;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
     PrivateAddress privateIpv6Address = new PrivateAddress(IPV6_SUBNET, 120);
     PrivateAddress privateIpv4Address = selectPrivateAddress();
     if (privateIpv4Address == null) {
-      FirebaseCrash.logcat(
+      Crashlytics.log(
           Log.ERROR, LOG_TAG, "Unable to find a private address on which to establish a VPN.");
       return null;
     }
@@ -122,13 +122,13 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
       }
       tunFd = builder.establish();
     } catch (IllegalArgumentException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
       Log.e(LOG_TAG, establishVpnErrorMsg, e);
     } catch (SecurityException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
       Log.e(LOG_TAG, establishVpnErrorMsg, e);
     } catch (IllegalStateException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
       Log.e(LOG_TAG, establishVpnErrorMsg, e);
     }
 
@@ -167,7 +167,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
     try {
       netInterfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
     } catch (SocketException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
       e.printStackTrace();
       return null;
     }
@@ -199,12 +199,12 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
   @Override
   // This thread reads DNS requests from the VPN interface and forwards them via |serverConnection|.
   public void run() {
-    FirebaseCrash.logcat(Log.DEBUG, LOG_TAG, "Query thread starting");
+    Crashlytics.log(Log.DEBUG, LOG_TAG, "Query thread starting");
     if (tunFd == null) {
       // This check is necessary due to a race, where the VPN has been closed and the device regains
       // network connectivity before the service stops. As a result the TUN file descriptor is null
       // at the time the resolver is created.
-      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "VPN/TUN file descriptor is null");
+      Crashlytics.log(Log.WARN, LOG_TAG, "VPN/TUN file descriptor is null");
       return;
     }
 
@@ -218,8 +218,8 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
           length = in.read(buffer.array());
         } catch (IOException e) {
           if (!isInterrupted()) {
-            FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to read from tun interface.");
-            FirebaseCrash.report(e);
+            Crashlytics.log(Log.ERROR, LOG_TAG, "Failed to read from tun interface.");
+            Crashlytics.logException(e);
           }
           return;
         }
@@ -233,7 +233,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
           continue;
         }
         if (length < IP_MIN_HEADER_LENGTH) {
-          FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Received malformed IP packet.");
+          Crashlytics.log(Log.WARN, LOG_TAG, "Received malformed IP packet.");
           continue;
         }
         buffer.limit(length);
@@ -248,30 +248,29 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
             ipPacket = new Ipv6Packet(buffer);
           }
         } catch (IllegalArgumentException e) {
-          FirebaseCrash
-              .logcat(Log.WARN, LOG_TAG, "Received malformed IP packet: " + e.getMessage());
+          Crashlytics.log(Log.WARN, LOG_TAG, "Received malformed IP packet: " + e.getMessage());
           continue;
         }
         byte protocol = ipPacket.getProtocol();
         if (protocol != UDP_PROTOCOL) {
-          FirebaseCrash.logcat(Log.WARN, LOG_TAG, getProtocolErrorMessage(protocol));
+          Crashlytics.log(Log.WARN, LOG_TAG, getProtocolErrorMessage(protocol));
           continue;
         }
 
         UdpPacket udpPacket = new UdpPacket(ByteBuffer.wrap(ipPacket.getPayload()));
         if (udpPacket.destPort != DNS_DEFAULT_PORT) {
-          FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Received non-DNS UDP packet");
+          Crashlytics.log(Log.WARN, LOG_TAG, "Received non-DNS UDP packet");
           continue;
         }
 
         if (udpPacket.length == 0) {
-          FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Received interrupt UDP packet.");
+          Crashlytics.log(Log.INFO, LOG_TAG, "Received interrupt UDP packet.");
           continue;
         }
 
         DnsUdpQuery dnsRequest = DnsUdpQuery.fromUdpBody(udpPacket.data);
         if (dnsRequest == null) {
-          FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
+          Crashlytics.log(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
           continue;
         }
         Log.d(
@@ -292,8 +291,8 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
             dnsRequest, udpPacket.data, this);
       } catch (Exception e) {
         if (!isInterrupted()) {
-          FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Unexpected exception in UDP loop.");
-          FirebaseCrash.report(e);
+          Crashlytics.log(Log.WARN, LOG_TAG, "Unexpected exception in UDP loop.");
+          Crashlytics.logException(e);
         }
       }
     }
@@ -345,8 +344,8 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
       try {
         out.write(rawIpResponse);
       } catch (IOException e) {
-        FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to write to VPN/TUN interface.");
-        FirebaseCrash.report(e);
+        Crashlytics.log(Log.ERROR, LOG_TAG, "Failed to write to VPN/TUN interface.");
+        Crashlytics.logException(e);
         transaction.status = Transaction.Status.INTERNAL_ERROR;
       }
     }
@@ -359,7 +358,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
     try {
       tunFd.close();
     } catch (IOException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
     }
   }
 }

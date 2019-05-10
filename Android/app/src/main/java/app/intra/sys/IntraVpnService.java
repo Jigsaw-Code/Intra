@@ -46,8 +46,8 @@ import app.intra.net.socks.SocksVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import java.util.Calendar;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
@@ -292,7 +292,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
     VpnController.getInstance().onStartComplete(this, vpnAdapter != null);
     if (vpnAdapter == null) {
-      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Failed to startVpn VPN adapter");
+      Crashlytics.log(Log.WARN, LOG_TAG, "Failed to startVpn VPN adapter");
       stopSelf();
     }
   }
@@ -310,13 +310,13 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     if (vpnAdapter != null) {
       vpnAdapter.start();
     } else {
-      FirebaseCrash.logcat(Log.WARN, LOG_TAG, "Restart failed");
+      Crashlytics.log(Log.WARN, LOG_TAG, "Restart failed");
     }
   }
 
   @Override
   public void onCreate() {
-    FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Creating DNS VPN service");
+    Crashlytics.log(Log.INFO, LOG_TAG, "Creating DNS VPN service");
     VpnController.getInstance().setIntraVpnService(this);
 
     firebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -326,7 +326,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   public void signalStopService(boolean userInitiated) {
     // TODO(alalama): display alert if not user initiated
-    FirebaseCrash.logcat(
+    Crashlytics.log(
         Log.INFO,
         LOG_TAG,
         String.format("Received stop signal. User initiated: %b", userInitiated));
@@ -353,12 +353,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   private synchronized void startVpnAdapter() {
     if (vpnAdapter == null) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Starting DNS resolver");
+      Crashlytics.log(Log.INFO, LOG_TAG, "Starting DNS resolver");
       vpnAdapter = makeVpnAdapter();
       if (vpnAdapter != null) {
         vpnAdapter.start();
       } else {
-        FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
+        Crashlytics.log(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
       }
     }
   }
@@ -373,7 +373,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @Override
   public synchronized void onDestroy() {
-    FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
+    Crashlytics.log(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
 
     PreferenceManager.getDefaultSharedPreferences(this).
         unregisterOnSharedPreferenceChangeListener(this);
@@ -395,7 +395,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @Override
   public void onRevoke() {
-    FirebaseCrash.logcat(Log.WARN, LOG_TAG, "VPN service revoked.");
+    Crashlytics.log(Log.WARN, LOG_TAG, "VPN service revoked.");
     stopVpnAdapter();
     stopSelf();
 
@@ -450,7 +450,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
         // Play Store incompatibility is a known issue, so always exclude it.
         builder = builder.addDisallowedApplication("com.android.vending");
       } catch (PackageManager.NameNotFoundException e) {
-        FirebaseCrash.report(e);
+        Crashlytics.logException(e);
         Log.e(LOG_TAG, "Failed to exclude an app", e);
       }
     }
@@ -505,7 +505,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   // NetworkListener interface implementation
   @Override
   public void onNetworkConnected(NetworkInfo networkInfo) {
-    FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Connected event.");
+    Crashlytics.log(Log.INFO, LOG_TAG, "Connected event.");
     setNetworkConnected(true);
     // This code is used to start the VPN for the first time, but startVpn is idempotent, so we can
     // call it every time. startVpn performs network activity so it has to run on a separate thread.
@@ -521,7 +521,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @Override
   public void onNetworkDisconnected() {
-    FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Disconnected event.");
+    Crashlytics.log(Log.INFO, LOG_TAG, "Disconnected event.");
     setNetworkConnected(false);
     VpnController.getInstance().onConnectionStateChanged(this, null);
   }
