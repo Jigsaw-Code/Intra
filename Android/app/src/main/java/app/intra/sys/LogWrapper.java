@@ -15,7 +15,7 @@ limitations under the License.
 */
 package app.intra.sys;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 
 /**
  * Wrapper for Firebase Crash Reporting.  This allows unit testing of classes that contain logging.
@@ -23,7 +23,7 @@ import com.google.firebase.crash.FirebaseCrash;
 public class LogWrapper {
   public static void report(Throwable t) {
     try {
-      FirebaseCrash.report(t);
+      Crashlytics.logException(t);
     } catch (IllegalStateException e) {
       // This only occurs during unit tests.
     }
@@ -31,7 +31,7 @@ public class LogWrapper {
 
   public static void logcat(int i, String s, String s1) {
     try {
-      FirebaseCrash.logcat(i, s, s1);
+      Crashlytics.log(i, s, s1);
     } catch (IllegalStateException e) {
       // This only occurs during unit tests.
     }

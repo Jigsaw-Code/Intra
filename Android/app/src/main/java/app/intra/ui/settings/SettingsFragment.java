@@ -27,7 +27,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import app.intra.R;
 import app.intra.sys.PersistentState;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -159,7 +159,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // Thread was interrupted.  This is probably fine.
       } catch (ExecutionException e) {
         // Something bad happened during the async task.
-        FirebaseCrash.report(e);
+        Crashlytics.logException(e);
       }
     }
     return appList;

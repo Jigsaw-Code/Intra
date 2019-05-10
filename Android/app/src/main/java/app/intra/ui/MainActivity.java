@@ -73,8 +73,8 @@ import app.intra.sys.QueryTracker;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
 import app.intra.ui.settings.SettingsFragment;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.crash.FirebaseCrash;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -392,7 +392,7 @@ public class MainActivity extends AppCompatActivity
     VpnController controller = VpnController.getInstance();
     VpnState state = controller.getState(this);
     if (state.activationRequested && !state.on) {
-      FirebaseCrash.logcat(Log.INFO, LOG_TAG, "Autostart enabled");
+      Crashlytics.log(Log.INFO, LOG_TAG, "Autostart enabled");
       prepareAndStartDnsVpn();
     }
   }
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity
         startDnsVpnService();
       }
     } else {
-      FirebaseCrash.logcat(Log.ERROR, LOG_TAG, "Device does not support system-wide VPN mode.");
+      Crashlytics.log(Log.ERROR, LOG_TAG, "Device does not support system-wide VPN mode.");
     }
   }
 
@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity
     } catch (NullPointerException e) {
       // This exception is not mentioned in the documentation, but it has been encountered by Intra
       // users and also by other developers, e.g. https://stackoverflow.com/questions/45470113.
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
       return false;
     }
     if (prepareVpnIntent != null) {
@@ -540,7 +540,7 @@ public class MainActivity extends AppCompatActivity
         }
       }
     } catch (SocketException e) {
-      FirebaseCrash.report(e);
+      Crashlytics.logException(e);
     }
     return false;
   }
