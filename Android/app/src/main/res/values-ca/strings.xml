@@ -66,6 +66,8 @@
   <string name="destination_label">Servidor de destinació</string>
   <string name="server_choice">Selecciona el DNS a través d\'un servidor HTTPS</string>
   <string name="server_choice_summary">Servidor actual: %s</string>
+  <string name="server_choice_builtin">Servidor integrat</string>
+  <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">el seu lloc web</a> per consultar-ne la política de privadesa i les condicions del servei aplicables.</string>
   <string name="server_choice_custom">URL de servidor personalitzat</string>
   <string name="server_choice_warning">El servidor personalitzat ha de tenir un format https:// vàlid URL</string>
   <string name="excluded_apps">Aplicacions excloses</string>

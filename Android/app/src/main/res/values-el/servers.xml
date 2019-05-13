@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Μεγάλο εργαλείο επίλυσης παγκόσμιας κλίμακας που παρέχεται από την Google.</string>
+  <string name="description1">Μεγάλο εργαλείο επίλυσης παγκόσμιας κλίμακας που παρέχεται από την Cloudflare.</string>
+  <string name="description2">Μεγάλο εργαλείο επίλυσης παγκόσμιας κλίμακας που παρέχεται από την IBM και την Packet Clearinghouse.  Αποκλείει τους κακόβουλους τομείς.</string>
+  <string name="description3">Παγκόσμιος πάροχος φιλτραρίσματος DNS.  Αποκλείει τους κακόβουλους τομείς.</string>
+  <string name="description4">Διακομιστής στην Αυστρία που παρέχεται από μια μη κερδοσκοπική εταιρεία για το απόρρητο.</string>
+  <string name="description5">Διακομιστής στην Ολλανδία που παρέχεται από μια εταιρεία λογισμικού DNS ανοικτού κώδικα.</string>
+  <string name="description6">Παρέχεται από την xTom και άλλους διεθνείς παρόχους φιλοξενίας.  Χρησιμοποιεί το CDN της Cloudflare.</string>
+</resources>

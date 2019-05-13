@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Suuri, Googlen ylläpitämä kansainvälinen ratkaisija.</string>
+  <string name="description1">Suuri, Cloudfaren ylläpitämä kansainvälinen ratkaisija.</string>
+  <string name="description2">Suuri IBM:n ja Packet Clearinghousen kansainvälinen ratkaisija.  Estää haitalliset verkkotunnukset.</string>
+  <string name="description3">Kansainvälinen DNS-suodatinpalveluntarjoaja.  Estää haitalliset verkkotunnukset.</string>
+  <string name="description4">Itävallassa sijaitseva palvelin, jota ylläpitää voittoa tavoittelematon tietosuojaryhmä.</string>
+  <string name="description5">Alankomaissa sijaitseva palvelin, jota ylläpitää avoimen lähdekoodin DNS-ohjelmistoyhtiö.</string>
+  <string name="description6">xTomin ja muiden kansainvälisten hosting-palveluntarjoajien ylläpitämä.  Käyttää Cloudflaren CDN:ää.</string>
+</resources>

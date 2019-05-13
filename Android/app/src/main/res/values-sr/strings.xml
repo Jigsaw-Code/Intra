@@ -78,6 +78,8 @@
   <string name="destination_label">Одредишни сервер</string>
   <string name="server_choice">Изаберите DNS over HTTPS сервер</string>
   <string name="server_choice_summary">Тренутно %s</string>
+  <string name="server_choice_builtin">Уграђени сервер</string>
+  <string name="server_choice_website_notice">Посетите <a href="https://www.example.com/">њихов веб-сајт</a> да бисте прегледали политику приватности и примењиве услове коришћења услуге.</string>
   <string name="server_choice_custom">URL прилагођеног сервера</string>
   <string name="server_choice_warning">Прилагођени сервер мора да буде важећи https:// URL</string>
   <string name="excluded_apps">Изузете апликације</string>

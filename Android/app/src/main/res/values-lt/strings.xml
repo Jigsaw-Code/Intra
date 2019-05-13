@@ -78,6 +78,8 @@
   <string name="destination_label">Paskirties serveris</string>
   <string name="server_choice">Pasirinkite DNS naudodami HTTPS serverį</string>
   <string name="server_choice_summary">Šiuo metu „%s“</string>
+  <string name="server_choice_builtin">Įtaisytasis serveris</string>
+  <string name="server_choice_website_notice">Apsilankę <a href="https://www.example.com/">jų svetainėje</a> peržiūrėkite privatumo politiką ir taikomas paslaugų teikimo sąlygas.</string>
   <string name="server_choice_custom">Tinkintas serverio URL</string>
   <string name="server_choice_warning">Tinkintas serveris turi būti tinkamas https:// URL</string>
   <string name="excluded_apps">Išskirtos programos</string>

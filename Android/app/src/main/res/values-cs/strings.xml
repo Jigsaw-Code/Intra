@@ -66,6 +66,8 @@
   <string name="destination_label">Cílový server</string>
   <string name="server_choice">Vyberte server DNS over HTTPS</string>
   <string name="server_choice_summary">Momentálně %s</string>
+  <string name="server_choice_builtin">Zabudovaný server</string>
+  <string name="server_choice_website_notice">Zásady ochrany soukromí a platné smluvní podmínky najdete na jejich <a href="https://www.example.com/">webových stránkách</a>.</string>
   <string name="server_choice_custom">Adresa vlastního serveru</string>
   <string name="server_choice_warning">Vlastní server musí být platná adresa URL s https://</string>
   <string name="excluded_apps">Nechráněné aplikace</string>

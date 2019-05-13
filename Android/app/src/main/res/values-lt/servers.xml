@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Didelė visuotinė paieškos priemonė, valdoma „Google“.</string>
+  <string name="description1">Didelė visuotinė paieškos priemonė, valdoma „Cloudflare“.</string>
+  <string name="description2">Didelė visuotinė paieškos priemonė, valdoma IBM ir „Packet Clearinghouse“.  Blokuoja kenkėjiškus domenus.</string>
+  <string name="description3">Visuotinis DNS filtravimo teikėjas.  Blokuoja kenkėjiškus domenus.</string>
+  <string name="description4">Serveris Austrijoje, jį valdo ne pelno siekianti privatumo grupė.</string>
+  <string name="description5">Serveris Nyderlanduose, jį valdo atvirojo šaltinio DNS programinės įrangos įmonė.</string>
+  <string name="description6">Valdo „xTom“ ir kiti tarptautiniai prieglobos teikėjai.  Naudoja „Cloudflare“ TPT.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Grande resolvedor global operado pelo Google.</string>
+  <string name="description1">Grande resolvedor global operado pela Cloudflare.</string>
+  <string name="description2">Grande resolvedor global da IBM e da Packet Clearing House.  Bloqueia domínios mal-intencionados.</string>
+  <string name="description3">Provedor de filtragem de DNS global.  Bloqueia domínios mal-intencionados.</string>
+  <string name="description4">Servidor na Áustria operado por um grupo privado sem fins lucrativos.</string>
+  <string name="description5">Servidor na Holanda operado por uma empresa de software de DNS de código aberto.</string>
+  <string name="description6">Operado pela xTom e outros provedores de hospedagem internacionais.  Usa a CDN da Cloudflare.</string>
+</resources>

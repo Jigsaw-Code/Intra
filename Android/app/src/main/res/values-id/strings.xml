@@ -75,6 +75,8 @@
   <string name="destination_label">Server tujuan</string>
   <string name="server_choice">Pilih Server DNS over HTTPS</string>
   <string name="server_choice_summary">Saat ini %s</string>
+  <string name="server_choice_builtin">Server default</string>
+  <string name="server_choice_website_notice">Harap kunjungi <a href="https://www.example.com/">situs mereka</a> untuk meninjau kebijakan privasi dan persyaratan layanan yang berlaku.</string>
   <string name="server_choice_custom">URL server kustom</string>
   <string name="server_choice_warning">Server kustom harus berupa URL https:// yang valid</string>
   <string name="excluded_apps">Aplikasi yang dikecualikan</string>

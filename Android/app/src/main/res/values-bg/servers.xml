@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Голям глобален DNS сървър, управляван от Google.</string>
+  <string name="description1">Голям глобален DNS сървър, управляван от Cloudflare.</string>
+  <string name="description2">Голям глобален DNS сървър от IBM и Packet Clearinghouse.  Блокира злонамерени домейни.</string>
+  <string name="description3">Глобален доставчик на услуга за филтриране на DNS.  Блокира злонамерени домейни.</string>
+  <string name="description4">Сървър в Австрия, управляван от група с нестопанска цел, работеща за осигуряване на поверителност.</string>
+  <string name="description5">Сървър в Нидерландия, управляван от фирма за DNS софтуер с отворен код.</string>
+  <string name="description6">Управляван от xTom и други международни доставчици на хостинг услуги.  Използва мрежата на Cloudflare за показване на съдържание.</string>
+</resources>

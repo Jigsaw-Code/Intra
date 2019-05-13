@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">برنامج تعيين عالمي كبير مُدار من قِبَل Google.</string>
+  <string name="description1">برنامج تعيين عالمي كبير مُدار من قِبَل Cloudflare.</string>
+  <string name="description2">برنامج تعيين عالمي كبير مُقدّم من IBM وPacket Clearinghouse.  يحظر النطاقات المضّرة.</string>
+  <string name="description3">المزوّد العالمي لفلاتر نظام أسماء النطاقات.  يحظر النطاقات المضّرة.</string>
+  <string name="description4">يقع الخادم في النمسا وتديره مجموعة خاصة غير ربحية.</string>
+  <string name="description5">يوجد الخادم في هولندا، وتديره شركة برامج مفتوحة المصدر لنظام أسماء النطاقات.</string>
+  <string name="description6">مُدار من قِبَل xTom وغيره من المستضيفين الدوليين.  يستخدم شبكة عرض المحتوى (CDN) الخاصة بشركة Cloudflare.</string>
+</resources>

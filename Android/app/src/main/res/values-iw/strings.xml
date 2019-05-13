@@ -66,6 +66,8 @@
   <string name="destination_label">שרת היעד</string>
   <string name="server_choice">בחירת שרת להעברת ה-DNS דרך HTTPS</string>
   <string name="server_choice_summary">השרת שנבחר: %s</string>
+  <string name="server_choice_builtin">שרת מובנה</string>
+  <string name="server_choice_website_notice">מומלץ להיכנס ל<a href="https://www.example.com/">אתר הזה</a> כדי לקרוא את מדיניות הפרטיות ותנאי השירות שלהם.</string>
   <string name="server_choice_custom">כתובת URL של שרת בהתאמה אישית</string>
   <string name="server_choice_warning">כתובת ה-URL של שרת בהתאמה אישית צריכה להיות חוקית ולהתחיל ב-https://‎ ‎</string>
   <string name="excluded_apps">אפליקציות לא כלולות</string>

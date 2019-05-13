@@ -75,6 +75,8 @@
   <string name="destination_label">Serveur de destination</string>
   <string name="server_choice">Sélectionner un serveur DNS over HTTPS</string>
   <string name="server_choice_summary">Actuellement %s</string>
+  <string name="server_choice_builtin">Serveur intégré</string>
+  <string name="server_choice_website_notice">Veuillez accéder à son <a href="https://www.example.com/">site Web</a> pour consulter ses règles de confidentialité et les conditions d\'utilisation applicables.</string>
   <string name="server_choice_custom">URL de serveur personnalisée</string>
   <string name="server_choice_warning">Le serveur personnalisé doit correspondre à une URL https:// valide</string>
   <string name="excluded_apps">Applications exclues</string>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Malaking pandaigdigang resolver na pinapatakbo ng Google.</string>
+  <string name="description1">Malaking pandaigdigang resolver na pinapatakbo ng Cloudflare.</string>
+  <string name="description2">Malaking pandaigdigang resolver mula sa IBM at Packet Clearinghouse.  Bina-block ang mga nakakapinsalang domain.</string>
+  <string name="description3">Pandaigdigang provider para sa pag-filter ng DNS.  Bina-block ang mga nakakapinsalang domain.</string>
+  <string name="description4">Server sa Austria na pinapatakbo ng isang non-profit na grupo sa privacy.</string>
+  <string name="description5">Server sa Netherlands, na pinapatakbo ng isang open-source DNS software na kumpanya.</string>
+  <string name="description6">Pinapatakbo ng xTom at ng iba pang internasyonal na hosting provider.  Gumagamit ng CDN ng Cloudflare.</string>
+</resources>

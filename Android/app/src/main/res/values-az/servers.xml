@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Google tərəfindən idarə edilən böyük qlobal rezolver.</string>
+  <string name="description1">Cloudflare tərəfindən idarə edilən böyük qlobal rezolver.</string>
+  <string name="description2">IBM və Packet Clearinghouse\'a məxsus böyük qlobal rezolver.  Zərərli domenləri blok edin.</string>
+  <string name="description3">Qlobal DNS üçün filtrləmə provayderi.  Zərərli domenləri blok edin.</string>
+  <string name="description4">Qeyri-kommersiya məxfilik qrupu tərəfindən idarə edilən Avstriyada server.</string>
+  <string name="description5">Açıq mənbəli DNS proqram təminatı şirkəti tərəfindən idarə edilən Niderland serveri.</string>
+  <string name="description6">xTom və digər beynəlxalq host provayderləri tərəfindən idarə edilir.  Cloudflare CDN-dən istifadə edir.</string>
+</resources>

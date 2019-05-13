@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Velik globalni razreševalnik, ki ga upravlja Google.</string>
+  <string name="description1">Velik globalni razreševalnik, ki ga upravlja Cloudflare.</string>
+  <string name="description2">Velik globalni razreševalnik podjetij IBM in Packet Clearinghouse.  Blokira zlonamerne domene.</string>
+  <string name="description3">Globalni ponudnik filtriranja DNS.  Blokira zlonamerne domene.</string>
+  <string name="description4">Strežnik v Avstriji, ki ga upravlja neprofitna skupina zasebnikov.</string>
+  <string name="description5">Strežnik na Nizozemskem, ki ga upravlja podjetje za odprtokodno programsko opremo DNS.</string>
+  <string name="description6">Upravljalci: xTom in drugi mednarodni ponudniki gostovanja.  Uporablja omrežje za prenos vsebine ponudnika Cloudflare.</string>
+</resources>

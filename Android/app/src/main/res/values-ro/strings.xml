@@ -75,6 +75,8 @@
   <string name="destination_label">Server de destinație</string>
   <string name="server_choice">Selectați DNS peste serverul HTTPS</string>
   <string name="server_choice_summary">În acest moment, %s</string>
+  <string name="server_choice_builtin">Server încorporat</string>
+  <string name="server_choice_website_notice">Accesați <a href="https://www.example.com/">site-ul</a> pentru a consulta politica de confidențialitate și termenii și condițiile aplicabile.</string>
   <string name="server_choice_custom">Adresă URL de server personalizat</string>
   <string name="server_choice_warning">Serverul personalizat trebuie să fie o adresă URL https:// validă</string>
   <string name="excluded_apps">Aplicații excluse</string>

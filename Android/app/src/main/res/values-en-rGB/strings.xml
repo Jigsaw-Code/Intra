@@ -78,6 +78,8 @@
   <string name="destination_label">Destination server</string>
   <string name="server_choice">Select DNS over HTTPS Server</string>
   <string name="server_choice_summary">Currently %s</string>
+  <string name="server_choice_builtin">Built-in server</string>
+  <string name="server_choice_website_notice">Please visit <a href="https://www.example.com/">their website</a> to review their privacy policy and any applicable terms of service.</string>
   <string name="server_choice_custom">Custom server URL</string>
   <string name="server_choice_warning">Custom server must be a valid https:// URL</string>
   <string name="excluded_apps">Excluded apps</string>

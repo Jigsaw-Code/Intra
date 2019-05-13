@@ -66,6 +66,8 @@
   <string name="destination_label">Məkan serveri</string>
   <string name="server_choice">HTTPS Serveri üzrə DNS Seçin</string>
   <string name="server_choice_summary">Cari %s</string>
+  <string name="server_choice_builtin">Daxili server</string>
+  <string name="server_choice_website_notice">Onların məxfilik siyasəti və müvafiq xidmət şərtlərinə baxmaq üçün <a href="https://www.example.com/">veb saytlarına</a> daxil olun.</string>
   <string name="server_choice_custom">Fərdi server linki</string>
   <string name="server_choice_warning">Fərdi serverin linki https:// ilə başlayan düzgün link olmalıdır Link</string>
   <string name="excluded_apps">Intra\'dan istifadə etməyəcək tətbiqlər</string>

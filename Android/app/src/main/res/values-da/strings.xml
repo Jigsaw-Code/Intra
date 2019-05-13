@@ -78,6 +78,8 @@
   <string name="destination_label">Destinationsserver</string>
   <string name="server_choice">Vælg DNS via HTTPS-serveren</string>
   <string name="server_choice_summary">I øjeblikket %s</string>
+  <string name="server_choice_builtin">Indbygget server</string>
+  <string name="server_choice_website_notice">Besøg <a href="https://www.example.com/">deres website</a> for at læse deres privatlivspolitik og eventuelle relevante servicevilkår.</string>
   <string name="server_choice_custom">Tilpasset serverwebadresse</string>
   <string name="server_choice_warning">Den tilpassede server skal være en gyldig server af typen https:// Webadresse</string>
   <string name="excluded_apps">Ekskluderede apps</string>

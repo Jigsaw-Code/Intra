@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Большой DNS-преобразователь от Google.</string>
+  <string name="description1">Большой DNS-преобразователь от компании Cloudflare.</string>
+  <string name="description2">Большой DNS-преобразователь от IBM и Packet Clearing House.  Блокирует вредоносные домены.</string>
+  <string name="description3">Международный DNS-сервер с фильтрацией.  Блокирует вредоносные домены.</string>
+  <string name="description4">Расположенный в Австрии сервер от некоммерческой организации.</string>
+  <string name="description5">Расположенный в Нидерландах сервер от компании, предоставляющей ПО с открытым исходным кодом.</string>
+  <string name="description6">Сервер под управлением xTom и другими международными хостинг-провайдерами.  Использует СДК от Cloudflare.</string>
+</resources>

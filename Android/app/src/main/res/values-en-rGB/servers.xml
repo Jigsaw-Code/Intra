@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Large global resolver operated by Google.</string>
+  <string name="description1">Large global resolver operated by Cloudflare.</string>
+  <string name="description2">Large global resolver from IBM and Packet Clearinghouse.  Blocks malicious domains.</string>
+  <string name="description3">Global DNS filtering provider.  Blocks malicious domains.</string>
+  <string name="description4">Server in Austria operated by a non-profit privacy group.</string>
+  <string name="description5">Server in the Netherlands, operated by an open-source DNS software company.</string>
+  <string name="description6">Operated by xTom and other international hosting providers.  Uses Cloudflare\'s CDN.</string>
+</resources>

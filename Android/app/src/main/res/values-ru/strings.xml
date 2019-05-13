@@ -64,6 +64,8 @@
   <string name="destination_label">Сервер назначения</string>
   <string name="server_choice">Выберите сервер с протоколом DNS поверх HTTPS</string>
   <string name="server_choice_summary">Используется сейчас: %s</string>
+  <string name="server_choice_builtin">Встроенный сервер</string>
+  <string name="server_choice_website_notice">Рекомендуем посетить <a href="https://www.example.com/">их веб-сайты</a> и ознакомиться с политиками конфиденциальности и условиями использования.</string>
   <string name="server_choice_custom">Настраиваемый URL сервера</string>
   <string name="server_choice_warning">Настраиваемый сервер должен иметь действительный URL-адрес</string>
   <string name="excluded_apps">Исключенные приложения</string>

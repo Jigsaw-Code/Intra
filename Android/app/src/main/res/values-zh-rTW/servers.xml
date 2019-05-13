@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Google 營運的大型全球解析器。</string>
+  <string name="description1">Cloudflare 營運的大型全球解析器。</string>
+  <string name="description2">IBM 和 Packet Clearinghouse 提供的大型全球解析器。封鎖惡意網域。</string>
+  <string name="description3">全球 DNS 篩選服務供應商。封鎖惡意網域。</string>
+  <string name="description4">非營利私人團體在澳洲營運的伺服器。</string>
+  <string name="description5">開放原始碼 DNS 軟體公司在荷蘭營運的伺服器。</string>
+  <string name="description6">由 xTom 和其他國際主機供應商營運。使用 Cloudflare 的 CDN。</string>
+</resources>

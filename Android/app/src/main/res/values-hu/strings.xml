@@ -66,6 +66,8 @@
   <string name="destination_label">Célszerver</string>
   <string name="server_choice">HTTPS protokollt használó DNS-szerver kiválasztása</string>
   <string name="server_choice_summary">Jelenlegi szerver: %s</string>
+  <string name="server_choice_builtin">Beépített szerver</string>
+  <string name="server_choice_website_notice">Az adatvédelmi irányelveket és a vonatkozó általános szerződési feltételeket a <a href="https://www.example.com/">webhelyükön</a> találja.</string>
   <string name="server_choice_custom">Egyéni szerver URL-címe</string>
   <string name="server_choice_warning">Az egyéni szerver címének érvényes https://-címnek kell lennie.</string>
   <string name="excluded_apps">Kizárt alkalmazások</string>

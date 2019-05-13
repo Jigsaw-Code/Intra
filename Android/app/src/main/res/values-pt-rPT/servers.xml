@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Resolvedor global de grande dimensão mantido pela Google.</string>
+  <string name="description1">Resolvedor global de grande dimensão mantido pela Cloudflare.</string>
+  <string name="description2">Resolvedor global de grande dimensão da IBM e da Packet Clearinghouse.  Bloqueia domínios maliciosos.</string>
+  <string name="description3">Fornecedor global de filtragem de DNS.  Bloqueia domínios maliciosos.</string>
+  <string name="description4">Servidor na Áustria mantido por um grupo de privacidade sem fins lucrativos.</string>
+  <string name="description5">Servidor na Holanda, mantido por uma empresa de software DNS de código aberto.</string>
+  <string name="description6">Operado pela xTom e por outros fornecedores de alojamento internacionais.  Utiliza a RFC da Cloudflare.</string>
+</resources>

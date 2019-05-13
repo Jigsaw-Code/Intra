@@ -66,6 +66,8 @@
   <string name="destination_label">Целеви сървър</string>
   <string name="server_choice">Изберете сървър за DNS over HTTPS</string>
   <string name="server_choice_summary">В момента е %s</string>
+  <string name="server_choice_builtin">Вграден сървър</string>
+  <string name="server_choice_website_notice">Моля, посетете <a href="https://www.example.com/">уебсайта на доставчика</a>, за да прегледате декларацията му за поверителност и приложимите общи условия.</string>
   <string name="server_choice_custom">URL адрес на персонализирания сървър</string>
   <string name="server_choice_warning">URL адресът на персонализирания сървър трябва да е валиден адрес с https://</string>
   <string name="excluded_apps">Изключени приложения</string>

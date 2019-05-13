@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Liels globāls atrisinātājs, ko nodrošina Google.</string>
+  <string name="description1">Liels globāls atrisinātājs, ko nodrošina Cloudflare.</string>
+  <string name="description2">Liels globāls atrisinātājs, ko nodrošina IBM un Packet Clearinghouse.  Bloķē ļaunprātīgus domēnus.</string>
+  <string name="description3">Globāls DNS filtrēšanas nodrošinātājs.  Bloķē ļaunprātīgus domēnus.</string>
+  <string name="description4">Serveris Austrijā, ko nodrošina bezpeļņas konfidencialitātes grupa.</string>
+  <string name="description5">Serveris Nīderlandē, ko nodrošina atklātā pirmkoda DNS programmatūras uzņēmums.</string>
+  <string name="description6">Nodrošina xTom un citi starptautiski mitināšanas sniedzēji.  Tiek izmantots Cloudflare nodrošinātais CDN.</string>
+</resources>

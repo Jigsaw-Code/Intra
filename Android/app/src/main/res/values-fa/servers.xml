@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">تفکیک‌کننده جهانی بزرگ که با Google اجرا می‌شود.</string>
+  <string name="description1">تفکیک‌کننده جهانی بزرگ که با Cloudflare اجرا می‌شود.</string>
+  <string name="description2">ارائه‌کنندگان جهانی بزرگ از IBM و Packet Clearinghouse.  دامنه‌های مخرب را مسدود می‌کند.</string>
+  <string name="description3">ارائه‌کننده فیلتر DNS جهانی.  دامنه‌های مخرب را مسدود می‌کند.</string>
+  <string name="description4">سرور موجود در اتریش که با گروه خصوصی غیرانتفاعی اجرا می‌شود.</string>
+  <string name="description5">سرور موجود در هلند که با شرکت نرم‌افزار DNS منبع آزاد اجرا می‌شود.</string>
+  <string name="description6">با xTom و سایر ارائه‌کنندگان میزبان بین‌المللی اجرا می‌شود.  از CDN متعلق به Cloudflare استفاده می‌کند.</string>
+</resources>

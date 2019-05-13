@@ -73,6 +73,8 @@
   <string name="destination_label">目的地伺服器</string>
   <string name="server_choice">選取 DNS-over-HTTPS 伺服器</string>
   <string name="server_choice_summary">目前使用 %s</string>
+  <string name="server_choice_builtin">內建伺服器</string>
+  <string name="server_choice_website_notice">請前往<a href="https://www.example.com/">相關網站</a>檢閱隱私權政策和任何適用的服務條款。</string>
   <string name="server_choice_custom">自訂伺服器網址</string>
   <string name="server_choice_warning">自訂伺服器必須是有效的 https:// 網址</string>
   <string name="excluded_apps">排除的應用程式</string>

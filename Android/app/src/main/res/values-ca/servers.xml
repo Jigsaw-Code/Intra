@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Gran sistema de resolució global gestionat per Google.</string>
+  <string name="description1">Gran sistema de resolució global gestionat per Cloudflare.</string>
+  <string name="description2">Gran sistema de resolució global d\'IBM i de Packet Clearing House.  Bloqueja els dominis maliciosos.</string>
+  <string name="description3">Proveïdor global de filtres de DNS.  Bloqueja els dominis maliciosos.</string>
+  <string name="description4">Servidor d\'Àustria gestionat per un grup de privadesa sense ànim de lucre.</string>
+  <string name="description5">Servidor dels Països Baixos gestionat per una empresa de programari lliure de DNS.</string>
+  <string name="description6">Gestionat per xTom i altres proveïdors d\'allotjament internacionals.  Utilitza la CDN de Cloudflare.</string>
+</resources>

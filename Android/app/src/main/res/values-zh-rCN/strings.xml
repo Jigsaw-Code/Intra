@@ -66,6 +66,8 @@
   <string name="destination_label">目标服务器</string>
   <string name="server_choice">选择 DNS-over-HTTPS 服务器</string>
   <string name="server_choice_summary">目前为 %s</string>
+  <string name="server_choice_builtin">内置服务器</string>
+  <string name="server_choice_website_notice">请访问<a href="https://www.example.com/">其网站</a>查看相应隐私权政策和所有适用的服务条款。</string>
   <string name="server_choice_custom">自定义服务器网址</string>
   <string name="server_choice_warning">自定义服务器必须是以 https:// 开头的有效网址</string>
   <string name="excluded_apps">排除的应用</string>

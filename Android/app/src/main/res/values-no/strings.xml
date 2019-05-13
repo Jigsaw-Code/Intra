@@ -66,6 +66,8 @@
   <string name="destination_label">Måltjener</string>
   <string name="server_choice">Velg DNS over HTTPS-tjener</string>
   <string name="server_choice_summary">For øyeblikket %s</string>
+  <string name="server_choice_builtin">Innebygd tjener</string>
+  <string name="server_choice_website_notice">Gå til <a href="https://www.example.com/">nettstedet deres</a> for å gjennomgå personvernreglene deres og eventuelle gjeldende vilkår for bruk.</string>
   <string name="server_choice_custom">Egendefinert nettadresse til tjener</string>
   <string name="server_choice_warning">Den egendefinerte tjeneren må være en gyldig (https://) nettadresse</string>
   <string name="excluded_apps">Utelukkede apper</string>

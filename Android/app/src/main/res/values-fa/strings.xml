@@ -77,6 +77,8 @@
   <string name="destination_label">سرور مقصد</string>
   <string name="server_choice">DNS‌ را روی «سرور HTTPS (اچ‌تی‌تی‌پی‌اس)» انتخاب کنید</string>
   <string name="server_choice_summary">درحال‌حاضر %s</string>
+  <string name="server_choice_builtin">سرور داخلی</string>
+  <string name="server_choice_website_notice">برای مرور خط‌مشی رازداری و همه شرایط خدمات قابل‌اجرا، از <a href="https://www.example.com/">وب‌سایت آن‌ها</a> بازدید کنید.</string>
   <string name="server_choice_custom">نشانی وب سرور سفارشی</string>
   <string name="server_choice_warning">سرور سفارشی باید نشانی وب https:// معتبری باشد</string>
   <string name="excluded_apps">برنامه‌های مستثنا‌شده</string>
