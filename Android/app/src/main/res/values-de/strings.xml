@@ -4,7 +4,7 @@
   <string name="intro_manipulation_headline">Schutz vor DNS-Manipulation</string>
   <string name="intro_manipulation_body">Mit Intra wird die Verbindung zum Domain Name System (DNS) geschützt. Dieses System liefert die genauen Adressen zum Öffnen einer Website oder einer App.\n\nDurch Verschlüsselung wird sichergestellt, dass die Adressen nicht manipuliert werden können – für einen sicheren Internetzugriff.</string>
   <string name="intro_details_headline">Last but not least…</string>
-  <string name="intro_details_body">Tippen Sie auf OK, um DNS-Abfragen mit Intra zu schützen. Standardmäßig werden sie dann an Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Datenschutzerklärung</a>) weitergeleitet. In den App-Einstellungen können Sie aber auch einen anderen Dienst auswählen.</string>
+  <string name="intro_details_body">Tippen Sie auf Ok, um DNS-Abfragen mit Intra zu schützen. Standardmäßig werden sie dann an Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Datenschutzerklärung</a>) weitergeleitet. In den App-Einstellungen können Sie aber auch einen anderen Dienst auswählen.</string>
   <string name="intro_back">Zurück</string>
   <string name="intro_next">Weiter</string>
   <string name="intro_accept">Zustimmen</string>
@@ -64,6 +64,8 @@
   <string name="destination_label">Zielserver</string>
   <string name="server_choice">DNS-over-HTTPS-Server auswählen</string>
   <string name="server_choice_summary">Aktuell %s</string>
+  <string name="server_choice_builtin">Eingebauter Server</string>
+  <string name="server_choice_website_notice">Bitte besuchen Sie <a href="https://www.example.com/">diese Website</a>, um sich über die Datenschutzerklärung und die Nutzungsbedingungen zu informieren.</string>
   <string name="server_choice_custom">Benutzerdefinierte Server-URL</string>
   <string name="server_choice_warning">Die benutzerdefinierte URL muss gültig sein und mit https:// beginnen</string>
   <string name="excluded_apps">Ausgeschlossene Apps</string>

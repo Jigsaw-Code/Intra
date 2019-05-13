@@ -66,6 +66,8 @@
   <string name="destination_label">Galamērķa serveris</string>
   <string name="server_choice">HTTPS servera vietā atlasiet DNS</string>
   <string name="server_choice_summary">Šobrīd tiek izmantots: %s</string>
+  <string name="server_choice_builtin">Iebūvēts serveris</string>
+  <string name="server_choice_website_notice">Lūdzu, apmeklējiet <a href="https://www.example.com/">attiecīgo vietni</a>, lai izskatītu konfidencialitātes politiku un visus piemērojamos pakalpojumu sniegšanas noteikumus.</string>
   <string name="server_choice_custom">Pielāgots servera URL</string>
   <string name="server_choice_warning">Pielāgotajam serverim jābūt derīgam https:// URL</string>
   <string name="excluded_apps">Neietvertās lietotnes</string>

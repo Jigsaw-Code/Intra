@@ -64,6 +64,8 @@
   <string name="destination_label">Bestemmingsserver</string>
   <string name="server_choice">DNS-over-HTTPS-server selecteren</string>
   <string name="server_choice_summary">Momenteel %s</string>
+  <string name="server_choice_builtin">Ingebouwde server</string>
+  <string name="server_choice_website_notice">Ga naar <a href="https://www.example.com/">de website</a> om het privacybeleid en eventuele servicevoorwaarden te bekijken.</string>
   <string name="server_choice_custom">Aangepaste server-URL</string>
   <string name="server_choice_warning">De aangepaste server moet een geldige https://-URL zijn</string>
   <string name="excluded_apps">Uitgesloten apps</string>

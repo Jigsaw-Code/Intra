@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
+import android.util.Log;
 import app.intra.BuildConfig;
 import app.intra.net.dns.DnsUdpQuery;
 import java.net.InetAddress;
@@ -22,7 +23,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,16 +40,18 @@ import okhttp3.RequestBody;
  * Allows the caller to perform DNS-over-HTTPS queries using the IETF draft protocol.
  */
 public class StandardServerConnection implements ServerConnection {
+  // The class name is longer than Android's log tag length limit.
+  private static final String LOG_TAG = "StandardDOH";
 
   private final String url;
   private OkHttpClient client;
-  private final List<InetAddress> ips;
+  private final Collection<InetAddress> ips;
 
   private class PinnedDns implements Dns {
 
     private final List<InetAddress> ips;
 
-    PinnedDns(List<InetAddress> ips) {
+    PinnedDns(Collection<InetAddress> ips) {
       DualStackResult result = new DualStackResult(ips);
       this.ips = result.getInterleaved();
     }
@@ -57,31 +63,31 @@ public class StandardServerConnection implements ServerConnection {
 
   }
 
-  public static StandardServerConnection get(String url) {
+  public static StandardServerConnection get(String url, Collection<InetAddress> fixedIps) {
     URL parsedUrl;
     try {
       parsedUrl = new URL(url);
     } catch (MalformedURLException e) {
-      // TODO: log
+      Log.w(LOG_TAG, "Malformed URL: " + url);
       return null;
     }
     if (!"https".equals(parsedUrl.getProtocol())) {
       return null;
     }
-    InetAddress[] ips;
+    Set<InetAddress> allIps = new HashSet<>(fixedIps);
     try {
-      ips = InetAddress.getAllByName(parsedUrl.getHost());
+      List<InetAddress> resolvedIps = Arrays.asList(InetAddress.getAllByName(parsedUrl.getHost()));
+      allIps.addAll(resolvedIps);
     } catch (UnknownHostException e) {
-      // TODO: log
+      Log.i(LOG_TAG, "Couldn't resolve server name: " + parsedUrl.getHost());
+    }
+    if (allIps.isEmpty()) {
       return null;
     }
-    if (ips.length == 0) {
-      return null;
-    }
-    return new StandardServerConnection(url, Arrays.asList(ips));
+    return new StandardServerConnection(url, allIps);
   }
 
-  private StandardServerConnection(String url, List<InetAddress> ips) {
+  private StandardServerConnection(String url, Collection<InetAddress> ips) {
     this.url = url;
     this.ips = ips;
 

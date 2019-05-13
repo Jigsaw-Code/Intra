@@ -78,6 +78,8 @@
   <string name="destination_label">Målserver</string>
   <string name="server_choice">Välj server för DNS över HTTPS</string>
   <string name="server_choice_summary">Nuvarande: %s</string>
+  <string name="server_choice_builtin">Inbyggd server</string>
+  <string name="server_choice_website_notice">Läs sekretesspolicyn och eventuella tillämpliga användarvillkor på <a href="https://www.example.com/">webbplatsen</a>.</string>
   <string name="server_choice_custom">Anpassad serverwebbadress</string>
   <string name="server_choice_warning">Anpassad server måste ha en giltig https://-adress Webbadress</string>
   <string name="excluded_apps">Uteslutna appar</string>

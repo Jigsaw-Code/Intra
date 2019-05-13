@@ -66,6 +66,8 @@
   <string name="destination_label">Odredišni poslužitelj</string>
   <string name="server_choice">Odaberite poslužitelj DNS putem protokola HTTPS</string>
   <string name="server_choice_summary">Trenutačni poslužitelj: %s</string>
+  <string name="server_choice_builtin">Ugrađeni poslužitelj</string>
+  <string name="server_choice_website_notice">Posjetite <a href="https://www.example.com/">web-lokaciju</a> da biste pregledali pravila o privatnosti i primjenjive uvjete pružanja usluge.</string>
   <string name="server_choice_custom">URL prilagođenog poslužitelja</string>
   <string name="server_choice_warning">Prilagođeni poslužitelj treba biti važeći https:// URL</string>
   <string name="excluded_apps">Isključene aplikacije</string>

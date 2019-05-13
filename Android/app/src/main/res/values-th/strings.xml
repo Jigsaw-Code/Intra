@@ -67,6 +67,8 @@
   <string name="destination_label">เซิร์ฟเวอร์ปลายทาง</string>
   <string name="server_choice">เลือกเซิร์ฟเวอร์ DNS ที่จะใช้ผ่านโปรโตคอล HTTPS</string>
   <string name="server_choice_summary">ปัจจุบันใช้ %s</string>
+  <string name="server_choice_builtin">เซิร์ฟเวอร์ในตัว</string>
+  <string name="server_choice_website_notice">โปรดเยี่ยมชม<a href="https://www.example.com/">เว็บไซต์</a>เพื่อดูนโยบายความเป็นส่วนตัวและข้อกำหนดในการให้บริการที่เกี่ยวข้อง</string>
   <string name="server_choice_custom">URL ของเซิร์ฟเวอร์ที่กำหนดเอง</string>
   <string name="server_choice_warning">URL ของเซิร์ฟเวอร์ที่กำหนดเองจะต้องอยู่ในรูปแบบ https:// ที่ถูกต้อง</string>
   <string name="excluded_apps">แอปที่ยกเว้น</string>

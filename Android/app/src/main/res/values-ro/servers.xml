@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Rezolvator de dimensiuni mari la nivel global gestionat de Google.</string>
+  <string name="description1">Rezolvator de dimensiuni mari la nivel global gestionat de Cloudflare.</string>
+  <string name="description2">Rezolvator de dimensiuni mari la nivel global de la IBM și Packet Clearinghouse.  Blochează domeniile rău-intenționate.</string>
+  <string name="description3">Furnizor de servicii de filtrare DNS la nivel global.  Blochează domeniile rău-intenționate.</string>
+  <string name="description4">Server în Austria gestionat de un grup privat nonprofit.</string>
+  <string name="description5">Server în Țările de Jos, gestionat de o companie de software DNS open source.</string>
+  <string name="description6">Gestionat de xTom și alți furnizori de servicii de găzduire internaționali.  Folosește CDN de la Cloudflare.</string>
+</resources>

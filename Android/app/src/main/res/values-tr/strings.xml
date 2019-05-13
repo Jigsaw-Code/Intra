@@ -78,6 +78,8 @@
   <string name="destination_label">Hedef sunucu</string>
   <string name="server_choice">HTTPS Üzerinden DNS Sunucusunu Seç</string>
   <string name="server_choice_summary">Şu an %s seçili</string>
+  <string name="server_choice_builtin">Yerleşik sunucu</string>
+  <string name="server_choice_website_notice">Gizlilik politikalarını ve geçerli tüm hizmet şartlarını incelemek için lütfen <a href="https://www.example.com/">web sitelerini</a> ziyaret edin.</string>
   <string name="server_choice_custom">Özel sunucu URL\'si</string>
   <string name="server_choice_warning">Özel sunucu, geçerli bir https:// URL\'si olmalıdır</string>
   <string name="excluded_apps">Hariç tutulan uygulamalar</string>

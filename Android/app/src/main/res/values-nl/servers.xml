@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Grote wereldwijde resolver van Google.</string>
+  <string name="description1">Grote wereldwijde resolver van Cloudflare.</string>
+  <string name="description2">Grote wereldwijde resolver van IBM en Packet Clearinghouse.  Blokkeert schadelijke domeinen.</string>
+  <string name="description3">Wereldwijde DNS-filterprovider.  Blokkeert schadelijke domeinen.</string>
+  <string name="description4">Server in Oostenrijk van een non-profit privacygroep.</string>
+  <string name="description5">Server in Nederland van een open source DNS-softwarebedrijf.</string>
+  <string name="description6">Uitgevoerd door xTom en andere internationale hostingproviders.  Gebruikt de CDN van Cloudflare.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">รีโซลเวอร์สากลขนาดใหญ่ซึ่งดำเนินการโดย Google</string>
+  <string name="description1">รีโซลเวอร์สากลขนาดใหญ่ซึ่งดำเนินการโดย Cloudflare</string>
+  <string name="description2">รีโซลเวอร์สากลขนาดใหญ่จาก IBM และ Packet Clearinghouse  บล็อกโดเมนที่เป็นอันตราย</string>
+  <string name="description3">ผู้ให้บริการด้านการกรอง DNS สากล  บล็อกโดเมนที่เป็นอันตราย</string>
+  <string name="description4">เซิร์ฟเวอร์ในออสเตรียซึ่งดำเนินการโดยกลุ่มที่ทำงานด้านความเป็นส่วนตัวที่ไม่แสวงหากำไร</string>
+  <string name="description5">เซิร์ฟเวอร์ในเนเธอร์แลนด์ซึ่งดำเนินการโดยบริษัทซอฟต์แวร์ DNS แบบโอเพนซอร์ส</string>
+  <string name="description6">ดำเนินการโดย xTom และผู้ให้บริการโฮสติ้งนานาชาติ  ใช้ CDN ของ Cloudflare</string>
+</resources>

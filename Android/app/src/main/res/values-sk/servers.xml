@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Veľký globálny resolver prevádzkovaný Googlom.</string>
+  <string name="description1">Veľký globálny resolver prevádzkovaný firmou Cloudflare.</string>
+  <string name="description2">Veľký globálny resolver od firiem IBM a Packet Clearinghouse.  Blokuje škodlivé domény.</string>
+  <string name="description3">Globálny poskytovateľ filtrovania DNS.  Blokuje škodlivé domény.</string>
+  <string name="description4">Server v Rakúsku prevádzkovaný neziskovou skupinou zaoberajúcou sa ochranou súkromia.</string>
+  <string name="description5">Server v Holandsku prevádzkovaný softvérovou firmou so systémom DNS typu open-source.</string>
+  <string name="description6">Prevádzkované firmou xTom a ďalšími medzinárodnými poskytovateľmi hostiteľských služieb.  Využíva CDN firmy Cloudflare.</string>
+</resources>

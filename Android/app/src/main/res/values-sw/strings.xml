@@ -75,6 +75,8 @@
   <string name="destination_label">Seva lengwa</string>
   <string name="server_choice">Chagua seva ya DNS inayopitia kwa HTTPS</string>
   <string name="server_choice_summary">Kwa sasa %s</string>
+  <string name="server_choice_builtin">Seva iliyojumuishwa</string>
+  <string name="server_choice_website_notice">Tafadhali tembelea <a href="https://www.example.com/">tovuti yao</a> ili uangalie sera yao ya faragha na masharti yoyote ya huduma yanayotumika.</string>
   <string name="server_choice_custom">URL ya seva maalum</string>
   <string name="server_choice_warning">Seva maalum ni lazima iwe URL sahihi ya https://</string>
   <string name="excluded_apps">Programu zilizotengwa</string>

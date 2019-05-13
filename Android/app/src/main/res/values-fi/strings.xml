@@ -73,6 +73,8 @@
   <string name="destination_label">Kohdepalvelin</string>
   <string name="server_choice">Valitse DNS over HTTPS ‑palvelin</string>
   <string name="server_choice_summary">Tällä hetkellä %s</string>
+  <string name="server_choice_builtin">Sisäänrakennettu palvelin</string>
+  <string name="server_choice_website_notice">Tarkista heidän tietosuojakäytäntönsä ja mahdolliset soveltuvat käyttöehdot <a href="https://www.example.com/">heidän verkkosivustoltaan</a>.</string>
   <string name="server_choice_custom">Muokatun palvelimen URL-osoite</string>
   <string name="server_choice_warning">Muokatun palvelimen on oltava kelvollinen https://-alkuinen URL-osoite</string>
   <string name="excluded_apps">Pois suljetut sovellukset</string>

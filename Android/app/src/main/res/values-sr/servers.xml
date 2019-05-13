@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Велики глобални разрешивач којим управља Google.</string>
+  <string name="description1">Велики глобални разрешивач којим управља Cloudflare.</string>
+  <string name="description2">Велики глобални разрешивач IBM-а и Packet Clearinghouse-а.  Блокира злонамерне домене.</string>
+  <string name="description3">Глобални добављач услуге филтрирања DNS-ова.  Блокира злонамерне домене.</string>
+  <string name="description4">Сервер у Аустрији којим управља непрофитна група за приватност.</string>
+  <string name="description5">Сервер у Холандији којим управља компанија за DNS софтвер отвореног кода.</string>
+  <string name="description6">Сервер којим управља xTom и други међународни добављачи услуге хостинга.  Користи Cloudflare-ов CDN.</string>
+</resources>

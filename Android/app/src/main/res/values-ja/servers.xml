@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Google が運用する大規模なグローバル リゾルバです。</string>
+  <string name="description1">Cloudflare が運用する大規模なグローバル リゾルバです。</string>
+  <string name="description2">IBM および Packet Clearing House が提供する大規模なグローバル リゾルバです。信頼できないドメインをブロックします。</string>
+  <string name="description3">グローバルな DNS フィルタリング プロバイダです。信頼できないドメインをブロックします。</string>
+  <string name="description4">非営利のプライバシー保護団体が運用しているオーストリアのサーバーです。</string>
+  <string name="description5">オープンソースの DNS ソフトウェア会社が運用しているオランダのサーバーです。</string>
+  <string name="description6">xTom やその他の国際的なホスティング プロバイダが運用しています。Cloudflare の CDN を使用します。</string>
+</resources>

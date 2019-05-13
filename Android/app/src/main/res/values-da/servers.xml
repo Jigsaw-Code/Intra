@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Stor global resolver, som drives af Google.</string>
+  <string name="description1">Stor global resolver, som drives af Cloudflare.</string>
+  <string name="description2">Stor global resolver fra IBM og Packet Clearinghouse.  Blokerer skadelige domæner.</string>
+  <string name="description3">Global udbyder af DNS-filtrering.  Blokerer skadelige domæner.</string>
+  <string name="description4">Østrigsk server drevet af en almennyttig gruppe, som arbejder for privatlivsbeskyttelse.</string>
+  <string name="description5">Hollandsk server drevet af en softwarevirksomhed, der arbejder med open source-DNS.</string>
+  <string name="description6">Drevet af xTom og andre internationale webhosts.  Anvender Cloudflares CDN.</string>
+</resources>

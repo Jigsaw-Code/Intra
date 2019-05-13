@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">מקודד גלובלי גדול שמופעל על ידי Google.</string>
+  <string name="description1">מקודד גלובלי גדול שמופעל על ידי Cloudflare.</string>
+  <string name="description2">מקודד גלובלי גדול מבית IBM ו-Packet Clearinghouse.  הוא חוסם דומיינים זדוניים.</string>
+  <string name="description3">ספק גלובלי לסינון DNS.  הוא חוסם דומיינים זדוניים.</string>
+  <string name="description4">השרת נמצא באוסטריה ומופעל על ידי קבוצה פרטית ללא מטרות רווח.</string>
+  <string name="description5">השרת נמצא בהולנד ומופעל על ידי חברת תוכנה שמספקת DNS בקוד פתוח.</string>
+  <string name="description6">השרת מופעל על ידי xTom וספקי אירוח בינלאומיים אחרים.  הוא משתמש ב-CDN של Cloudflare.</string>
+</resources>

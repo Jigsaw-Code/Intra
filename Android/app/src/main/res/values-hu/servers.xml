@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Nagy, globális DNS-szerver a Google-tól.</string>
+  <string name="description1">Nagy, globális DNS-szerver a Cloudflare-től.</string>
+  <string name="description2">Nagy, globális DNS-szerver az IBM-től és a Packet Clearing House-tól.  Letiltja a rosszindulatú domaineket.</string>
+  <string name="description3">Globális DNS-szűrőszolgáltató.  Letiltja a rosszindulatú domaineket.</string>
+  <string name="description4">Ausztriai szerver egy nonprofit adatvédelmi csoport által üzemeltetve.</string>
+  <string name="description5">Hollandiai szerver, melyet egy nílt forráskódú DNS-szoftvercég üzemeltet.</string>
+  <string name="description6">Az xTom és más nemzetközi rendszerszolgáltatók üzemeltetik.  A Cloudflare CDN szolgáltatását használja.</string>
+</resources>

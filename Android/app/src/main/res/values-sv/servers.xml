@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">En stor global upplösare som drivs av Google.</string>
+  <string name="description1">En stor global upplösare som drivs av Cloudflare.</string>
+  <string name="description2">En stor global upplösare från IBM och Packet Clearing House.  Skadliga domäner blockeras.</string>
+  <string name="description3">Global leverantör av DNS-filtrering.  Skadliga domäner blockeras.</string>
+  <string name="description4">En server i Österrike som drivs av en ideell förening som verkar för integritet.</string>
+  <string name="description5">En server i Nederländerna som drivs av ett DNS-programvaruföretag med öppen källkod.</string>
+  <string name="description6">Drivs av xTom och andra internationella leverantörer av webbhotell.  Cloudflares NFI används.</string>
+</resources>

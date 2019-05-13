@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Résolveur mondial majeur géré par Google.</string>
+  <string name="description1">Résolveur mondial majeur géré par Cloudflare.</string>
+  <string name="description2">Résolveur mondial majeur géré par IBM et Packet Clearing House.  Bloque les domaines malveillants.</string>
+  <string name="description3">Fournisseur mondial de filtrage DNS.  Bloque les domaines malveillants.</string>
+  <string name="description4">Serveur situé en Autriche, géré par un groupe à but non lucratif spécialisé dans la confidentialité.</string>
+  <string name="description5">Serveur situé aux Pays-Bas, géré par une entreprise de logiciels DNS Open Source.</string>
+  <string name="description6">Géré par xTom et d\'autres fournisseurs d\'hébergement internationaux.  Utilise le CDN de Cloudflare.</string>
+</resources>

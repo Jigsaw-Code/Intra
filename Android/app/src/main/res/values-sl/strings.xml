@@ -73,6 +73,8 @@
   <string name="destination_label">Ciljni strežnik</string>
   <string name="server_choice">Izberi šifriranje DNS prek strežnika HTTPS</string>
   <string name="server_choice_summary">Trenutno strežnik %s</string>
+  <string name="server_choice_builtin">Vgrajen strežnik</string>
+  <string name="server_choice_website_notice">Obiščite <a href="https://www.example.com/">njihova spletna mesta</a> ter preberite njihova pravilnike o zasebnosti in veljavne pogoje storitve.</string>
   <string name="server_choice_custom">URL strežnika po meri</string>
   <string name="server_choice_warning">Veljavni naslov strežnika po meri se mora začeti s https:// URL</string>
   <string name="excluded_apps">Izključene aplikacije</string>

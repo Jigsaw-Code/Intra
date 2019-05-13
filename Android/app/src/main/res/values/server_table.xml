@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Item 5 is PowerDNS, which is temporarily commented out until they post a privacy policy. -->
+  <string-array name="urls">
+    <item>@string/url0</item>
+    <item>@string/url1</item>
+    <item>@string/url2</item>
+    <item>@string/url3</item>
+    <item>@string/url4</item>
+    <!-- <item>@string/url5</item> -->
+    <item>@string/url6</item>
+  </string-array>
+  <string-array name="names">
+    <item>@string/name0</item>
+    <item>@string/name1</item>
+    <item>@string/name2</item>
+    <item>@string/name3</item>
+    <item>@string/name4</item>
+    <!-- <item>@string/name5</item> -->
+    <item>@string/name6</item>
+  </string-array>
+  <string-array name="ips">
+    <item>@string/ips0</item>
+    <item>@string/ips1</item>
+    <item>@string/ips2</item>
+    <item>@string/ips3</item>
+    <item>@string/ips4</item>
+    <!-- <item>@string/ips5</item> -->
+    <item>@string/ips6</item>
+  </string-array>
+  <string-array name="descriptions">
+    <item>@string/description0</item>
+    <item>@string/description1</item>
+    <item>@string/description2</item>
+    <item>@string/description3</item>
+    <item>@string/description4</item>
+    <!-- <item>@string/description5</item> -->
+    <item>@string/description6</item>
+  </string-array>
+  <string-array name="server_websites">
+    <item>@string/website0</item>
+    <item>@string/website1</item>
+    <item>@string/website2</item>
+    <item>@string/website3</item>
+    <item>@string/website4</item>
+    <!-- <item>@string/website5</item> -->
+    <item>@string/website6</item>
+  </string-array>
+</resources>

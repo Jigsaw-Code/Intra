@@ -332,6 +332,14 @@
     Currently <xliff:g example="dns.google.com" id="server_name">%s</xliff:g>
   </string>
 
+  <string name="server_choice_builtin" description="Label for option to select from a short list of servers">
+    Built-in server
+  </string>
+
+  <string name="server_choice_website_notice" description="Warning text about a DNS server, with a hyperlink">
+    Please visit <a href="https://www.example.com/">their website</a> to review their privacy policy and any applicable terms of service.
+  </string>
+
   <string name="server_choice_custom"
           description="Label for option to type in your own server URL">
     Custom server URL

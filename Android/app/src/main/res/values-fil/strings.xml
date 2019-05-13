@@ -74,6 +74,8 @@
   <string name="destination_label">Server ng patutunguhan</string>
   <string name="server_choice">Piliin ang DNS kaysa sa HTTPS na Server</string>
   <string name="server_choice_summary">Kasalukuyan ay %s</string>
+  <string name="server_choice_builtin">Naka-built in na server</string>
+  <string name="server_choice_website_notice">Pakibisita ang <a href="https://www.example.com/">kanilang website</a> para suriin ang kanilang patakaran sa privacy at anumang naaangkop na mga tuntunin ng serbisyo.</string>
   <string name="server_choice_custom">Custom na URL ng server</string>
   <string name="server_choice_warning">Ang custom na server ay dapat isang valid na https:// URL</string>
   <string name="excluded_apps">Mga hindi kasamang app</string>

@@ -66,6 +66,8 @@
   <string name="destination_label">Цільовий сервер</string>
   <string name="server_choice">Вибрати сервер DNS поверх HTTPS</string>
   <string name="server_choice_summary">Вибрано %s</string>
+  <string name="server_choice_builtin">Вбудований сервер</string>
+  <string name="server_choice_website_notice">Щоб переглянути політику конфіденційності та відповідні умови використання, відвідайте <a href="https://www.example.com/">цей веб-сайт</a>.</string>
   <string name="server_choice_custom">URL-адреса власного сервера</string>
   <string name="server_choice_warning">Власний сервер має бути дійсною URL-адресою https://</string>
   <string name="excluded_apps">Виключені додатки</string>

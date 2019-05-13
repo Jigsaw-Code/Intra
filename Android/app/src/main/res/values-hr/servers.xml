@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Veliki globalni pretvarač kojim upravlja Google.</string>
+  <string name="description1">Veliki globalni pretvarač kojim upravlja Cloudflare.</string>
+  <string name="description2">Veliki globalni pretvarač IBM-a i Packet Clearinghousea.  Blokira zlonamjerne domene.</string>
+  <string name="description3">Globalni davatelj usluga filtriranja DNS-a.  Blokira zlonamjerne domene.</string>
+  <string name="description4">Poslužitelj u Austriji kojim upravlja neprofitna grupa za zaštitu privatnosti.</string>
+  <string name="description5">Poslužitelj u Nizozemskoj kojim upravlja softverska tvrtka za DNS otvorenog izvornog kôda.</string>
+  <string name="description6">Poslužiteljom upravlja xTom i drugi međunarodni davatelji usluge hostinga.  Upotrebljava CDN Cloudflarea.</string>
+</resources>

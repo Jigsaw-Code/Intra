@@ -32,8 +32,8 @@
   <string name="status_starting">起動しています…</string>
   <string name="explanation_starting">お待ちください。Intra がサーバーとの接続を確立しています。</string>
   <string name="status_waiting">待機しています…</string>
-  <string name="explanation_offline">端末はオフラインです。Intra がネットワーク接続を待機しています。</string>
-  <string name="explanation_vpn">Intra が端末上で別の VPN を検出しました。Intra を有効にするとその VPN は無効になります。
+  <string name="explanation_offline">デバイスはオフラインです。Intra がネットワーク接続を待機しています。</string>
+  <string name="explanation_vpn">Intra がデバイス上で別の VPN を検出しました。Intra を有効にするとその VPN は無効になります。
     Intra を使用すると、信頼できる VPN に比べて安全性が低くなります。</string>
   <string name="explanation_failing">警告: クエリが失敗しています。別のサーバーを選択して Intra を再起動することをおすすめします。</string>
   <string name="system_details">システムの詳細</string>
@@ -74,6 +74,8 @@
   <string name="destination_label">宛先のサーバー</string>
   <string name="server_choice">DNS over HTTPS サーバーの選択</string>
   <string name="server_choice_summary">現在: %s</string>
+  <string name="server_choice_builtin">内蔵サーバー</string>
+  <string name="server_choice_website_notice">プライバシー ポリシーや該当する利用規約を確認するには、<a href="https://www.example.com/">ウェブサイト</a>をご覧ください。</string>
   <string name="server_choice_custom">カスタム サーバーの URL</string>
   <string name="server_choice_warning">カスタム サーバーには、「https://」で始まる有効な URL を指定する必要があります</string>
   <string name="excluded_apps">対象外とするアプリ</string>

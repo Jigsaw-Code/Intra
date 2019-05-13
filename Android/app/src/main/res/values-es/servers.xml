@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Resolución internacional de gran tamaño operada por Google.</string>
+  <string name="description1">Resolución internacional de gran tamaño operada por Cloudflare.</string>
+  <string name="description2">Resolución internacional de gran tamaño de IBM y Packet Clearinghouse.  Bloquea los dominios malintencionados.</string>
+  <string name="description3">Proveedor de filtros de DNS internacional.  Bloquea los dominios malintencionados.</string>
+  <string name="description4">Servidor en Austria operado por un grupo de privacidad sin ánimo de lucro.</string>
+  <string name="description5">Servidor en los Países Bajos operado por una empresa de software libre de DNS.</string>
+  <string name="description6">Operado por xTom y otros proveedores de alojamiento internacionales.  Usa la red CDN de Cloudflare.</string>
+</resources>

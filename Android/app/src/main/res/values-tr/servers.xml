@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Google tarafından işletilen büyük, global bir çözümleyici.</string>
+  <string name="description1">Cloudflare tarafından işletilen büyük, global bir çözümleyici.</string>
+  <string name="description2">IBM ve Packet Clearinghouse\'dan büyük, global bir çözümleyici.  Kötü amaçlı alanları engeller.</string>
+  <string name="description3">Global DNS filtreleme sağlayıcısı.  Kötü amaçlı alanları engeller.</string>
+  <string name="description4">Sunucu Avusturya\'da bulunur ve kâr amacı gütmeyen bir gizlilik grubu tarafından işletilmektedir.</string>
+  <string name="description5">Sunucu Hollanda\'da bulunur ve açık kaynak bir DNS yazılım şirketi tarafından işletilmektedir.</string>
+  <string name="description6">xTom ve uluslararası başka barındırma sağlayıcıları tarafından işletilmektedir.  Cloudflare\'in CDN\'ini kullanır.</string>
+</resources>

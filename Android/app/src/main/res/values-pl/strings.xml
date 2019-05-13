@@ -65,6 +65,8 @@
   <string name="destination_label">Serwer docelowy</string>
   <string name="server_choice">Wybierz serwer DoH (DNS over HTTPS)</string>
   <string name="server_choice_summary">Obecnie: %s</string>
+  <string name="server_choice_builtin">Serwer wbudowany</string>
+  <string name="server_choice_website_notice">Politykę prywatności i warunki korzystania z usługi znajdziesz na <a href="https://www.example.com/">tej stronie</a>.</string>
   <string name="server_choice_custom">URL własnego serwera</string>
   <string name="server_choice_warning">Własny serwer musi mieć prawidłowy URL zaczynający się od https://</string>
   <string name="excluded_apps">Wykluczone aplikacje</string>

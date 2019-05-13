@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Trình phân giải lớn toàn cầu lớn được Google vận hành.</string>
+  <string name="description1">Trình phân giải lớn toàn cầu được Cloudflare vận hành.</string>
+  <string name="description2">Trình phân giải lớn toàn cầu của IBM và Packet Clearinghouse.  Chặn các miền độc hại.</string>
+  <string name="description3">Nhà cung cấp dịch vụ lọc DNS toàn cầu.  Chặn các miền độc hại.</string>
+  <string name="description4">Máy chủ tại Áo được một nhóm phụ trách quyền riêng tư phi lợi nhuận vận hành.</string>
+  <string name="description5">Máy chủ ở Hà Lan, được một công ty phần mềm DNS nguồn mở vận hành.</string>
+  <string name="description6">Được xTom và các nhà cung cấp dịch vụ lưu trữ quốc tế khác vận hành.  Sử dụng CDN của Cloudflare.</string>
+</resources>
