@@ -30,9 +30,11 @@
   <string name="status_starting">Starten…</string>
   <string name="explanation_starting">Een ogenblik geduld. Intra maakt verbinding met de server.</string>
   <string name="status_waiting">Wachten…</string>
+  <string name="status_failing">Mislukt</string>
   <string name="explanation_offline">Je apparaat is offline. Intra wacht op een netwerkverbinding.</string>
   <string name="explanation_vpn">Intra heeft een ander VPN gedetecteerd op je apparaat. Als je Intra inschakelt, wordt dit VPN uitgeschakeld. Intra is minder veilig dan een vertrouwd VPN.</string>
-  <string name="explanation_failing">Waarschuwing: Zoekopdrachten mislukken. Kies een andere server en start Intra opnieuw.</string>
+  <string name="explanation_failing">Waarschuwing: Zoekopdrachten mislukken. Kies een andere server of start Intra opnieuw.</string>
+  <string name="button_failing">Een andere server proberen</string>
   <string name="system_details">Systeemgegevens</string>
   <string name="num_requests">Aantal zoekopdrachten</string>
   <string name="num_requests_headline">DNS-zoekopdrachten vinden plaats wanneer je apparaat het IP-adres van een domeinnaam opzoekt</string>

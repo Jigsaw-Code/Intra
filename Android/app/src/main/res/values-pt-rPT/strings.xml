@@ -33,10 +33,12 @@
   <string name="status_starting">A iniciar…</string>
   <string name="explanation_starting">Aguarde.  O Intra está a estabelecer uma ligação ao servidor.</string>
   <string name="status_waiting">A aguardar…</string>
+  <string name="status_failing">Falha</string>
   <string name="explanation_offline">O seu dispositivo está offline.  O Intra está a aguardar por uma ligação de rede.</string>
   <string name="explanation_vpn">O Intra detetou outra VPN no seu dispositivo.  Se ativar o Intra, essa VPN será desativada.
     O Intra não é tão seguro como uma VPN fidedigna.</string>
-  <string name="explanation_failing">Aviso: As consultas estão a falhar.  É recomendável que opte por um servidor diferente e reinicie o Intra.</string>
+  <string name="explanation_failing">Aviso: as consultas estão a falhar.  É recomendável que opte por um servidor diferente ou reinicie o Intra.</string>
+  <string name="button_failing">Experimente um servidor diferente</string>
   <string name="system_details">Detalhes do sistema</string>
   <string name="num_requests">Consultas desde sempre</string>
   <string name="num_requests_headline">As consultas DNS ocorrem quando o seu dispositivo procura um nome de domínio no endereço IP.</string>
