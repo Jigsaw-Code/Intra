@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.dns.DnsPacket;
-import com.crashlytics.android.Crashlytics;
+import app.intra.sys.LogWrapper;
 import com.google.common.net.InternetDomainName;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -87,7 +87,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     try {
       countryMap = new CountryMap(activity.getAssets());
     } catch (IOException e) {
-      Crashlytics.logException(e);
+      LogWrapper.logException(e);
     }
   }
 

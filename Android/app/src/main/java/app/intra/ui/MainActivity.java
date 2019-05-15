@@ -68,6 +68,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.Transaction;
+import app.intra.sys.LogWrapper;
 import app.intra.sys.Names;
 import app.intra.sys.PersistentState;
 import app.intra.sys.QueryTracker;
@@ -75,7 +76,6 @@ import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
 import app.intra.ui.settings.ServerChooser;
 import app.intra.ui.settings.SettingsFragment;
-import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -396,7 +396,7 @@ public class MainActivity extends AppCompatActivity
     VpnController controller = VpnController.getInstance();
     VpnState state = controller.getState(this);
     if (state.activationRequested && !state.on) {
-      Crashlytics.log(Log.INFO, LOG_TAG, "Autostart enabled");
+      LogWrapper.log(Log.INFO, LOG_TAG, "Autostart enabled");
       prepareAndStartDnsVpn();
     }
   }
@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity
         startDnsVpnService();
       }
     } else {
-      Crashlytics.log(Log.ERROR, LOG_TAG, "Device does not support system-wide VPN mode.");
+      LogWrapper.log(Log.ERROR, LOG_TAG, "Device does not support system-wide VPN mode.");
     }
   }
 
@@ -441,7 +441,7 @@ public class MainActivity extends AppCompatActivity
     } catch (NullPointerException e) {
       // This exception is not mentioned in the documentation, but it has been encountered by Intra
       // users and also by other developers, e.g. https://stackoverflow.com/questions/45470113.
-      Crashlytics.logException(e);
+      LogWrapper.logException(e);
       return false;
     }
     if (prepareVpnIntent != null) {
@@ -544,7 +544,7 @@ public class MainActivity extends AppCompatActivity
         }
       }
     } catch (SocketException e) {
-      Crashlytics.logException(e);
+      LogWrapper.logException(e);
     }
     return false;
   }
