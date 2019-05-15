@@ -29,6 +29,8 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.VpnService;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -61,7 +63,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   private static final String LOG_TAG = "IntraVpnService";
   private static final int SERVICE_ID = 1; // Only has to be unique within this app.
-  private static final String CHANNEL_ID = "vpn";
+  private static final String MAIN_CHANNEL_ID = "vpn";
+  private static final String WARNING_CHANNEL_ID = "warning";
   private static final String NO_PENDING_CONNECTION = "This value is not a possible URL.";
 
   // The network manager is populated in onStartCommand.  Its main function is to enable delayed
@@ -155,12 +158,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       String description = getString(R.string.channel_description);
       // LOW is the lowest importance that is allowed with startForeground in Android O.
       int importance = NotificationManager.IMPORTANCE_LOW;
-      NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+      NotificationChannel channel = new NotificationChannel(MAIN_CHANNEL_ID, name, importance);
       channel.setDescription(description);
 
       NotificationManager notificationManager = getSystemService(NotificationManager.class);
       notificationManager.createNotificationChannel(channel);
-      builder = new Notification.Builder(this, CHANNEL_ID);
+      builder = new Notification.Builder(this, MAIN_CHANNEL_ID);
     } else {
       builder = new Notification.Builder(this);
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -354,11 +357,52 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   }
 
   public void signalStopService(boolean userInitiated) {
-    // TODO(alalama): display alert if not user initiated
     Crashlytics.log(
         Log.INFO,
         LOG_TAG,
         String.format("Received stop signal. User initiated: %b", userInitiated));
+
+    if (!userInitiated) {
+      final long[] vibrationPattern = {1000}; // Vibrate for one second.
+      // Show revocation warning
+      Notification.Builder builder;
+      NotificationManager notificationManager =
+          (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      if (VERSION.SDK_INT >= VERSION_CODES.O) {
+        CharSequence name = getString(R.string.warning_channel_name);
+        String description = getString(R.string.warning_channel_description);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationChannel channel = new NotificationChannel(WARNING_CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        channel.enableVibration(true);
+        channel.setVibrationPattern(vibrationPattern);
+
+        notificationManager.createNotificationChannel(channel);
+        builder = new Notification.Builder(this, WARNING_CHANNEL_ID);
+      } else {
+        builder = new Notification.Builder(this);
+        builder.setVibrate(vibrationPattern);
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+          // Only available in API >= 16.  Deprecated in API 26.
+          builder = builder.setPriority(Notification.PRIORITY_MAX);
+        }
+      }
+
+      PendingIntent mainActivityIntent = PendingIntent.getActivity(
+          this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+      builder.setSmallIcon(R.drawable.ic_status_bar)
+          .setContentTitle(getResources().getText(R.string.warning_title))
+          .setContentText(getResources().getText(R.string.notification_content))
+          .setFullScreenIntent(mainActivityIntent, true)  // Open the main UI if possible.
+          .setAutoCancel(true);
+
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        builder.setCategory(Notification.CATEGORY_ERROR);
+      }
+
+      notificationManager.notify(0, builder.getNotification());
+    }
 
     stopVpnAdapter();
     stopSelf();
@@ -425,43 +469,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   @Override
   public void onRevoke() {
     Crashlytics.log(Log.WARN, LOG_TAG, "VPN service revoked.");
-    stopVpnAdapter();
     stopSelf();
 
     // Disable autostart if VPN permission is revoked.
     PersistentState.setVpnEnabled(this, false);
-
-    // Show revocation warning
-    Notification.Builder builder;
-    NotificationManager notificationManager =
-        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      CharSequence name = getString(R.string.warning_channel_name);
-      String description = getString(R.string.warning_channel_description);
-      int importance = NotificationManager.IMPORTANCE_HIGH;
-      NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-      channel.setDescription(description);
-
-      notificationManager.createNotificationChannel(channel);
-      builder = new Notification.Builder(this, CHANNEL_ID);
-    } else {
-      builder = new Notification.Builder(this);
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-        // Only available in API >= 16.  Deprecated in API 26.
-        builder = builder.setPriority(Notification.PRIORITY_MAX);
-      }
-    }
-
-    PendingIntent mainActivityIntent = PendingIntent.getActivity(
-        this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-    builder.setSmallIcon(R.drawable.ic_status_bar)
-        .setContentTitle(getResources().getText(R.string.warning_title))
-        .setContentText(getResources().getText(R.string.notification_content))
-        .setFullScreenIntent(mainActivityIntent, true)  // Open the main UI if possible.
-        .setAutoCancel(true);
-
-    notificationManager.notify(0, builder.getNotification());
   }
 
   public VpnService.Builder newBuilder() {
