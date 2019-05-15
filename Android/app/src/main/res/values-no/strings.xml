@@ -30,10 +30,12 @@
   <string name="status_starting">Starter …</string>
   <string name="explanation_starting">Vent litt.  Intra holder på å koble til tjeneren.</string>
   <string name="status_waiting">Venter …</string>
+  <string name="status_failing">Mislykket</string>
   <string name="explanation_offline">Enheten din er uten nett.  Intra venter på en nettverkstilkobling.</string>
   <string name="explanation_vpn">Intra har oppdaget en annen VPN på enheten din.  Hvis du slår på Intra, blir den andre VPN-en slått av.
     Intra er ikke like sikker som en klarert VPN.</string>
   <string name="explanation_failing">Advarsel: Søk mislykkes.  Det kan lønne seg å velge en annen tjener og starte Intra på nytt.</string>
+  <string name="button_failing">Prøv en annen tjener</string>
   <string name="system_details">Systeminformasjon</string>
   <string name="num_requests">Søk over hele levetiden</string>
   <string name="num_requests_headline">DNS-søk finner sted når enheten din slår opp IP-adressen til et domenenavn</string>

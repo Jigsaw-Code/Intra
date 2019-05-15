@@ -33,10 +33,12 @@
   <string name="status_starting">Başlatılıyor…</string>
   <string name="explanation_starting">Lütfen bekleyin. Intra, sunucu bağlantısı kuruyor.</string>
   <string name="status_waiting">Bekleniyor…</string>
+  <string name="status_failing">Bağlantı başarısız</string>
   <string name="explanation_offline">Cihazınız internete bağlı değil. Intra, ağ bağlantısı kurulmasını bekliyor.</string>
   <string name="explanation_vpn">Intra, cihazınızda başka bir VPN algıladı. Intra\'yı etkinleştirirseniz söz konusu VPN devre dışı bırakılacak.
     Intra, güvenilir bir VPN kadar güvenli değildir.</string>
-  <string name="explanation_failing">Uyarı: Sorgular başarısız oluyor. Farklı bir sunucu seçmeyi ve Intra\'yı yeniden başlatmayı deneyin.</string>
+  <string name="explanation_failing">Uyarı: Sorgular başarısız oluyor. Farklı bir sunucu seçmeyi veya Intra\'yı yeniden başlatmayı deneyin.</string>
+  <string name="button_failing">Farklı bir sunucu dene</string>
   <string name="system_details">Sistem ayrıntıları</string>
   <string name="num_requests">Şimdiye kadar korunan sorguların sayısı</string>
   <string name="num_requests_headline">Cihazınız bir alan adı için IP adresi aradığında oluşan DNS sorgularının sayısı</string>

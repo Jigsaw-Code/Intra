@@ -30,10 +30,12 @@
   <string name="status_starting">Iniciando…</string>
   <string name="explanation_starting">Aguarde. O Intra está estabelecendo uma conexão com o servidor.</string>
   <string name="status_waiting">Aguardando…</string>
+  <string name="status_failing">Falha</string>
   <string name="explanation_offline">Seu dispositivo está off-line. O Intra está aguardando uma conexão de rede.</string>
   <string name="explanation_vpn">O Intra detectou outra VPN no seu dispositivo. Se você ativar o Intra, essa VPN será desativada.
 Uma VPN confiável é mais segura que o Intra.</string>
-  <string name="explanation_failing">Atenção: houve falha nas consultas. Escolha outro servidor e reinicie o Intra.</string>
+  <string name="explanation_failing">Atenção: houve falha nas consultas. Escolha outro servidor ou reinicie o Intra.</string>
+  <string name="button_failing">Testar outro servidor</string>
   <string name="system_details">Detalhes do sistema</string>
   <string name="num_requests">Todas as consultas</string>
   <string name="num_requests_headline">As consultas DNS ocorrem quando o dispositivo pesquisa o endereço IP de um nome de domínio</string>

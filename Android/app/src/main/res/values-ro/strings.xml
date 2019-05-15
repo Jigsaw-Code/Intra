@@ -33,10 +33,12 @@
   <string name="status_starting">Se pornește…</string>
   <string name="explanation_starting">Așteptați.  Intra stabilește o conexiune la server.</string>
   <string name="status_waiting">Se așteaptă…</string>
+  <string name="status_failing">Nu se conectează</string>
   <string name="explanation_offline">Dispozitivul dvs. este offline.  Intra așteaptă o conexiune la rețea.</string>
   <string name="explanation_vpn">Intra a detectat altă rețea VPN pe dispozitiv.  Dacă activați aplicația Intra, rețeaua VPN va fi dezactivată.
     Intra nu este la fel de sigură ca o rețea VPN de încredere.</string>
-  <string name="explanation_failing">Avertisment: Interogările nu pot fi efectuate.  Este recomandat să alegi alt server și să repornești Intra.</string>
+  <string name="explanation_failing">Avertisment: interogările nu funcționează.  Este recomandat să alegeți alt server sau să reporniți Intra.</string>
+  <string name="button_failing">Încercați alt server</string>
   <string name="system_details">Detaliile sistemului</string>
   <string name="num_requests">Număr total de interogări</string>
   <string name="num_requests_headline">Interogările DNS au loc când dispozitivul caută adresa IP pentru un nume de domeniu</string>

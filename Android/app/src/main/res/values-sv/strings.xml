@@ -33,10 +33,12 @@
   <string name="status_starting">Startar …</string>
   <string name="explanation_starting">Ett ögonblick.  Serveranslutning upprättas i Intra.</string>
   <string name="status_waiting">Väntar …</string>
+  <string name="status_failing">Misslyckas</string>
   <string name="explanation_offline">Din enhet är offline.  Intra väntar på en nätverksanslutning.</string>
   <string name="explanation_vpn">En annan VPN på enheten har identifierats av Intra.  Om du aktiverar Intra inaktiveras din VPN.
     En betrodd VPN är säkrare än Intra.</string>
-  <string name="explanation_failing">Varning! Förfrågningar besvaras inte.  Du kan byta till en annan server och starta om Intra.</string>
+  <string name="explanation_failing">Varning! Sökfrågor misslyckas.  Du kan byta till en annan server eller starta om Intra.</string>
+  <string name="button_failing">Prova en annan server</string>
   <string name="system_details">Systemuppgifter</string>
   <string name="num_requests">Förfrågningar sedan början</string>
   <string name="num_requests_headline">DNS-förfrågningar innebär att enheten slår upp en domäns IP-adress</string>

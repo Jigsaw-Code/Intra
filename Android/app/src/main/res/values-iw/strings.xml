@@ -30,10 +30,12 @@
   <string name="status_starting">מייד נתחיל…</string>
   <string name="explanation_starting">רק רגע.  אפליקציית Intra מנסה להתחבר לשרת.</string>
   <string name="status_waiting">בהמתנה…</string>
+  <string name="status_failing">אין חיבור</string>
   <string name="explanation_offline">המכשיר שלך לא מחובר לרשת.  אפליקציית Intra מחכה שיהיה חיבור.</string>
   <string name="explanation_vpn">אפליקציית Intra זיהתה חיבור אחר לרשת VPN במכשיר שלך.  אם Intra תופעל, החיבור לרשת ה-VPN הזו יושבת.
     Intra לא מאובטחת יותר מרשת VPN אמינה.</string>
-  <string name="explanation_failing">אזהרה: שליחת השאילתות נכשלת.  מומלץ להתחבר לשרת אחר ולהפעיל מחדש את Intra.</string>
+  <string name="explanation_failing">אזהרה: שליחת השאילתות נכשלת.  מומלץ להתחבר לשרת אחר או להפעיל מחדש את Intra.</string>
+  <string name="button_failing">אני רוצה לנסות שרת אחר</string>
   <string name="system_details">פרטי המערכת</string>
   <string name="num_requests">שאילתות משחר ההיסטוריה</string>
   <string name="num_requests_headline">שאילתות DNS נשלחות כשהמכשיר שלך מחפש את כתובת ה-IP של שם דומיין מסוים.</string>
