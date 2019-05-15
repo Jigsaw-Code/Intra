@@ -33,10 +33,12 @@
   <string name="status_starting">درحال شروع…</string>
   <string name="explanation_starting">صبور باشید.  Intra درحال ایجاد اتصال به سرور است.</string>
   <string name="status_waiting">درانتظار…</string>
+  <string name="status_failing">به‌درستی کار نمی‌کند</string>
   <string name="explanation_offline">دستگاه آفلاین است.  Intra درانتظار اتصال شبکه است.</string>
   <string name="explanation_vpn">Intra در دستگاه شما VPN دیگری تشخیص داده است.  اگر Intra را فعال کنید، آن VPN غیرفعال می‌شود.
     Intra به‌اندازه VPN مطمئن، امن نیست.</string>
-  <string name="explanation_failing">هشدار: پُرسمان‌ها بی‌نتیجه‌اند.  ممکن است بخواهید سرور متفاوتی انتخاب کنید و Intra را بازراه‌اندازی کنید.</string>
+  <string name="explanation_failing">هشدار: پرسمان‌ها بی‌نتیجه‌اند.  ممکن است بخواهید سرور متفاوتی انتخاب کنید یا Intra را بازراه‌اندازی کنید.</string>
+  <string name="button_failing">سرور دیگری را امتحان کنید</string>
   <string name="system_details">جزئیات سیستم</string>
   <string name="num_requests">پُرسمان‌های درزمانی</string>
   <string name="num_requests_headline">پُرسمان‌های DNS وقتی پیش می‌آیند که دستگاه برای نام دامنه، به نشانی IP مراجعه می‌کند</string>

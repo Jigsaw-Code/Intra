@@ -43,6 +43,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -72,6 +73,7 @@ import app.intra.sys.PersistentState;
 import app.intra.sys.QueryTracker;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
+import app.intra.ui.settings.ServerChooser;
 import app.intra.ui.settings.SettingsFragment;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.material.navigation.NavigationView;
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity
   private RecyclerView.LayoutManager layoutManager;
   private View controlView = null;
   private Timer activityTimer;
+
+  private SettingsFragment settingsFragment = null;
 
   private BroadcastReceiver messageReceiver =
       new BroadcastReceiver() {
@@ -572,6 +576,10 @@ public class MainActivity extends AppCompatActivity
     final TextView indicatorText = controlView.findViewById(R.id.indicator);
     indicatorText.setText(status.activationRequested ? R.string.indicator_on : R.string.indicator_off);
 
+    // Hide server change button by default
+    final Button changeServerButton = controlView.findViewById(R.id.change_server_button);
+    changeServerButton.setVisibility(View.INVISIBLE);
+
     // Change status and explanation text
     final int statusId;
     final int explanationId;
@@ -588,8 +596,13 @@ public class MainActivity extends AppCompatActivity
         explanationId = R.string.explanation_protected;
       } else {
         // status.connectionState == ServerConnection.State.FAILING
-        statusId = R.string.status_protected;
+        statusId = R.string.status_failing;
         explanationId = R.string.explanation_failing;
+        changeServerButton.setVisibility(View.VISIBLE);
+        changeServerButton.setOnClickListener((View view) -> {
+          chooseView(R.id.settings);
+          openServerSetting();
+        });
       }
     } else if (isAnotherVpnActive()) {
       statusId = R.string.status_exposed;
@@ -686,13 +699,21 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void showSettings() {
-    SettingsFragment fragment = new SettingsFragment();
-    fragment.collectInstalledApps(getApplicationContext().getPackageManager());
+    settingsFragment = new SettingsFragment();
+    settingsFragment.collectInstalledApps(getApplicationContext().getPackageManager());
 
     // Display the fragment in its designated location.
     getSupportFragmentManager().beginTransaction()
-        .replace(R.id.settings, fragment)
-        .commit();
+        .replace(R.id.settings, settingsFragment)
+        .commitNow();
+  }
+
+  private void openServerSetting() {
+    if (settingsFragment != null) {
+      settingsFragment.getPreferenceManager().showDialog(new ServerChooser(this));
+    } else {
+      Log.e(LOG_TAG, "Failed to open server setting");
+    }
   }
 
   private View chooseView(int id) {

@@ -33,10 +33,12 @@
   <string name="status_starting">Покреће се…</string>
   <string name="explanation_starting">Сачекајте.  Intra успоставља везу са сервером.</string>
   <string name="status_waiting">Чека се…</string>
+  <string name="status_failing">Не успева</string>
   <string name="explanation_offline">Уређај је офлајн.  Intra чека на мрежну везу.</string>
   <string name="explanation_vpn">Intra је открила још један VPN на уређају.  Ако омогућите Intra-у, тај VPN ће се онемогућити.
     Intra је мање безбедна од поузданог VPN-а.</string>
-  <string name="explanation_failing">Упозорење: Упити не успевају.  Не би било лоше да изаберете други сервер и поново покренете Intra-у.</string>
+  <string name="explanation_failing">Упозорење: Упити не успевају.  Не би било лоше да изаберете други сервер или рестартујете Intra-у.</string>
+  <string name="button_failing">Пробајте са другим сервером</string>
   <string name="system_details">Детаљи о систему</string>
   <string name="num_requests">Укупан број упита</string>
   <string name="num_requests_headline">До DNS упита долази када уређај потражи IP адресу за име домена</string>

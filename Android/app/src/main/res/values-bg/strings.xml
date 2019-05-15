@@ -30,10 +30,12 @@
   <string name="status_starting">Стартира…</string>
   <string name="explanation_starting">Един момент.  Intra установява връзка със сървъра.</string>
   <string name="status_waiting">Чака се…</string>
+  <string name="status_failing">Неуспешни заявки</string>
   <string name="explanation_offline">Устройството ви е офлайн.  Intra чака връзка с мрежата.</string>
   <string name="explanation_vpn">Intra установи друга виртуална частна мрежа (VPN) на устройството ви.  Ако активирате Intra, тази VPN ще бъде деактивирана.
     Intra не е с толкова високо ниво на сигурност, колкото доверена VPN.</string>
-  <string name="explanation_failing">Предупреждение: Заявките не са успешни.  Бихте могли да изберете друг сървър и да рестартирате Intra.</string>
+  <string name="explanation_failing">Предупреждение: Заявките са неуспешни.  Бихте могли да изберете друг сървър или да рестартирате Intra.</string>
+  <string name="button_failing">Изпробване на друг сървър</string>
   <string name="system_details">Подробности за системата</string>
   <string name="num_requests">Заявки за целия период</string>
   <string name="num_requests_headline">DNS заявките се извършват, когато устройството ви търси IP адреса, отговарящи на име на домейн</string>

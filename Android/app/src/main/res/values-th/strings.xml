@@ -32,10 +32,12 @@
   <string name="status_starting">กำลังเริ่มต้น...</string>
   <string name="explanation_starting">รอสักครู่ Intra กำลังสร้างการเชื่อมต่อกับเซิร์ฟเวอร์</string>
   <string name="status_waiting">โปรดรอ…</string>
+  <string name="status_failing">ไม่สำเร็จ</string>
   <string name="explanation_offline">อุปกรณ์ของคุณออฟไลน์อยู่ Intra กำลังรอการเชื่อมต่อเครือข่าย</string>
   <string name="explanation_vpn">Intra ตรวจพบว่ามี VPN อื่นอยู่ในอุปกรณ์ หากคุณเปิดใช้ Intra ระบบจะปิด VPN นี้
     Intra ไม่ได้มีความปลอดภัยเท่ากับ VPN ที่เชื่อถือได้</string>
-  <string name="explanation_failing">คำเตือน: คำขอไม่สำเร็จ คุณอาจต้องเลือกเซิร์ฟเวอร์อื่นและรีสตาร์ท Intra</string>
+  <string name="explanation_failing">คำเตือน: คำขอไม่สำเร็จ คุณอาจต้องเลือกเซิร์ฟเวอร์อื่นหรือรีสตาร์ท Intra</string>
+  <string name="button_failing">ลองใช้เซิร์ฟเวอร์อื่น</string>
   <string name="system_details">รายละเอียดของระบบ</string>
   <string name="num_requests">การค้นหาทั้งหมด</string>
   <string name="num_requests_headline">คำขอ DNS จะเกิดขึ้นเมื่ออุปกรณ์ค้นหาที่อยู่ IP ของชื่อโดเมน</string>

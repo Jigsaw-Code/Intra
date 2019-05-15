@@ -33,10 +33,12 @@
   <string name="status_starting">Käynnistetään…</string>
   <string name="explanation_starting">Odota hetki.  Intra muodostaa palvelinyhteyden.</string>
   <string name="status_waiting">Odotetaan…</string>
+  <string name="status_failing">Ei toimi</string>
   <string name="explanation_offline">Laitteesi on offline-tilassa.  Intra odottaa verkkoyhteyttä.</string>
   <string name="explanation_vpn">Intra on tunnistanut toisen VPN:n laitteessasi.  Jos otat Intran käyttöön, kyseinen VPN poistetaan käytöstä.
     Intra ei ole yhtä turvallinen kuin luotettu VPN.</string>
-  <string name="explanation_failing">Varoitus: Kyselyt epäonnistuvat.  Sinun kannatta ehkä vaihtaa palvelinta ja käynnistää Intra uudelleen.</string>
+  <string name="explanation_failing">Varoitus: Kyselyt eivät toimi.  Sinun kannattaa ehkä vaihtaa palvelinta tai käynnistää Intra uudelleen.</string>
+  <string name="button_failing">Kokeile toista palvelinta</string>
   <string name="system_details">Järjestelmän tiedot</string>
   <string name="num_requests">Kyselyjä tähän asti</string>
   <string name="num_requests_headline">DNS-kyselyjä suoritetaan, kun laitteesi etsii jonkin verkkotunnuksen IP-osoitetta.</string>
@@ -74,7 +76,7 @@
   <string name="server_choice">Valitse DNS over HTTPS ‑palvelin</string>
   <string name="server_choice_summary">Tällä hetkellä %s</string>
   <string name="server_choice_builtin">Sisäänrakennettu palvelin</string>
-  <string name="server_choice_website_notice">Tarkista heidän tietosuojakäytäntönsä ja mahdolliset soveltuvat käyttöehdot <a href="https://www.example.com/">heidän verkkosivustoltaan</a>.</string>
+  <string name="server_choice_website_notice">Tarkista tietosuojakäytäntö ja mahdolliset soveltuvat käyttöehdot <a href="https://www.example.com/">verkkosivustolta</a>.</string>
   <string name="server_choice_custom">Muokatun palvelimen URL-osoite</string>
   <string name="server_choice_warning">Muokatun palvelimen on oltava kelvollinen https://-alkuinen URL-osoite</string>
   <string name="excluded_apps">Pois suljetut sovellukset</string>

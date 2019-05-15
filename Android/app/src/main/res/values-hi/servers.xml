@@ -3,8 +3,8 @@
   <string name="description0">बड़ा ग्लोबल रिज़ॉल्वर जिसे Google ऑपरेट करता है.</string>
   <string name="description1">बड़ा ग्लोबल रिज़ॉल्वर, जिसे Cloudflare ऑपरेट करता है.</string>
   <string name="description2">IBM और Packet Clearinghouse का बड़ा ग्लोबल रिज़ॉल्वर.  नुकसान पहुंचाने वाले डोमेन पर रोक लगाता है.</string>
-  <string name="description3">ग्लोबल DNS फ़िल्टर करने की सेवा देने वाली संस्था.  नुकसान पहुंचाने वाले डोमेन पर रोक लगाता है.</string>
+  <string name="description3">ग्लोबल डीएनएस फ़िल्टर करने की सेवा देने वाली संस्था.  नुकसान पहुंचाने वाले डोमेन पर रोक लगाता है.</string>
   <string name="description4">ऑस्ट्रिया में सर्वर को गैर-लाभकारी निजी समूह ऑपरेट करता है.</string>
-  <string name="description5">नीदरलैंड में सर्वर को ओपन सोर्स DNS सॉफ़्टवेयर कंपनी ऑपरेट करती है.</string>
-  <string name="description6">इसे xTom और सर्वर देने वाली दूसरी अंतरराष्ट्रीय संस्थाएं ऑपरेट करती हैं.  यह Cloudflare के CDN का इस्तेमाल करता है.</string>
+  <string name="description5">नीदरलैंड्स में सर्वर को ओपन सोर्स डीएनएस सॉफ़्टवेयर कंपनी ऑपरेट करती है.</string>
+  <string name="description6">इसे xTom और सर्वर देने वाली दूसरी अंतरराष्ट्रीय संस्थाएं ऑपरेट करती हैं.  यह Cloudflare के सीडीएन का इस्तेमाल करता है.</string>
 </resources>

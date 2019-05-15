@@ -110,7 +110,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   }
 
   private synchronized void spawnServerUpdate() {
-    if (networkManager != null && serverConnection != null) {
+    if (networkManager != null) {
       new Thread(
           new Runnable() {
             public void run() {
