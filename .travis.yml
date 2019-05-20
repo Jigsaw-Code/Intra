@@ -14,11 +14,5 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - extra-google-google_play_services
-    # Test oldest supported version
-    - sys-img-x86-android-14
-    # Test oldest version with tun2socks and x86
-    - sys-img-x86-android-23
-    # Test newest supported version with Play Services and ARM
-    - sys-img-armeabi-v7a-addon-google_apis-google-$GOOGLE_PLAY_SERVICES_API
 script:
    - ./gradlew clean assembleDebug check
