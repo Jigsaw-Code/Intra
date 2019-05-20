@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import app.intra.net.VpnAdapter;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.LogWrapper;
-import com.crashlytics.android.Crashlytics;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -120,7 +119,7 @@ public class SocksVpnAdapter extends VpnAdapter {
     try {
       localhost = Inet4Address.getByAddress(new byte[]{127, 0, 0, 1});
     } catch (UnknownHostException e) {
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
       return;
     }
 
@@ -132,7 +131,7 @@ public class SocksVpnAdapter extends VpnAdapter {
     try {
       proxy.start();
     } catch (IOException e) {
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
       return;
     }
 
@@ -169,7 +168,7 @@ public class SocksVpnAdapter extends VpnAdapter {
           .addDisallowedApplication(vpnService.getPackageName())
           .establish();
     } catch (Exception e) {
-      Crashlytics.logException(e);
+      LogWrapper.logException(e);
       return null;
     }
   }
@@ -184,13 +183,13 @@ public class SocksVpnAdapter extends VpnAdapter {
       join();
     } catch (InterruptedException e) {
       // This is weird: the calling thread has _also_ been interrupted.
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
     }
 
     try {
       tunFd.close();
     } catch (IOException e) {
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
     }
   }
 }

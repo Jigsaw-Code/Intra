@@ -56,10 +56,10 @@ class LocalhostResolver extends Thread implements ResponseWriter {
       SocketAddress bindaddr = new InetSocketAddress(localhost, 0);
       socket = new DatagramSocket(bindaddr);
     } catch (UnknownHostException e) {
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
       return null;
     } catch (SocketException e) {
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
       return null;
     }
     return new LocalhostResolver(vpnService, socket);
@@ -79,7 +79,7 @@ class LocalhostResolver extends Thread implements ResponseWriter {
       byte[] data = Arrays.copyOfRange(packet.getData(), packet.getOffset(), packet.getLength());
       DnsUdpQuery dnsRequest = DnsUdpQuery.fromUdpBody(data);
       if (dnsRequest == null) {
-        LogWrapper.logcat(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
+        LogWrapper.log(Log.ERROR, LOG_TAG, "Failed to parse DNS request");
         continue;
       }
       Log.d(
@@ -129,7 +129,7 @@ class LocalhostResolver extends Thread implements ResponseWriter {
       try {
         socket.send(responsePacket);
       } catch (IOException e) {
-        LogWrapper.report(e);
+        LogWrapper.logException(e);
         transaction.status = Transaction.Status.INTERNAL_ERROR;
       }
     }

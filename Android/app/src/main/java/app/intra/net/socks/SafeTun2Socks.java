@@ -105,7 +105,7 @@ class SafeTun2Socks  {
         try {
           thread.join(startTime + STARTUP_WAIT_MS - now);
         } catch (InterruptedException e) {
-          LogWrapper.report(e);
+          LogWrapper.logException(e);
         }
       }
       Tun2SocksJni.stop();
@@ -113,7 +113,7 @@ class SafeTun2Socks  {
     try {
       thread.join();
     } catch (InterruptedException e) {
-      LogWrapper.report(e);
+      LogWrapper.logException(e);
     }
     if (started) {
       globalSemaphore.release();

@@ -63,7 +63,7 @@ class SocksServer extends BasicSocksProxyServer {
       override.setDns(fakeDns, trueDns);
       override.setContext(context);
     } else {
-      LogWrapper.logcat(Log.WARN, LOG_TAG, "Foreign handler");
+      LogWrapper.log(Log.WARN, LOG_TAG, "Foreign handler");
     }
   }
 

@@ -22,7 +22,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import app.intra.R;
 import app.intra.ui.settings.Untemplate;
-import com.crashlytics.android.Crashlytics;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -107,7 +106,7 @@ public class PersistentState {
     }
 
     if (url == null) {
-      Crashlytics.log(Log.WARN, LOG_TAG, "Legacy domain is unrecognized");
+      LogWrapper.log(Log.WARN, LOG_TAG, "Legacy domain is unrecognized");
       return;
     }
     setServerUrl(context, url);
@@ -138,7 +137,7 @@ public class PersistentState {
       URL parsed = new URL(url);
       return parsed.getHost();
     } catch (MalformedURLException e) {
-      Crashlytics.log(Log.WARN, LOG_TAG, "Stored URL is corrupted");
+      LogWrapper.log(Log.WARN, LOG_TAG, "Stored URL is corrupted");
       return null;
     }
   }

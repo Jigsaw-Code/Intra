@@ -18,7 +18,6 @@ package app.intra.net.doh;
 import android.util.Log;
 import app.intra.net.dns.DnsUdpQuery;
 import app.intra.sys.LogWrapper;
-import com.crashlytics.android.Crashlytics;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.nio.BufferOverflowException;
@@ -93,13 +92,13 @@ public class Resolver {
     public void onFailure(Call call, IOException e) {
       transaction.status = call.isCanceled() ?
           Transaction.Status.CANCELED : Transaction.Status.SEND_FAIL;
-      LogWrapper.logcat(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
+      LogWrapper.log(Log.WARN, LOG_TAG, "Failed to read HTTPS response: " + e.toString());
       if (e instanceof SocketTimeoutException) {
-        Crashlytics.log(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
+        LogWrapper.log(Log.WARN, LOG_TAG, "Workaround for OkHttp3 #3146: resetting");
         try {
           serverConnection.reset();
         } catch (NullPointerException npe) {
-          Crashlytics.log(Log.WARN, LOG_TAG,
+          LogWrapper.log(Log.WARN, LOG_TAG,
               "Unlikely race: Null server connection at reset.");
         }
       }
@@ -123,7 +122,7 @@ public class Resolver {
       try {
         writeRequestIdToDnsResponse(dnsResponse, dnsUdpQuery.requestId);
       } catch (BufferOverflowException e) {
-        Crashlytics.log(Log.WARN, LOG_TAG, "ID replacement failed");
+        LogWrapper.log(Log.WARN, LOG_TAG, "ID replacement failed");
         transaction.status = Transaction.Status.BAD_RESPONSE;
         return;
       }
@@ -131,7 +130,7 @@ public class Resolver {
       if (parsedDnsResponse != null) {
         Log.d(LOG_TAG, "RNAME: " + parsedDnsResponse.name + " NAME: " + dnsUdpQuery.name);
         if (!dnsUdpQuery.name.equals(parsedDnsResponse.name)) {
-          Crashlytics.log(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
+          LogWrapper.log(Log.ERROR, LOG_TAG, "Mismatch in request and response names.");
           transaction.status = Transaction.Status.BAD_RESPONSE;
           return;
         }

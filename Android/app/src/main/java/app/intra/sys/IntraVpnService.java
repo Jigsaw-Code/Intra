@@ -48,7 +48,6 @@ import app.intra.net.socks.SocksVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -324,7 +323,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
     VpnController.getInstance().onStartComplete(this, vpnAdapter != null);
     if (vpnAdapter == null) {
-      Crashlytics.log(Log.WARN, LOG_TAG, "Failed to startVpn VPN adapter");
+      LogWrapper.log(Log.WARN, LOG_TAG, "Failed to startVpn VPN adapter");
       stopSelf();
     }
   }
@@ -342,13 +341,13 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     if (vpnAdapter != null) {
       vpnAdapter.start();
     } else {
-      Crashlytics.log(Log.WARN, LOG_TAG, "Restart failed");
+      LogWrapper.log(Log.WARN, LOG_TAG, "Restart failed");
     }
   }
 
   @Override
   public void onCreate() {
-    Crashlytics.log(Log.INFO, LOG_TAG, "Creating DNS VPN service");
+    LogWrapper.log(Log.INFO, LOG_TAG, "Creating DNS VPN service");
     VpnController.getInstance().setIntraVpnService(this);
 
     firebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -357,7 +356,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   }
 
   public void signalStopService(boolean userInitiated) {
-    Crashlytics.log(
+    LogWrapper.log(
         Log.INFO,
         LOG_TAG,
         String.format("Received stop signal. User initiated: %b", userInitiated));
@@ -426,12 +425,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   private synchronized void startVpnAdapter() {
     if (vpnAdapter == null) {
-      Crashlytics.log(Log.INFO, LOG_TAG, "Starting DNS resolver");
+      LogWrapper.log(Log.INFO, LOG_TAG, "Starting DNS resolver");
       vpnAdapter = makeVpnAdapter();
       if (vpnAdapter != null) {
         vpnAdapter.start();
       } else {
-        Crashlytics.log(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
+        LogWrapper.log(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
       }
     }
   }
@@ -446,7 +445,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @Override
   public synchronized void onDestroy() {
-    Crashlytics.log(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
+    LogWrapper.log(Log.INFO, LOG_TAG, "Destroying DNS VPN service");
 
     PreferenceManager.getDefaultSharedPreferences(this).
         unregisterOnSharedPreferenceChangeListener(this);
@@ -468,7 +467,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @Override
   public void onRevoke() {
-    Crashlytics.log(Log.WARN, LOG_TAG, "VPN service revoked.");
+    LogWrapper.log(Log.WARN, LOG_TAG, "VPN service revoked.");
     stopSelf();
 
     // Disable autostart if VPN permission is revoked.
@@ -490,7 +489,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
         // Play Store incompatibility is a known issue, so always exclude it.
         builder = builder.addDisallowedApplication("com.android.vending");
       } catch (PackageManager.NameNotFoundException e) {
-        Crashlytics.logException(e);
+        LogWrapper.logException(e);
         Log.e(LOG_TAG, "Failed to exclude an app", e);
       }
     }
@@ -545,7 +544,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   // NetworkListener interface implementation
   @Override
   public void onNetworkConnected(NetworkInfo networkInfo) {
-    Crashlytics.log(Log.INFO, LOG_TAG, "Connected event.");
+    LogWrapper.log(Log.INFO, LOG_TAG, "Connected event.");
     setNetworkConnected(true);
     // This code is used to start the VPN for the first time, but startVpn is idempotent, so we can
     // call it every time. startVpn performs network activity so it has to run on a separate thread.
@@ -561,7 +560,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @Override
   public void onNetworkDisconnected() {
-    Crashlytics.log(Log.INFO, LOG_TAG, "Disconnected event.");
+    LogWrapper.log(Log.INFO, LOG_TAG, "Disconnected event.");
     setNetworkConnected(false);
     VpnController.getInstance().onConnectionStateChanged(this, null);
   }
