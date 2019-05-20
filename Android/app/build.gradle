@@ -4,7 +4,15 @@ apply plugin: 'io.fabric'
 // See https://developer.android.com/studio/publish/app-signing#secure-shared-keystore
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+try {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} catch (Exception ex) {
+    logger.warn("No keys.  Release disabled: $ex.message")
+    keystoreProperties['keyAlias'] = ''
+    keystoreProperties['keyPassword'] = ''
+    keystoreProperties['storeFile'] = '/dev/null'
+    keystoreProperties['storePassword'] = ''
+}
 
 android {
     signingConfigs {
@@ -34,7 +42,7 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     lintOptions {
-        // Ignore lint errors in sockslib that we believe are safe to ignore.
+        // Ignore lint errors that we believe are safe to ignore.
         baseline file("lint-baseline.xml")
     }
     buildTypes {
@@ -96,7 +104,7 @@ dependencies {
     testImplementation 'org.json:json:20171018'
     testImplementation 'org.mockito:mockito-core:2.13.0'
     // Required for instrumented tests
-    androidTestImplementation 'androidx.annotation:annotation:1.0.1'
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     // UI libraries.
     implementation 'androidx.appcompat:appcompat:1.0.2'

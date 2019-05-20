@@ -61,6 +61,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="https://..."
+          tools:ignore="HardcodedText,Autofill"
           android:imeOptions="actionDone"
           android:inputType="textFilter|textUri"/>
 

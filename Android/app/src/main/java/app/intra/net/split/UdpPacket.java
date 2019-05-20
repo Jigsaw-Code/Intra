@@ -17,6 +17,7 @@ package app.intra.net.split;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Locale;
 
 // Object representation of a UDP packet.
 class UdpPacket {
@@ -67,7 +68,7 @@ class UdpPacket {
 
   @Override
   public String toString() {
-    return String.format(
+    return String.format(Locale.ROOT,
         "source_port: %d | dest_port: %d | length: %d | checksum: %d",
         sourcePort, destPort, length, checksum);
   }

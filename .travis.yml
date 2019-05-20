@@ -1,10 +1,8 @@
 language: android
-jdk: oraclejdk8
 env:
  global:
- - ANDROID_API=25
- - ANDROID_BUILD_TOOLS=26.0.2
- - GOOGLE_PLAY_SERVICES_API=43
+ - ANDROID_API=28
+ - ANDROID_BUILD_TOOLS=28.0.3
 before_install:
   cd Android;
 android:
@@ -15,8 +13,6 @@ android:
     - android-$ANDROID_API
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-$GOOGLE_PLAY_SERVICES_API
-    - sys-img-armeabi-v7a-android-$ANDROID_API
-    - sys-img-armeabi-v7a-addon-google_apis-google-$GOOGLE_PLAY_SERVICES_API
+    - extra-google-google_play_services
 script:
    - ./gradlew clean assembleDebug check

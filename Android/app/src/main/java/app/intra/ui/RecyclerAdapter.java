@@ -433,8 +433,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     if (viewType == TYPE_CONTROLS) {
       View v = activity.getControlView(parent);
       return new ControlViewHolder(v);
-    } else {
-      assert viewType == TYPE_TRANSACTION;
+    } else if (viewType == TYPE_TRANSACTION) {
       View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_row,
           parent, false);
 
@@ -452,17 +451,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       }
 
       return new TransactionViewHolder(v);
+    } else {
+      throw new AssertionError(String.format(Locale.ROOT, "Unknown viewType %d", viewType));
     }
   }
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
     if (holder instanceof ControlViewHolder) {
-      assert position == 0;
-    } else {
-      assert holder instanceof TransactionViewHolder;
+      if (position != 0) {
+        throw new AssertionError(String.format(Locale.ROOT, "Cannot show control view holder at index %d", position));
+      }
+    } else if (holder instanceof TransactionViewHolder) {
       Transaction transaction = getItem(position);
       ((TransactionViewHolder) holder).update(transaction);
+    } else {
+      throw new AssertionError(
+          String.format(Locale.ROOT, "Unknown holder %s", holder.getClass().toString()));
     }
   }
 
