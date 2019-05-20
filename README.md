@@ -1,4 +1,5 @@
 # Intra
+[![Build Status](https://travis-ci.org/Jigsaw-Code/Intra.svg?branch=master)](https://travis-ci.org/Jigsaw-Code/Intra)
 
 Intra is an experimental tool that allows you to test new DNS-over-HTTPS
 services that encrypt domain name lookups and prevent manipulation by your
