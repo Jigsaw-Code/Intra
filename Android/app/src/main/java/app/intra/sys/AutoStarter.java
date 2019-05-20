@@ -31,6 +31,9 @@ public class AutoStarter extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context context, Intent intent) {
+    if (!Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+      return;
+    }
     Crashlytics.log(Log.DEBUG, LOG_TAG, "Boot event");
     VpnController controller = VpnController.getInstance();
     VpnState state = controller.getState(context);

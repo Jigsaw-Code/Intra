@@ -19,6 +19,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Locale;
 
 // Object representation of an IPv6 packet.
 class Ipv6Packet extends IpPacket {
@@ -205,7 +206,7 @@ class Ipv6Packet extends IpPacket {
 
   @Override
   public String toString() {
-    return String.format(
+    return String.format(Locale.ROOT,
         "version: %d | payload_length: %d | data_length: %d | hop_limit: %d | protocol: %d | "
             + " source_addr: %s | dest_addr: %s",
         VERSION_IPV6,

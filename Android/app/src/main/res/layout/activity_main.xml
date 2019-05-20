@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill_vertical"
                 app:menu="@menu/drawer_menu"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/nav_space"/>
 

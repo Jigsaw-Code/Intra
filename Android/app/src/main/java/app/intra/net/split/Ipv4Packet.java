@@ -19,6 +19,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Locale;
 
 // Object representation of an IPv4 packet.
 class Ipv4Packet extends IpPacket {
@@ -134,7 +135,7 @@ class Ipv4Packet extends IpPacket {
 
   @Override
   public String toString() {
-    return String.format(
+    return String.format(Locale.ROOT,
         "version: %d | ihl: %d | total_length: %d | ttl: %d | protocol: %d | checksum: %d | "
             + "computed_checksum: %d | source_addr: %s | dest_addr: %s",
         VERSION_IPV4,

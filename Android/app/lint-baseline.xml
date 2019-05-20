@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="4" by="lint 3.2.1" client="gradle" variant="debug" version="3.2.1">
+<issues format="5" by="lint 3.4.0" client="gradle" variant="debug" version="3.4.0">
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
 
     <issue
         id="NewApi"
@@ -14,7 +21,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 24 (current min is 14): new java.lang.Exception"
+        message="Call requires API level 24 (current min is 14): `new java.lang.Exception`"
         errorLine1="    super(message, cause, enableSuppression, writableStackTrace);"
         errorLine2="    ~~~~~">
         <location
@@ -25,7 +32,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 24 (current min is 14): new java.lang.RuntimeException"
+        message="Call requires API level 24 (current min is 14): `new java.lang.RuntimeException`"
         errorLine1="    super(message, cause, enableSuppression, writableStackTrace);"
         errorLine2="    ~~~~~">
         <location
@@ -36,7 +43,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 24 (current min is 14): new java.lang.Exception"
+        message="Call requires API level 24 (current min is 14): `new java.lang.Exception`"
         errorLine1="    super(message, cause, enableSuppression, writableStackTrace);"
         errorLine2="    ~~~~~">
         <location
@@ -47,13 +54,413 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 19 (current min is 14): java.net.InetSocketAddress#getHostString"
+        message="Call requires API level 19 (current min is 14): `java.net.InetSocketAddress#getHostString`"
         errorLine1="    this.remoteServerHost = address.getHostString();"
         errorLine2="                                    ~~~~~~~~~~~~~">
         <location
             file="../third_party/sockslib/src/main/java/sockslib/client/SocksSocket.java"
             line="113"
             column="37"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `layoutDirection` is only used in API level 17 and higher (current min is 14)"
+        errorLine1="                                                    android:layoutDirection=&quot;ltr&quot;"
+        errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/intro_pager.xml"
+            line="12"
+            column="53"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `importantForAutofill` is only used in API level 26 and higher (current min is 14)"
+        errorLine1="          android:importantForAutofill=&quot;no&quot;/>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/servers.xml"
+            line="66"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.firebase:firebase-perf than 16.2.5 is available: 17.0.0"
+        errorLine1="    implementation &apos;com.google.firebase:firebase-perf:16.2.5&apos;  // Last version to support API &lt;17"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="118"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Typos"
+        message="&quot;Packet&quot; is a common misspelling; did you mean &quot;Paket&quot; ?"
+        errorLine1="  &lt;string name=&quot;description2&quot;>Großer globaler Resolver von IMP und Packet Clearinghouse.  Blockt bösartige Domains.&lt;/string>"
+        errorLine2="                                                                   ^">
+        <location
+            file="src/main/res/values-de/servers.xml"
+            line="5"
+            column="68"/>
+    </issue>
+
+    <issue
+        id="AllowBackup"
+        message="On SDK version 23 and up, your app data will be automatically backed up, and restored on app install. Your GCM regid will not work across restores, so you must ensure that it is excluded from the back-up set. Use the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html"
+        errorLine1="    &lt;application"
+        errorLine2="     ~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="11"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="UseSparseArrays"
+        message="Use `new android.support.v4.util.LongSparseArray(...)` instead for better performance"
+        errorLine1="  private Map&lt;Long, Session> managedSessions = new HashMap&lt;>();"
+        errorLine2="                                               ~~~~~~~~~~~~~~~">
+        <location
+            file="../third_party/sockslib/src/main/java/sockslib/server/BasicSessionManager.java"
+            line="25"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="UseSparseArrays"
+        message="Use `new android.support.v4.util.LongSparseArray(...)` instead for better performance"
+        errorLine1="    sessions = new HashMap&lt;>();"
+        errorLine2="               ~~~~~~~~~~~~~~~">
+        <location
+            file="../third_party/sockslib/src/main/java/sockslib/server/BasicSocksProxyServer.java"
+            line="178"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="UseSparseArrays"
+        message="Use `new SparseArray&lt;SocksMethod>(...)` instead for better performance"
+        errorLine1="  private static final Map&lt;Byte, SocksMethod> methods = new HashMap&lt;Byte, SocksMethod>();"
+        errorLine2="                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="../third_party/sockslib/src/main/java/sockslib/common/methods/SocksMethodRegistry.java"
+            line="45"
+            column="57"/>
+    </issue>
+
+    <issue
+        id="UseValueOf"
+        message="Use `Integer.valueOf(getByte())` instead"
+        errorLine1="    return new Integer(getByte()).hashCode();"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="../third_party/sockslib/src/main/java/sockslib/common/methods/AbstractSocksMethod.java"
+            line="35"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UseValueOf"
+        message="Use `Integer.valueOf(num)` instead"
+        errorLine1="    return new Integer(num).hashCode();"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="../third_party/sockslib/src/main/java/sockslib/utils/UnsignedByte.java"
+            line="97"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.url5` appears to be unused"
+        errorLine1="  &lt;string name=&quot;url5&quot; translatable=&quot;false&quot;>https://doh.powerdns.org/&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/servers.xml"
+            line="48"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.name5` appears to be unused"
+        errorLine1="  &lt;string name=&quot;name5&quot; translatable=&quot;false&quot;>PowerDNS&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/servers.xml"
+            line="49"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ips5` appears to be unused"
+        errorLine1="  &lt;string name=&quot;ips5&quot; translatable=&quot;false&quot;>136.144.215.158,2a01:7c8:d002:1ef:5054:ff:fe40:3703&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/servers.xml"
+            line="50"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.description5` appears to be unused"
+        errorLine1="  &lt;string name=&quot;description5&quot; description=&quot;Describes PowerDNS&apos;s DNS resolver (i.e. DNS server).&quot;>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/servers.xml"
+            line="51"
+            column="11"/>
+        <location
+            file="src/main/res/values-ar/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-ar-rXB/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-az/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-b+es+419/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-bg/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-ca/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-cs/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-da/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-de/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-el/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-en-rGB/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-en-rXA/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-es/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-fa/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-fi/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-fil/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-fr/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-hi/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-hr/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-hu/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-id/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-it/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-iw/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-ja/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-ko/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-lt/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-lv/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-nl/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-no/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-pl/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-pt-rBR/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-pt-rPT/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-ro/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-ru/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-sk/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-sl/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-sr/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-sv/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-sw/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-th/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-tr/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-uk/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-vi/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-zh-rCN/servers.xml"
+            line="8"
+            column="11"/>
+        <location
+            file="src/main/res/values-zh-rTW/servers.xml"
+            line="8"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.website5` appears to be unused"
+        errorLine1="  &lt;string name=&quot;website5&quot; translatable=&quot;false&quot;>https://www.powerdns.com/&lt;/string>"
+        errorLine2="          ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/servers.xml"
+            line="54"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="  &lt;string name=&quot;status_starting&quot;>กำลังเริ่มต้น...&lt;/string>"
+        errorLine2="                                 ^">
+        <location
+            file="src/main/res/values-th/strings.xml"
+            line="32"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="GoogleAppIndexingWarning"
+        message="App is not indexable by Google Search; consider adding at least one Activity with an ACTION-VIEW intent filter. See issue explanation for more details."
+        errorLine1="    &lt;application"
+        errorLine2="    ^">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="11"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;https://...&quot;, should use `@string` resource"
+        errorLine1="          android:hint=&quot;https://...&quot;"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/servers.xml"
+            line="63"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;https&quot;, should use `@string` resource"
+        errorLine1="                    android:text=&quot;https&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/system_details.xml"
+            line="136"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;dns.google.com&quot;, should use `@string` resource"
+        errorLine1="                        android:text=&quot;dns.google.com&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/system_details.xml"
+            line="187"
+            column="25"/>
     </issue>
 
 </issues>

@@ -34,7 +34,7 @@ android {
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     lintOptions {
-        // Ignore lint errors in sockslib that we believe are safe to ignore.
+        // Ignore lint errors that we believe are safe to ignore.
         baseline file("lint-baseline.xml")
     }
     buildTypes {

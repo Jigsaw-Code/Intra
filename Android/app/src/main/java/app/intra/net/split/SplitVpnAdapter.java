@@ -38,6 +38,7 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Implements a split-tunnel VPN that only receives DNS traffic.  All other traffic skips the VPN.
@@ -150,7 +151,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
 
     @Override
     public String toString() {
-      return String.format("{ subnet: %s, address: %s, router: %s, prefix: %d }",
+      return String.format(Locale.ROOT, "{ subnet: %s, address: %s, router: %s, prefix: %d }",
           subnet, address, router, prefix);
     }
   }
@@ -311,7 +312,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
         msg = "Received TCP packet.";
         break;
       default:
-        msg = String.format("Received non-UDP IP packet: %d", protocol);
+        msg = String.format(Locale.ROOT, "Received non-UDP IP packet: %d", protocol);
         break;
     }
     return msg;
