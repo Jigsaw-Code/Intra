@@ -7,4 +7,5 @@
   <string name="description4">Itävallassa sijaitseva palvelin, jota ylläpitää voittoa tavoittelematon tietosuojaryhmä.</string>
   <string name="description5">Alankomaissa sijaitseva palvelin, jota ylläpitää avoimen lähdekoodin DNS-ohjelmistoyhtiö.</string>
   <string name="description6">xTomin ja muiden kansainvälisten hosting-palveluntarjoajien ylläpitämä.  Käyttää Cloudflaren CDN:ää.</string>
+  <string name="description7">Japanissa sijaitseva palvelin, jota ylläpitää ISP.</string>
 </resources>

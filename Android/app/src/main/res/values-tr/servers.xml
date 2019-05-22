@@ -7,4 +7,5 @@
   <string name="description4">Sunucu Avusturya\'da bulunur ve kâr amacı gütmeyen bir gizlilik grubu tarafından işletilmektedir.</string>
   <string name="description5">Sunucu Hollanda\'da bulunur ve açık kaynak bir DNS yazılım şirketi tarafından işletilmektedir.</string>
   <string name="description6">xTom ve uluslararası başka barındırma sağlayıcıları tarafından işletilmektedir.  Cloudflare\'in CDN\'ini kullanır.</string>
+  <string name="description7">Sunucu Japonya\'da bulunur ve bir İSS tarafından işletilmektedir.</string>
 </resources>

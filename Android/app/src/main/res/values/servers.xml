@@ -60,4 +60,12 @@
     Operated by xTom and other international hosting providers.  Uses Cloudflare\'s CDN.
   </string>
   <string name="website6" translatable="false">https://dns.sb/</string>
+
+  <string name="url7" translatable="false">https://public.dns.iij.jp/dns-query</string>
+  <string name="name7" translatable="false">Internet Initiative Japan</string>
+  <string name="ips7" translatable="false"></string>
+  <string name="description7" description="Internet Initiative Japan is an Internet Service Provider (ISP).">
+    Server in Japan operated by an ISP.
+  </string>
+  <string name="website7" translatable="false">https://public.dns.iij.jp/</string>
 </resources>
