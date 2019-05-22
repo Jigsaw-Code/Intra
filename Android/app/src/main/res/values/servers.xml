@@ -51,7 +51,7 @@
   <string name="description5" description="Describes PowerDNS's DNS resolver (i.e. DNS server).">
     Server in the Netherlands, operated by an open-source DNS software company.
   </string>
-  <string name="website5" translatable="false">https://www.powerdns.com/</string>
+  <string name="website5" translatable="false">https://powerdns.org/</string>
 
   <string name="url6" translatable="false">https://doh.dns.sb/dns-query</string>
   <string name="name6" translatable="false">DNS.SB</string>
