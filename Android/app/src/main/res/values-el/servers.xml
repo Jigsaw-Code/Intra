@@ -7,4 +7,5 @@
   <string name="description4">Διακομιστής στην Αυστρία που παρέχεται από μια μη κερδοσκοπική εταιρεία για το απόρρητο.</string>
   <string name="description5">Διακομιστής στην Ολλανδία που παρέχεται από μια εταιρεία λογισμικού DNS ανοικτού κώδικα.</string>
   <string name="description6">Παρέχεται από την xTom και άλλους διεθνείς παρόχους φιλοξενίας.  Χρησιμοποιεί το CDN της Cloudflare.</string>
+  <string name="description7">Διακομιστής στην Ιαπωνία που παρέχεται από έναν ISP.</string>
 </resources>

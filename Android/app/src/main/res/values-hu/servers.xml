@@ -7,4 +7,5 @@
   <string name="description4">Ausztriai szerver egy nonprofit adatvédelmi csoport által üzemeltetve.</string>
   <string name="description5">Hollandiai szerver, melyet egy nílt forráskódú DNS-szoftvercég üzemeltet.</string>
   <string name="description6">Az xTom és más nemzetközi rendszerszolgáltatók üzemeltetik.  A Cloudflare CDN szolgáltatását használja.</string>
+  <string name="description7">Japán szerver, melyet egy internetszolgáltató üzemeltet.</string>
 </resources>

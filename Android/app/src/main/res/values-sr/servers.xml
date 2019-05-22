@@ -7,4 +7,5 @@
   <string name="description4">Сервер у Аустрији којим управља непрофитна група за приватност.</string>
   <string name="description5">Сервер у Холандији којим управља компанија за DNS софтвер отвореног кода.</string>
   <string name="description6">Сервер којим управља xTom и други међународни добављачи услуге хостинга.  Користи Cloudflare-ов CDN.</string>
+  <string name="description7">Сервер у Јапану којим управља интернет провајдер.</string>
 </resources>
