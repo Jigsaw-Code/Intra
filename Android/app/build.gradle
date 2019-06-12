@@ -78,6 +78,11 @@ android {
         exclude 'META-INF/DEPENDENCIES'
     }
 }
+
+crashlytics {
+    enableNdk true
+}
+
 repositories {
     maven {
         url 'test-repo'
@@ -119,6 +124,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-perf:16.2.5'  // Last version to support API <17
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics-ndk:2.1.0'
     // For Sockslib
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-android:1.7.25'
