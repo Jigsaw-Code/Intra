@@ -68,4 +68,12 @@
     Server in Japan operated by an ISP.
   </string>
   <string name="website7" translatable="false">https://public.dns.iij.jp/</string>
+
+  <string name="url8" translatable="false">https://dns.twnic.tw/dns-query</string>
+  <string name="name8" translatable="false">TWNIC Quad101</string>
+  <string name="ips8" translatable="false"></string>
+  <string name="description8" description="See https://101.101.101.101/">
+    Server in Taiwan operated by the .tw domain registry.
+  </string>
+  <string name="website8" translatable="false">https://101.101.101.101/</string>
 </resources>

@@ -9,6 +9,7 @@
     <item>@string/url5</item>
     <item>@string/url6</item>
     <item>@string/url7</item>
+    <item>@string/url8</item>
   </string-array>
   <string-array name="names">
     <item>@string/name0</item>
@@ -19,6 +20,7 @@
     <item>@string/name5</item>
     <item>@string/name6</item>
     <item>@string/name7</item>
+    <item>@string/name8</item>
   </string-array>
   <string-array name="ips">
     <item>@string/ips0</item>
@@ -29,6 +31,7 @@
     <item>@string/ips5</item>
     <item>@string/ips6</item>
     <item>@string/ips7</item>
+    <item>@string/ips8</item>
   </string-array>
   <string-array name="descriptions">
     <item>@string/description0</item>
@@ -39,6 +42,7 @@
     <item>@string/description5</item>
     <item>@string/description6</item>
     <item>@string/description7</item>
+    <item>@string/description8</item>
   </string-array>
   <string-array name="server_websites">
     <item>@string/website0</item>
@@ -49,5 +53,6 @@
     <item>@string/website5</item>
     <item>@string/website6</item>
     <item>@string/website7</item>
+    <item>@string/website8</item>
   </string-array>
 </resources>
