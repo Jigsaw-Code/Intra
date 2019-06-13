@@ -46,7 +46,7 @@ import java.util.Locale;
  * Resolver and ServerConnection.  When responses arrive, it writes them back to the
  * tun device and updates the connection status in DnsVpnServiceController.
  */
-public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
+public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter, Runnable {
   private static final String LOG_TAG = "SplitVpnAdapter";
 
   // IP constants
@@ -71,6 +71,8 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
   // Misc constants
   private static final int SLEEP_MILLIS = 1500;
 
+  private final Thread thread;
+
   private final @NonNull
   IntraVpnService vpnService;
   @NonNull private final ParcelFileDescriptor tunFd;
@@ -86,11 +88,11 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
   }
 
   private SplitVpnAdapter(@NonNull IntraVpnService vpnService, ParcelFileDescriptor tunFd) {
-    super(LOG_TAG);
     this.vpnService = vpnService;
     this.tunFd = tunFd;
     in = new FileInputStream(tunFd.getFileDescriptor());
     out = new FileOutputStream(tunFd.getFileDescriptor());
+    thread = new Thread(this, LOG_TAG);
   }
 
   private static ParcelFileDescriptor establishVpn(IntraVpnService vpnService) {
@@ -198,6 +200,11 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
   }
 
   @Override
+  public void start() {
+    thread.start();
+  }
+
+  @Override
   // This thread reads DNS requests from the VPN interface and forwards them via |serverConnection|.
   public void run() {
     LogWrapper.log(Log.DEBUG, LOG_TAG, "Query thread starting");
@@ -211,14 +218,14 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
 
     ByteBuffer buffer = ByteBuffer.allocate(UDP_MAX_DATAGRAM_LEN);
 
-    while (!isInterrupted()) {
+    while (!thread.isInterrupted()) {
       try {
         buffer.clear(); // Reset buffer before reading.
         int length;
         try {
           length = in.read(buffer.array());
         } catch (IOException e) {
-          if (!isInterrupted()) {
+          if (!thread.isInterrupted()) {
             LogWrapper.log(Log.ERROR, LOG_TAG, "Failed to read from tun interface.");
             LogWrapper.logException(e);
           }
@@ -291,7 +298,7 @@ public class SplitVpnAdapter extends VpnAdapter implements ResponseWriter {
         Resolver.processQuery(vpnService.getServerConnection(),
             dnsRequest, udpPacket.data, this);
       } catch (Exception e) {
-        if (!isInterrupted()) {
+        if (!thread.isInterrupted()) {
           LogWrapper.log(Log.WARN, LOG_TAG, "Unexpected exception in UDP loop.");
           LogWrapper.logException(e);
         }

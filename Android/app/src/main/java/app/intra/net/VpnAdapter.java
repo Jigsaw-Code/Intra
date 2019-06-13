@@ -19,13 +19,11 @@ package app.intra.net;
  * Abstract class representing a VPN Adapter, for use by IntraVpnService.  For our purposes, a
  * VpnAdapter is just a thread that can safely be stopped at any time.
  */
-public abstract class VpnAdapter extends Thread {
+public abstract class VpnAdapter {
   protected static final int VPN_INTERFACE_MTU = 32767;
   protected static final int DNS_DEFAULT_PORT = 53;
 
-  public VpnAdapter(String name) {
-    super(name);
-  }
+  public abstract void start();
 
   /**
    * Perform a safe shutdown.
