@@ -206,10 +206,10 @@ public class MainActivity extends AppCompatActivity
             chooseView(R.id.settings);
             return true;
           case R.id.support:
-            openUrl("https://getintra.org/help");
+            openUrl("https://support.getintra.org/");
             return true;
           case R.id.privacy:
-            openUrl("https://developers.google.com/speed/public-dns/privacy");
+            openUrl("https://getintra.org/privacy");
             return true;
           case R.id.tos:
             openUrl("https://jigsaw.google.com/jigsaw-tos.html");
