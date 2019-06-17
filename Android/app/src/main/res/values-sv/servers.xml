@@ -8,4 +8,5 @@
   <string name="description5">En server i Nederländerna som drivs av ett DNS-programvaruföretag med öppen källkod.</string>
   <string name="description6">Drivs av xTom och andra internationella leverantörer av webbhotell.  Cloudflares NFI används.</string>
   <string name="description7">Server i Japan som drivs av en ISP.</string>
+  <string name="description8">En server i Taiwan som drivs av domänregistret .tw.</string>
 </resources>

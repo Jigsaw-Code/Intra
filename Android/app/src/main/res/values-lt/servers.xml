@@ -8,4 +8,5 @@
   <string name="description5">Serveris Nyderlanduose, jį valdo atvirojo šaltinio DNS programinės įrangos įmonė.</string>
   <string name="description6">Valdo „xTom“ ir kiti tarptautiniai prieglobos teikėjai.  Naudoja „Cloudflare“ TPT.</string>
   <string name="description7">Serveris Japonijoje, ji valdo IPT.</string>
+  <string name="description8">Serveris Taivane, jį valdo .tw domenų registras.</string>
 </resources>

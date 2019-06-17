@@ -8,4 +8,5 @@
   <string name="description5">เซิร์ฟเวอร์ในเนเธอร์แลนด์ซึ่งดำเนินการโดยบริษัทซอฟต์แวร์ DNS แบบโอเพนซอร์ส</string>
   <string name="description6">ดำเนินการโดย xTom และผู้ให้บริการโฮสติ้งนานาชาติ  ใช้ CDN ของ Cloudflare</string>
   <string name="description7">เซิร์ฟเวอร์ในญี่ปุ่นที่ดำเนินการโดย ISP</string>
+  <string name="description8">เซิร์ฟเวอร์ในไต้หวันซึ่งดำเนินการโดยรีจิสทรีโดเมน .tw</string>
 </resources>
