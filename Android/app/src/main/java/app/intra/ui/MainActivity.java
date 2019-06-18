@@ -77,6 +77,7 @@ import app.intra.sys.VpnState;
 import app.intra.ui.settings.ServerChooser;
 import app.intra.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -602,6 +603,7 @@ public class MainActivity extends AppCompatActivity
         changeServerButton.setOnClickListener((View view) -> {
           chooseView(R.id.settings);
           openServerSetting();
+          FirebaseAnalytics.getInstance(this).logEvent(Names.SERVER_FAIL_BUTTON.name(), null);
         });
       }
     } else if (isAnotherVpnActive()) {

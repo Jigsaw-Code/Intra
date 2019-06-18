@@ -34,6 +34,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceDialogFragmentCompat;
 import app.intra.R;
+import app.intra.sys.Names;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -226,7 +228,12 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
     public void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             ServerChooser preference = (ServerChooser) getPreference();
-            preference.setUrl(getUrl());
+            String newUrl = getUrl();
+            if (!newUrl.equals(preference.getUrl())) {
+                preference.setUrl(newUrl);
+                FirebaseAnalytics instance = FirebaseAnalytics.getInstance(preference.getContext());
+                instance.logEvent(Names.SELECT_SERVER.name(), null);
+            }
         }
         customServerUrl.removeTextChangedListener(this);
         customServerUrl.setOnEditorActionListener(null);
