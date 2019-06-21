@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra je pronašao još jedan VPN na vašem uređaju.  Ako omogućite Intru, taj će se VPN onemogućiti.
     Intra nije siguran kao pouzdani VPN.</string>
   <string name="explanation_failing">Upozorenje: upiti ne uspijevaju.  Možda želite odabrati drugi poslužitelj i ponovno pokrenuti Intru.</string>
-  <string name="button_failing">Pokušajte s drugim poslužiteljem</string>
   <string name="system_details">Pojedinosti sustava</string>
   <string name="num_requests">Zaštićeni upiti</string>
   <string name="num_requests_headline">DNS upiti šalju se kada vaš uređaj traži IP adresu za naziv domene</string>

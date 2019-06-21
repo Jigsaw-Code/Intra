@@ -34,7 +34,6 @@
   <string name="explanation_offline">Устройство не в сети. Ожидается подключение к Интернету.</string>
   <string name="explanation_vpn">Приложение Intra обнаружило на вашем устройстве другую сеть VPN. Если вы включите Intra, эта сеть будет отключена. Обратите внимание, что доверенная сеть VPN более безопасна, чем Intra.</string>
   <string name="explanation_failing">Не удается отправить запросы. Попробуйте выбрать другой сервер или перезапустить Intra.</string>
-  <string name="button_failing">Подключиться к другому серверу</string>
   <string name="system_details">Сведения о системе</string>
   <string name="num_requests">Всего запросов</string>
   <string name="num_requests_headline">Ваше устройство отправляет DNS-запрос, чтобы получить IP-адрес для доменного имени</string>

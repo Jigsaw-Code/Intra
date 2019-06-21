@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra در دستگاه شما VPN دیگری تشخیص داده است.  اگر Intra را فعال کنید، آن VPN غیرفعال می‌شود.
     Intra به‌اندازه VPN مطمئن، امن نیست.</string>
   <string name="explanation_failing">هشدار: پرسمان‌ها بی‌نتیجه‌اند.  ممکن است بخواهید سرور متفاوتی انتخاب کنید یا Intra را بازراه‌اندازی کنید.</string>
-  <string name="button_failing">سرور دیگری را امتحان کنید</string>
   <string name="system_details">جزئیات سیستم</string>
   <string name="num_requests">پُرسمان‌های درزمانی</string>
   <string name="num_requests_headline">پُرسمان‌های DNS وقتی پیش می‌آیند که دستگاه برای نام دامنه، به نشانی IP مراجعه می‌کند</string>

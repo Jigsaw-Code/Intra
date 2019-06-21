@@ -37,7 +37,6 @@
   <string name="explanation_vpn">Intra がデバイス上で別の VPN を検出しました。Intra を有効にするとその VPN は無効になります。
     Intra を使用すると、信頼できる VPN に比べて安全性が低くなります。</string>
   <string name="explanation_failing">警告: クエリが失敗しています。別のサーバーを選択して Intra を再起動することをおすすめします。</string>
-  <string name="button_failing">別のサーバーで試す</string>
   <string name="system_details">システムの詳細</string>
   <string name="num_requests">これまでのクエリ</string>
   <string name="num_requests_headline">IP アドレスでドメイン名を検索すると DNS クエリが発生</string>

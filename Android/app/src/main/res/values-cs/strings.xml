@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Aplikace Intra na vašem zařízení objevila jinou síť VPN.  Pokud aktivujete aplikaci Intra, tato síť VPN se deaktivuje.
     Aplikace Intra není tak bezpečná jako důvěryhodná síť VPN.</string>
   <string name="explanation_failing">Varování: Dotazy selhávají.  Měli byste si vybrat jiný server a restartovat aplikaci Intra.</string>
-  <string name="button_failing">Zkuste jiný server</string>
   <string name="system_details">Podrobnosti systému</string>
   <string name="num_requests">Všechny dotazy</string>
   <string name="num_requests_headline">Dotaz na DNS se provede, když vaše zařízení vyhledá IP adresu pro název domény</string>

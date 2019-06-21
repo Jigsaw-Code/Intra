@@ -38,7 +38,6 @@
   <string name="explanation_vpn">May na-detect ang Intra na isa pang VPN sa iyong device.  Kung ie-enable mo ang Intra, idi-disable ang VPN na iyon.
     Ang Intra ay hindi kasing secure ng isang pinagkakatiwalaang VPN.</string>
   <string name="explanation_failing">Babala: Hindi gumagana nang maayos ang mga query.  Maaaring gustuhin mong pumili ng ibang server o i-restart ang Intra.</string>
-  <string name="button_failing">Subukan ang ibang server</string>
   <string name="system_details">Mga detalye ng system</string>
   <string name="num_requests">Panghabambuhay na mga query</string>
   <string name="num_requests_headline">Nangyayari ang mga query sa DNS kapag hinahanap ng iyong device ang IP address para sa isang domain name</string>

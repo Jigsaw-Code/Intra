@@ -172,10 +172,6 @@
     Warning: Queries are failing.  You may want to choose a different server or restart Intra.
   </string>
 
-  <string name="button_failing" description="Label for a button to change the selected server. [CHAR_LIMIT=NONE]">
-    Try a different server
-  </string>
-
   <string name="system_details"
           description="This is the title of a section containing information on the system configuration and
   status.">
@@ -349,6 +345,26 @@
 
   <string name="server_choice_website_notice" description="Warning text about a DNS server, with a hyperlink">
     Please visit <a href="https://www.example.com/">their website</a> to review their privacy policy and any applicable terms of service.
+  </string>
+
+  <string name="server_website_button" description="Label for a button that will open the website. [CHAR_LIMIT=NONE]">
+    Visit Website
+  </string>
+
+  <string name="try_all_servers" description="Label for a button to check all known servers to find one that is working. [CHAR_LIMIT=NONE]">
+    Try all built-in servers
+  </string>
+
+  <string name="checking_servers" description="Text shown on a deactivated button while the checks are in progress. [CHAR_LIMIT=NONE]">
+    Checking all servers
+  </string>
+
+  <string name="found_fastest" description="Template for success indication, shown when the fastest server for you is found. [CHAR_LIMIT=NONE]">
+    Your fastest server is <xliff:g example="Google Public DNS">%s</xliff:g>.
+  </string>
+
+  <string name="all_servers_failed" description="Notification shown briefly if all known servers were unreachable. [CHAR_LIMIT=NONE]">
+    Failed to identify a working server: connection failed to all built-in servers.
   </string>
 
   <string name="server_choice_custom"

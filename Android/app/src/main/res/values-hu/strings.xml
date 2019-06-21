@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Az Intra másik VPN-t észlelt az eszközön.  Ha engedélyezni az Intrát, a másik VPN le lesz tiltva.
     Az Intra nem annyira biztonságos, mint egy megbízható VPN.</string>
   <string name="explanation_failing">Figyelmeztetés: a lekérdezéseket nem sikerült végrehajtani.  Érdemes lehet másik szervert választani, vagy újraindítani az Intrát.</string>
-  <string name="button_failing">Másik szerver megadása</string>
   <string name="system_details">Rendszeradatok</string>
   <string name="num_requests">Eddigi összes lekérdezés</string>
   <string name="num_requests_headline">A rendszer csak akkor indít DNS-lekérdezéseket, ha a az eszköz egy domaninév IP-címét keresi.</string>

@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Aplikácia Intra zistila vo vašom zariadení inú sieť VPN.  Ak Intra aktivujete, daná sieť VPN bude deaktivovaná.
     Aplikácia Intra nie je natoľko bezpečná ako spoľahlivá sieť VPN.</string>
   <string name="explanation_failing">Varovanie: Dopyty zlyhávajú.  Možno by ste mali vybrať iný server alebo reštartovať Intra.</string>
-  <string name="button_failing">Skúsiť iný server</string>
   <string name="system_details">Podrobnosti systému</string>
   <string name="num_requests">Všetky dopyty</string>
   <string name="num_requests_headline">Dopyty na DNS sa odošlú, keď vaše zariadenie vyhľadá adresu IP pre názov domény</string>

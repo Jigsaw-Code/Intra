@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra को आपके डिवाइस पर किसी दूसरे VPN का पता लगा.  अगर आप Intra चालू करते हैं, तो वह VPN बंद कर दिया जाएगा.
     Intra किसी भरोसेमंद VPN जितना सुरक्षित नहीं है.</string>
   <string name="explanation_failing">चेतावनी: क्वेरी विफल हो रही हैं.  आप कोई अलग सर्वर चुन सकते हैं या Intra को रीस्टार्ट कर सकते हैं.</string>
-  <string name="button_failing">कोई अलग सर्वर आज़माएं</string>
   <string name="system_details">सिस्टम की जानकारी</string>
   <string name="num_requests">हमेशा के लिए क्वेरी</string>
   <string name="num_requests_headline">DNS क्वेरी तब होती हैं जब आपका डिवाइस किसी डोमेन नाम के लिए IP पता खोजता है</string>

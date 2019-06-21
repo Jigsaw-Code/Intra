@@ -34,7 +34,6 @@
   <string name="explanation_offline">Tu dispositivo está sin conexión. Intra está esperando una conexión de red.</string>
   <string name="explanation_vpn">Intra detectó otra VPN en tu dispositivo. Si habilitas Intra, se inhabilitará esa VPN. Intra no ofrece tanta seguridad como una VPN de confianza.</string>
   <string name="explanation_failing">Advertencia: Se están experimentando fallas en las búsquedas. Es posible que te convenga elegir otro servidor o reiniciar Intra.</string>
-  <string name="button_failing">Probar con otro servidor</string>
   <string name="system_details">Detalles del sistema</string>
   <string name="num_requests">Búsquedas totales</string>
   <string name="num_requests_headline">Las consultas de DNS tienen lugar cuando tu dispositivo busca la dirección IP de un nombre de dominio</string>

@@ -15,6 +15,8 @@ limitations under the License.
 */
 package app.intra.sys;
 
+import static app.intra.net.doh.ServerConnectionFactory.equalUrls;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
@@ -40,22 +41,15 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.R;
 import app.intra.net.VpnAdapter;
 import app.intra.net.doh.ServerConnection;
-import app.intra.net.doh.StandardServerConnection;
+import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.google.GoogleServerConnection;
-import app.intra.net.doh.google.GoogleServerDatabase;
 import app.intra.net.socks.SocksVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -192,28 +186,6 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     return serverConnection;
   }
 
-  private Collection<InetAddress> getKnownIps(String url) {
-    String[] urls = getResources().getStringArray(R.array.urls);
-    String[] ips = getResources().getStringArray(R.array.ips);
-    for (int i = 0; i < urls.length; ++i) {
-      // TODO: Consider relaxing this equality condition to a match on
-      // just the domain.
-      if (urls[i].equals(url)) {
-        String[] ipStrings = ips[i].split(",");
-        List<InetAddress> ret = new ArrayList<>();
-        for (int j = 0; j < ipStrings.length; ++j) {
-          try {
-            ret.addAll(Arrays.asList(InetAddress.getAllByName(ipStrings[j])));
-          } catch (IOException e) {
-            Log.e(LOG_TAG, "Invalid IP address in servers resource");
-          }
-        }
-        return ret;
-      }
-    }
-    return new ArrayList<>();
-  }
-
   @WorkerThread
   private void updateServerConnection() {
     // This method consists of three steps:
@@ -250,22 +222,13 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // the current DNS configuration.
     Bundle bootstrap = new Bundle();
     long beforeBootstrap = SystemClock.elapsedRealtime();
-    final ServerConnection newConnection;
-    if (equalUrls(url, null)) {
-      // Use the Google Resolver
-      AssetManager assets = this.getApplicationContext().getAssets();
-      final GoogleServerConnection googleServerConnection =
-          GoogleServerConnection.get(new GoogleServerDatabase(this, assets), null);
-      if (googleServerConnection != null && googleServerConnection.didBootstrapWithFallback()) {
-        bootstrap.putString(Names.FALLBACK.name(), Names.ALTERNATE_HOSTNAME.name());
-      }
-      newConnection = googleServerConnection;
-    } else {
-      Collection<InetAddress> ips = getKnownIps(url);
-      newConnection = StandardServerConnection.get(url, ips);
-    }
+    final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 
     if (newConnection != null) {
+      if (newConnection instanceof GoogleServerConnection &&
+          ((GoogleServerConnection)newConnection).didBootstrapWithFallback()) {
+        bootstrap.putString(Names.FALLBACK.name(), Names.ALTERNATE_HOSTNAME.name());
+      }
       controller.onConnectionStateChanged(this, ServerConnection.State.WORKING);
 
       // Measure bootstrap delay.
@@ -292,20 +255,6 @@ public class IntraVpnService extends VpnService implements NetworkListener,
         serverConnection = newConnection;
       }
     }
-  }
-
-  /**
-   * @return True if these URLs represents the same server.
-   */
-  private static boolean equalUrls(String url1, String url2) {
-    // null and "" are equivalent, representing the default server.
-    if (url1 == null) {
-      url1 = "";
-    }
-    if (url2 == null) {
-      url2 = "";
-    }
-    return url1.equals(url2);
   }
 
   /**

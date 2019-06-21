@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra ha detectat una altra VPN al dispositiu.  Si actives Intra, aquesta VPN es desactivarà.
     L\'aplicació Intra no és tan segura com una VPN de confiança.</string>
   <string name="explanation_failing">Advertiment: s\'ha produït un error amb les consultes.  Et recomanem que triïs un altre servidor o que reiniciïs Intra.</string>
-  <string name="button_failing">Prova-ho amb un altre servidor</string>
   <string name="system_details">Informació del sistema</string>
   <string name="num_requests">Total de consultes</string>
   <string name="num_requests_headline">Les consultes de DNS es duen a terme quan el dispositiu cerca l\'adreça IP d\'un nom de domini</string>

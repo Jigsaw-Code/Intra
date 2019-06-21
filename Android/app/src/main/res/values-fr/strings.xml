@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra a détecté un autre VPN sur votre appareil. Si vous activez Intra, ce VPN sera désactivé.
     Intra n\'est pas aussi sécurisé qu\'un VPN de confiance.</string>
   <string name="explanation_failing">Avertissement : Échec des requêtes. Vous pouvez choisir un autre serveur ou redémarrer Intra.</string>
-  <string name="button_failing">Essayer un autre serveur</string>
   <string name="system_details">Détails du système</string>
   <string name="num_requests">Requêtes protégées jusqu\'à maintenant</string>
   <string name="num_requests_headline">Des requêtes DNS sont envoyées lorsqu\'un appareil recherche l\'adresse IP d\'un nom de domaine</string>

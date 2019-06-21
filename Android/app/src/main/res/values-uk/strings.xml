@@ -34,7 +34,6 @@
   <string name="explanation_offline">Ваш пристрій не підключено до Інтернету. Додаток Intra очікує на з’єднання з мережею.</string>
   <string name="explanation_vpn">Додаток Intra виявив іншу мережу VPN на вашому пристрої. Якщо ввімкнути Intra, цю віртуальну приватну мережу буде вимкнено. З’єднання Intra не настільки безпечне, як довірена мережа VPN.</string>
   <string name="explanation_failing">Застереження. Запити не виконуються. Виберіть інший сервер або перезапустіть додаток Intra.</string>
-  <string name="button_failing">Спробувати інший сервер</string>
   <string name="system_details">Системні дані</string>
   <string name="num_requests">Усі запити</string>
   <string name="num_requests_headline">DNS-запити надсилаються, коли ваш пристрій шукає IP-адресу для доменного імені</string>

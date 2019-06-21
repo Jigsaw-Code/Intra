@@ -112,8 +112,7 @@ public class PersistentState {
     setServerUrl(context, url);
   }
 
-  // Apart from syncLegacyState() above, the URL is only set by the PreferenceScreen, not by Intra.
-  private static void setServerUrl(Context context, String url) {
+  public static void setServerUrl(Context context, String url) {
     SharedPreferences.Editor editor = getUserPreferences(context).edit();
     editor.putString(URL_KEY, url);
     editor.apply();

@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra mendeteksi VPN lain di perangkat Anda.  Jika Anda mengaktifkan Intra, VPN tersebut akan dinonaktifkan.
     Perlu diketahui bahwa Intra tidak seaman VPN tepercaya.</string>
   <string name="explanation_failing">Peringatan: Kueri gagal.  Anda perlu memilih server lain atau memulai ulang Intra.</string>
-  <string name="button_failing">Coba server lain</string>
   <string name="system_details">Detail sistem</string>
   <string name="num_requests">Kueri hingga saat ini</string>
   <string name="num_requests_headline">Kueri DNS dijalankan saat perangkat Anda mencari alamat IP untuk nama domain</string>

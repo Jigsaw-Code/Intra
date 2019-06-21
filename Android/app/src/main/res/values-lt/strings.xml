@@ -38,7 +38,6 @@
   <string name="explanation_vpn">„Intra“ jūsų įrenginyje aptiko kitą VPN.  Jei įjungsite „Intra“, šis VPN bus išjungtas.
     „Intra“ nėra tokia saugi kaip patikimas VPN.</string>
   <string name="explanation_failing">Įspėjimas: nepavyksta pateikti užklausų.  Gali reikėti pasirinkti kitą serverį arba paleisti „Intra“ iš naujo.</string>
-  <string name="button_failing">Bandyti kitą serverį</string>
   <string name="system_details">Išsami sistemos informacija</string>
   <string name="num_requests">Viso laiko užklausos</string>
   <string name="num_requests_headline">DNS užklausos vykdomos, kai įrenginys ieško domeno pavadinimo IP adreso</string>

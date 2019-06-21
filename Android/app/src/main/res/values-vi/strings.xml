@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra đã phát hiện thấy một VPN khác trên thiết bị. Nếu bạn bật Intra, thì VPN đó sẽ tắt.
     Intra không bảo mật bằng một VPN đáng tin cậy.</string>
   <string name="explanation_failing">Cảnh báo: Truy vấn không thành công. Có thể bạn muốn chọn một máy chủ khác hoặc khởi động lại Intra.</string>
-  <string name="button_failing">Hãy thử một máy chủ khác</string>
   <string name="system_details">Chi tiết hệ thống</string>
   <string name="num_requests">Số lượng truy vấn được bảo vệ cho tới giờ</string>
   <string name="num_requests_headline">Truy vấn DNS xảy ra khi thiết bị của bạn tra cứu địa chỉ IP cho một tên miền</string>

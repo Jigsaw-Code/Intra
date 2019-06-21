@@ -34,7 +34,6 @@
   <string name="explanation_offline">Das Gerät ist offline. Warten auf Netzwerkverbindung.</string>
   <string name="explanation_vpn">Es wurde ein anderes VPN auf dem Gerät erkannt. Dieses wird deaktiviert, sobald Sie Intra aktivieren. Intra ist nicht so sicher wie ein vertrauenswürdiges VPN.</string>
   <string name="explanation_failing">Warnung: Ihre Abfragen schlagen fehl. Bitte wählen Sie einen anderen Server aus oder starten Sie Intra neu.</string>
-  <string name="button_failing">Anderen Server auswählen</string>
   <string name="system_details">Systemdetails</string>
   <string name="num_requests">Abfragen seit Installation</string>
   <string name="num_requests_headline">Mit DNS-Abfragen ruft Ihr Gerät die IP-Adresse für einen Domainnamen ab</string>

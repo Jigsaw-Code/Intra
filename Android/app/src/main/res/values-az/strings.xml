@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra cihazda başqa VPN aşkar edib.  Intra\'nı aktiv etsəniz, həmin VPN deaktiv ediləcək.
     Intra etibarlı VPN qədər güvənli deyil.</string>
   <string name="explanation_failing">Xəbərdarlıq: Sorğular işlənilmir.  Başqa server seçin və ya Intra\'nı yenidən başladın.</string>
-  <string name="button_failing">Başqa serverdən istifadə edin</string>
   <string name="system_details">Sistem məlumatı</string>
   <string name="num_requests">Bütün sorğular</string>
   <string name="num_requests_headline">DNS sorğuları cihaz domen adı üçün IP ünvanı axtardıqda ortaya çıxır</string>

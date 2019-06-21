@@ -37,7 +37,6 @@
   <string name="explanation_vpn">Intra ha detectado otra VPN en tu dispositivo. Si habilitas Intra, esa VPN se inhabilitará.
     Intra no es tan seguro como una VPN de confianza.</string>
   <string name="explanation_failing">Advertencia: No se están procesando las consultas. Te aconsejamos que elijas otro servidor o reinicies Intra.</string>
-  <string name="button_failing">Probar con otro servidor</string>
   <string name="system_details">Detalles del sistema</string>
   <string name="num_requests">Consultas totales</string>
   <string name="num_requests_headline">Las consultas de DNS se generan cuando tu dispositivo busca la dirección IP de un nombre de dominio</string>

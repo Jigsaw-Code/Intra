@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra har registreret et andet VPN-netværk på din enhed.  Hvis du aktiverer Intra, deaktiveres det pågældende VPN-netværk.
     Intra er ikke lige så sikkert som et godkendt VPN-netværk.</string>
   <string name="explanation_failing">Advarsel! Forespørgsler kan ikke udføres.  Prøv at vælge en anden server, eller genstart Intra.</string>
-  <string name="button_failing">Prøv en anden server</string>
   <string name="system_details">Systemoplysninger</string>
   <string name="num_requests">Levetidsforespørgsler</string>
   <string name="num_requests_headline">DNS-forespørgsler udføres, når din enhed søger efter IP-adressen til et domænenavn</string>

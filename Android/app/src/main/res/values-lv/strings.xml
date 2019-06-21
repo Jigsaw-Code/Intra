@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra jūsu ierīcē atklāja citu VPN.  Ja jūs iespējojat Intra, šis VPN tiks atspējots.
     Intra nav tik drošs kā uzticams VPN.</string>
   <string name="explanation_failing">Brīdinājums: neizdodas izpildīt vaicājumus.  Iespējams, jums jāizvēlas cits serveris un jārestartē Intra.</string>
-  <string name="button_failing">Izmēģināt citu serveri</string>
   <string name="system_details">Detalizēta informācija par sistēmu</string>
   <string name="num_requests">Vaicājumi kopš sākuma</string>
   <string name="num_requests_headline">DNS vaicājumi tiek veikti, kad ierīce meklē domēna nosaukuma IP adresi</string>
