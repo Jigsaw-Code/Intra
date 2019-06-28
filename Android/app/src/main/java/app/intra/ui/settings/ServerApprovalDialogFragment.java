@@ -105,40 +105,44 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     return getArgs().getBoolean(SHOW_WEBSITE_KEY);
   }
 
+  private View makeWebView(int index) {
+    final String url = getResources().getStringArray(R.array.server_websites)[index];
+
+    final WebView webView = new WebView(getContext());
+    webView.getSettings().setJavaScriptEnabled(true);
+    webView.setWebViewClient(new WebViewClient());  // Makes navigation stay in this webview.
+    webView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+    webView.loadUrl(url);
+
+    return webView;
+  }
+
+  private View makeNoticeText() {
+    final LayoutInflater inflater = requireActivity().getLayoutInflater();
+    final View dialogContent = inflater.inflate(R.layout.server_notice_dialog, null);
+    TextView serverWebsite = dialogContent.findViewById(R.id.server_website);
+    serverWebsite.setText(R.string.server_choice_website_notice);
+
+    // Remove hyperlink.  Its functionality is provided by the dialog's neutral button instead.
+    Spannable s = new SpannableString(serverWebsite.getText());
+    for (URLSpan span: s.getSpans(0, s.length(), URLSpan.class)) {
+      s.removeSpan(span);
+    }
+    serverWebsite.setText(s);
+    return dialogContent;
+  }
+
   @Override
   public @NonNull Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    LayoutInflater inflater = requireActivity().getLayoutInflater();
 
     final int index = getIndex();
     final String name = getResources().getStringArray(R.array.names)[index];
     final String template = getResources().getString(R.string.found_fastest);
     final String message = String.format(template, name);
 
-    final String link = getResources().getStringArray(R.array.server_websites)[index];
     final boolean showWebsite = getShowWebsite();
-    final View body;
-    if (showWebsite) {
-      WebView webView = new WebView(getContext());
-      webView.getSettings().setJavaScriptEnabled(true);
-      webView.loadUrl(link);
-      webView.setWebViewClient(new WebViewClient());
-      LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-      webView.setLayoutParams(lp);
-      body = webView;
-    } else {
-      body = inflater.inflate(R.layout.server_notice_dialog, null);
-      TextView serverWebsite = body.findViewById(R.id.server_website);
-      serverWebsite.setText(R.string.server_choice_website_notice);
-
-      // Remove hyperlink.  Its functionality is provided by the dialog's neutral button instead.
-      Spannable s = new SpannableString(serverWebsite.getText());
-      for (URLSpan span: s.getSpans(0, s.length(), URLSpan.class)) {
-        s.removeSpan(span);
-      }
-      serverWebsite.setText(s);
-    }
-
+    final View body = showWebsite ? makeWebView(index) : makeNoticeText();
     builder.setView(body)
         .setTitle(message)
         .setPositiveButton(R.string.intro_accept, (DialogInterface d, int id) -> {
