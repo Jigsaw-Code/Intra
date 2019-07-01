@@ -8,4 +8,5 @@
   <string name="description5">オープンソースの DNS ソフトウェア会社が運用しているオランダのサーバーです。</string>
   <string name="description6">xTom やその他の国際的なホスティング プロバイダが運用しています。Cloudflare の CDN を使用します。</string>
   <string name="description7">ISP が運用している日本のサーバーです。</string>
+  <string name="description8">.tw ドメイン レジストリが運用している台湾のサーバーです。</string>
 </resources>

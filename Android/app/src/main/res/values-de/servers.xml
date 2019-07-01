@@ -8,4 +8,5 @@
   <string name="description5">Server in den Niederlanden, der von einer Firma für Open-Source-DNS-Software betrieben wird.</string>
   <string name="description6">Betrieben von xTom und anderen internationalen Hostanbietern.  Verwendet das CDN von Cloudflare.</string>
   <string name="description7">Server in Japan, der von einem ISP betrieben wird.</string>
+  <string name="description8">Server in Taiwan, der von der Registrierungsstelle für die Top-Level-Domain \"tw.\" betrieben wird.</string>
 </resources>

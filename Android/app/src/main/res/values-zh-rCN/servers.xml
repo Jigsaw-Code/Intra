@@ -8,4 +8,5 @@
   <string name="description5">由一家开放源代码 DNS 软件公司在荷兰运营的服务器。</string>
   <string name="description6">由 xTom 和其他国际托管服务提供商运营。使用 Cloudflare 的 CDN。</string>
   <string name="description7">由一家互联网服务提供商在日本运营的服务器。</string>
+  <string name="description8">位于台湾的服务器，由 .tw 域名注册管理机构运营。</string>
 </resources>

@@ -7,5 +7,6 @@
   <string name="description4">ऑस्ट्रिया में सर्वर को गैर-लाभकारी निजी समूह ऑपरेट करता है.</string>
   <string name="description5">नीदरलैंड्स में सर्वर को ओपन सोर्स डीएनएस सॉफ़्टवेयर कंपनी ऑपरेट करती है.</string>
   <string name="description6">इसे xTom और सर्वर देने वाली दूसरी अंतरराष्ट्रीय संस्थाएं ऑपरेट करती हैं.  यह Cloudflare के सीडीएन का इस्तेमाल करता है.</string>
-  <string name="description7">जापान में सर्वर को ISP ऑपरेट करता है.</string>
+  <string name="description7">जापान में सर्वर को आईएसपी ऑपरेट करता है.</string>
+  <string name="description8">ताइवान में सर्वर को .tw डोमेन रजिस्ट्री ऑपरेट करता है.</string>
 </resources>
