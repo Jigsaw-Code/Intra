@@ -221,6 +221,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // Bootstrap the new server connection, which may require resolving the new server's name, using
     // the current DNS configuration.
     Bundle bootstrap = new Bundle();
+    bootstrap.putString(Names.SERVER.name(),
+        PersistentState.extractHostBuiltinOnly(this, url));
     long beforeBootstrap = SystemClock.elapsedRealtime();
     final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 

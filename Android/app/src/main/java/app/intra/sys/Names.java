@@ -19,10 +19,13 @@ package app.intra.sys;
 // Each name is used to generate a string.
 public enum Names {
   ALTERNATE_HOSTNAME,
+  APPROVED,
   BOOTSTRAP,
   BOOTSTRAP_FAILED,
   BYTES,
+  CANCELED,
   CHUNKS,
+  CUSTOM_SERVER,
   DNS_STATUS,
   DOWNLOAD,
   DURATION,
@@ -33,10 +36,14 @@ public enum Names {
   PORT,
   RESULT,
   RETRY,
+  SERVER,
+  SHOW_APPROVAL_DIALOG,
   SPLIT,
   TIMEOUT,
   TCP_HANDSHAKE_MS,
   TRANSACTION,
+  TRY_ALL,
+  TRY_ALL_FAILED,
   UDP,
   UPLOAD,
 }

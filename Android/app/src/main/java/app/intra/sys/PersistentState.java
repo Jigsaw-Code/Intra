@@ -126,19 +126,39 @@ public class PersistentState {
     return Untemplate.strip(urlTemplate);
   }
 
+  private static String extractHost(String url) {
+    try {
+      URL parsed = new URL(url);
+      return parsed.getHost();
+    } catch (MalformedURLException e) {
+      LogWrapper.log(Log.WARN, LOG_TAG, "URL is corrupted");
+      return null;
+    }
+  }
+
   public static String getServerName(Context context) {
     String url = getServerUrl(context);
     if (url == null || url.isEmpty()) {
       return context.getResources().getString(R.string.domain0);
     }
+    return extractHost(url);
+  }
 
-    try {
-      URL parsed = new URL(url);
-      return parsed.getHost();
-    } catch (MalformedURLException e) {
-      LogWrapper.log(Log.WARN, LOG_TAG, "Stored URL is corrupted");
-      return null;
+  /**
+   * Extract the hostname from the URL, while avoiding disclosure of custom servers.
+   * @param url A DoH server configuration url (or url template).
+   * @return Returns the domain name in the URL, or "CUSTOM_SERVER" if the url is not one of the
+   * built-in servers.
+   */
+  public static String extractHostBuiltinOnly(Context context, String url) {
+    if (url == null || url.isEmpty()) {
+      return context.getResources().getString(R.string.domain0);
     }
+    String[] urls = context.getResources().getStringArray(R.array.urls);
+    if (Arrays.asList(urls).contains(url)) {
+      return extractHost(url);
+    }
+    return Names.CUSTOM_SERVER.name();
   }
 
   public static Set<String> getExtraGoogleV4Servers(Context context) {
