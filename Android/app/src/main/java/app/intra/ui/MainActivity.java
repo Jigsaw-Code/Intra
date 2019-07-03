@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity
       tryAllButton.setText(R.string.checking_servers);
       String[] urls = getResources().getStringArray(R.array.urls);
       FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
-      analytics.logEvent(Names.TRY_ALL.name(), null);
+      analytics.logEvent(Names.TRY_ALL_REQUESTED.name(), null);
       // The result needs to be posted to the UI thread before we can make UI changes.
       new Race(new ServerConnectionFactory(this), urls, (int index) -> view.post(() -> {
         if (index >= 0) {
