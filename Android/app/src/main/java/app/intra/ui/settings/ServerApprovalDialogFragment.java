@@ -32,7 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import app.intra.R;
+import app.intra.sys.Names;
 import app.intra.sys.PersistentState;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * This dialog shows the user the fastest server we detected and allows them to accept or decline.
@@ -132,6 +134,15 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     return dialogContent;
   }
 
+  private Bundle getAnalyticsBundle() {
+    final int index = getIndex();
+    final String url = getResources().getStringArray(R.array.urls)[index];
+    final Bundle bundle = new Bundle();
+    bundle.putString(Names.SERVER.name(),
+        PersistentState.extractHostForAnalytics(getContext(), url));
+    return bundle;
+  }
+
   @Override
   public @NonNull Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -143,13 +154,17 @@ public class ServerApprovalDialogFragment extends DialogFragment {
 
     final boolean showWebsite = getShowWebsite();
     final View body = showWebsite ? makeWebView(index) : makeNoticeText();
+
+    final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+    analytics.logEvent(Names.TRY_ALL_DIALOG.name(), getAnalyticsBundle());
     builder.setView(body)
         .setTitle(message)
         .setPositiveButton(R.string.intro_accept, (DialogInterface d, int id) -> {
-          String url = getResources().getStringArray(R.array.urls)[index];
+          final String url = getResources().getStringArray(R.array.urls)[index];
           PersistentState.setServerUrl(getContext(), url);
+          analytics.logEvent(Names.TRY_ALL_ACCEPTED.name(), getAnalyticsBundle());
         })
-        .setNegativeButton(android.R.string.cancel, null);
+        .setNegativeButton(android.R.string.cancel, (d, id) -> onCancel(d));
 
     if (!showWebsite) {
       builder.setNeutralButton(R.string.server_website_button, (DialogInterface d, int id) -> {
@@ -158,6 +173,12 @@ public class ServerApprovalDialogFragment extends DialogFragment {
       });
     }
     return builder.create();
+  }
+
+  @Override
+  public void onCancel(DialogInterface dialog) {
+    final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+    analytics.logEvent(Names.TRY_ALL_CANCELLED.name(), getAnalyticsBundle());
   }
 }
 
