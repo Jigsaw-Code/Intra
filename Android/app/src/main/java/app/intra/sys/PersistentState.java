@@ -150,7 +150,7 @@ public class PersistentState {
    * @return Returns the domain name in the URL, or "CUSTOM_SERVER" if the url is not one of the
    * built-in servers.
    */
-  public static String extractHostBuiltinOnly(Context context, String url) {
+  public static String extractHostForAnalytics(Context context, String url) {
     if (url == null || url.isEmpty()) {
       return context.getResources().getString(R.string.domain0);
     }

@@ -222,7 +222,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // the current DNS configuration.
     Bundle bootstrap = new Bundle();
     bootstrap.putString(Names.SERVER.name(),
-        PersistentState.extractHostBuiltinOnly(this, url));
+        PersistentState.extractHostForAnalytics(this, url));
     long beforeBootstrap = SystemClock.elapsedRealtime();
     final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 

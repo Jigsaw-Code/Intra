@@ -134,6 +134,15 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     return dialogContent;
   }
 
+  private Bundle getAnalyticsBundle() {
+    final int index = getIndex();
+    final String url = getResources().getStringArray(R.array.urls)[index];
+    final Bundle bundle = new Bundle();
+    bundle.putString(Names.SERVER.name(),
+        PersistentState.extractHostForAnalytics(getContext(), url));
+    return bundle;
+  }
+
   @Override
   public @NonNull Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -146,23 +155,16 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     final boolean showWebsite = getShowWebsite();
     final View body = showWebsite ? makeWebView(index) : makeNoticeText();
 
-    final String url = getResources().getStringArray(R.array.urls)[index];
-    final Bundle bundle = new Bundle();
-    bundle.putString(Names.SERVER.name(),
-        PersistentState.extractHostBuiltinOnly(getContext(), url));
     final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
-    analytics.logEvent(Names.SHOW_APPROVAL_DIALOG.name(), bundle);
+    analytics.logEvent(Names.SHOW_APPROVAL_DIALOG.name(), getAnalyticsBundle());
     builder.setView(body)
         .setTitle(message)
         .setPositiveButton(R.string.intro_accept, (DialogInterface d, int id) -> {
+          final String url = getResources().getStringArray(R.array.urls)[index];
           PersistentState.setServerUrl(getContext(), url);
-          analytics.logEvent(Names.APPROVED.name(), bundle);
+          analytics.logEvent(Names.APPROVED.name(), getAnalyticsBundle());
         })
-        .setNegativeButton(android.R.string.cancel, (DialogInterface d, int id) -> {
-          // Note: The user can also dismiss the dialog without clicking either button, in which
-          // case we won't generate an event.
-          analytics.logEvent(Names.CANCELED.name(), bundle);
-        });
+        .setNegativeButton(android.R.string.cancel, (d, id) -> onCancel(d));
 
     if (!showWebsite) {
       builder.setNeutralButton(R.string.server_website_button, (DialogInterface d, int id) -> {
@@ -171,6 +173,12 @@ public class ServerApprovalDialogFragment extends DialogFragment {
       });
     }
     return builder.create();
+  }
+
+  @Override
+  public void onCancel(DialogInterface dialog) {
+    final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+    analytics.logEvent(Names.CANCELED.name(), getAnalyticsBundle());
   }
 }
 
