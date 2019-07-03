@@ -76,6 +76,11 @@
   <string name="server_choice_summary">Trenutno strežnik %s</string>
   <string name="server_choice_builtin">Vgrajen strežnik</string>
   <string name="server_choice_website_notice">Obiščite <a href="https://www.example.com/">njihova spletna mesta</a> ter preberite njihova pravilnike o zasebnosti in veljavne pogoje storitve.</string>
+  <string name="server_website_button">Obišči spletno mesto</string>
+  <string name="try_all_servers">Preizkusi vgrajene strežnike</string>
+  <string name="checking_servers">Preverjanje vseh strežnikov</string>
+  <string name="found_fastest">Najhitrejši je strežnik %s.</string>
+  <string name="all_servers_failed">Identifikacija delujočega strežnika ni uspela: povezave ni bilo mogoče vzpostaviti z nobenim vgrajenim strežnikom.</string>
   <string name="server_choice_custom">URL strežnika po meri</string>
   <string name="server_choice_warning">Veljavni naslov strežnika po meri se mora začeti s https:// URL</string>
   <string name="excluded_apps">Izključene aplikacije</string>

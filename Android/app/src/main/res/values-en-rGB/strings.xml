@@ -81,6 +81,11 @@
   <string name="server_choice_summary">Currently %s</string>
   <string name="server_choice_builtin">Built-in server</string>
   <string name="server_choice_website_notice">Please visit <a href="https://www.example.com/">their website</a> to review their privacy policy and any applicable terms of service.</string>
+  <string name="server_website_button">Visit the website</string>
+  <string name="try_all_servers">Try all built-in servers</string>
+  <string name="checking_servers">Checking all servers</string>
+  <string name="found_fastest">Your fastest server is %s.</string>
+  <string name="all_servers_failed">Failed to identify a working server: connection failed to all built-in servers.</string>
   <string name="server_choice_custom">Custom server URL</string>
   <string name="server_choice_warning">Custom server must be a valid https:// URL</string>
   <string name="excluded_apps">Excluded apps</string>

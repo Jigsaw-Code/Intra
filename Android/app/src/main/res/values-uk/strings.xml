@@ -69,6 +69,11 @@
   <string name="server_choice_summary">Вибрано %s</string>
   <string name="server_choice_builtin">Вбудований сервер</string>
   <string name="server_choice_website_notice">Щоб переглянути політику конфіденційності та відповідні умови використання, відвідайте <a href="https://www.example.com/">цей веб-сайт</a>.</string>
+  <string name="server_website_button">Відкрити веб-сайт</string>
+  <string name="try_all_servers">Перевірити всі вбудовані сервери</string>
+  <string name="checking_servers">Перевірка всіх серверів</string>
+  <string name="found_fastest">Найшвидший сервер – %s.</string>
+  <string name="all_servers_failed">Не вдалося визначити, який сервер працює. Усі вбудовані сервери недоступні.</string>
   <string name="server_choice_custom">URL-адреса власного сервера</string>
   <string name="server_choice_warning">Власний сервер має бути дійсною URL-адресою https://</string>
   <string name="excluded_apps">Виключені додатки</string>

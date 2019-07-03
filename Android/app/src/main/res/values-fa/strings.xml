@@ -80,6 +80,11 @@
   <string name="server_choice_summary">درحال‌حاضر %s</string>
   <string name="server_choice_builtin">سرور داخلی</string>
   <string name="server_choice_website_notice">برای مرور خط‌مشی رازداری و همه شرایط خدمات قابل‌اجرا، از <a href="https://www.example.com/">وب‌سایت آن‌ها</a> بازدید کنید.</string>
+  <string name="server_website_button">بازدید از وب‌سایت</string>
+  <string name="try_all_servers">امتحان کردن همه سرورهای داخلی</string>
+  <string name="checking_servers">درحال بررسی همه سرورها</string>
+  <string name="found_fastest">سریع‌ترین سرور شما، %s است.</string>
+  <string name="all_servers_failed">سرور درحال کاری شناسایی نشد: اتصال به همه سرورهای داخلی برقرار نشد.</string>
   <string name="server_choice_custom">نشانی وب سرور سفارشی</string>
   <string name="server_choice_warning">سرور سفارشی باید نشانی وب https:// معتبری باشد</string>
   <string name="excluded_apps">برنامه‌های مستثنا‌شده</string>

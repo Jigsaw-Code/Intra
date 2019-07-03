@@ -69,6 +69,11 @@
   <string name="server_choice_summary">В момента е %s</string>
   <string name="server_choice_builtin">Вграден сървър</string>
   <string name="server_choice_website_notice">Моля, посетете <a href="https://www.example.com/">уебсайта на доставчика</a>, за да прегледате декларацията му за поверителност и приложимите общи условия.</string>
+  <string name="server_website_button">Посещаване на уебсайта</string>
+  <string name="try_all_servers">Изпробване на всички вградени сървъри</string>
+  <string name="checking_servers">Всички сървъри се проверяват</string>
+  <string name="found_fastest">Най-бързият ви сървър е %s.</string>
+  <string name="all_servers_failed">Неуспешно установяване на работещ сървър: неуспешно свързване с всички вградени сървъри.</string>
   <string name="server_choice_custom">URL адрес на персонализирания сървър</string>
   <string name="server_choice_warning">URL адресът на персонализирания сървър трябва да е валиден адрес с https://</string>
   <string name="excluded_apps">Изключени приложения</string>

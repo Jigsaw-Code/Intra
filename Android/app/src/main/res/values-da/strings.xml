@@ -81,6 +81,11 @@
   <string name="server_choice_summary">I øjeblikket %s</string>
   <string name="server_choice_builtin">Indbygget server</string>
   <string name="server_choice_website_notice">Besøg <a href="https://www.example.com/">deres website</a> for at læse deres privatlivspolitik og eventuelle relevante servicevilkår.</string>
+  <string name="server_website_button">Gå til website</string>
+  <string name="try_all_servers">Prøv alle indbyggede servere</string>
+  <string name="checking_servers">Tjekker alle servere</string>
+  <string name="found_fastest">Din hurtigste server er %s.</string>
+  <string name="all_servers_failed">Der kunne ikke identificeres en aktiv server: Det var ikke muligt at oprette forbindelse til nogen af de indbyggede servere.</string>
   <string name="server_choice_custom">Tilpasset serverwebadresse</string>
   <string name="server_choice_warning">Den tilpassede server skal være en gyldig server af typen https:// Webadresse</string>
   <string name="excluded_apps">Ekskluderede apps</string>

@@ -69,6 +69,11 @@
   <string name="server_choice_summary">השרת שנבחר: %s</string>
   <string name="server_choice_builtin">שרת מובנה</string>
   <string name="server_choice_website_notice">מומלץ להיכנס ל<a href="https://www.example.com/">אתר הזה</a> כדי לקרוא את מדיניות הפרטיות ותנאי השירות שלהם.</string>
+  <string name="server_website_button">כניסה לאתר</string>
+  <string name="try_all_servers">אני רוצה לנסות את כל השרתים המובנים</string>
+  <string name="checking_servers">כל השרתים בבדיקה</string>
+  <string name="found_fastest">השרת המהיר ביותר שלך הוא %s.</string>
+  <string name="all_servers_failed">לא ניתן היה לזהות שרת פעיל. החיבור לכל השרתים המובנים נכשל.</string>
   <string name="server_choice_custom">כתובת URL של שרת בהתאמה אישית</string>
   <string name="server_choice_warning">כתובת ה-URL של שרת בהתאמה אישית צריכה להיות חוקית ולהתחיל ב-https://‎ ‎</string>
   <string name="excluded_apps">אפליקציות לא כלולות</string>

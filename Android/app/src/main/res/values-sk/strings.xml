@@ -69,6 +69,11 @@
   <string name="server_choice_summary">Momentálne %s</string>
   <string name="server_choice_builtin">Zabudovaný server</string>
   <string name="server_choice_website_notice">Pravidlá ochrany súkromia a platné zmluvné podmienky nájdete na <a href="https://www.example.com/">ich webe</a>.</string>
+  <string name="server_website_button">Navštíviť web</string>
+  <string name="try_all_servers">Vyskúšať všetky zabudované servery</string>
+  <string name="checking_servers">Kontrolujú sa všetky servery</string>
+  <string name="found_fastest">Váš najrýchlejší server je %s.</string>
+  <string name="all_servers_failed">Nepodarilo sa nájsť fungujúci server: pripojenie k všetkým zabudovaným serverom zlyhalo.</string>
   <string name="server_choice_custom">Webová adresa vlastného servera</string>
   <string name="server_choice_warning">Vlastný server musí byť platná webová adresa https://</string>
   <string name="excluded_apps">Nechránené aplikácie</string>

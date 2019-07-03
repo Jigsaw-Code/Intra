@@ -81,6 +81,11 @@
   <string name="server_choice_summary">Тренутно %s</string>
   <string name="server_choice_builtin">Уграђени сервер</string>
   <string name="server_choice_website_notice">Посетите <a href="https://www.example.com/">њихов веб-сајт</a> да бисте прегледали политику приватности и примењиве услове коришћења услуге.</string>
+  <string name="server_website_button">Отвори веб-сајт</string>
+  <string name="try_all_servers">Провери све уграђене сервере</string>
+  <string name="checking_servers">Проверавају се сви сервери</string>
+  <string name="found_fastest">Најбржи сервер је %s.</string>
+  <string name="all_servers_failed">Идентификовање сервера који ради није успело: нисмо успели да успоставимо везу ни са једним уграђеним сервером.</string>
   <string name="server_choice_custom">URL прилагођеног сервера</string>
   <string name="server_choice_warning">Прилагођени сервер мора да буде важећи https:// URL</string>
   <string name="excluded_apps">Изузете апликације</string>

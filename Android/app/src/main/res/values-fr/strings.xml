@@ -78,6 +78,11 @@
   <string name="server_choice_summary">Actuellement %s</string>
   <string name="server_choice_builtin">Serveur intégré</string>
   <string name="server_choice_website_notice">Veuillez accéder à son <a href="https://www.example.com/">site Web</a> pour consulter ses règles de confidentialité et les conditions d\'utilisation applicables.</string>
+  <string name="server_website_button">Accéder au site Web</string>
+  <string name="try_all_servers">Essayer tous les serveurs intégrés</string>
+  <string name="checking_servers">Vérification de tous les serveurs…</string>
+  <string name="found_fastest">Votre serveur le plus rapide est %s.</string>
+  <string name="all_servers_failed">Impossible d\'identifier un serveur opérationnel : échec de la connexion aux serveurs intégrés.</string>
   <string name="server_choice_custom">URL de serveur personnalisée</string>
   <string name="server_choice_warning">Le serveur personnalisé doit correspondre à une URL https:// valide</string>
   <string name="excluded_apps">Applications exclues</string>

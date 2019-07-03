@@ -70,6 +70,11 @@
   <string name="server_choice_summary">Actualmente: %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">su sitio web</a> para revisar la política de privacidad y las condiciones del servicio correspondientes.</string>
+  <string name="server_website_button">Visitar el sitio web</string>
+  <string name="try_all_servers">Probar todos los servidores integrados</string>
+  <string name="checking_servers">Comprobando todos los servidores</string>
+  <string name="found_fastest">El servidor más rápido es %s.</string>
+  <string name="all_servers_failed">No se ha podido identificar ningún servidor que funcione: se ha producido un error de conexión con todos los servidores integrados.</string>
   <string name="server_choice_custom">URL de servidor personalizado</string>
   <string name="server_choice_warning">El servidor personalizado debe ser una URL https:// válida</string>
   <string name="excluded_apps">Aplicaciones excluidas</string>

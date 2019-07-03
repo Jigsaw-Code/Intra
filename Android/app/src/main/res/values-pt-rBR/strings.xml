@@ -68,6 +68,11 @@ Uma VPN confiável é mais segura que o Intra.</string>
   <string name="server_choice_summary">Em uso: %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visite o <a href="https://www.example.com/">site da empresa</a> para ler a Política de Privacidade e os Termos de Serviço aplicáveis.</string>
+  <string name="server_website_button">Visitar site</string>
+  <string name="try_all_servers">Testar todos os servidores integrados</string>
+  <string name="checking_servers">Verificando todos os servidores</string>
+  <string name="found_fastest">O servidor mais rápido é o %s.</string>
+  <string name="all_servers_failed">Falha ao identificar um servidor ativo: erro na conexão com os servidores integrados.</string>
   <string name="server_choice_custom">URL do servidor personalizado</string>
   <string name="server_choice_warning">O servidor personalizado precisa ser um URL https:// válido</string>
   <string name="excluded_apps">Apps excluídos</string>

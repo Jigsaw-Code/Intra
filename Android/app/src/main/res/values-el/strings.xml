@@ -81,6 +81,11 @@
   <string name="server_choice_summary">Αυτήν τη στιγμή %s</string>
   <string name="server_choice_builtin">Ενσωματωμένος διακομιστής</string>
   <string name="server_choice_website_notice">Επισκεφτείτε τον <a href="https://www.example.com/">ιστότοπό της</a> για να ελέγξετε την πολιτική απορρήτου της και τους ισχύοντες όρους και προϋποθέσεις.</string>
+  <string name="server_website_button">Επίσκεψη ιστοτόπου</string>
+  <string name="try_all_servers">Δοκιμή όλων των ενσωματωμένων διακομιστών</string>
+  <string name="checking_servers">Έλεγχος όλων των διακομιστών</string>
+  <string name="found_fastest">Ο ταχύτερος διακομιστής σας είναι ο %s.</string>
+  <string name="all_servers_failed">Αποτυχία εντοπισμού διακομιστή σε λειτουργία: η σύνδεση απέτυχε σε όλους τους ενσωματωμένους διακομιστές.</string>
   <string name="server_choice_custom">URL προσαρμοσμένου διακομιστή</string>
   <string name="server_choice_warning">Ο προσαρμοσμένος διακομιστής πρέπει να είναι ένα έγκυρο URL https://</string>
   <string name="excluded_apps">Εφαρμογές που εξαιρούνται</string>

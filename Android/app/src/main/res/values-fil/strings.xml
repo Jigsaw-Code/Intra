@@ -77,6 +77,11 @@
   <string name="server_choice_summary">Kasalukuyan ay %s</string>
   <string name="server_choice_builtin">Naka-built in na server</string>
   <string name="server_choice_website_notice">Pakibisita ang <a href="https://www.example.com/">kanilang website</a> para suriin ang kanilang patakaran sa privacy at anumang naaangkop na mga tuntunin ng serbisyo.</string>
+  <string name="server_website_button">Bisitahin ang Website</string>
+  <string name="try_all_servers">Subukan ang lahat ng naka-built in na server</string>
+  <string name="checking_servers">Tinitingnan ang lahat ng server</string>
+  <string name="found_fastest">Ang iyong pinakamabilis na server ay %s.</string>
+  <string name="all_servers_failed">Hindi natukoy ang gumaganang server: hindi nakonekta sa lahat ng naka-built in na server.</string>
   <string name="server_choice_custom">Custom na URL ng server</string>
   <string name="server_choice_warning">Ang custom na server ay dapat isang valid na https:// URL</string>
   <string name="excluded_apps">Mga hindi kasamang app</string>

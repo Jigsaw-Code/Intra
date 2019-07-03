@@ -74,6 +74,11 @@
   <string name="server_choice_summary">Ora %s</string>
   <string name="server_choice_builtin">Server integrato</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">il sito web</a> per esaminare le norme sulla privacy e altri eventuali termini di servizio.</string>
+  <string name="server_website_button">Visita il sito web</string>
+  <string name="try_all_servers">Prova tutti i server integrati</string>
+  <string name="checking_servers">Controllo di tutti i server</string>
+  <string name="found_fastest">Il server più veloce è %s.</string>
+  <string name="all_servers_failed">Impossibile identificare un server in funzione: impossibile connettersi ai server integrati.</string>
   <string name="server_choice_custom">Personalizza URL del server</string>
   <string name="server_choice_warning">Il server personalizzato deve contenere un URL https:// valido</string>
   <string name="excluded_apps">App escluse</string>

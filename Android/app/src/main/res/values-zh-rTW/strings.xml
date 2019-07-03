@@ -76,6 +76,11 @@
   <string name="server_choice_summary">目前使用 %s</string>
   <string name="server_choice_builtin">內建伺服器</string>
   <string name="server_choice_website_notice">請前往<a href="https://www.example.com/">相關網站</a>檢閱隱私權政策和任何適用的服務條款。</string>
+  <string name="server_website_button">造訪網站</string>
+  <string name="try_all_servers">嘗試所有內建伺服器</string>
+  <string name="checking_servers">正在檢查所有伺服器</string>
+  <string name="found_fastest">速度最快的伺服器為 %s。</string>
+  <string name="all_servers_failed">無法找出可正常運作的伺服器：所有內建伺服器皆無法連線。</string>
   <string name="server_choice_custom">自訂伺服器網址</string>
   <string name="server_choice_warning">自訂伺服器必須是有效的 https:// 網址</string>
   <string name="excluded_apps">排除的應用程式</string>

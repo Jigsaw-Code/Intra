@@ -69,6 +69,11 @@
   <string name="server_choice_summary">Šobrīd tiek izmantots: %s</string>
   <string name="server_choice_builtin">Iebūvēts serveris</string>
   <string name="server_choice_website_notice">Lūdzu, apmeklējiet <a href="https://www.example.com/">attiecīgo vietni</a>, lai izskatītu konfidencialitātes politiku un visus piemērojamos pakalpojumu sniegšanas noteikumus.</string>
+  <string name="server_website_button">Apmeklēt vietni</string>
+  <string name="try_all_servers">Izmēģināt visus iebūvētos serverus</string>
+  <string name="checking_servers">Notiek visu serveru pārbaude</string>
+  <string name="found_fastest">Jūsu visātrākais serveris ir %s.</string>
+  <string name="all_servers_failed">Neizdevās noteikt aktīvu serveri: neizdevās izveidot savienojumu ne ar vienu iebūvēto serveri.</string>
   <string name="server_choice_custom">Pielāgots servera URL</string>
   <string name="server_choice_warning">Pielāgotajam serverim jābūt derīgam https:// URL</string>
   <string name="excluded_apps">Neietvertās lietotnes</string>

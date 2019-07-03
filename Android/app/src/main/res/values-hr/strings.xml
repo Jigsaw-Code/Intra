@@ -69,6 +69,11 @@
   <string name="server_choice_summary">Trenutačni poslužitelj: %s</string>
   <string name="server_choice_builtin">Ugrađeni poslužitelj</string>
   <string name="server_choice_website_notice">Posjetite <a href="https://www.example.com/">web-lokaciju</a> da biste pregledali pravila o privatnosti i primjenjive uvjete pružanja usluge.</string>
+  <string name="server_website_button">Posjeti web-lokaciju</string>
+  <string name="try_all_servers">Isprobaj sve ugrađene poslužitelje</string>
+  <string name="checking_servers">Provjera svih poslužitelja</string>
+  <string name="found_fastest">Vaš najbrži poslužitelj je %s.</string>
+  <string name="all_servers_failed">Poslužitelj koji funkcionira nije pronađen: pokušaj povezivanja sa svim ugrađenim poslužiteljima nije uspio.</string>
   <string name="server_choice_custom">URL prilagođenog poslužitelja</string>
   <string name="server_choice_warning">Prilagođeni poslužitelj treba biti važeći https:// URL</string>
   <string name="excluded_apps">Isključene aplikacije</string>

@@ -67,6 +67,11 @@
   <string name="server_choice_summary">Aktuell %s</string>
   <string name="server_choice_builtin">Eingebauter Server</string>
   <string name="server_choice_website_notice">Bitte besuchen Sie <a href="https://www.example.com/">diese Website</a>, um sich über die Datenschutzerklärung und die Nutzungsbedingungen zu informieren.</string>
+  <string name="server_website_button">Website aufrufen</string>
+  <string name="try_all_servers">Alle eingebauten Server überprüfen</string>
+  <string name="checking_servers">Alle Server werden überprüft</string>
+  <string name="found_fastest">Ihr schnellster Server ist %s.</string>
+  <string name="all_servers_failed">Es konnte kein funktionierender Server ermittelt werden: Zu keinem der eingebauten Server konnte eine Verbindung hergestellt werden.</string>
   <string name="server_choice_custom">Benutzerdefinierte Server-URL</string>
   <string name="server_choice_warning">Die benutzerdefinierte URL muss gültig sein und mit https:// beginnen</string>
   <string name="excluded_apps">Ausgeschlossene Apps</string>

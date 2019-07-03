@@ -81,6 +81,11 @@
   <string name="server_choice_summary">현재 %s</string>
   <string name="server_choice_builtin">내장 서버</string>
   <string name="server_choice_website_notice"><a href="https://www.example.com/">웹사이트</a>에서 개인정보처리방침과 관련 서비스 약관을 확인하세요.</string>
+  <string name="server_website_button">웹사이트 방문</string>
+  <string name="try_all_servers">모든 내장 서버 확인</string>
+  <string name="checking_servers">모든 서버 확인 중</string>
+  <string name="found_fastest">가장 빠른 서버는 %s입니다.</string>
+  <string name="all_servers_failed">모든 내장 서버에 연결되지 않아 작동 중인 서버를 식별할 수 없습니다.</string>
   <string name="server_choice_custom">맞춤 서버 URL</string>
   <string name="server_choice_warning">맞춤 서버는 유효한 https:// URL이어야 합니다.</string>
   <string name="excluded_apps">제외된 앱</string>

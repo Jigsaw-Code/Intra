@@ -81,6 +81,11 @@
   <string name="server_choice_summary">Hiện tại là %s</string>
   <string name="server_choice_builtin">Máy chủ tích hợp</string>
   <string name="server_choice_website_notice">Vui lòng truy cập vào <a href="https://www.example.com/">trang web của các đơn vị này</a> để xem lại chính sách quyền riêng tư của họ và các điều khoản dịch vụ hiện hành.</string>
+  <string name="server_website_button">Truy cập trang web</string>
+  <string name="try_all_servers">Thử tất cả các máy chủ tích hợp</string>
+  <string name="checking_servers">Đang kiểm tra tất cả máy chủ</string>
+  <string name="found_fastest">Máy chủ nhanh nhất của bạn là %s.</string>
+  <string name="all_servers_failed">Xác định máy chủ đang hoạt động không thành công: không kết nối được với tất cả các máy chủ tích hợp.</string>
   <string name="server_choice_custom">URL máy chủ tùy chỉnh</string>
   <string name="server_choice_warning">Máy chủ tùy chỉnh phải là một URL https:// hợp lệ</string>
   <string name="excluded_apps">Các ứng dụng không dùng Intra</string>

@@ -69,6 +69,11 @@
   <string name="server_choice_summary">Jelenlegi szerver: %s</string>
   <string name="server_choice_builtin">Beépített szerver</string>
   <string name="server_choice_website_notice">Az adatvédelmi irányelveket és a vonatkozó általános szerződési feltételeket a <a href="https://www.example.com/">webhelyükön</a> találja.</string>
+  <string name="server_website_button">Webhely megnyitása</string>
+  <string name="try_all_servers">Próbálja ki az összes beépített szervert</string>
+  <string name="checking_servers">Az összes szerver ellenőrzése</string>
+  <string name="found_fastest">A leggyorsabb szervere: %s.</string>
+  <string name="all_servers_failed">Nem sikerült működő szervert találni: nem sikerült csatlakozni az összes beépített szerverhez.</string>
   <string name="server_choice_custom">Egyéni szerver URL-címe</string>
   <string name="server_choice_warning">Az egyéni szerver címének érvényes https://-címnek kell lennie.</string>
   <string name="excluded_apps">Kizárt alkalmazások</string>

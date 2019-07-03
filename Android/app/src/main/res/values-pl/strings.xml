@@ -68,6 +68,11 @@
   <string name="server_choice_summary">Obecnie: %s</string>
   <string name="server_choice_builtin">Serwer wbudowany</string>
   <string name="server_choice_website_notice">Politykę prywatności i warunki korzystania z usługi znajdziesz na <a href="https://www.example.com/">tej stronie</a>.</string>
+  <string name="server_website_button">Odwiedź witrynę</string>
+  <string name="try_all_servers">Wypróbuj wszystkie serwery wbudowane</string>
+  <string name="checking_servers">Sprawdzam wszystkie serwery</string>
+  <string name="found_fastest">Najszybszy serwer: %s.</string>
+  <string name="all_servers_failed">Nie udało się znaleźć działającego serwera. Nie można nawiązać połączenia z żadnym z wbudowanych serwerów.</string>
   <string name="server_choice_custom">URL własnego serwera</string>
   <string name="server_choice_warning">Własny serwer musi mieć prawidłowy URL zaczynający się od https://</string>
   <string name="excluded_apps">Wykluczone aplikacje</string>

@@ -81,6 +81,11 @@
   <string name="server_choice_summary">Nuvarande: %s</string>
   <string name="server_choice_builtin">Inbyggd server</string>
   <string name="server_choice_website_notice">Läs sekretesspolicyn och eventuella tillämpliga användarvillkor på <a href="https://www.example.com/">webbplatsen</a>.</string>
+  <string name="server_website_button">Besök webbplatsen</string>
+  <string name="try_all_servers">Testa alla inbyggda servrar</string>
+  <string name="checking_servers">Alla servrar kontrolleras</string>
+  <string name="found_fastest">Den snabbaste servern är %s.</string>
+  <string name="all_servers_failed">Det gick inte att identifiera någon fungerande server: anslutningen misslyckades för alla inbyggda servrar.</string>
   <string name="server_choice_custom">Anpassad serverwebbadress</string>
   <string name="server_choice_warning">Anpassad server måste ha en giltig https://-adress Webbadress</string>
   <string name="excluded_apps">Uteslutna appar</string>

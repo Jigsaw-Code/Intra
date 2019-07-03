@@ -69,6 +69,11 @@
   <string name="server_choice_summary">Cari %s</string>
   <string name="server_choice_builtin">Daxili server</string>
   <string name="server_choice_website_notice">Onların məxfilik siyasəti və müvafiq xidmət şərtlərinə baxmaq üçün <a href="https://www.example.com/">veb saytlarına</a> daxil olun.</string>
+  <string name="server_website_button">Veb sayta daxil olun</string>
+  <string name="try_all_servers">Bütün daxili serverləri sınayın</string>
+  <string name="checking_servers">Bütün serverlər yoxlanılır</string>
+  <string name="found_fastest">Ən sürətli serveriniz: %s</string>
+  <string name="all_servers_failed">İşləyən serveri müəyyən etmək alınmadı: bağlantı bütün daxili serverlərdə itdi.</string>
   <string name="server_choice_custom">Fərdi server linki</string>
   <string name="server_choice_warning">Fərdi serverin linki https:// ilə başlayan düzgün link olmalıdır Link</string>
   <string name="excluded_apps">Intra\'dan istifadə etməyəcək tətbiqlər</string>

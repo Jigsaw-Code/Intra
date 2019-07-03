@@ -76,6 +76,11 @@
   <string name="server_choice_summary">Tällä hetkellä %s</string>
   <string name="server_choice_builtin">Sisäänrakennettu palvelin</string>
   <string name="server_choice_website_notice">Tarkista tietosuojakäytäntö ja mahdolliset soveltuvat käyttöehdot <a href="https://www.example.com/">verkkosivustolta</a>.</string>
+  <string name="server_website_button">Käy sivustolla</string>
+  <string name="try_all_servers">Kokeile kaikkia sisäänrakennettuja palvelimia</string>
+  <string name="checking_servers">Tarkistetaan kaikkia palvelimia</string>
+  <string name="found_fastest">Nopein palvelimesi on %s.</string>
+  <string name="all_servers_failed">Toimivan palvelimen tunnistaminen epäonnistui: yhteys kaikkiin sisäänrakennettuihin palvelimiin epäonnistui.</string>
   <string name="server_choice_custom">Muokatun palvelimen URL-osoite</string>
   <string name="server_choice_warning">Muokatun palvelimen on oltava kelvollinen https://-alkuinen URL-osoite</string>
   <string name="excluded_apps">Pois suljetut sovellukset</string>

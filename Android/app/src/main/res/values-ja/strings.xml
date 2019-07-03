@@ -77,6 +77,11 @@
   <string name="server_choice_summary">現在: %s</string>
   <string name="server_choice_builtin">内蔵サーバー</string>
   <string name="server_choice_website_notice">プライバシー ポリシーや該当する利用規約を確認するには、<a href="https://www.example.com/">ウェブサイト</a>をご覧ください。</string>
+  <string name="server_website_button">ウェブサイトにアクセス</string>
+  <string name="try_all_servers">内蔵サーバーをすべて試す</string>
+  <string name="checking_servers">すべてのサーバーを確認中</string>
+  <string name="found_fastest">最も速いサーバーは %s です。</string>
+  <string name="all_servers_failed">稼働中のサーバーの特定エラー: 一部の内蔵サーバーに接続できませんでした。</string>
   <string name="server_choice_custom">カスタム サーバーの URL</string>
   <string name="server_choice_warning">カスタム サーバーには、「https://」で始まる有効な URL を指定する必要があります</string>
   <string name="excluded_apps">対象外とするアプリ</string>

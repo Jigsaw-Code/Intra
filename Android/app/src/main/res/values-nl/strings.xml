@@ -67,6 +67,11 @@
   <string name="server_choice_summary">Momenteel %s</string>
   <string name="server_choice_builtin">Ingebouwde server</string>
   <string name="server_choice_website_notice">Ga naar <a href="https://www.example.com/">de website</a> om het privacybeleid en eventuele servicevoorwaarden te bekijken.</string>
+  <string name="server_website_button">Naar website</string>
+  <string name="try_all_servers">Alle ingebouwde servers proberen</string>
+  <string name="checking_servers">Alle servers controleren</string>
+  <string name="found_fastest">Je snelste server is %s.</string>
+  <string name="all_servers_failed">Er kan geen werkende server worden gevonden. De verbinding is mislukt met alle ingebouwde servers.</string>
   <string name="server_choice_custom">Aangepaste server-URL</string>
   <string name="server_choice_warning">De aangepaste server moet een geldige https://-URL zijn</string>
   <string name="excluded_apps">Uitgesloten apps</string>
