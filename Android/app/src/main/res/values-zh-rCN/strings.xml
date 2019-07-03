@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra 在您的设备上检测到了其他 VPN。如果您启用 Intra，该 VPN 则会停用。
     Intra 的安全性不及可信的 VPN。</string>
   <string name="explanation_failing">警告：查询失败。您可能需要选择其他服务器或重启 Intra。</string>
-  <string name="button_failing">尝试其他服务器</string>
   <string name="system_details">系统详细信息</string>
   <string name="num_requests">迄今为止的查询数</string>
   <string name="num_requests_headline">您的设备查找域名的 IP 地址时执行的 DNS 查询数量</string>
@@ -70,6 +69,11 @@
   <string name="server_choice_summary">目前为 %s</string>
   <string name="server_choice_builtin">内置服务器</string>
   <string name="server_choice_website_notice">请访问<a href="https://www.example.com/">其网站</a>查看相应隐私权政策和所有适用的服务条款。</string>
+  <string name="server_website_button">访问网站</string>
+  <string name="try_all_servers">尝试连接所有内置服务器</string>
+  <string name="checking_servers">正在检查所有服务器</string>
+  <string name="found_fastest">您最快的服务器是 %s。</string>
+  <string name="all_servers_failed">未能识别可正常工作的服务器：所有内置服务器均连接失败。</string>
   <string name="server_choice_custom">自定义服务器网址</string>
   <string name="server_choice_warning">自定义服务器必须是以 https:// 开头的有效网址</string>
   <string name="excluded_apps">排除的应用</string>

@@ -35,7 +35,6 @@
   <string name="explanation_offline">Twoje urządzenie jest w trybie offline. Intra czeka na połączenie z internetem.</string>
   <string name="explanation_vpn">Aplikacja Intra wykryła na tym urządzeniu inny VPN. Jeśli ją włączysz, VPN zostanie wyłączony. Intra nie jest tak bezpieczna jak zaufana sieć VPN.</string>
   <string name="explanation_failing">Ostrzeżenie: zapytania nie są realizowane.  Wybierz inny serwer i ponownie uruchom aplikację Intra.</string>
-  <string name="button_failing">Wypróbuj inny serwer</string>
   <string name="system_details">Szczegółowe informacje o systemie</string>
   <string name="num_requests">Zapytania od początku używania</string>
   <string name="num_requests_headline">Zapytania DNS są wykonywane, gdy urządzenie sprawdza adres IP odpowiadający nazwie domenowej</string>
@@ -69,6 +68,11 @@
   <string name="server_choice_summary">Obecnie: %s</string>
   <string name="server_choice_builtin">Serwer wbudowany</string>
   <string name="server_choice_website_notice">Politykę prywatności i warunki korzystania z usługi znajdziesz na <a href="https://www.example.com/">tej stronie</a>.</string>
+  <string name="server_website_button">Odwiedź witrynę</string>
+  <string name="try_all_servers">Wypróbuj wszystkie serwery wbudowane</string>
+  <string name="checking_servers">Sprawdzam wszystkie serwery</string>
+  <string name="found_fastest">Najszybszy serwer: %s.</string>
+  <string name="all_servers_failed">Nie udało się znaleźć działającego serwera. Nie można nawiązać połączenia z żadnym z wbudowanych serwerów.</string>
   <string name="server_choice_custom">URL własnego serwera</string>
   <string name="server_choice_warning">Własny serwer musi mieć prawidłowy URL zaczynający się od https://</string>
   <string name="excluded_apps">Wykluczone aplikacje</string>

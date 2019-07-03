@@ -87,10 +87,10 @@
             android:textColor="@color/indicator"/>
 
     <Button
-        android:id="@+id/change_server_button"
+        android:id="@+id/try_all_servers_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/button_failing"
+        android:text="@string/try_all_servers"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@id/dns_switch"
         app:layout_constraintStart_toStartOf="@id/status"

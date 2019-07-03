@@ -36,7 +36,6 @@
   <string name="explanation_vpn">Intra 在你的裝置上偵測到另一個 VPN。如果啟用 Intra，該 VPN 將遭到停用。
     Intra 的安全性不如信任的 VPN。</string>
   <string name="explanation_failing">警告：查詢失敗，請選擇其他伺服器或重新啟動 Intra。</string>
-  <string name="button_failing">嘗試使用其他伺服器</string>
   <string name="system_details">系統詳細資訊</string>
   <string name="num_requests">所有加密查詢</string>
   <string name="num_requests_headline">你的裝置在尋找網域名稱的 IP 位址時傳送的 DNS 查詢數</string>
@@ -77,6 +76,11 @@
   <string name="server_choice_summary">目前使用 %s</string>
   <string name="server_choice_builtin">內建伺服器</string>
   <string name="server_choice_website_notice">請前往<a href="https://www.example.com/">相關網站</a>檢閱隱私權政策和任何適用的服務條款。</string>
+  <string name="server_website_button">造訪網站</string>
+  <string name="try_all_servers">嘗試所有內建伺服器</string>
+  <string name="checking_servers">正在檢查所有伺服器</string>
+  <string name="found_fastest">速度最快的伺服器為 %s。</string>
+  <string name="all_servers_failed">無法找出可正常運作的伺服器：所有內建伺服器皆無法連線。</string>
   <string name="server_choice_custom">自訂伺服器網址</string>
   <string name="server_choice_warning">自訂伺服器必須是有效的 https:// 網址</string>
   <string name="excluded_apps">排除的應用程式</string>

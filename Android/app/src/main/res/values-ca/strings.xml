@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra ha detectat una altra VPN al dispositiu.  Si actives Intra, aquesta VPN es desactivarà.
     L\'aplicació Intra no és tan segura com una VPN de confiança.</string>
   <string name="explanation_failing">Advertiment: s\'ha produït un error amb les consultes.  Et recomanem que triïs un altre servidor o que reiniciïs Intra.</string>
-  <string name="button_failing">Prova-ho amb un altre servidor</string>
   <string name="system_details">Informació del sistema</string>
   <string name="num_requests">Total de consultes</string>
   <string name="num_requests_headline">Les consultes de DNS es duen a terme quan el dispositiu cerca l\'adreça IP d\'un nom de domini</string>
@@ -70,6 +69,11 @@
   <string name="server_choice_summary">Servidor actual: %s</string>
   <string name="server_choice_builtin">Servidor integrat</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">el seu lloc web</a> per consultar-ne la política de privadesa i les condicions del servei aplicables.</string>
+  <string name="server_website_button">Visita el lloc web</string>
+  <string name="try_all_servers">Prova tots els servidors integrats</string>
+  <string name="checking_servers">S\'estan comprovant tots els servidors</string>
+  <string name="found_fastest">El servidor més ràpid és %s.</string>
+  <string name="all_servers_failed">No s\'ha pogut identificar un servidor en funcionament: hi ha hagut un error en connectar-se a tots els servidors integrats.</string>
   <string name="server_choice_custom">URL de servidor personalitzat</string>
   <string name="server_choice_warning">El servidor personalitzat ha de tenir un format https:// vàlid URL</string>
   <string name="excluded_apps">Aplicacions excloses</string>

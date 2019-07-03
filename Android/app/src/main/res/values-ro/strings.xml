@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra a detectat altă rețea VPN pe dispozitiv.  Dacă activați aplicația Intra, rețeaua VPN va fi dezactivată.
     Intra nu este la fel de sigură ca o rețea VPN de încredere.</string>
   <string name="explanation_failing">Avertisment: interogările nu funcționează.  Este recomandat să alegeți alt server sau să reporniți Intra.</string>
-  <string name="button_failing">Încercați alt server</string>
   <string name="system_details">Detaliile sistemului</string>
   <string name="num_requests">Număr total de interogări</string>
   <string name="num_requests_headline">Interogările DNS au loc când dispozitivul caută adresa IP pentru un nume de domeniu</string>
@@ -79,6 +78,11 @@
   <string name="server_choice_summary">În acest moment, %s</string>
   <string name="server_choice_builtin">Server încorporat</string>
   <string name="server_choice_website_notice">Accesați <a href="https://www.example.com/">site-ul</a> pentru a consulta politica de confidențialitate și termenii și condițiile aplicabile.</string>
+  <string name="server_website_button">Accesați site-ul</string>
+  <string name="try_all_servers">Încercați toate serverele încorporate</string>
+  <string name="checking_servers">Se verifică toate serverele</string>
+  <string name="found_fastest">Cel mai rapid server este %s.</string>
+  <string name="all_servers_failed">Nu a fost identificat niciun server care funcționează: nu s-a efectuat conexiunea la toate serverele încorporate.</string>
   <string name="server_choice_custom">Adresă URL de server personalizat</string>
   <string name="server_choice_warning">Serverul personalizat trebuie să fie o adresă URL https:// validă</string>
   <string name="excluded_apps">Aplicații excluse</string>

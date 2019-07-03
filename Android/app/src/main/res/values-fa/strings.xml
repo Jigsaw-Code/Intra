@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra در دستگاه شما VPN دیگری تشخیص داده است.  اگر Intra را فعال کنید، آن VPN غیرفعال می‌شود.
     Intra به‌اندازه VPN مطمئن، امن نیست.</string>
   <string name="explanation_failing">هشدار: پرسمان‌ها بی‌نتیجه‌اند.  ممکن است بخواهید سرور متفاوتی انتخاب کنید یا Intra را بازراه‌اندازی کنید.</string>
-  <string name="button_failing">سرور دیگری را امتحان کنید</string>
   <string name="system_details">جزئیات سیستم</string>
   <string name="num_requests">پُرسمان‌های درزمانی</string>
   <string name="num_requests_headline">پُرسمان‌های DNS وقتی پیش می‌آیند که دستگاه برای نام دامنه، به نشانی IP مراجعه می‌کند</string>
@@ -81,6 +80,11 @@
   <string name="server_choice_summary">درحال‌حاضر %s</string>
   <string name="server_choice_builtin">سرور داخلی</string>
   <string name="server_choice_website_notice">برای مرور خط‌مشی رازداری و همه شرایط خدمات قابل‌اجرا، از <a href="https://www.example.com/">وب‌سایت آن‌ها</a> بازدید کنید.</string>
+  <string name="server_website_button">بازدید از وب‌سایت</string>
+  <string name="try_all_servers">امتحان کردن همه سرورهای داخلی</string>
+  <string name="checking_servers">درحال بررسی همه سرورها</string>
+  <string name="found_fastest">سریع‌ترین سرور شما، %s است.</string>
+  <string name="all_servers_failed">سرور درحال کاری شناسایی نشد: اتصال به همه سرورهای داخلی برقرار نشد.</string>
   <string name="server_choice_custom">نشانی وب سرور سفارشی</string>
   <string name="server_choice_warning">سرور سفارشی باید نشانی وب https:// معتبری باشد</string>
   <string name="excluded_apps">برنامه‌های مستثنا‌شده</string>

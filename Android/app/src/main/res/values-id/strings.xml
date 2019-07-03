@@ -4,7 +4,7 @@
   <string name="intro_manipulation_headline">Perlindungan dari manipulasi DNS</string>
   <string name="intro_manipulation_body">Intra melindungi sambungan Anda ke Domain Name System (DNS), yang memberikan alamat persis yang diperlukan untuk mengakses situs atau membuka aplikasi.\n\nIntra menggunakan enkripsi guna memastikan agar hasil tidak dapat dimanipulasi, sehingga Anda bisa mengakses internet dengan aman.</string>
   <string name="intro_details_headline">Satu lagi…</string>
-  <string name="intro_details_body">Tap Oke untuk mengizinkan Intra melindungi permintaan DNS Anda. Secara default, permintaan tersebut akan dirutekan ke Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Kebijakan Privasi</a>). Anda dapat memilih layanan lain di setelan aplikasi.</string>
+  <string name="intro_details_body">Ketuk Oke untuk mengizinkan Intra melindungi permintaan DNS Anda. Secara default, permintaan tersebut akan dirutekan ke Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Kebijakan Privasi</a>). Anda dapat memilih layanan lain di setelan aplikasi.</string>
   <string name="intro_back">kembali</string>
   <string name="intro_next">berikutnya</string>
   <string name="intro_accept">setuju</string>
@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra mendeteksi VPN lain di perangkat Anda.  Jika Anda mengaktifkan Intra, VPN tersebut akan dinonaktifkan.
     Perlu diketahui bahwa Intra tidak seaman VPN tepercaya.</string>
   <string name="explanation_failing">Peringatan: Kueri gagal.  Anda perlu memilih server lain atau memulai ulang Intra.</string>
-  <string name="button_failing">Coba server lain</string>
   <string name="system_details">Detail sistem</string>
   <string name="num_requests">Kueri hingga saat ini</string>
   <string name="num_requests_headline">Kueri DNS dijalankan saat perangkat Anda mencari alamat IP untuk nama domain</string>
@@ -79,6 +78,11 @@
   <string name="server_choice_summary">Saat ini %s</string>
   <string name="server_choice_builtin">Server default</string>
   <string name="server_choice_website_notice">Harap kunjungi <a href="https://www.example.com/">situs mereka</a> untuk meninjau kebijakan privasi dan persyaratan layanan yang berlaku.</string>
+  <string name="server_website_button">Kunjungi Situs</string>
+  <string name="try_all_servers">Coba semua server default</string>
+  <string name="checking_servers">Memeriksa semua server</string>
+  <string name="found_fastest">Server tercepat Anda adalah %s.</string>
+  <string name="all_servers_failed">Gagal mengidentifikasi server yang masih berfungsi: gagal tersambung ke semua server default.</string>
   <string name="server_choice_custom">URL server kustom</string>
   <string name="server_choice_warning">Server kustom harus berupa URL https:// yang valid</string>
   <string name="excluded_apps">Aplikasi yang dikecualikan</string>
@@ -87,7 +91,7 @@
   <string name="excluded_apps_title">Tandai aplikasi untuk dikecualikan dari Intra</string>
   <string name="old_android">Fungsi ini tidak tersedia di versi Android Anda.</string>
   <string name="notification_title">Perlindungan DNS aktif</string>
-  <string name="notification_content">Tap untuk mengubah setelan perlindungan DNS</string>
+  <string name="notification_content">Ketuk untuk mengubah setelan perlindungan DNS</string>
   <string name="channel_name">Notifikasi Perlindungan DNS Aktif</string>
   <string name="channel_description">Notifikasi ini ditampilkan saat perlindungan DNS aktif.</string>
   <string name="warning_title">Peringatan: Intra telah dinonaktifkan</string>

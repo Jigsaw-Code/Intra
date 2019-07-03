@@ -38,7 +38,6 @@
   <string name="explanation_vpn">„Intra“ jūsų įrenginyje aptiko kitą VPN.  Jei įjungsite „Intra“, šis VPN bus išjungtas.
     „Intra“ nėra tokia saugi kaip patikimas VPN.</string>
   <string name="explanation_failing">Įspėjimas: nepavyksta pateikti užklausų.  Gali reikėti pasirinkti kitą serverį arba paleisti „Intra“ iš naujo.</string>
-  <string name="button_failing">Bandyti kitą serverį</string>
   <string name="system_details">Išsami sistemos informacija</string>
   <string name="num_requests">Viso laiko užklausos</string>
   <string name="num_requests_headline">DNS užklausos vykdomos, kai įrenginys ieško domeno pavadinimo IP adreso</string>
@@ -82,6 +81,11 @@
   <string name="server_choice_summary">Šiuo metu „%s“</string>
   <string name="server_choice_builtin">Įtaisytasis serveris</string>
   <string name="server_choice_website_notice">Apsilankę <a href="https://www.example.com/">jų svetainėje</a> peržiūrėkite privatumo politiką ir taikomas paslaugų teikimo sąlygas.</string>
+  <string name="server_website_button">Apsilankyti svetainėje</string>
+  <string name="try_all_servers">Išbandyti visus įtaisytuosius serverius</string>
+  <string name="checking_servers">Tikrinami visi serveriai</string>
+  <string name="found_fastest">Sparčiausias serveris yra „%s“.</string>
+  <string name="all_servers_failed">Nepavyko nustatyti veikiančio serverio: nepavyko prisijungti prie visų įtaisytųjų serverių.</string>
   <string name="server_choice_custom">Tinkintas serverio URL</string>
   <string name="server_choice_warning">Tinkintas serveris turi būti tinkamas https:// URL</string>
   <string name="excluded_apps">Išskirtos programos</string>

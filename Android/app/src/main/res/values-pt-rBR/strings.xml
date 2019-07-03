@@ -35,7 +35,6 @@
   <string name="explanation_vpn">O Intra detectou outra VPN no seu dispositivo. Se você ativar o Intra, essa VPN será desativada.
 Uma VPN confiável é mais segura que o Intra.</string>
   <string name="explanation_failing">Atenção: houve falha nas consultas. Escolha outro servidor ou reinicie o Intra.</string>
-  <string name="button_failing">Testar outro servidor</string>
   <string name="system_details">Detalhes do sistema</string>
   <string name="num_requests">Todas as consultas</string>
   <string name="num_requests_headline">As consultas DNS ocorrem quando o dispositivo pesquisa o endereço IP de um nome de domínio</string>
@@ -69,6 +68,11 @@ Uma VPN confiável é mais segura que o Intra.</string>
   <string name="server_choice_summary">Em uso: %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visite o <a href="https://www.example.com/">site da empresa</a> para ler a Política de Privacidade e os Termos de Serviço aplicáveis.</string>
+  <string name="server_website_button">Visitar site</string>
+  <string name="try_all_servers">Testar todos os servidores integrados</string>
+  <string name="checking_servers">Verificando todos os servidores</string>
+  <string name="found_fastest">O servidor mais rápido é o %s.</string>
+  <string name="all_servers_failed">Falha ao identificar um servidor ativo: erro na conexão com os servidores integrados.</string>
   <string name="server_choice_custom">URL do servidor personalizado</string>
   <string name="server_choice_warning">O servidor personalizado precisa ser um URL https:// válido</string>
   <string name="excluded_apps">Apps excluídos</string>

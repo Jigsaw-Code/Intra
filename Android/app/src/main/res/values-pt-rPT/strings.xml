@@ -38,7 +38,6 @@
   <string name="explanation_vpn">O Intra detetou outra VPN no seu dispositivo.  Se ativar o Intra, essa VPN será desativada.
     O Intra não é tão seguro como uma VPN fidedigna.</string>
   <string name="explanation_failing">Aviso: as consultas estão a falhar.  É recomendável que opte por um servidor diferente ou reinicie o Intra.</string>
-  <string name="button_failing">Experimente um servidor diferente</string>
   <string name="system_details">Detalhes do sistema</string>
   <string name="num_requests">Consultas desde sempre</string>
   <string name="num_requests_headline">As consultas DNS ocorrem quando o seu dispositivo procura um nome de domínio no endereço IP.</string>
@@ -82,6 +81,11 @@
   <string name="server_choice_summary">Atualmente %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visite <a href="https://www.example.com/">o website da empresa</a> para ler a respetiva política de privacidade e todos os termos de utilização aplicáveis.</string>
+  <string name="server_website_button">Visitar o Website</string>
+  <string name="try_all_servers">Experimentar todos os servidores integrados</string>
+  <string name="checking_servers">A verificar todos os servidores</string>
+  <string name="found_fastest">O seu servidor mais rápido é %s.</string>
+  <string name="all_servers_failed">Falha ao identificar um servidor operacional: falhou a ligação a todos os servidores integrados.</string>
   <string name="server_choice_custom">URL de servidor personalizado</string>
   <string name="server_choice_warning">O servidor personalizado tem de ser um https:// válido URL</string>
   <string name="excluded_apps">Aplicações excluídas</string>

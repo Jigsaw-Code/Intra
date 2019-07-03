@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra imetambua VPN nyingine kwenye kifaa chako. Ukiwasha Intra, VPN hiyo itazimwa.
     Intra si salama kama VPN inayoaminika.</string>
   <string name="explanation_failing">Onyo: Kuna matatizo ya kuchakata hoja. Unaweza kuchagua seva tofauti au uzime Intra kisha uiwashe tena.</string>
-  <string name="button_failing">Jaribu seva tofauti</string>
   <string name="system_details">Maelezo ya mfumo</string>
   <string name="num_requests">Maombi yote</string>
   <string name="num_requests_headline">Hoja za DNS hutokea kifaa chako kinapotafuta anwani ya IP ya jina la kikoa</string>
@@ -79,6 +78,11 @@
   <string name="server_choice_summary">Kwa sasa %s</string>
   <string name="server_choice_builtin">Seva iliyojumuishwa</string>
   <string name="server_choice_website_notice">Tafadhali tembelea <a href="https://www.example.com/">tovuti yao</a> ili uangalie sera yao ya faragha na masharti yoyote ya huduma yanayotumika.</string>
+  <string name="server_website_button">Tembelea Tovuti</string>
+  <string name="try_all_servers">Jaribu seva zote zilizojumuishwa</string>
+  <string name="checking_servers">Inakagua seva zote</string>
+  <string name="found_fastest">Seva yako inayofanya kazi kwa haraka zaidi ni %s.</string>
+  <string name="all_servers_failed">Imeshindwa kutambua seva inayofanya kazi: imeshindwa kuunganisha kwenye seva zote zilizojumuishwa.</string>
   <string name="server_choice_custom">URL ya seva maalum</string>
   <string name="server_choice_warning">Seva maalum ni lazima iwe URL sahihi ya https://</string>
   <string name="excluded_apps">Programu zilizotengwa</string>

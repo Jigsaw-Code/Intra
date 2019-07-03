@@ -34,7 +34,6 @@
   <string name="explanation_offline">Устройство не в сети. Ожидается подключение к Интернету.</string>
   <string name="explanation_vpn">Приложение Intra обнаружило на вашем устройстве другую сеть VPN. Если вы включите Intra, эта сеть будет отключена. Обратите внимание, что доверенная сеть VPN более безопасна, чем Intra.</string>
   <string name="explanation_failing">Не удается отправить запросы. Попробуйте выбрать другой сервер или перезапустить Intra.</string>
-  <string name="button_failing">Подключиться к другому серверу</string>
   <string name="system_details">Сведения о системе</string>
   <string name="num_requests">Всего запросов</string>
   <string name="num_requests_headline">Ваше устройство отправляет DNS-запрос, чтобы получить IP-адрес для доменного имени</string>
@@ -68,6 +67,11 @@
   <string name="server_choice_summary">Используется сейчас: %s</string>
   <string name="server_choice_builtin">Встроенный сервер</string>
   <string name="server_choice_website_notice">Рекомендуем посетить <a href="https://www.example.com/">их веб-сайты</a> и ознакомиться с политиками конфиденциальности и условиями использования.</string>
+  <string name="server_website_button">Открыть сайт</string>
+  <string name="try_all_servers">Проверить все встроенные серверы</string>
+  <string name="checking_servers">Проверка всех серверов</string>
+  <string name="found_fastest">Самый быстрый сервер – %s.</string>
+  <string name="all_servers_failed">Не удалось определить рабочий сервер. Произошла ошибка подключения к встроенным серверам.</string>
   <string name="server_choice_custom">Настраиваемый URL сервера</string>
   <string name="server_choice_warning">Настраиваемый сервер должен иметь действительный URL-адрес</string>
   <string name="excluded_apps">Исключенные приложения</string>

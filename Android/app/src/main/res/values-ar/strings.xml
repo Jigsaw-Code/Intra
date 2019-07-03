@@ -39,7 +39,6 @@
   <string name="explanation_vpn">لقد رصدت أداة Intra شبكة ظاهرية خاصة أخرى على جهازك. وفي حال تفعيل Intra، سيتم إيقاف تلك الشبكة.
     لا تتمتع أداة Intra بنفس مستوى الأمان الذي تتمتع به شبكة ظاهرية خاصة موثوقة.</string>
   <string name="explanation_failing">تحذير: يتعذّر إجراء طلبات البحث. يمكنك اختيار خادم مختلف أو إعادة تشغيل Intra.</string>
-  <string name="button_failing">تجربة خادم مختلف</string>
   <string name="system_details">تفاصيل النظام</string>
   <string name="num_requests">الطلبات حتى الآن</string>
   <string name="num_requests_headline">يتم تنفيذ طلبات بحث نظام أسماء النطاقات عند بحث جهازك عن عنوان IP لاسم أحد النطاقات</string>
@@ -76,6 +75,11 @@
   <string name="server_choice_summary">حاليًا %s</string>
   <string name="server_choice_builtin">خادم مُدمَج</string>
   <string name="server_choice_website_notice">يُرجى زيارة <a href="https://www.example.com/">الموقع الإلكتروني</a> لمراجعة سياسة الخصوصية وأي بنود خدمة سارية.</string>
+  <string name="server_website_button">زيارة الموقع الإلكتروني</string>
+  <string name="try_all_servers">تجربة جميع الخوادم المُدمَجة</string>
+  <string name="checking_servers">جارٍ التحقّق من جميع الخوادم…</string>
+  <string name="found_fastest">أسرع خادم لديك هو %s.</string>
+  <string name="all_servers_failed">تعذّر تحديد خادم نشط: تعذّر الاتصال بجميع الخوادم المُدمَجة.</string>
   <string name="server_choice_custom">عنوان URL لخادم مخصّص</string>
   <string name="server_choice_warning">يجب أن يكون الخادم المخصّص عنوان URL صالحًا يبدأ بالصيغة https://‎</string>
   <string name="excluded_apps">التطبيقات المُستبعَدة</string>

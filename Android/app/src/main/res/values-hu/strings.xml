@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Az Intra másik VPN-t észlelt az eszközön.  Ha engedélyezni az Intrát, a másik VPN le lesz tiltva.
     Az Intra nem annyira biztonságos, mint egy megbízható VPN.</string>
   <string name="explanation_failing">Figyelmeztetés: a lekérdezéseket nem sikerült végrehajtani.  Érdemes lehet másik szervert választani, vagy újraindítani az Intrát.</string>
-  <string name="button_failing">Másik szerver megadása</string>
   <string name="system_details">Rendszeradatok</string>
   <string name="num_requests">Eddigi összes lekérdezés</string>
   <string name="num_requests_headline">A rendszer csak akkor indít DNS-lekérdezéseket, ha a az eszköz egy domaninév IP-címét keresi.</string>
@@ -70,6 +69,11 @@
   <string name="server_choice_summary">Jelenlegi szerver: %s</string>
   <string name="server_choice_builtin">Beépített szerver</string>
   <string name="server_choice_website_notice">Az adatvédelmi irányelveket és a vonatkozó általános szerződési feltételeket a <a href="https://www.example.com/">webhelyükön</a> találja.</string>
+  <string name="server_website_button">Webhely megnyitása</string>
+  <string name="try_all_servers">Próbálja ki az összes beépített szervert</string>
+  <string name="checking_servers">Az összes szerver ellenőrzése</string>
+  <string name="found_fastest">A leggyorsabb szervere: %s.</string>
+  <string name="all_servers_failed">Nem sikerült működő szervert találni: nem sikerült csatlakozni az összes beépített szerverhez.</string>
   <string name="server_choice_custom">Egyéni szerver URL-címe</string>
   <string name="server_choice_warning">Az egyéni szerver címének érvényes https://-címnek kell lennie.</string>
   <string name="excluded_apps">Kizárt alkalmazások</string>

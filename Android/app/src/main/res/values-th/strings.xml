@@ -37,7 +37,6 @@
   <string name="explanation_vpn">Intra ตรวจพบว่ามี VPN อื่นอยู่ในอุปกรณ์ หากคุณเปิดใช้ Intra ระบบจะปิด VPN นี้
     Intra ไม่ได้มีความปลอดภัยเท่ากับ VPN ที่เชื่อถือได้</string>
   <string name="explanation_failing">คำเตือน: คำขอไม่สำเร็จ คุณอาจต้องเลือกเซิร์ฟเวอร์อื่นหรือรีสตาร์ท Intra</string>
-  <string name="button_failing">ลองใช้เซิร์ฟเวอร์อื่น</string>
   <string name="system_details">รายละเอียดของระบบ</string>
   <string name="num_requests">การค้นหาทั้งหมด</string>
   <string name="num_requests_headline">คำขอ DNS จะเกิดขึ้นเมื่ออุปกรณ์ค้นหาที่อยู่ IP ของชื่อโดเมน</string>
@@ -71,6 +70,11 @@
   <string name="server_choice_summary">ปัจจุบันใช้ %s</string>
   <string name="server_choice_builtin">เซิร์ฟเวอร์ในตัว</string>
   <string name="server_choice_website_notice">โปรดเยี่ยมชม<a href="https://www.example.com/">เว็บไซต์</a>เพื่อดูนโยบายความเป็นส่วนตัวและข้อกำหนดในการให้บริการที่เกี่ยวข้อง</string>
+  <string name="server_website_button">เข้าชมเว็บไซต์</string>
+  <string name="try_all_servers">ทดลองเซิร์ฟเวอร์ในตัวทั้งหมด</string>
+  <string name="checking_servers">กำลังตรวจสอบเซิร์ฟเวอร์ทั้งหมด</string>
+  <string name="found_fastest">เซิร์ฟเวอร์ที่เร็วที่สุดคือ %s</string>
+  <string name="all_servers_failed">ไม่พบเซิร์ฟเวอร์ที่ทำงานอยู่: การเชื่อมต่อเซิร์ฟเวอร์ในตัวล้มเหลวทุกเครื่อง</string>
   <string name="server_choice_custom">URL ของเซิร์ฟเวอร์ที่กำหนดเอง</string>
   <string name="server_choice_warning">URL ของเซิร์ฟเวอร์ที่กำหนดเองจะต้องอยู่ในรูปแบบ https:// ที่ถูกต้อง</string>
   <string name="excluded_apps">แอปที่ยกเว้น</string>

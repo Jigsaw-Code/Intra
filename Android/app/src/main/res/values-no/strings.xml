@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra har oppdaget en annen VPN på enheten din.  Hvis du slår på Intra, blir den andre VPN-en slått av.
     Intra er ikke like sikker som en klarert VPN.</string>
   <string name="explanation_failing">Advarsel: Søk mislykkes.  Det kan lønne seg å velge en annen tjener og starte Intra på nytt.</string>
-  <string name="button_failing">Prøv en annen tjener</string>
   <string name="system_details">Systeminformasjon</string>
   <string name="num_requests">Søk over hele levetiden</string>
   <string name="num_requests_headline">DNS-søk finner sted når enheten din slår opp IP-adressen til et domenenavn</string>
@@ -70,6 +69,11 @@
   <string name="server_choice_summary">For øyeblikket %s</string>
   <string name="server_choice_builtin">Innebygd tjener</string>
   <string name="server_choice_website_notice">Gå til <a href="https://www.example.com/">nettstedet deres</a> for å gjennomgå personvernreglene deres og eventuelle gjeldende vilkår for bruk.</string>
+  <string name="server_website_button">Gå til nettstedet</string>
+  <string name="try_all_servers">Prøv alle innebygde tjenere</string>
+  <string name="checking_servers">Sjekker alle tjenerne</string>
+  <string name="found_fastest">Den raskeste tjeneren din er %s.</string>
+  <string name="all_servers_failed">Fant ingen fungerende tjenere – tilkoblingen feilet til alle innebygde tjenere.</string>
   <string name="server_choice_custom">Egendefinert nettadresse til tjener</string>
   <string name="server_choice_warning">Den egendefinerte tjeneren må være en gyldig (https://) nettadresse</string>
   <string name="excluded_apps">Utelukkede apper</string>

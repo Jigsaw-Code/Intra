@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra has detected another VPN on your device.  If you enable Intra, that VPN will be disabled.
     Intra is not as secure as a trusted VPN.</string>
   <string name="explanation_failing">Warning: Queries are failing. You may want to choose a different server or restart Intra.</string>
-  <string name="button_failing">Try a different server</string>
   <string name="system_details">System details</string>
   <string name="num_requests">Lifetime queries</string>
   <string name="num_requests_headline">DNS queries happen when your device looks up the IP address for a domain name</string>
@@ -82,6 +81,11 @@
   <string name="server_choice_summary">Currently %s</string>
   <string name="server_choice_builtin">Built-in server</string>
   <string name="server_choice_website_notice">Please visit <a href="https://www.example.com/">their website</a> to review their privacy policy and any applicable terms of service.</string>
+  <string name="server_website_button">Visit the website</string>
+  <string name="try_all_servers">Try all built-in servers</string>
+  <string name="checking_servers">Checking all servers</string>
+  <string name="found_fastest">Your fastest server is %s.</string>
+  <string name="all_servers_failed">Failed to identify a working server: connection failed to all built-in servers.</string>
   <string name="server_choice_custom">Custom server URL</string>
   <string name="server_choice_warning">Custom server must be a valid https:// URL</string>
   <string name="excluded_apps">Excluded apps</string>

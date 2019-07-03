@@ -38,7 +38,6 @@
   <string name="explanation_vpn">En annan VPN på enheten har identifierats av Intra.  Om du aktiverar Intra inaktiveras din VPN.
     En betrodd VPN är säkrare än Intra.</string>
   <string name="explanation_failing">Varning! Sökfrågor misslyckas.  Du kan byta till en annan server eller starta om Intra.</string>
-  <string name="button_failing">Prova en annan server</string>
   <string name="system_details">Systemuppgifter</string>
   <string name="num_requests">Förfrågningar sedan början</string>
   <string name="num_requests_headline">DNS-förfrågningar innebär att enheten slår upp en domäns IP-adress</string>
@@ -82,6 +81,11 @@
   <string name="server_choice_summary">Nuvarande: %s</string>
   <string name="server_choice_builtin">Inbyggd server</string>
   <string name="server_choice_website_notice">Läs sekretesspolicyn och eventuella tillämpliga användarvillkor på <a href="https://www.example.com/">webbplatsen</a>.</string>
+  <string name="server_website_button">Besök webbplatsen</string>
+  <string name="try_all_servers">Testa alla inbyggda servrar</string>
+  <string name="checking_servers">Alla servrar kontrolleras</string>
+  <string name="found_fastest">Den snabbaste servern är %s.</string>
+  <string name="all_servers_failed">Det gick inte att identifiera någon fungerande server: anslutningen misslyckades för alla inbyggda servrar.</string>
   <string name="server_choice_custom">Anpassad serverwebbadress</string>
   <string name="server_choice_warning">Anpassad server måste ha en giltig https://-adress Webbadress</string>
   <string name="excluded_apps">Uteslutna appar</string>

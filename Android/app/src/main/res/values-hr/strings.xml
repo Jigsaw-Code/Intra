@@ -35,7 +35,6 @@
   <string name="explanation_vpn">Intra je pronašao još jedan VPN na vašem uređaju.  Ako omogućite Intru, taj će se VPN onemogućiti.
     Intra nije siguran kao pouzdani VPN.</string>
   <string name="explanation_failing">Upozorenje: upiti ne uspijevaju.  Možda želite odabrati drugi poslužitelj i ponovno pokrenuti Intru.</string>
-  <string name="button_failing">Pokušajte s drugim poslužiteljem</string>
   <string name="system_details">Pojedinosti sustava</string>
   <string name="num_requests">Zaštićeni upiti</string>
   <string name="num_requests_headline">DNS upiti šalju se kada vaš uređaj traži IP adresu za naziv domene</string>
@@ -70,6 +69,11 @@
   <string name="server_choice_summary">Trenutačni poslužitelj: %s</string>
   <string name="server_choice_builtin">Ugrađeni poslužitelj</string>
   <string name="server_choice_website_notice">Posjetite <a href="https://www.example.com/">web-lokaciju</a> da biste pregledali pravila o privatnosti i primjenjive uvjete pružanja usluge.</string>
+  <string name="server_website_button">Posjeti web-lokaciju</string>
+  <string name="try_all_servers">Isprobaj sve ugrađene poslužitelje</string>
+  <string name="checking_servers">Provjera svih poslužitelja</string>
+  <string name="found_fastest">Vaš najbrži poslužitelj je %s.</string>
+  <string name="all_servers_failed">Poslužitelj koji funkcionira nije pronađen: pokušaj povezivanja sa svim ugrađenim poslužiteljima nije uspio.</string>
   <string name="server_choice_custom">URL prilagođenog poslužitelja</string>
   <string name="server_choice_warning">Prilagođeni poslužitelj treba biti važeći https:// URL</string>
   <string name="excluded_apps">Isključene aplikacije</string>

@@ -34,7 +34,6 @@
   <string name="explanation_offline">Il tuo dispositivo è offline. Intra è in attesa di una connessione di rete.</string>
   <string name="explanation_vpn">Intra ha rilevato un\'altra VPN sul tuo dispositivo. Se attivi Intra, questa VPN verrà disattivata. Intra non è sicura quanto una VPN certificata.</string>
   <string name="explanation_failing">Avviso: le query stanno restituendo un errore.  Ti consigliamo di scegliere un server diverso e riavviare Intra.</string>
-  <string name="button_failing">Prova con un server diverso</string>
   <string name="system_details">Dettagli del sistema</string>
   <string name="num_requests">Query con durata predefinita</string>
   <string name="num_requests_headline">Le query DNS si verificano quando il tuo dispositivo cerca gli indirizzi IP per un nome di dominio</string>
@@ -75,6 +74,11 @@
   <string name="server_choice_summary">Ora %s</string>
   <string name="server_choice_builtin">Server integrato</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">il sito web</a> per esaminare le norme sulla privacy e altri eventuali termini di servizio.</string>
+  <string name="server_website_button">Visita il sito web</string>
+  <string name="try_all_servers">Prova tutti i server integrati</string>
+  <string name="checking_servers">Controllo di tutti i server</string>
+  <string name="found_fastest">Il server più veloce è %s.</string>
+  <string name="all_servers_failed">Impossibile identificare un server in funzione: impossibile connettersi ai server integrati.</string>
   <string name="server_choice_custom">Personalizza URL del server</string>
   <string name="server_choice_warning">Il server personalizzato deve contenere un URL https:// valido</string>
   <string name="excluded_apps">App escluse</string>

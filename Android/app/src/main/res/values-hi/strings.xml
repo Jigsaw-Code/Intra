@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra को आपके डिवाइस पर किसी दूसरे VPN का पता लगा.  अगर आप Intra चालू करते हैं, तो वह VPN बंद कर दिया जाएगा.
     Intra किसी भरोसेमंद VPN जितना सुरक्षित नहीं है.</string>
   <string name="explanation_failing">चेतावनी: क्वेरी विफल हो रही हैं.  आप कोई अलग सर्वर चुन सकते हैं या Intra को रीस्टार्ट कर सकते हैं.</string>
-  <string name="button_failing">कोई अलग सर्वर आज़माएं</string>
   <string name="system_details">सिस्टम की जानकारी</string>
   <string name="num_requests">हमेशा के लिए क्वेरी</string>
   <string name="num_requests_headline">DNS क्वेरी तब होती हैं जब आपका डिवाइस किसी डोमेन नाम के लिए IP पता खोजता है</string>
@@ -76,6 +75,11 @@
   <string name="server_choice_summary">अभी %s</string>
   <string name="server_choice_builtin">पहले से मौजूद सर्वर</string>
   <string name="server_choice_website_notice">उनकी निजता नीति और लागू होने वाली सेवा की शर्तें देखने के लिए, कृपया <a href="https://www.example.com/">उनकी वेबसाइट</a> पर जाएं.</string>
+  <string name="server_website_button">वेबसाइट पर जाएं</string>
+  <string name="try_all_servers">पहले से मौजूद सभी सर्वर आज़माएं</string>
+  <string name="checking_servers">सभी सर्वर जाँचे जा रहे हैं</string>
+  <string name="found_fastest">%s आपका सबसे तेज़ सर्वर है.</string>
+  <string name="all_servers_failed">काम करने वाला कोई सर्वर नहीं मिला: पहले से मौजूद सभी सर्वर से कनेक्शन नहीं हो सका.</string>
   <string name="server_choice_custom">कस्टम सर्वर यूआरएल</string>
   <string name="server_choice_warning">कस्टम सर्वर एक मान्य https:// यूआरएल होना चाहिए</string>
   <string name="excluded_apps">अलग रखे गए ऐप्लिकेशन</string>

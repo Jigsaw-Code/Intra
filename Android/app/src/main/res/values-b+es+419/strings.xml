@@ -34,7 +34,6 @@
   <string name="explanation_offline">Tu dispositivo está sin conexión. Intra está esperando una conexión de red.</string>
   <string name="explanation_vpn">Intra detectó otra VPN en tu dispositivo. Si habilitas Intra, se inhabilitará esa VPN. Intra no ofrece tanta seguridad como una VPN de confianza.</string>
   <string name="explanation_failing">Advertencia: Se están experimentando fallas en las búsquedas. Es posible que te convenga elegir otro servidor o reiniciar Intra.</string>
-  <string name="button_failing">Probar con otro servidor</string>
   <string name="system_details">Detalles del sistema</string>
   <string name="num_requests">Búsquedas totales</string>
   <string name="num_requests_headline">Las consultas de DNS tienen lugar cuando tu dispositivo busca la dirección IP de un nombre de dominio</string>
@@ -68,6 +67,11 @@
   <string name="server_choice_summary">Servidor actual: %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">su sitio web</a> para revisar su Política de Privacidad y todas las Condiciones del Servicio que sean aplicables.</string>
+  <string name="server_website_button">Visitar sitio web</string>
+  <string name="try_all_servers">Probar todos los servidores integrados</string>
+  <string name="checking_servers">Verificando todos los servidores</string>
+  <string name="found_fastest">Tu servidor más rápido es %s.</string>
+  <string name="all_servers_failed">No se pudo identificar un servidor que funcione porque falló la conexión con todos los servidores integrados.</string>
   <string name="server_choice_custom">URL de servidor personalizado</string>
   <string name="server_choice_warning">El servidor personalizado debe ser una URL válida de tipo https://</string>
   <string name="excluded_apps">Apps excluidas</string>

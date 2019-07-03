@@ -38,7 +38,6 @@
   <string name="explanation_vpn">Intra је открила још један VPN на уређају.  Ако омогућите Intra-у, тај VPN ће се онемогућити.
     Intra је мање безбедна од поузданог VPN-а.</string>
   <string name="explanation_failing">Упозорење: Упити не успевају.  Не би било лоше да изаберете други сервер или рестартујете Intra-у.</string>
-  <string name="button_failing">Пробајте са другим сервером</string>
   <string name="system_details">Детаљи о систему</string>
   <string name="num_requests">Укупан број упита</string>
   <string name="num_requests_headline">До DNS упита долази када уређај потражи IP адресу за име домена</string>
@@ -82,6 +81,11 @@
   <string name="server_choice_summary">Тренутно %s</string>
   <string name="server_choice_builtin">Уграђени сервер</string>
   <string name="server_choice_website_notice">Посетите <a href="https://www.example.com/">њихов веб-сајт</a> да бисте прегледали политику приватности и примењиве услове коришћења услуге.</string>
+  <string name="server_website_button">Отвори веб-сајт</string>
+  <string name="try_all_servers">Провери све уграђене сервере</string>
+  <string name="checking_servers">Проверавају се сви сервери</string>
+  <string name="found_fastest">Најбржи сервер је %s.</string>
+  <string name="all_servers_failed">Идентификовање сервера који ради није успело: нисмо успели да успоставимо везу ни са једним уграђеним сервером.</string>
   <string name="server_choice_custom">URL прилагођеног сервера</string>
   <string name="server_choice_warning">Прилагођени сервер мора да буде важећи https:// URL</string>
   <string name="excluded_apps">Изузете апликације</string>

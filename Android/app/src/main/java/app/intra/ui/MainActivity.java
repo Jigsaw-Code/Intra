@@ -49,6 +49,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
@@ -66,7 +67,9 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
+import app.intra.net.doh.Race;
 import app.intra.net.doh.ServerConnection;
+import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.sys.LogWrapper;
 import app.intra.sys.Names;
@@ -74,7 +77,7 @@ import app.intra.sys.PersistentState;
 import app.intra.sys.QueryTracker;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
-import app.intra.ui.settings.ServerChooser;
+import app.intra.ui.settings.ServerApprovalDialogFragment;
 import app.intra.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 import java.net.InetAddress;
@@ -286,6 +289,28 @@ public class MainActivity extends AppCompatActivity
             }
           }
         });
+
+    // The try-all-servers button is normally hidden, and only becomes visible in the failing state.
+    final Button tryAllButton = controlView.findViewById(R.id.try_all_servers_button);
+    // Clicking tryAllButton starts a connection race in a new thread.  This status is
+    // not recorded in persistent state, so if the activity is destroyed and recreated while
+    // the race is running, the race will be lost and the user will have to click the
+    // button again.
+    tryAllButton.setOnClickListener((View view) -> {
+      tryAllButton.setEnabled(false);
+      tryAllButton.setText(R.string.checking_servers);
+      String[] urls = getResources().getStringArray(R.array.urls);
+      // The result needs to be posted to the UI thread before we can make UI changes.
+      new Race(new ServerConnectionFactory(this), urls, (int index) -> view.post(() -> {
+        if (index >= 0) {
+          new ServerApprovalDialogFragment(index).show(getSupportFragmentManager(), "dialog");
+        } else {
+          Toast.makeText(this, R.string.all_servers_failed, Toast.LENGTH_LONG).show();
+        }
+        tryAllButton.setText(R.string.try_all_servers);
+        tryAllButton.setEnabled(true);
+      })).start();
+    });
 
     // Set up click listeners for the info boxes.
     setInfoClicker(R.id.lifetime_queries_box, InfoPage.LIFETIME_QUERIES);
@@ -577,7 +602,7 @@ public class MainActivity extends AppCompatActivity
     indicatorText.setText(status.activationRequested ? R.string.indicator_on : R.string.indicator_off);
 
     // Hide server change button by default
-    final Button changeServerButton = controlView.findViewById(R.id.change_server_button);
+    final Button changeServerButton = controlView.findViewById(R.id.try_all_servers_button);
     changeServerButton.setVisibility(View.INVISIBLE);
 
     // Change status and explanation text
@@ -599,10 +624,6 @@ public class MainActivity extends AppCompatActivity
         statusId = R.string.status_failing;
         explanationId = R.string.explanation_failing;
         changeServerButton.setVisibility(View.VISIBLE);
-        changeServerButton.setOnClickListener((View view) -> {
-          chooseView(R.id.settings);
-          openServerSetting();
-        });
       }
     } else if (isAnotherVpnActive()) {
       statusId = R.string.status_exposed;
@@ -623,7 +644,8 @@ public class MainActivity extends AppCompatActivity
 
     final int colorId;
     if (status.on) {
-      colorId = R.color.accent_good;
+      colorId = status.connectionState != ServerConnection.State.FAILING ? R.color.accent_good :
+          R.color.accent_bad;
     } else if (privateDnsMode == PrivateDnsMode.STRICT) {
       // If the VPN is off but we're in strict mode, show the status in white.  This isn't a bad
       // state, but Intra isn't helping.
@@ -706,14 +728,6 @@ public class MainActivity extends AppCompatActivity
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.settings, settingsFragment)
         .commitNow();
-  }
-
-  private void openServerSetting() {
-    if (settingsFragment != null) {
-      settingsFragment.getPreferenceManager().showDialog(new ServerChooser(this));
-    } else {
-      Log.e(LOG_TAG, "Failed to open server setting");
-    }
   }
 
   private View chooseView(int id) {
