@@ -15,8 +15,6 @@ limitations under the License.
 */
 package app.intra.sys;
 
-import static app.intra.net.doh.ServerConnectionFactory.equalUrls;
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -43,7 +41,6 @@ import app.intra.net.VpnAdapter;
 import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
-import app.intra.net.doh.google.GoogleServerConnection;
 import app.intra.net.go.GoVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
@@ -187,6 +184,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     return serverConnection;
   }
 
+  private boolean equalUrls(String url1, String url2) {
+    return ServerConnectionFactory.equalUrls(this, url1, url2);
+  }
+
   @WorkerThread
   private void updateServerConnection() {
     // This method consists of three steps:
@@ -228,10 +229,6 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 
     if (newConnection != null) {
-      if (newConnection instanceof GoogleServerConnection &&
-          ((GoogleServerConnection)newConnection).didBootstrapWithFallback()) {
-        bootstrap.putString(Names.FALLBACK.name(), Names.ALTERNATE_HOSTNAME.name());
-      }
       controller.onConnectionStateChanged(this, ServerConnection.State.WORKING);
 
       // Measure bootstrap delay.

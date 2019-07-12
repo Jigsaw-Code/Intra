@@ -16,12 +16,10 @@ limitations under the License.
 package app.intra.net.doh;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.util.Log;
 import app.intra.R;
-import app.intra.net.doh.google.GoogleServerConnection;
-import app.intra.net.doh.google.GoogleServerDatabase;
+import app.intra.sys.PersistentState;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -43,14 +41,10 @@ public class ServerConnectionFactory {
   /**
    * @return True if these URLs represents the same server.
    */
-  public static boolean equalUrls(String url1, String url2) {
-    // null and "" are equivalent, representing the default server.
-    if (url1 == null) {
-      url1 = "";
-    }
-    if (url2 == null) {
-      url2 = "";
-    }
+  public static boolean equalUrls(Context context, String url1, String url2) {
+    // Convert null and "" into "https://dns.google/dns-query", which is the default URL.
+    url1 = PersistentState.expandUrl(context, url1);
+    url2 = PersistentState.expandUrl(context, url2);
     return url1.equals(url2);
   }
 
@@ -77,13 +71,7 @@ public class ServerConnectionFactory {
   }
 
   public ServerConnection get(String url) {
-    if (equalUrls(url, null)) {
-      // Use the Google Resolver
-      AssetManager assets = context.getAssets();
-      return GoogleServerConnection.get(new GoogleServerDatabase(context, assets), null);
-    }
-
-    return StandardServerConnection.get(url, getKnownIps(url));
+    return StandardServerConnection.get(PersistentState.expandUrl(context, url), getKnownIps(url));
   }
 }
 
