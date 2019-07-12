@@ -34,6 +34,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceDialogFragmentCompat;
 import app.intra.R;
+import app.intra.sys.PersistentState;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -195,15 +196,11 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
 
         // Check if we are using one of the built-in servers.
         int index = -1;
-        if (url == null || url.isEmpty()) {
-            // TODO: Remove special case once Google DNS moves to standard DOH.
-            index = 0;
-        } else {
-            for (int i = 1; i < urls.length; ++i) {
-                if (urls[i].equals(url)) {
-                    index = i;
-                    break;
-                }
+        String expanded = PersistentState.expandUrl(getContext(), url);
+        for (int i = 0; i < urls.length; ++i) {
+            if (urls[i].equals(expanded)) {
+                index = i;
+                break;
             }
         }
 

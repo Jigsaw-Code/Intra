@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Each DOH server is defined by a URL (which is the actual DOH endpoint).  However, Google DNS
-   uses a pre-standardization version of DOH, and has additional bootstrap optimizations beyond
-   standard URL connection.  We indicate this special case by leaving the URL blank, and maintaining
-   this "domain0" value instead. TODO: Remove "domain0" once Google launches standard DOH. -->
-  <string name="domain0" translatable="false">dns.google.com</string>
-  <string name="url0" translatable="false"></string>
+   was previously configured by domain, in early versions of Intra.-->
+  <string name="legacy_domain0" translatable="false">dns.google.com</string>
+  <string name="url0" translatable="false">https://dns.google/dns-query</string>
   <string name="name0" translatable="false">Google Public DNS</string>
-  <string name="ips0" translatable="false"></string>
+  <string name="ips0" translatable="false">8.8.8.8,8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844</string>
   <string name="description0" description="Describes Google's DNS resolver (i.e. DNS server).">
     Large global resolver operated by Google.
   </string>

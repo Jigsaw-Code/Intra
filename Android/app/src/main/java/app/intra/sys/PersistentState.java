@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import app.intra.R;
 import app.intra.ui.settings.Untemplate;
 import java.net.MalformedURLException;
@@ -27,6 +28,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 /**
  * Static class representing on-disk storage of mutable state.  Collecting this all in one class
@@ -78,7 +80,7 @@ public class PersistentState {
 
     // There is no URL setting, so read the legacy server name.
     SharedPreferences settings = getInternalState(context);
-    String defaultDomain = context.getResources().getString(R.string.domain0);
+    String defaultDomain = context.getResources().getString(R.string.legacy_domain0);
     String domain = settings.getString(SERVER_KEY, defaultDomain);
 
     if (domain == null) {
@@ -88,7 +90,6 @@ public class PersistentState {
     }
 
     // Special case: url 0 is the nonstandard DoH service on dns.google.com.
-    // TODO: Remove this special case once dns.google.com transitions to standard DoH.
     String[] urls = context.getResources().getStringArray(R.array.urls);
     String url = null;
     if (domain.equals(defaultDomain)) {
@@ -136,12 +137,17 @@ public class PersistentState {
     }
   }
 
-  public static String getServerName(Context context) {
-    String url = getServerUrl(context);
+  // Converts a null url into the actual default url.  Otherwise, returns url unmodified.
+  public static @NonNull String expandUrl(Context context, @Nullable String url) {
     if (url == null || url.isEmpty()) {
-      return context.getResources().getString(R.string.domain0);
+      return context.getResources().getString(R.string.url0);
     }
-    return extractHost(url);
+    return url;
+  }
+
+  // Returns a domain representing the current configured server URL, for use as a display name.
+  public static String getServerName(Context context) {
+    return extractHost(expandUrl(context, getServerUrl(context)));
   }
 
   /**
@@ -151,12 +157,10 @@ public class PersistentState {
    * built-in servers.
    */
   public static String extractHostForAnalytics(Context context, String url) {
-    if (url == null || url.isEmpty()) {
-      return context.getResources().getString(R.string.domain0);
-    }
+    String expanded = expandUrl(context, url);
     String[] urls = context.getResources().getStringArray(R.array.urls);
-    if (Arrays.asList(urls).contains(url)) {
-      return extractHost(url);
+    if (Arrays.asList(urls).contains(expanded)) {
+      return extractHost(expanded);
     }
     return Names.CUSTOM_SERVER.name();
   }

@@ -22,6 +22,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import androidx.preference.DialogPreference;
 import app.intra.R;
+import app.intra.sys.PersistentState;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
@@ -34,7 +35,6 @@ import java.util.Locale;
 public class ServerChooser extends DialogPreference {
   private String url;
   private String summaryTemplate;
-  private String defaultDomain;
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public ServerChooser(Context context) {
@@ -66,8 +66,6 @@ public class ServerChooser extends DialogPreference {
     setDialogLayoutResource(R.layout.servers);
     summaryTemplate =
         context.getResources().getString(R.string.server_choice_summary);
-    defaultDomain =
-        context.getResources().getString(R.string.domain0);
     setPositiveButtonText(R.string.intro_accept);
   }
 
@@ -94,16 +92,13 @@ public class ServerChooser extends DialogPreference {
 
   // Updates the "Currently <servername>" summary under the title.
   private void updateSummary(String url) {
+    url = PersistentState.expandUrl(getContext(), url);
     String domain = null;
-    if (url == null || url.isEmpty()) {
-      domain = defaultDomain;
-    } else {
-      try {
-        URL parsed = new URL(url);
-        domain = parsed.getHost();
-      } catch (MalformedURLException e) {
-        // Leave domain null.
-      }
+    try {
+      URL parsed = new URL(url);
+      domain = parsed.getHost();
+    } catch (MalformedURLException e) {
+      // Leave domain null.
     }
     if (domain != null) {
       setSummary(String.format(Locale.ROOT, summaryTemplate, domain));
