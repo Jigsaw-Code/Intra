@@ -4,7 +4,7 @@
   <string name="description1">Von Cloudflare betriebener großer globaler Resolver.</string>
   <string name="description2">Großer globaler Resolver von IMP und Packet Clearinghouse.  Blockt bösartige Domains.</string>
   <string name="description3">Globaler Anbieter für DNS-Filterung.  Blockt bösartige Domains.</string>
-  <string name="description4">Sever in Österreich, der von einer gemeinnützigen Datenschutzgruppe betrieben wird.</string>
+  <string name="description4">Server in Österreich, der von einer gemeinnützigen Datenschutzgruppe betrieben wird.</string>
   <string name="description5">Server in den Niederlanden, der von einer Firma für Open-Source-DNS-Software betrieben wird.</string>
   <string name="description6">Betrieben von xTom und anderen internationalen Hostanbietern.  Verwendet das CDN von Cloudflare.</string>
   <string name="description7">Server in Japan, der von einem ISP betrieben wird.</string>
