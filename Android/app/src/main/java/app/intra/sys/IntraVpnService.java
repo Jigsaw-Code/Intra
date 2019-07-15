@@ -58,9 +58,6 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   private static final String WARNING_CHANNEL_ID = "warning";
   private static final String NO_PENDING_CONNECTION = "This value is not a possible URL.";
 
-  // Factory for producing DoH connections.
-  private final ServerConnectionFactory dohFactory = new ServerConnectionFactory(this);
-  
   // The network manager is populated in onStartCommand.  Its main function is to enable delayed
   // initialization if the network is initially disconnected.
   private NetworkManager networkManager;
@@ -187,6 +184,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     return serverConnection;
   }
 
+  private boolean equalUrls(String url1, String url2) {
+    return ServerConnectionFactory.equalUrls(this, url1, url2);
+  }
+
   @WorkerThread
   private void updateServerConnection() {
     // This method consists of three steps:
@@ -196,12 +197,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
     // Step 1: Check if an update is necessary and set a flag (pendingUrl).
     synchronized (this) {
-      if (serverConnection != null && dohFactory.equalUrls(url, serverConnection.getUrl())) {
+      if (serverConnection != null && equalUrls(url, serverConnection.getUrl())) {
         // Connection state is consistent.  No need for an update.
         return;
       }
 
-      if (dohFactory.equalUrls(url, pendingUrl)) {
+      if (equalUrls(url, pendingUrl)) {
         // There's a pending update for this URL already.
         return;
       }
@@ -225,7 +226,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     bootstrap.putString(Names.SERVER.name(),
         PersistentState.extractHostForAnalytics(this, url));
     long beforeBootstrap = SystemClock.elapsedRealtime();
-    final ServerConnection newConnection = dohFactory.get(url);
+    final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 
     if (newConnection != null) {
       if (newConnection instanceof GoogleServerConnection &&
@@ -247,12 +248,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     synchronized (this) {
       pendingUrl = NO_PENDING_CONNECTION;
 
-      if (serverConnection != null && dohFactory.equalUrls(url, serverConnection.getUrl())) {
+      if (serverConnection != null && equalUrls(url, serverConnection.getUrl())) {
         // Connection state has somehow become consistent, so an update is no longer needed.
         return;
       }
 
-      if (newConnection != null && dohFactory.equalUrls(url, newConnection.getUrl())) {
+      if (newConnection != null && equalUrls(url, newConnection.getUrl())) {
         // Current connection state is not consistent, but newConnection is consistent with the
         // current URL, so perform the update.
         serverConnection = newConnection;

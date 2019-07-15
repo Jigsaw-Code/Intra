@@ -44,7 +44,7 @@ public class ServerConnectionFactory {
   /**
    * @return True if these URLs represents the same server.
    */
-  public boolean equalUrls(String url1, String url2) {
+  public static boolean equalUrls(Context context, String url1, String url2) {
     // Convert null and "" into "https://dns.google/dns-query", which is the default URL.
     url1 = PersistentState.expandUrl(context, url1);
     url2 = PersistentState.expandUrl(context, url2);
@@ -78,7 +78,7 @@ public class ServerConnectionFactory {
   }
 
   public ServerConnection get(final String url) {
-    if (equalUrls(url, null)) {
+    if (equalUrls(context, url, null)) {
       // Try to use standard DOH to the default server (i.e. Google).
       ServerConnection s = getStandardConnection(PersistentState.expandUrl(context, url));
       if (s != null) {
