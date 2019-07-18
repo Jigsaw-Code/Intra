@@ -306,7 +306,12 @@ public class MainActivity extends AppCompatActivity
       // The result needs to be posted to the UI thread before we can make UI changes.
       new Race(new ServerConnectionFactory(this), urls, (int index) -> view.post(() -> {
         if (index >= 0) {
-          new ServerApprovalDialogFragment(index).show(getSupportFragmentManager(), "dialog");
+          // By the time this callback runs, MainActivity may have been stopped.  In this situation
+          // showing a DialogFragment directly causes an IllegalStateException.  Using
+          // commitAllowingStateLoss() avoids this problem.
+          getSupportFragmentManager().beginTransaction()
+              .add(new ServerApprovalDialogFragment(), "dialog")
+              .commitAllowingStateLoss();
         } else {
           Toast.makeText(this, R.string.all_servers_failed, Toast.LENGTH_LONG).show();
           analytics.logEvent(Names.TRY_ALL_FAILED.name(), null);
