@@ -144,7 +144,7 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
     StatsListener listener = null;
     try {
       if (alwaysSplitHttps && remoteServerPort == HTTPS_PORT) {
-        listener = splitDirect(upload, download, sessionUpload, socketUpload);
+        listener = runWithImmediateSplit(upload, download, sessionUpload, socketUpload);
       } else {
         listener = runPipes(upload, download, remoteServerPort, httpsTimeoutMs(tcpHandshakeMs));
         // We consider a termination event as a potentially recoverable failure if
@@ -479,7 +479,7 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
    * @throws InterruptedException if this thread is interrupted.
    * @throws IOException if the first upstream transfer failed.
    */
-  private StatsListener splitDirect(final Pipe upload, final Pipe download,
+  private StatsListener runWithImmediateSplit(final Pipe upload, final Pipe download,
       final InputStream client, final OutputStream server)
       throws InterruptedException, IOException {
     byte[] buf = new byte[chooseLimit()];

@@ -42,6 +42,8 @@ class SocksServer extends BasicSocksProxyServer {
 
   private final Context context;
 
+  // Whether to attempt to fix connectivity on networks with broken TLS behavior.
+  // If true, we tell the SocksHandler to use first-segment splitting for all HTTPS connections.
   private boolean useTlsWorkaround = false;
   void enableTlsWorkaround(boolean v) {
     useTlsWorkaround = v;
