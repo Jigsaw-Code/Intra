@@ -19,8 +19,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import app.intra.net.VpnAdapter;
+import app.intra.net.socks.TLSProbe.Result;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.LogWrapper;
 import java.io.IOException;
@@ -123,11 +125,19 @@ public class SocksVpnAdapter extends VpnAdapter {
       return;
     }
 
-    SocksServer proxy = new SocksServer(context, fakeDns, trueDns);
+    final SocksServer proxy = new SocksServer(context, fakeDns, trueDns);
     proxy.setSupportMethods(new NoAuthenticationRequiredMethod());
     proxy.setBindAddr(localhost);
     proxy.setBindPort(0);  // Uses our custom SocksServer's dynamic port feature.
     proxy.setBufferSize(BUFFER_SIZE);
+
+    // The TLS probe could be slow, so we run it asynchronously to avoid delaying VPN setup.
+    new Thread(() -> {
+      Result r = TLSProbe.run(context, TLSProbe.DEFAULT_URL);
+      LogWrapper.log(Log.INFO, LOG_TAG, "TLS probe result: " + r.name());
+      proxy.enableTlsWorkaround(r == Result.TLS_FAILED);
+    }).start();
+
     try {
       proxy.start();
     } catch (IOException e) {
