@@ -69,7 +69,7 @@ class SocksServer extends BasicSocksProxyServer {
       OverrideSocksHandler override = (OverrideSocksHandler)socksHandler;
       override.setDns(fakeDns, trueDns);
       override.setContext(context);
-      override.setAlwaysSplitHttps(useTlsWorkaround);
+      override.setAlwaysSplitClientHello(useTlsWorkaround);
 
     } else {
       LogWrapper.log(Log.WARN, LOG_TAG, "Foreign handler");

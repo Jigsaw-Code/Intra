@@ -41,8 +41,10 @@ class TLSProbe {
 
   static Result run(Context context, String url) {
     Result r = probe(url);
-    if (r == Result.TLS_FAILED && context != null) {
-      FirebaseAnalytics.getInstance(context).logEvent(Names.TLS_FAILED.name(), new Bundle());
+    if (context != null) {
+      Bundle b = new Bundle();
+      b.putString(Names.RESULT.name(), r.name());
+      FirebaseAnalytics.getInstance(context).logEvent(Names.TLS_PROBE.name(), b);
     }
     return r;
   }

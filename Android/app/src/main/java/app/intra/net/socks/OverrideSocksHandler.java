@@ -76,9 +76,9 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
   }
 
   // If true, apply splitting on HTTPS automatically, without waiting for an error condition.
-  private boolean alwaysSplitHttps = false;
-  void setAlwaysSplitHttps(boolean v) {
-    alwaysSplitHttps = v;
+  private boolean alwaysSplitClientHello = false;
+  void setAlwaysSplitClientHello(boolean v) {
+    alwaysSplitClientHello = v;
   }
 
   @Override
@@ -143,7 +143,7 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
 
     StatsListener listener = null;
     try {
-      if (alwaysSplitHttps && remoteServerPort == HTTPS_PORT) {
+      if (alwaysSplitClientHello && remoteServerPort == HTTPS_PORT) {
         listener = runWithImmediateSplit(upload, download, sessionUpload, socketUpload);
       } else {
         listener = runPipes(upload, download, remoteServerPort, httpsTimeoutMs(tcpHandshakeMs));
