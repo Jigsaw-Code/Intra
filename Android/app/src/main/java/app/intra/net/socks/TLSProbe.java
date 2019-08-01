@@ -32,7 +32,11 @@ class TLSProbe {
       URL url = new URL(spec);
       url.openConnection().connect();
     } catch (SSLHandshakeException e) {
-      return Result.TLS_FAILED;
+      if (e.getMessage().toLowerCase().contains("cert")) {
+        return Result.TLS_FAILED;
+      } else {
+        return Result.OTHER_FAILED;
+      }
     } catch (IOException e) {
       return Result.OTHER_FAILED;
     }
