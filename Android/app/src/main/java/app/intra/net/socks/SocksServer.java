@@ -42,6 +42,13 @@ class SocksServer extends BasicSocksProxyServer {
 
   private final Context context;
 
+  // Whether to attempt to fix connectivity on networks with broken TLS behavior.
+  // If true, we tell the SocksHandler to use first-segment splitting for all HTTPS connections.
+  private boolean useTlsWorkaround = false;
+  void enableTlsWorkaround(boolean v) {
+    useTlsWorkaround = v;
+  }
+
   SocksServer(Context context, InetSocketAddress fakeDns, InetSocketAddress trueDns) {
     // BasicSocksProxyServer uses a default thread pool of size 100, resulting in a limit of 100
     // active sockets, including DNS queries.  Once the limit is reached, subsequent new sockets
@@ -62,6 +69,8 @@ class SocksServer extends BasicSocksProxyServer {
       OverrideSocksHandler override = (OverrideSocksHandler)socksHandler;
       override.setDns(fakeDns, trueDns);
       override.setContext(context);
+      override.setAlwaysSplitClientHello(useTlsWorkaround);
+
     } else {
       LogWrapper.log(Log.WARN, LOG_TAG, "Foreign handler");
     }

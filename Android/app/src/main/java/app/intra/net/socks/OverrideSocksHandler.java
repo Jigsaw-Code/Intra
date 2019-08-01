@@ -15,12 +15,10 @@ limitations under the License.
 */
 package app.intra.net.socks;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
 import app.intra.sys.Names;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.analytics.FirebaseAnalytics.Param;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -52,9 +50,6 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
   private static final String UPLOAD = "upload";
   private static final String DOWNLOAD = "download";
 
-  // App context, used to emit Firebase Analytics events
-  private Context context = null;
-
   // On retries, limit the first packet to a random length 32-64 bytes (inclusive).
   private static final int MIN_SPLIT = 32, MAX_SPLIT = 64;
   private static final Random RANDOM = new Random();
@@ -78,6 +73,12 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
     // False positives trigger an unnecessary retry, which can make connections slower, so they are
     // worth avoiding.  However, overly long timeouts make retry slower and less useful.
     return 2 * tcpHandshakeMs + 1200;
+  }
+
+  // If true, apply splitting on HTTPS automatically, without waiting for an error condition.
+  private boolean alwaysSplitClientHello = false;
+  void setAlwaysSplitClientHello(boolean v) {
+    alwaysSplitClientHello = v;
   }
 
   @Override
@@ -142,37 +143,41 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
 
     StatsListener listener = null;
     try {
-      listener = runPipes(upload, download, remoteServerPort, httpsTimeoutMs(tcpHandshakeMs));
-      // We consider a termination event as a potentially recoverable failure if
-      // (1) It is HTTPS
-      // (2) Some data has been uploaded (i.e. the TLS ClientHello)
-      // (3) No data has been received
-      // In this situation, the listener's uploadBuffer should be nonempty.
-      if (remoteServerPort == HTTPS_PORT && listener.uploadBytes > 0 && listener.downloadBytes == 0
-          && listener.uploadBuffer != null) {
-        // To attempt recovery, we
-        // (1) Close the remote socket (which has already failed)
-        // (2) Open a new one
-        // (3) Connect the new remote socket to the existing StreamPipe
-        // (4) Retry the ClientHello via splitRetry
-        socket.close();
-        download.stop();
-        socket = new Socket(remoteServerAddress, remoteServerPort);
-        socket.setTcpNoDelay(true);
-        socketDownload = socket.getInputStream();
-        socketUpload = socket.getOutputStream();
+      if (alwaysSplitClientHello && remoteServerPort == HTTPS_PORT) {
+        listener = runWithImmediateSplit(upload, download, sessionUpload, socketUpload);
+      } else {
+        listener = runPipes(upload, download, remoteServerPort, httpsTimeoutMs(tcpHandshakeMs));
+        // We consider a termination event as a potentially recoverable failure if
+        // (1) It is HTTPS
+        // (2) Some data has been uploaded (i.e. the TLS ClientHello)
+        // (3) No data has been received
+        // In this situation, the listener's uploadBuffer should be nonempty.
+        if (remoteServerPort == HTTPS_PORT && listener.uploadBytes > 0 && listener.downloadBytes == 0
+            && listener.uploadBuffer != null) {
+          // To attempt recovery, we
+          // (1) Close the remote socket (which has already failed)
+          // (2) Open a new one
+          // (3) Connect the new remote socket to the existing StreamPipe
+          // (4) Retry the ClientHello via splitRetry
+          socket.close();
+          download.stop();
+          socket = new Socket(remoteServerAddress, remoteServerPort);
+          socket.setTcpNoDelay(true);
+          socketDownload = socket.getInputStream();
+          socketUpload = socket.getOutputStream();
 
-        download = new StreamPipe(socketDownload, sessionDownload, DOWNLOAD);
-        download.setBufferSize(BUFFER_SIZE);
+          download = new StreamPipe(socketDownload, sessionDownload, DOWNLOAD);
+          download.setBufferSize(BUFFER_SIZE);
 
-        // upload is blocked in a read from sessionUpload, which cannot be canceled.
-        // However, we have modified StreamPipe to have a setter for the destination stream, so
-        // that the next transfer will be uploaded into the new socket instead of the old one.
-        upload.setDestination(socketUpload);
+          // upload is blocked in a read from sessionUpload, which cannot be canceled.
+          // However, we have modified StreamPipe to have a setter for the destination stream, so
+          // that the next transfer will be uploaded into the new socket instead of the old one.
+          upload.setDestination(socketUpload);
 
-        // Retry the connection while splitting the first flight into smaller packets.
-        // The retry doesn't trigger further retries if it fails, so it doesn't apply a timeout.
-        listener = splitRetry(upload, download, socketUpload, listener);
+          // Retry the connection while splitting the first flight into smaller packets.
+          // The retry doesn't trigger further retries if it fails, so it doesn't apply a timeout.
+          listener = splitRetry(upload, download, socketUpload, listener);
+        }
       }
     } catch (InterruptedException e) {
       // An interrupt is a normal lifecycle event and indicates that we should perform a clean
@@ -382,7 +387,6 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
    * @param download A pipe that has not yet been started
    * @param port The remote server port number
    * @param httpsTimeoutMs How long to wait for a response from an HTTPS server.
-   * @throws IOException if there is a network error
    * @throws InterruptedException if this thread is interrupted.
    * @return A StatsListener containing final stats on the socket, which has now been closed.
    */
@@ -403,6 +407,11 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
       listener.await();
     }
     return listener;
+  }
+
+  private int chooseLimit() {
+    // Limit the first segment to 32-64 bytes and at most half of uploadBuffer.
+    return MIN_SPLIT + (Math.abs(RANDOM.nextInt()) % (MAX_SPLIT + 1 - MIN_SPLIT));
   }
 
   /**
@@ -434,8 +443,7 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
       final int length = listener.uploadBuffer.position();
       // A typical offset is 4 bytes.
       final int offset = listener.uploadBuffer.arrayOffset();
-      // Limit the first segment to 32-64 bytes and at most half of uploadBuffer.
-      final int limit = MIN_SPLIT + (Math.abs(RANDOM.nextInt()) % (MAX_SPLIT + 1 - MIN_SPLIT));
+      final int limit = chooseLimit();
       final int split = Math.min(limit, length / 2);
       // Record the split for performance analysis.
       event.putInt(Names.SPLIT.name(), split);
@@ -458,6 +466,35 @@ public class OverrideSocksHandler extends UdpOverrideSocksHandler {
       event.putInt(Names.RETRY.name(), 0);
     }
     FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), event);
+    return listener;
+  }
+
+  /**
+   * Connects pipes like runPipes, but splits the first upstream segment.
+   * @param upload A new pipe on which no data has been transferred
+   * @param download A new pipe on which no data has been transfered
+   * @param client The InputStream half of upload.
+   * @param server The OutputStream half of upload.
+   * @return A new StatsListener for the connected pipes.
+   * @throws InterruptedException if this thread is interrupted.
+   * @throws IOException if the first upstream transfer failed.
+   */
+  private StatsListener runWithImmediateSplit(final Pipe upload, final Pipe download,
+      final InputStream client, final OutputStream server)
+      throws InterruptedException, IOException {
+    byte[] buf = new byte[chooseLimit()];
+
+    // Transfer the first segment.
+    int n = client.read(buf);
+    server.write(buf, 0, n);
+
+    // Let runPipes handle the rest.
+    StatsListener listener = runPipes(upload, download, HTTPS_PORT, -1);
+
+    // Account for the first segment.
+    listener.uploadBytes += n;
+    listener.uploadCount += 1;
+
     return listener;
   }
 }
