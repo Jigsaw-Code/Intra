@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity
           // showing a DialogFragment directly causes an IllegalStateException.  Using
           // commitAllowingStateLoss() avoids this problem.
           getSupportFragmentManager().beginTransaction()
-              .add(new ServerApprovalDialogFragment(), "dialog")
+              .add(new ServerApprovalDialogFragment(index), "dialog")
               .commitAllowingStateLoss();
         } else {
           Toast.makeText(this, R.string.all_servers_failed, Toast.LENGTH_LONG).show();
