@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.net.dns;
 
+import java.nio.BufferUnderflowException;
 import org.junit.Test;
 
 import java.net.ProtocolException;
@@ -252,5 +253,31 @@ public class DnsPacketTest {
     assertEquals("cdn.krxd.net.", p.getQueryName());
     assertEquals(28, p.getQueryType());
     assertEquals(0, p.getResponseAddresses().size());
+  }
+
+  @Test
+  public void testInfiniteLoop() {
+    // Regression test for stack overflow in name compression.
+    byte[] data = {
+        -107, -6,    // [0-1]   query ID
+        -127, -128,  // [2-3]   flags: RD=1, QR=1, RA=1
+        0, 1,        // [4-5]   QDCOUNT (number of queries) = 1
+        0, 0,        // [6-7]   ANCOUNT (number of answers) = 2
+        0, 0,        // [8-9]   NSCOUNT (number of authoritative answers) = 0
+        0, 0,        // [10-11] ARCOUNT (number of additional records) = 0
+        // First query, encoded as an infinite loop (example.example.ex....)
+        7, 'e', 'x', 'a', 'm', 'p', 'l', 'e',
+        -64, 12,
+        0,  // null terminator of FQDN (DNS root)
+        0, 1,  // QTYPE = A
+        0, 1  // QCLASS = IN (Internet)
+    };
+
+    try {
+      new DnsPacket(data);
+      fail("Expected parsing to fail");
+    } catch (ProtocolException p) {
+      assertTrue(p.getCause() instanceof BufferUnderflowException);
+    }
   }
 }
