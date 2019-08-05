@@ -78,6 +78,8 @@ public class DnsPacket {
       labelLength = buffer.get();
     }
     if (labelLength < 0) {
+      // The last byte we read is now a barrier: we should not read past that byte again.
+      final int barrier = buffer.position() - 1;
       // This is a compressed label, starting with a 14-bit backwards offset consisting of
       // the lower 6 bits from the first byte and all 8 from the second.
       final int OFFSET_HIGH_BITS_START = 0;
@@ -87,9 +89,9 @@ public class DnsPacket {
       byte offsetLowBits = buffer.get();
       int offset = (offsetHighBits << 8) | (offsetLowBits & 0xFF);
       byte[] data = buffer.array();
-      // Only allow references that terminate before the current point, to avoid stack
+      // Only allow references that terminate before the barrier, to avoid stack
       // overflow attacks.
-      int delta = buffer.position() - offset;
+      int delta = barrier - offset;
       if (offset < 0 || delta < 0) {
         throw new ProtocolException("Bad compressed name");
       }
@@ -172,7 +174,9 @@ public class DnsPacket {
       authority = readRecords(buffer, numAuthorities);
       additional = readRecords(buffer, numAdditional);
     } catch (BufferUnderflowException e) {
-      throw new ProtocolException("Packet too short");
+      ProtocolException p = new ProtocolException("Packet too short");
+      p.initCause(e);
+      throw p;
     }
   }
 
