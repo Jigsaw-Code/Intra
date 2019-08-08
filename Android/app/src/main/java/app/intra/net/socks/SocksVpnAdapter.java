@@ -133,7 +133,7 @@ public class SocksVpnAdapter extends VpnAdapter {
 
     // The TLS probe could be slow, so we run it asynchronously to avoid delaying VPN setup.
     new Thread(() -> {
-      Result r = TLSProbe.run(context, TLSProbe.DEFAULT_URL);
+      Result r = TLSProbe.run(context);
       LogWrapper.log(Log.INFO, LOG_TAG, "TLS probe result: " + r.name());
       proxy.enableTlsWorkaround(r == Result.TLS_FAILED);
     }).start();

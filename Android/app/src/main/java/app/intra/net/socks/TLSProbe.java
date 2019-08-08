@@ -19,17 +19,17 @@ import android.content.Context;
 import android.os.Bundle;
 import app.intra.sys.Names;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.io.IOException;
 import java.net.URL;
 import javax.net.ssl.SSLHandshakeException;
 
 // Static utility to check whether the user's connection supports standard TLS sockets.
 class TLSProbe {
-  static final String DEFAULT_URL = "https://www.google.com/";
   enum Result {SUCCESS, TLS_FAILED, OTHER_FAILED}
-  private static Result probe(String spec) {
+  private static Result probe(String server) {
     try {
-      URL url = new URL(spec);
+      URL url = new URL("https://" + server);
       url.openConnection().connect();
     } catch (SSLHandshakeException e) {
       if (e.getMessage().toLowerCase().contains("cert")) {
@@ -43,13 +43,27 @@ class TLSProbe {
     return Result.SUCCESS;
   }
 
-  static Result run(Context context, String url) {
-    Result r = probe(url);
-    if (context != null) {
-      Bundle b = new Bundle();
-      b.putString(Names.RESULT.name(), r.name());
-      FirebaseAnalytics.getInstance(context).logEvent(Names.TLS_PROBE.name(), b);
+  static Result run(Context context, String[] servers) {
+    Result worstResult = Result.SUCCESS;
+    for (String server : servers) {
+      Result r = probe(server);
+      if (context != null) {
+        Bundle b = new Bundle();
+        b.putString(Names.RESULT.name(), r.name());
+        b.putString(Names.SERVER.name(), server);
+        FirebaseAnalytics.getInstance(context).logEvent(Names.TLS_PROBE.name(), b);
+      }
+      if (r == Result.TLS_FAILED ||
+          (r == Result.OTHER_FAILED && worstResult == Result.SUCCESS)) {
+        worstResult = r;
+      }
     }
-    return r;
+    return worstResult;
+  }
+
+  static Result run(Context context) {
+    String[] domains = FirebaseRemoteConfig.getInstance()
+        .getString("tls_probe_servers").split(",");
+    return run(context, domains);
   }
 }

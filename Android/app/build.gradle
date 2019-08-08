@@ -125,6 +125,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:16.2.5'  // Last version to support API <17
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.crashlytics.sdk.android:crashlytics-ndk:2.1.0'
+    implementation 'com.google.firebase:firebase-config:16.5.0' // Last version to support API <16
     // For Sockslib
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-android:1.7.25'

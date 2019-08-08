@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.util.Log;
 import app.intra.ui.MainActivity;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 /**
  * Broadcast receiver that runs on boot, and also when the app is restarted due to an update.
@@ -46,7 +47,8 @@ public class AutoStarter extends BroadcastReceiver {
         context.startActivity(startIntent);
         return;
       }
-      controller.start(context);
+      // Fetch remote config, then start the VPN.
+      RemoteConfig.update().addOnCompleteListener(task -> controller.start(context));
     }
   }
 }
