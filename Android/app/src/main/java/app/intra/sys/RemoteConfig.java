@@ -20,7 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 /**
- * Utility class for initializing Firebase Remote Config.
+ * Utility class for initializing Firebase Remote Config.  Remote Configuration allows us to conduct
+ * A/B tests of experimental functionality, and to enable or disable features without having to
+ * release a new version of the app.
  */
 public class RemoteConfig {
   public static Task<Boolean> update() {

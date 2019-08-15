@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.util.Log;
 import app.intra.ui.MainActivity;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 /**
  * Broadcast receiver that runs on boot, and also when the app is restarted due to an update.

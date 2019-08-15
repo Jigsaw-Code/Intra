@@ -27,9 +27,9 @@ import javax.net.ssl.SSLHandshakeException;
 // Static utility to check whether the user's connection supports standard TLS sockets.
 class TLSProbe {
   enum Result {SUCCESS, TLS_FAILED, OTHER_FAILED}
-  private static Result probe(String server) {
+  private static Result probe(String target) {
     try {
-      URL url = new URL("https://" + server);
+      URL url = new URL("https://" + target);
       url.openConnection().connect();
     } catch (SSLHandshakeException e) {
       if (e.getMessage().toLowerCase().contains("cert")) {
@@ -43,14 +43,14 @@ class TLSProbe {
     return Result.SUCCESS;
   }
 
-  static Result run(Context context, String[] servers) {
+  static Result run(Context context, String[] targets) {
     Result worstResult = Result.SUCCESS;
-    for (String server : servers) {
-      Result r = probe(server);
+    for (String target : targets) {
+      Result r = probe(target);
       if (context != null) {
         Bundle b = new Bundle();
         b.putString(Names.RESULT.name(), r.name());
-        b.putString(Names.SERVER.name(), server);
+        b.putString(Names.SERVER.name(), target);
         FirebaseAnalytics.getInstance(context).logEvent(Names.TLS_PROBE.name(), b);
       }
       if (r == Result.TLS_FAILED ||
