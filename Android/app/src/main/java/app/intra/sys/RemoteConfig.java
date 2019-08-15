@@ -15,7 +15,6 @@ limitations under the License.
 */
 package app.intra.sys;
 
-import app.intra.R;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -27,7 +26,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 public class RemoteConfig {
   public static Task<Boolean> update() {
     FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
-    config.setDefaults(R.xml.remote_config_defaults);
     return config.fetchAndActivate();
   }
 }

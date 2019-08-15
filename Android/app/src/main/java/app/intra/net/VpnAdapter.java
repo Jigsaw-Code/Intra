@@ -19,13 +19,13 @@ package app.intra.net;
  * Abstract class representing a VPN Adapter, for use by IntraVpnService.  For our purposes, a
  * VpnAdapter is just a thread that can safely be stopped at any time.
  */
-public abstract class VpnAdapter extends Thread {
-  protected static final int VPN_INTERFACE_MTU = 32767;
+public abstract class VpnAdapter {
+  // This value must match the hardcoded MTU in outline-go-tun2socks.
+  // TODO: Make outline-go-tun2socks's MTU configurable.
+  protected static final int VPN_INTERFACE_MTU = 1500;
   protected static final int DNS_DEFAULT_PORT = 53;
 
-  public VpnAdapter(String name) {
-    super(name);
-  }
+  public abstract void start();
 
   /**
    * Perform a safe shutdown.
