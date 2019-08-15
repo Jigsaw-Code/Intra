@@ -46,7 +46,8 @@ public class AutoStarter extends BroadcastReceiver {
         context.startActivity(startIntent);
         return;
       }
-      controller.start(context);
+      // Fetch remote config, then start the VPN.
+      RemoteConfig.update().addOnCompleteListener(task -> controller.start(context));
     }
   }
 }
