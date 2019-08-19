@@ -44,11 +44,13 @@ import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.google.GoogleServerConnection;
+import app.intra.net.socks.GoVpnAdapter;
 import app.intra.net.socks.SocksVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.Calendar;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
@@ -365,6 +367,9 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // SocksVpnAdapter.  Additionally, M and later also exhibit DownloadManager bugs when used
     // with a split-tunnel VPN.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (FirebaseRemoteConfig.getInstance().getBoolean("use_go_tun2socks")) {
+        return GoVpnAdapter.establish(this);
+      }
       return SocksVpnAdapter.establish(this);
     }
     // Pre-M we prefer SplitVpnAdapter, which uses much less CPU and RAM (important for older
@@ -376,10 +381,14 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   private synchronized void startVpnAdapter() {
     if (vpnAdapter == null) {
-      LogWrapper.log(Log.INFO, LOG_TAG, "Starting DNS resolver");
+      LogWrapper.log(Log.INFO, LOG_TAG, "Starting VPN adapter");
       vpnAdapter = makeVpnAdapter();
       if (vpnAdapter != null) {
         vpnAdapter.start();
+
+        Bundle event = new Bundle();
+        event.putString(Names.MODE.name(), vpnAdapter.getClass().getSimpleName());
+        FirebaseAnalytics.getInstance(this).logEvent(Names.STARTVPN.name(), event);
       } else {
         LogWrapper.log(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
       }

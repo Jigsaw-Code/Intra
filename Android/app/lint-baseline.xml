@@ -10,7 +10,7 @@
 
     <issue
         id="NewApi"
-        message="Multi-catch with these reflection exceptions requires API level 19 (current min is 14) because they get compiled to the common but new super type `ReflectiveOperationException`. As a workaround either create individual catch statements, or catch `Exception`."
+        message="Multi-catch with these reflection exceptions requires API level 19 (current min is 15) because they get compiled to the common but new super type `ReflectiveOperationException`. As a workaround either create individual catch statements, or catch `Exception`."
         errorLine1="    } catch (InstantiationException | IllegalAccessException e) {"
         errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -21,7 +21,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 24 (current min is 14): `new java.lang.Exception`"
+        message="Call requires API level 24 (current min is 15): `new java.lang.Exception`"
         errorLine1="    super(message, cause, enableSuppression, writableStackTrace);"
         errorLine2="    ~~~~~">
         <location
@@ -32,7 +32,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 24 (current min is 14): `new java.lang.RuntimeException`"
+        message="Call requires API level 24 (current min is 15): `new java.lang.RuntimeException`"
         errorLine1="    super(message, cause, enableSuppression, writableStackTrace);"
         errorLine2="    ~~~~~">
         <location
@@ -43,7 +43,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 24 (current min is 14): `new java.lang.Exception`"
+        message="Call requires API level 24 (current min is 15): `new java.lang.Exception`"
         errorLine1="    super(message, cause, enableSuppression, writableStackTrace);"
         errorLine2="    ~~~~~">
         <location
@@ -54,7 +54,7 @@
 
     <issue
         id="NewApi"
-        message="Call requires API level 19 (current min is 14): `java.net.InetSocketAddress#getHostString`"
+        message="Call requires API level 19 (current min is 15): `java.net.InetSocketAddress#getHostString`"
         errorLine1="    this.remoteServerHost = address.getHostString();"
         errorLine2="                                    ~~~~~~~~~~~~~">
         <location
@@ -65,7 +65,7 @@
 
     <issue
         id="UnusedAttribute"
-        message="Attribute `layoutDirection` is only used in API level 17 and higher (current min is 14)"
+        message="Attribute `layoutDirection` is only used in API level 17 and higher (current min is 15)"
         errorLine1="                                                    android:layoutDirection=&quot;ltr&quot;"
         errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -76,7 +76,7 @@
 
     <issue
         id="UnusedAttribute"
-        message="Attribute `importantForAutofill` is only used in API level 26 and higher (current min is 14)"
+        message="Attribute `importantForAutofill` is only used in API level 26 and higher (current min is 15)"
         errorLine1="          android:importantForAutofill=&quot;no&quot;/>"
         errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location

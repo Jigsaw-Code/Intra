@@ -79,6 +79,10 @@ public class SocksVpnAdapter extends VpnAdapter {
   // TUN device representing the VPN.
   private final ParcelFileDescriptor tunFd;
 
+  // Created and activated by start().
+  private SocksServer proxy;
+  private SafeTun2Socks tun2Socks;
+
   public static SocksVpnAdapter establish(@NonNull IntraVpnService vpnService) {
     LocalhostResolver resolver = LocalhostResolver.get(vpnService);
     if (resolver == null) {
@@ -92,14 +96,13 @@ public class SocksVpnAdapter extends VpnAdapter {
   }
 
   private SocksVpnAdapter(Context context, ParcelFileDescriptor tunFd, LocalhostResolver resolver) {
-    super(LOG_TAG);
     this.context = context;
     this.resolver = resolver;
     this.tunFd = tunFd;
   }
 
   @Override
-  public void run() {
+  public void start() {
     resolver.start();
 
     // VPN parameters
@@ -125,7 +128,7 @@ public class SocksVpnAdapter extends VpnAdapter {
       return;
     }
 
-    final SocksServer proxy = new SocksServer(context, fakeDns, trueDns);
+    proxy = new SocksServer(context, fakeDns, trueDns);
     proxy.setSupportMethods(new NoAuthenticationRequiredMethod());
     proxy.setBindAddr(localhost);
     proxy.setBindPort(0);  // Uses our custom SocksServer's dynamic port feature.
@@ -147,21 +150,9 @@ public class SocksVpnAdapter extends VpnAdapter {
 
     // After start(), if bindPort was 0, it has been changed to the dynamically allocated port.
     String proxyAddress = proxy.getBindAddr().getHostAddress() + ":" + proxy.getBindPort();
-    SafeTun2Socks tun2Socks = new SafeTun2Socks(tunFd, VPN_INTERFACE_MTU, ipv4Router, IPV4_NETMASK,
+    tun2Socks = new SafeTun2Socks(tunFd, VPN_INTERFACE_MTU, ipv4Router, IPV4_NETMASK,
         ipv6Router, proxyAddress, proxyAddress, fakeDnsAddress, TRANSPARENT_DNS_ENABLED,
         SOCKS5_UDP_ENABLED);
-
-    try {
-      synchronized(this) {
-        wait();  // Wait for an interrupt, which is produced by the close() method.
-      }
-    } catch (InterruptedException e) {
-      // close() has been called.  This is as expected.
-    }
-
-    tun2Socks.stop();
-    proxy.shutdown();
-    resolver.shutdown();
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -185,16 +176,9 @@ public class SocksVpnAdapter extends VpnAdapter {
 
   @Override
   public void close() {
-    // Stop the thread.
-    interrupt();
-    // After the interrupt, the run() method will stop Tun2Socks, and then complete.
-    // We need to wait until that is finished before closing the TUN device.
-    try {
-      join();
-    } catch (InterruptedException e) {
-      // This is weird: the calling thread has _also_ been interrupted.
-      LogWrapper.logException(e);
-    }
+    tun2Socks.stop();
+    proxy.shutdown();
+    resolver.shutdown();
 
     try {
       tunFd.close();
