@@ -32,8 +32,8 @@ android {
         // a minSdkVersion of 15.
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 40
-        versionName "1.1.9"
+        versionCode 41
+        versionName "1.1.9-experiment-1"
         vectorDrawables.useSupportLibrary = true
         // Fix a build error related to having log4j in the classpath.
         javaCompileOptions {
