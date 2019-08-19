@@ -79,6 +79,16 @@ android {
         // Two dependencies both populate this file, resulting in a collision at APK-build time.
         exclude 'META-INF/DEPENDENCIES'
     }
+    splits {
+        // Currently, we have two copies of the network stack in Intra (Go and C).
+        // Multiplied by 4 supported ABIs, this would be 8 copies in the APK.  Splitting the APK
+        // by ABI avoids increasing the APK size for any individual user.
+        abi {
+            enable true
+            // Also build a universal APK that can be used on all architectures, for sideloading.
+            universalApk true
+        }
+    }
 }
 
 crashlytics {
