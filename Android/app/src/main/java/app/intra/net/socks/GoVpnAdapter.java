@@ -35,7 +35,7 @@ import tun2socks.Tun2socks;
  * custom logic for Intra.
  */
 public class GoVpnAdapter extends VpnAdapter {
-  private static final String LOG_TAG = "SocksVpnAdapter";
+  private static final String LOG_TAG = "GoVpnAdapter";
 
   // IPv4 VPN constants
   private static final String IPV4_TEMPLATE = "10.111.222.%d";
@@ -100,6 +100,7 @@ public class GoVpnAdapter extends VpnAdapter {
     LogWrapper.log(Log.INFO, LOG_TAG, "TLS probe result: " + r.name());
     boolean alwaysSplitHttps = r == Result.TLS_FAILED;
 
+    // Strip leading "/" from ip:port string.
     String trueDns = resolver.getAddress().toString().substring(1);
     GoIntraListener listener = new GoIntraListener(context);
 
