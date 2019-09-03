@@ -38,18 +38,6 @@ public class GoogleServerConnectionIntegrationTest {
 
     private GoogleServerDatabase mockDb;
 
-    // Interceptor that fails all requests to GoogleServerConnection.PRIMARY_TLS_HOSTNAME.
-    private class PrimaryHostnameFailureInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Interceptor.Chain chain) throws IOException {
-            final String host = chain.request().url().host();
-            if (GoogleServerConnection.PRIMARY_TLS_HOSTNAME.equals(host)) {
-                throw new IOException("Failing on primary TLS hostname");
-            }
-            return chain.proceed(chain.request());
-        }
-    }
-
     @Before
     public void setUp() throws Exception {
         mockDb = mock(GoogleServerDatabase.class);
@@ -86,28 +74,6 @@ public class GoogleServerConnectionIntegrationTest {
         assertTrue(cb.response.body().contentLength() > 6);
 
         verify(mockDb, times(1)).setPreferred(any(DualStackResult.class));
-    }
-
-    @Test
-    public void testPerformDnsRequestFallback() throws Exception {
-        when(mockDb.lookup(GoogleServerConnection.PRIMARY_TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getAllByName
-          (GoogleServerConnection.HTTP_HOSTNAME)));
-        when(mockDb.lookup(GoogleServerConnection.FALLBACK_TLS_HOSTNAME)).thenReturn(Arrays.asList(InetAddress.getAllByName
-          (GoogleServerConnection.HTTP_HOSTNAME)));
-        GoogleServerConnection s = GoogleServerConnection.get(mockDb, new PrimaryHostnameFailureInterceptor());
-
-        verify(mockDb, times(1)).lookup(GoogleServerConnection.PRIMARY_TLS_HOSTNAME);
-        verify(mockDb, times(1)).lookup(GoogleServerConnection.FALLBACK_TLS_HOSTNAME);
-
-        TestDnsCallback cb = new TestDnsCallback();
-        DnsUdpQuery metadata = new DnsUdpQuery();
-        metadata.name = "youtube.com";
-        metadata.type = 1;
-        s.performDnsRequest(metadata, new byte[0], cb);
-        cb.semaphore.acquire();  // Wait for the response.
-        assertNotNull(cb.response);
-        assertEquals(200, cb.response.code());
-        assertTrue(cb.response.body().contentLength() > 6);
     }
 
     @Test
