@@ -117,7 +117,7 @@ public class PersistentState {
     editor.apply();
   }
 
-  static String getServerUrl(Context context) {
+  public static String getServerUrl(Context context) {
     String urlTemplate = getUserPreferences(context).getString(URL_KEY, null);
     if (urlTemplate == null) {
       return null;

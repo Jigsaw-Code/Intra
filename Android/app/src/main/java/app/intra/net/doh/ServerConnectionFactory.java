@@ -25,7 +25,9 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Factory for ServerConnections.  Used by IntraVpnService and Probe.
@@ -48,26 +50,29 @@ public class ServerConnectionFactory {
     return url1.equals(url2);
   }
 
-  private Collection<InetAddress> getKnownIps(String url) {
+  public static String getIpString(Context context, String url) {
     Resources res = context.getResources();
     String[] urls = res.getStringArray(R.array.urls);
     String[] ips = res.getStringArray(R.array.ips);
     for (int i = 0; i < urls.length; ++i) {
       // TODO: Consider relaxing this equality condition to a match on just the domain.
       if (urls[i].equals(url)) {
-        String[] ipStrings = ips[i].split(",");
-        List<InetAddress> ret = new ArrayList<>();
-        for (String ip : ipStrings) {
-          try {
-            ret.addAll(Arrays.asList(InetAddress.getAllByName(ip)));
-          } catch (IOException e) {
-            Log.e(LOG_TAG, "Invalid IP address in servers resource");
-          }
-        }
-        return ret;
+        return ips[i];
       }
     }
-    return new ArrayList<>();
+    return "";
+  }
+
+  private Collection<InetAddress> getKnownIps(String url) {
+    Set<InetAddress> ret = new HashSet<>();
+    for (String ip : getIpString(context, url).split(",")) {
+      try {
+        ret.addAll(Arrays.asList(InetAddress.getAllByName(ip)));
+      } catch (IOException e) {
+        Log.e(LOG_TAG, "Invalid IP address in servers resource");
+      }
+    }
+    return ret;
   }
 
   public ServerConnection get(String url) {

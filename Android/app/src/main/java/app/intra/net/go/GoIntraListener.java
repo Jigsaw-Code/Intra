@@ -17,11 +17,21 @@ package app.intra.net.go;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
+import app.intra.net.dns.DnsPacket;
+import app.intra.net.doh.Transaction;
+import app.intra.net.doh.Transaction.Status;
+import app.intra.sys.IntraVpnService;
 import app.intra.sys.Names;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import intra.RetryStats;
+import doh.Doh;
 import intra.TCPSocketSummary;
 import intra.UDPSocketSummary;
+import java.net.ProtocolException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import split.RetryStats;
 
 /**
  * This is a callback class that is passed to our go-tun2socks code.  Go calls this class's methods
@@ -35,9 +45,9 @@ public class GoIntraListener implements tunnel.IntraListener {
   // least this many bytes.
   private static final int UDP_THRESHOLD_BYTES = 10000;
 
-  private final Context context;
-  GoIntraListener(Context context) {
-    this.context = context;
+  private final IntraVpnService vpnService;
+  GoIntraListener(IntraVpnService vpnService) {
+    this.vpnService = vpnService;
   }
 
   @Override
@@ -57,10 +67,15 @@ public class GoIntraListener implements tunnel.IntraListener {
     bytesEvent.putInt(Names.PORT.name(), summary.getServerPort());
     bytesEvent.putInt(Names.TCP_HANDSHAKE_MS.name(), summary.getSynack());
     bytesEvent.putInt(Names.DURATION.name(), summary.getDuration());
-    FirebaseAnalytics.getInstance(context).logEvent(Names.BYTES.name(), bytesEvent);
+    FirebaseAnalytics.getInstance(vpnService).logEvent(Names.BYTES.name(), bytesEvent);
 
     RetryStats retry = summary.getRetry();
     if (retry != null) {
+      // Connection was eligible for split-retry.
+      if (retry.getSplit() == 0) {
+        // Split-retry was not attempted.
+        return;
+      }
       // Prepare an EARLY_RESET event to collect metrics on success rates for splitting:
       // - BYTES : Amount uploaded before reset
       // - CHUNKS : Number of upload writes before reset
@@ -74,7 +89,7 @@ public class GoIntraListener implements tunnel.IntraListener {
       resetEvent.putInt(Names.SPLIT.name(), retry.getSplit());
       boolean success = summary.getDownloadBytes() > 0;
       resetEvent.putInt(Names.RETRY.name(), success ? 1 : 0);
-      FirebaseAnalytics.getInstance(context).logEvent(Names.EARLY_RESET.name(), resetEvent);
+      FirebaseAnalytics.getInstance(vpnService).logEvent(Names.EARLY_RESET.name(), resetEvent);
     }
  }
 
@@ -88,6 +103,37 @@ public class GoIntraListener implements tunnel.IntraListener {
     event.putLong(Names.UPLOAD.name(), summary.getUploadBytes());
     event.putLong(Names.DOWNLOAD.name(), summary.getDownloadBytes());
     event.putLong(Names.DURATION.name(), summary.getDuration());
-    FirebaseAnalytics.getInstance(context).logEvent(Names.UDP.name(), event);
+    FirebaseAnalytics.getInstance(vpnService).logEvent(Names.UDP.name(), event);
+  }
+
+  private static final Map<Long, Status> goStatusMap = new HashMap<>();
+  static {
+    goStatusMap.put(Doh.Complete, Status.COMPLETE);
+    goStatusMap.put(Doh.SendFailed, Status.SEND_FAIL);
+    goStatusMap.put(Doh.HTTPError, Status.HTTP_ERROR);
+    goStatusMap.put(Doh.BadQuery, Status.INTERNAL_ERROR); // TODO: Add a Status
+    goStatusMap.put(Doh.BadResponse, Status.BAD_RESPONSE);
+    goStatusMap.put(Doh.InternalError, Status.INTERNAL_ERROR);
+  }
+
+  @Override
+  public void onTransaction(doh.Summary summary) {
+    final DnsPacket query;
+    try {
+      query = new DnsPacket(summary.getQuery());
+    } catch (ProtocolException e) {
+      return;
+    }
+    long latencyMs = (long)(1000 * summary.getLatency());
+    long nowMs = SystemClock.elapsedRealtime();
+    long queryTimeMs = nowMs - latencyMs;
+    Transaction transaction = new Transaction(query, queryTimeMs);
+    transaction.response = summary.getResponse();
+    transaction.responseTime = (long)(1000 * summary.getLatency());
+    transaction.serverIp = summary.getServer();
+    transaction.status = goStatusMap.get(summary.getStatus());
+    transaction.responseCalendar = Calendar.getInstance();
+
+    vpnService.recordTransaction(transaction);
   }
 }
