@@ -44,8 +44,7 @@ import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.google.GoogleServerConnection;
-import app.intra.net.socks.GoVpnAdapter;
-import app.intra.net.socks.SocksVpnAdapter;
+import app.intra.net.go.GoVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
@@ -362,15 +361,14 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   private VpnAdapter makeVpnAdapter() {
     // On M and later, Chrome uses getActiveNetwork() to determine which DNS servers to use.
-    // SocksVpnAdapter makes this VPN the active network, whereas SplitVpnAdapter (which uses a
+    // GoVpnAdapter makes this VPN the active network, whereas SplitVpnAdapter (which uses a
     // split-tunnel configuration) does not.  Therefore, on M and later, we have to use
-    // SocksVpnAdapter.  Additionally, M and later also exhibit DownloadManager bugs when used
+    // GoVpnAdapter.  Additionally, M and later also exhibit DownloadManager bugs when used
     // with a split-tunnel VPN.
+    // TODO: Use GoVpnAdapter on older versions once we have a way to "protect" (i.e. exclude
+    //   from the VPN) the DOH sockets.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (FirebaseRemoteConfig.getInstance().getBoolean("use_go_tun2socks")) {
-        return GoVpnAdapter.establish(this);
-      }
-      return SocksVpnAdapter.establish(this);
+      return GoVpnAdapter.establish(this);
     }
     // Pre-M we prefer SplitVpnAdapter, which uses much less CPU and RAM (important for older
     // devices).  This is also necessary because SocksVpnAdapter relies on VpnService.Builder

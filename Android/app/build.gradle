@@ -35,12 +35,6 @@ android {
         versionCode 42
         versionName "1.1.9-experiment-2"
         vectorDrawables.useSupportLibrary = true
-        // Fix a build error related to having log4j in the classpath.
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath false
-            }
-        }
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     lintOptions {
@@ -68,16 +62,9 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-    sourceSets {
-        main.java.srcDirs += '../third_party/sockslib/src/main/java/'
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    packagingOptions {
-        // Two dependencies both populate this file, resulting in a collision at APK-build time.
-        exclude 'META-INF/DEPENDENCIES'
     }
 }
 
@@ -94,9 +81,6 @@ repositories {
     }
     maven {
         url '../firebase-repo'
-    }
-    maven {
-        url '../sockslib-repo'
     }
 }
 
@@ -128,11 +112,6 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.crashlytics.sdk.android:crashlytics-ndk:2.1.0'
     implementation 'com.google.firebase:firebase-config:16.5.0' // Last version to support API <16
-    // For Sockslib
-    implementation 'org.slf4j:slf4j-api:1.7.25'
-    implementation 'org.slf4j:slf4j-android:1.7.25'
-    compileOnly 'javax.annotation:javax.annotation-api:1.3.2'
-    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
     // For go-tun2socks
     implementation project(":tun2socks")
 }
