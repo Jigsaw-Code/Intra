@@ -339,11 +339,11 @@
     Currently <xliff:g example="dns.google.com" id="server_name">%s</xliff:g>
   </string>
 
-  <string name="server_choice_builtin" description="Label for option to select from a short list of servers">
+  <string name="server_choice_builtin" description="Label for option to select from a short list of servers. [CHAR_LIMIT=NONE]">
     Built-in server
   </string>
 
-  <string name="server_choice_website_notice" description="Warning text about a DNS server, with a hyperlink">
+  <string name="server_choice_website_notice" description="Warning text about a DNS server, with a hyperlink. [CHAR_LIMIT=NONE]">
     Please visit <a href="https://www.example.com/">their website</a> to review their privacy policy and any applicable terms of service.
   </string>
 

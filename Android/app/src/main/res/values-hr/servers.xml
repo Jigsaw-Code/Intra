@@ -9,4 +9,6 @@
   <string name="description6">Poslužiteljom upravlja xTom i drugi međunarodni davatelji usluge hostinga.  Upotrebljava CDN Cloudflarea.</string>
   <string name="description7">Poslužitelj u Japanu kojim upravlja ISP.</string>
   <string name="description8">Poslužitelj u Tajvanu kojim upravlja registar domene .tw.</string>
+  <string name="description9">Poslužitelj se nalazi u UK-u, a njime upravlja britanska tvrtka za web-hosting.</string>
+  <string name="description10">Usluge posluživanja pruža britanska tvrtka za hosting i umrežavanje putem poslužitelja u UK-u i Švicarskoj.</string>
 </resources>

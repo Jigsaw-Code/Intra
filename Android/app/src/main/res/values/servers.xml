@@ -8,7 +8,7 @@
   <string name="url0" translatable="false"></string>
   <string name="name0" translatable="false">Google Public DNS</string>
   <string name="ips0" translatable="false"></string>
-  <string name="description0" description="Describes Google's DNS resolver (i.e. DNS server).">
+  <string name="description0" description="Describes Google's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Large global resolver operated by Google.
   </string>
   <string name="website0" translatable="false">https://developers.google.com/speed/public-dns/</string>
@@ -16,7 +16,7 @@
   <string name="url1" translatable="false">https://cloudflare-dns.com/dns-query</string>
   <string name="name1" translatable="false">Cloudflare 1.1.1.1 DNS</string>
   <string name="ips1" translatable="false">1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001</string>
-  <string name="description1" description="Describes Cloudflare's DNS resolver (i.e. DNS server).">
+  <string name="description1" description="Describes Cloudflare's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Large global resolver operated by Cloudflare.
   </string>
   <string name="website1" translatable="false">https://cloudflare-dns.com/</string>
@@ -24,7 +24,7 @@
   <string name="url2" translatable="false">https://dns.quad9.net/dns-query</string>
   <string name="name2" translatable="false">Quad9 Secure DNS</string>
   <string name="ips2" translatable="false">9.9.9.9,149.112.112.112,2620:fe::fe,2620:fe::fe:9</string>
-  <string name="description2" description="Describes the Quad9 DNS resolver (i.e. DNS server).">
+  <string name="description2" description="Describes the Quad9 DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Large global resolver from IBM and Packet Clearinghouse.  Blocks malicious domains.
   </string>
   <string name="website2" translatable="false">https://www.quad9.net/</string>
@@ -32,7 +32,7 @@
   <string name="url3" translatable="false">https://doh.cleanbrowsing.org/doh/security-filter/</string>
   <string name="name3" translatable="false">CleanBrowsing Security Filter</string>
   <string name="ips3" translatable="false">185.228.168.9,185.228.169.9,2a0d:2a00:1::2,2a0d:2a00:2::2</string>
-  <string name="description3" description="Describes CleanBrowsing's filtered DNS server.">
+  <string name="description3" description="Describes CleanBrowsing's filtered DNS server. [CHAR_LIMIT=NONE]">
     Global DNS filtering provider.  Blocks malicious domains.
   </string>
   <string name="website3" translatable="false">https://cleanbrowsing.org/</string>
@@ -40,7 +40,7 @@
   <string name="url4" translatable="false">https://doh.appliedprivacy.net/query</string>
   <string name="name4" translatable="false">Foundation for Applied Privacy</string>
   <string name="ips4" translatable="false">37.252.185.229,2a00:63c1:a:229::2</string>
-  <string name="description4" description="Describes a DNS resolver (i.e. DNS server).">
+  <string name="description4" description="Describes a DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Server in Austria operated by a non-profit privacy group.
   </string>
   <string name="website4" translatable="false">https://appliedprivacy.net/services/dns/</string>
@@ -48,7 +48,7 @@
   <string name="url5" translatable="false">https://doh.powerdns.org/</string>
   <string name="name5" translatable="false">PowerDNS</string>
   <string name="ips5" translatable="false">136.144.215.158,2a01:7c8:d002:1ef:5054:ff:fe40:3703</string>
-  <string name="description5" description="Describes PowerDNS's DNS resolver (i.e. DNS server).">
+  <string name="description5" description="Describes PowerDNS's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Server in the Netherlands, operated by an open-source DNS software company.
   </string>
   <string name="website5" translatable="false">https://powerdns.org/</string>
@@ -56,7 +56,7 @@
   <string name="url6" translatable="false">https://doh.dns.sb/dns-query</string>
   <string name="name6" translatable="false">DNS.SB</string>
   <string name="ips6" translatable="false">cloudflare.net</string>
-  <string name="description6" description="Describes the DNS.SB server, which is hosted on Cloudflare.">
+  <string name="description6" description="Describes the DNS.SB server, which is hosted on Cloudflare. [CHAR_LIMIT=NONE]">
     Operated by xTom and other international hosting providers.  Uses Cloudflare\'s CDN.
   </string>
   <string name="website6" translatable="false">https://dns.sb/</string>
@@ -64,7 +64,7 @@
   <string name="url7" translatable="false">https://public.dns.iij.jp/dns-query</string>
   <string name="name7" translatable="false">Internet Initiative Japan</string>
   <string name="ips7" translatable="false"></string>
-  <string name="description7" description="Internet Initiative Japan is an Internet Service Provider (ISP).">
+  <string name="description7" description="Internet Initiative Japan is an Internet Service Provider (ISP).  [CHAR_LIMIT=NONE]">
     Server in Japan operated by an ISP.
   </string>
   <string name="website7" translatable="false">https://public.dns.iij.jp/</string>
@@ -72,8 +72,24 @@
   <string name="url8" translatable="false">https://dns.twnic.tw/dns-query</string>
   <string name="name8" translatable="false">TWNIC Quad101</string>
   <string name="ips8" translatable="false"></string>
-  <string name="description8" description="See https://101.101.101.101/">
+  <string name="description8" description="See https://101.101.101.101/ [CHAR_LIMIT=NONE]">
     Server in Taiwan operated by the .tw domain registry.
   </string>
   <string name="website8" translatable="false">https://101.101.101.101/</string>
+
+  <string name="url9" translatable="false">https://doh.netweaver.uk/dns-query</string>
+  <string name="name9" translatable="false">NetWeaver</string>
+  <string name="ips9" translatable="false"></string>
+  <string name="description9" description="See https://www.netweaver.uk/labs/ [CHAR_LIMIT=NONE]">
+    Server in the UK, operated by a British website hosting company.
+  </string>
+  <string name="website9" translatable="false">https://www.netweaver.uk/dns-over-https/</string>
+
+  <string name="url10" translatable="false">https://rdns.faelix.net/</string>
+  <string name="name10" translatable="false">FAELIX</string>
+  <string name="ips10" translatable="false"></string>
+  <string name="description10" description="See https://faelix.net/ref/dns/ [CHAR_LIMIT=NONE]">
+    Served from the UK and Switzerland by a British hosting and networking company.
+  </string>
+  <string name="website10" translatable="false">https://faelix.net/ref/dns/</string>
 </resources>

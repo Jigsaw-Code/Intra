@@ -9,4 +9,6 @@
   <string name="description6">xTom və digər beynəlxalq host provayderləri tərəfindən idarə edilir.  Cloudflare CDN-dən istifadə edir.</string>
   <string name="description7">ISP tərəfindən idarə edilən Yaponiya serveri.</string>
   <string name="description8">.tw domen qeydiyyatının idarə etdiyi Tayvan Serveri.</string>
+  <string name="description9">Veb sayt hostinqi üzrə İngilis şirkəti tərəfindən idarə edilən, Birləşmiş Krallıq serveri.</string>
+  <string name="description10">Birləşmiş Krallıq və İsveçrədən İngilis hostinq və şəbəkə şirkəti tərəfindən təmin edilib.</string>
 </resources>
