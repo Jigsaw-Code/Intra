@@ -90,10 +90,10 @@
     kutooana na Intra, unaweza kuiongeza hapa.</string>
   <string name="excluded_apps_title">Tia alama kwenye programu utakazotenga na Intra</string>
   <string name="old_android">Utendaji huu haupatikani kwenye toleo lako la Android.</string>
-  <string name="notification_title">Kipengle cha kulinda DNS kimewashwa</string>
+  <string name="notification_title">Kipengele cha kulinda DNS kimewashwa</string>
   <string name="notification_content">Gusa ili ubadilishe mipangilio ya ulinzi wa DNS</string>
   <string name="channel_name">Arifa ya Kuonyesha Kipengele cha Kulinda DNS Kimewashwa</string>
-  <string name="channel_description">Arifa hii huonyeshwa wakati kipengle cha kulinda DNS kimewashwa.</string>
+  <string name="channel_description">Arifa hii huonyeshwa wakati kipengele cha kulinda DNS kimewashwa.</string>
   <string name="warning_title">Ilani: Intra imezimwa</string>
   <string name="warning_channel_name">Ilani</string>
   <string name="warning_channel_description">Huonyeshwa Intra inapokumbwa na tatizo.</string>

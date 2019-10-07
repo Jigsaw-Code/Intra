@@ -9,4 +9,6 @@
   <string name="description6">xTomin ja muiden kansainvälisten hosting-palveluntarjoajien ylläpitämä.  Käyttää Cloudflaren CDN:ää.</string>
   <string name="description7">Japanissa sijaitseva palvelin, jota ylläpitää ISP.</string>
   <string name="description8">Taiwanissa sijaitseva palvelin, jota ylläpitää .tw-verkkotunnusrekisteri.</string>
+  <string name="description9">Brittiläisen hosting-yrityksen ylläpitämä palvelin Yhdistyneessä kuningaskunnassa.</string>
+  <string name="description10">Brittiläisen hosting- ja verkkopalveluyrityksen Yhdistyneestä kuningaskunnasta ja Sveitsistä tarjoama.</string>
 </resources>

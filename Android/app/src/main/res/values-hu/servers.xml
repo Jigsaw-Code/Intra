@@ -9,4 +9,6 @@
   <string name="description6">Az xTom és más nemzetközi rendszerszolgáltatók üzemeltetik.  A Cloudflare CDN szolgáltatását használja.</string>
   <string name="description7">Japán szerver, melyet egy internetszolgáltató üzemeltet.</string>
   <string name="description8">A .tw domainregisztrációs adatbázis által üzemeltetett szerver Taiwanban.</string>
+  <string name="description9">Egyesült királyságbeli szerver, melyet egy brit webhelyszolgáltató üzemeltet.</string>
+  <string name="description10">Egy brit tárhely- és hálózatszolgáltató üzemelteti az Egyesült Királyságból és Svájcból.</string>
 </resources>

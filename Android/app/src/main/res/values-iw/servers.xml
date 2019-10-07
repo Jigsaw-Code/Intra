@@ -9,4 +9,6 @@
   <string name="description6">השרת מופעל על ידי xTom וספקי אירוח בינלאומיים אחרים.  הוא משתמש ב-CDN של Cloudflare.</string>
   <string name="description7">השרת ביפן מופעל על ידי ספק שירותי אינטרנט.</string>
   <string name="description8">השרת בטייוואן מופעל על ידי מרשם הדומיינים tw.</string>
+  <string name="description9">שרת מבריטניה שמופעל על ידי חברת אירוח אתרים בריטית.</string>
+  <string name="description10">שרת מבריטניה ושווייץ שמופעל על ידי חברת אירוח ורשתות בריטית.</string>
 </resources>

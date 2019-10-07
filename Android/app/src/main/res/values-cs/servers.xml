@@ -9,4 +9,6 @@
   <string name="description6">Provozováno společností xTom a dalšími mezinárodními poskytovateli hostingu.  Využívá CDN společnosti Cloudflare.</string>
   <string name="description7">Server v Japonsku provozovaný poskytovatelem internetových služeb.</string>
   <string name="description8">Server na Tchaj-wanu provozovaný registrem domény .tw.</string>
+  <string name="description9">Server ve Spojeném království, provozovaný britskou společností, která hostuje webové stránky.</string>
+  <string name="description10">Provozováno ze Spojeného království a Švýcarska britskou společností, která se zabývá provozováním sítě a hostováním.</string>
 </resources>

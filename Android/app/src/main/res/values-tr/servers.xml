@@ -9,4 +9,6 @@
   <string name="description6">xTom ve uluslararası başka barındırma sağlayıcıları tarafından işletilmektedir.  Cloudflare\'in CDN\'ini kullanır.</string>
   <string name="description7">Sunucu Japonya\'da bulunur ve bir İSS tarafından işletilmektedir.</string>
   <string name="description8">Sunucu Tayvan\'da bulunur ve .tw alan kayıt otoritesi tarafından işletilmektedir.</string>
+  <string name="description9">Sunucu Birleşik Krallık\'ta bulunur ve İngiliz menşeli bir web sitesi barındırma şirketi tarafından işletilmektedir.</string>
+  <string name="description10">Birleşik Krallık ve İsviçre\'den İngiliz menşeli bir barındırma ve ağ iletişimi şirketi tarafından sunulmaktadır.</string>
 </resources>

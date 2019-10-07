@@ -9,4 +9,6 @@
   <string name="description6">ดำเนินการโดย xTom และผู้ให้บริการโฮสติ้งนานาชาติ  ใช้ CDN ของ Cloudflare</string>
   <string name="description7">เซิร์ฟเวอร์ในญี่ปุ่นที่ดำเนินการโดย ISP</string>
   <string name="description8">เซิร์ฟเวอร์ในไต้หวันซึ่งดำเนินการโดยรีจิสทรีโดเมน .tw</string>
+  <string name="description9">เซิร์ฟเวอร์ในสหราชอาณาจักร ดำเนินงานโดยบริษัทโฮสติ้งเว็บไซต์จากอังกฤษ</string>
+  <string name="description10">ให้บริการจากสหราชอาณาจักรและสวิตเซอร์แลนด์โดยบริษัทด้านเครือข่ายและโฮสติ้งสัญชาติอังกฤษ</string>
 </resources>

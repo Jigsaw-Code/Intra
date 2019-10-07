@@ -9,4 +9,6 @@
   <string name="description6">Dioperasikan oleh x Tom dan penyedia hosting internasional lainnya.  Menggunakan CDN Cloudflare.</string>
   <string name="description7">Server di Jepang yang dioperasikan oleh ISP.</string>
   <string name="description8">Server di Taiwan yang dioperasikan oleh registry domain .tw.</string>
+  <string name="description9">Server di Inggris Raya yang dioperasikan oleh perusahaan hosting situs asal Inggris.</string>
+  <string name="description10">Ditayangkan dari Inggris Raya dan Swiss oleh perusahaan jaringan dan hosting asal Inggris.</string>
 </resources>

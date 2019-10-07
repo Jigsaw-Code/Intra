@@ -9,4 +9,6 @@
   <string name="description6">Drivs av xTom och andra internationella leverantörer av webbhotell.  Cloudflares NFI används.</string>
   <string name="description7">Server i Japan som drivs av en ISP.</string>
   <string name="description8">En server i Taiwan som drivs av domänregistret .tw.</string>
+  <string name="description9">En server i Storbritannien som drivs av ett brittiskt webbhotellsföretag.</string>
+  <string name="description10">Värdlagras i Storbritannien och Schweiz av ett brittiskt värd- och nätverksföretag.</string>
 </resources>

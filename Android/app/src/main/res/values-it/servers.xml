@@ -9,4 +9,6 @@
   <string name="description6">Gestito da xTom e da altri fornitori di hosting internazionali.  Utilizza la rete CDN di Cloudflare.</string>
   <string name="description7">Server in Giappone, gestito da un ISP.</string>
   <string name="description8">Server a Taiwan gestito da un registry di dominio .tw.</string>
+  <string name="description9">Server nel Regno Unito, gestito dal sito web inglese di una compagnia si hosting.</string>
+  <string name="description10">Gestione da Regno Unito e Svizzera presso una compagnia inglese di networking e hosting.</string>
 </resources>

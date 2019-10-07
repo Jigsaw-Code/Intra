@@ -1,8 +1,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="intro_benefit_headline">ज़्यादा खुला इंटरनेट एक्सेस</string>
-  <string name="intro_benefit_body">Intra आपको DNS फेरबदल से सुरक्षित रखता है. DNS फेरबदल एक तरह का साइबर हमला है, जिसका इस्तेमाल नई साइटों, सोशल मीडिया प्लैटफ़ॉर्म, और मैसेज सेवा ऐप्लिकेशन के एक्सेस को ब्लॉक करने में किया जाता है.\n\nIntra आपको DNS फेरबदल से सुरक्षित रखता है. हालांकि, ब्लॉक करने और हमले संबंधी ऐसी दूसरी ज़्यादा जटिल तकनीकें हैं, जिनसे Intra आपको सुरक्षित नहीं रख पाता.</string>
+  <string name="intro_benefit_headline">ज़्यादा खुला इंटरनेट ऐक्सेस</string>
+  <string name="intro_benefit_body">Intra आपको DNS फेरबदल से सुरक्षित रखता है. DNS फेरबदल एक तरह का साइबर हमला है, जिसका इस्तेमाल नई साइटों, सोशल मीडिया प्लैटफ़ॉर्म, और मैसेज सेवा ऐप्लिकेशन के ऐक्सेस को ब्लॉक करने में किया जाता है.\n\nIntra आपको DNS फेरबदल से सुरक्षित रखता है. हालांकि, ब्लॉक करने और हमले संबंधी ऐसी दूसरी ज़्यादा जटिल तकनीकें हैं, जिनसे Intra आपको सुरक्षित नहीं रख पाता.</string>
   <string name="intro_manipulation_headline">DNS फेरबदल से सुरक्षा</string>
-  <string name="intro_manipulation_body">Intra आपके कनेक्शन को डोमेन नाम सिस्टम (DNS) के लिए सुरक्षित रखता है, जो किसी वेबसाइट या कोई ऐप्लिकेशन खोलने के लिए आपको एकदम सही पता देता है.\n\nIntra यह पक्का करने के लिए एन्क्रिप्शन का इस्तेमाल करता है कि नतीजों में फेरबदल नहीं किया जा सके, साथ ही यह आपको सुरक्षित ढंग से इंटरनेट को एक्सेस करने में मदद करता है.</string>
+  <string name="intro_manipulation_body">Intra आपके कनेक्शन को डोमेन नाम सिस्टम (DNS) के लिए सुरक्षित रखता है, जो किसी वेबसाइट या कोई ऐप्लिकेशन खोलने के लिए आपको एकदम सही पता देता है.\n\nIntra यह पक्का करने के लिए एन्क्रिप्शन का इस्तेमाल करता है कि नतीजों में फेरबदल नहीं किया जा सके, साथ ही यह आपको सुरक्षित ढंग से इंटरनेट को ऐक्सेस करने में मदद करता है.</string>
   <string name="intro_details_headline">एक आखिरी बात…</string>
   <string name="intro_details_body">Intra को आपके DNS अनुरोधों को सुरक्षित करने की अनुमति देने के लिए \'ठीक है\' पर टैप करें. डिफ़ॉल्ट रूप से, उन्हें Google की सार्वजनिक DNS सेवा (<a href="https://developers.google.com/speed/public-dns/privacy">निजता नीति</a>) पर रूट कर दिया जाएगा. आप ऐप्लिकेशन सेटिंग में दूसरी सेवा चुन सकते हैं.</string>
   <string name="intro_back">वापस</string>
@@ -79,7 +79,7 @@
   <string name="try_all_servers">पहले से मौजूद सभी सर्वर आज़माएं</string>
   <string name="checking_servers">सभी सर्वर जाँचे जा रहे हैं</string>
   <string name="found_fastest">%s आपका सबसे तेज़ सर्वर है.</string>
-  <string name="all_servers_failed">काम करने वाला कोई सर्वर नहीं मिला: पहले से मौजूद सभी सर्वर से कनेक्शन नहीं हो सका.</string>
+  <string name="all_servers_failed">काम करने वाला कोई सर्वर नहीं मिला: पहले से मौजूद सभी सर्वर से कनेक्ट नहीं हो सका.</string>
   <string name="server_choice_custom">कस्टम सर्वर यूआरएल</string>
   <string name="server_choice_warning">कस्टम सर्वर एक मान्य https:// यूआरएल होना चाहिए</string>
   <string name="excluded_apps">अलग रखे गए ऐप्लिकेशन</string>

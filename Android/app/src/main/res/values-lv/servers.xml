@@ -9,4 +9,6 @@
   <string name="description6">Nodrošina xTom un citi starptautiski mitināšanas sniedzēji.  Tiek izmantots Cloudflare nodrošinātais CDN.</string>
   <string name="description7">Serveris Japānā, ko nodrošina interneta pakalpojumu sniedzējs.</string>
   <string name="description8">Serveris Taivānā, ko nodrošina .tw domēnu reģistrs.</string>
+  <string name="description9">Serveris Lielbritānijā, ko nodrošina Lielbritānijas vietņu mitināšanas uzņēmums.</string>
+  <string name="description10">Nodrošina Lielbritānijas mitināšanas un tīkla pakalpojumu sniegšanas uzņēmuma serveris Lielbritānijā un Šveicē.</string>
 </resources>

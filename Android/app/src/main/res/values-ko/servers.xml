@@ -9,4 +9,6 @@
   <string name="description6">xTom 및 기타 국제 호스팅 업체가 운영합니다.  Cloudflare의 CDN을 이용합니다.</string>
   <string name="description7">ISP에서 일본에 서버를 두고 운영합니다.</string>
   <string name="description8">.tw 도메인 레지스트리로 운영되는 대만의 서버입니다.</string>
+  <string name="description9">영국 웹사이트 호스팅 업체에서 영국에 서버를 두고 운영합니다.</string>
+  <string name="description10">영국 호스팅 및 네트워킹 업체에서 영국과 스위스에 서버를 두고 운영합니다.</string>
 </resources>
