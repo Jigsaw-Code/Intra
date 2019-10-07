@@ -13,7 +13,7 @@
 
   <string name="url1" translatable="false">https://cloudflare-dns.com/dns-query</string>
   <string name="name1" translatable="false">Cloudflare 1.1.1.1 DNS</string>
-  <string name="ips1" translatable="false">1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001</string>
+  <string name="ips1" translatable="false">1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001,cloudflare.com</string>
   <string name="description1" description="Describes Cloudflare's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Large global resolver operated by Cloudflare.
   </string>
