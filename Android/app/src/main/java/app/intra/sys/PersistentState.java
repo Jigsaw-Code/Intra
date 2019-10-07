@@ -78,29 +78,30 @@ public class PersistentState {
 
     // There is no URL setting, so read the legacy server name.
     SharedPreferences settings = getInternalState(context);
-    String defaultDomain = context.getResources().getString(R.string.legacy_domain0);
-    String domain = settings.getString(SERVER_KEY, defaultDomain);
-
+    String domain = settings.getString(SERVER_KEY, null);
     if (domain == null) {
       // Legacy setting is in the default state, so we can leave the new URL setting in the default
       // state as well.
       return;
     }
 
-    // Special case: url 0 is the nonstandard DoH service on dns.google.com.
     String[] urls = context.getResources().getStringArray(R.array.urls);
+    String defaultDomain = context.getResources().getString(R.string.legacy_domain0);
     String url = null;
     if (domain.equals(defaultDomain)) {
+      // Common case: the domain is dns.google.com, which now corresponds to dns.google (url 0).
       url = urls[0];
-    }
+    } else {
+      // In practice, we expect that domain will always be cloudflare-dns.com at this point, because
+      // that was the only other option in the relevant legacy versions of Intra.
+      // Look for the corresponding URL among the builtin servers.
+      for (String u : urls) {
+        Uri parsed = Uri.parse(u);
 
-    // Look for the corresponding URL among the other builtin servers.
-    for (int i = 1; i < urls.length; ++i) {
-      Uri parsed = Uri.parse(urls[i]);
-
-      if (domain.equals(parsed.getHost())) {
-        url = urls[i];
-        break;
+        if (domain.equals(parsed.getHost())) {
+          url = u;
+          break;
+        }
       }
     }
 
