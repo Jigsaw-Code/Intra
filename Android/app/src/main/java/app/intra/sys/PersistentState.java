@@ -97,7 +97,6 @@ public class PersistentState {
       // Look for the corresponding URL among the builtin servers.
       for (String u : urls) {
         Uri parsed = Uri.parse(u);
-
         if (domain.equals(parsed.getHost())) {
           url = u;
           break;
