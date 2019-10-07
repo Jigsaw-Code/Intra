@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import app.intra.R;
 import app.intra.ui.settings.Untemplate;
 import java.net.MalformedURLException;
@@ -41,8 +43,6 @@ public class PersistentState {
 
   private static final String APPROVED_KEY = "approved";
   private static final String ENABLED_KEY = "enabled";
-  private static final String EXTRA_SERVERS_V4_KEY = "extraServersV4";
-  private static final String EXTRA_SERVERS_V6_KEY = "extraServersV6";
   private static final String SERVER_KEY = "server";
 
   private static final String INTERNAL_STATE_NAME = "MainActivity";
@@ -78,7 +78,7 @@ public class PersistentState {
 
     // There is no URL setting, so read the legacy server name.
     SharedPreferences settings = getInternalState(context);
-    String defaultDomain = context.getResources().getString(R.string.domain0);
+    String defaultDomain = context.getResources().getString(R.string.legacy_domain0);
     String domain = settings.getString(SERVER_KEY, defaultDomain);
 
     if (domain == null) {
@@ -88,7 +88,6 @@ public class PersistentState {
     }
 
     // Special case: url 0 is the nonstandard DoH service on dns.google.com.
-    // TODO: Remove this special case once dns.google.com transitions to standard DoH.
     String[] urls = context.getResources().getStringArray(R.array.urls);
     String url = null;
     if (domain.equals(defaultDomain)) {
@@ -136,12 +135,17 @@ public class PersistentState {
     }
   }
 
-  public static String getServerName(Context context) {
-    String url = getServerUrl(context);
+  // Converts a null url into the actual default url.  Otherwise, returns url unmodified.
+  public static @NonNull String expandUrl(Context context, @Nullable String url) {
     if (url == null || url.isEmpty()) {
-      return context.getResources().getString(R.string.domain0);
+      return context.getResources().getString(R.string.url0);
     }
-    return extractHost(url);
+    return url;
+  }
+
+  // Returns a domain representing the current configured server URL, for use as a display name.
+  public static String getServerName(Context context) {
+    return extractHost(expandUrl(context, getServerUrl(context)));
   }
 
   /**
@@ -151,36 +155,12 @@ public class PersistentState {
    * built-in servers.
    */
   public static String extractHostForAnalytics(Context context, String url) {
-    if (url == null || url.isEmpty()) {
-      return context.getResources().getString(R.string.domain0);
-    }
+    String expanded = expandUrl(context, url);
     String[] urls = context.getResources().getStringArray(R.array.urls);
-    if (Arrays.asList(urls).contains(url)) {
-      return extractHost(url);
+    if (Arrays.asList(urls).contains(expanded)) {
+      return extractHost(expanded);
     }
     return Names.CUSTOM_SERVER.name();
-  }
-
-  public static Set<String> getExtraGoogleV4Servers(Context context) {
-    return getInternalState(context).getStringSet(EXTRA_SERVERS_V4_KEY, new HashSet<String>());
-  }
-
-  public static void setExtraGoogleV4Servers(Context context, String[] servers) {
-    SharedPreferences.Editor editor = getInternalState(context).edit();
-    editor.putStringSet(EXTRA_SERVERS_V4_KEY,
-        new HashSet<String>(Arrays.asList(servers)));
-    editor.apply();
-  }
-
-  public static Set<String> getExtraGoogleV6Servers(Context context) {
-    return getInternalState(context).getStringSet(EXTRA_SERVERS_V6_KEY, new HashSet<String>());
-  }
-
-  public static void setExtraGoogleV6Servers(Context context, String[] servers) {
-    SharedPreferences.Editor editor = getInternalState(context).edit();
-    editor.putStringSet(EXTRA_SERVERS_V6_KEY,
-        new HashSet<String>(Arrays.asList(servers)));
-    editor.apply();
   }
 
   private static SharedPreferences getApprovalSettings(Context context) {

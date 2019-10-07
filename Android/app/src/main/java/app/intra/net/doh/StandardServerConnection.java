@@ -37,7 +37,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
- * Allows the caller to perform DNS-over-HTTPS queries using the IETF draft protocol.
+ * Allows the caller to perform DNS-over-HTTPS queries using RFC 8484 DoH.
  */
 public class StandardServerConnection implements ServerConnection {
   // The class name is longer than Android's log tag length limit.

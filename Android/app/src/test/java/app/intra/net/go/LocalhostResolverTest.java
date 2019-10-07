@@ -15,8 +15,8 @@ limitations under the License.
 */
 package app.intra.net.go;
 
-import app.intra.net.doh.Transaction;
 import app.intra.net.doh.ServerConnection;
+import app.intra.net.doh.Transaction;
 import app.intra.sys.IntraVpnService;
 import org.junit.After;
 import org.junit.Before;
