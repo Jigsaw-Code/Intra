@@ -111,7 +111,7 @@ public class GoIntraListener implements tunnel.IntraListener {
     goStatusMap.put(Doh.Complete, Status.COMPLETE);
     goStatusMap.put(Doh.SendFailed, Status.SEND_FAIL);
     goStatusMap.put(Doh.HTTPError, Status.HTTP_ERROR);
-    goStatusMap.put(Doh.BadQuery, Status.INTERNAL_ERROR); // TODO: Add a Status
+    goStatusMap.put(Doh.BadQuery, Status.INTERNAL_ERROR); // TODO: Add a BAD_QUERY Status
     goStatusMap.put(Doh.BadResponse, Status.BAD_RESPONSE);
     goStatusMap.put(Doh.InternalError, Status.INTERNAL_ERROR);
   }
