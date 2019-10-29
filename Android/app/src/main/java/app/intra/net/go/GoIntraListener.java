@@ -15,22 +15,23 @@ limitations under the License.
 */
 package app.intra.net.go;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
+import androidx.collection.LongSparseArray;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.Names;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.HttpMetric;
 import doh.Doh;
+import doh.Token;
 import intra.TCPSocketSummary;
 import intra.UDPSocketSummary;
 import java.net.ProtocolException;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import split.RetryStats;
 
 /**
@@ -106,7 +107,7 @@ public class GoIntraListener implements tunnel.IntraListener {
     FirebaseAnalytics.getInstance(vpnService).logEvent(Names.UDP.name(), event);
   }
 
-  private static final Map<Long, Status> goStatusMap = new HashMap<>();
+  private static final LongSparseArray<Status> goStatusMap = new LongSparseArray<>();
   static {
     goStatusMap.put(Doh.Complete, Status.COMPLETE);
     goStatusMap.put(Doh.SendFailed, Status.SEND_FAIL);
@@ -116,8 +117,40 @@ public class GoIntraListener implements tunnel.IntraListener {
     goStatusMap.put(Doh.InternalError, Status.INTERNAL_ERROR);
   }
 
+  // Wrapping HttpMetric into a doh.Token allows us to get paired query and response notifications
+  // from Go without reverse-binding any Java APIs into Go.  Pairing these notifications is
+  // required by the structure of the HttpMetric API (which does not have any other way to record
+  // latency), and reverse binding is worth avoiding, especially because it's not compatible with
+  // the Go module system (https://github.com/golang/go/issues/27234).
+  private class Metric implements doh.Token {
+    final HttpMetric metric;
+    Metric(String url) {
+      metric = FirebasePerformance.getInstance().newHttpMetric(url, "POST");
+    }
+  }
+
   @Override
-  public void onTransaction(doh.Summary summary) {
+  public Token onQuery(String url) {
+    Metric m = new Metric(url);
+    m.metric.start();
+    return m;
+  }
+
+  private static int len(byte[] a) {
+    return a != null ? a.length : 0;
+  }
+
+  @Override
+  public void onResponse(Token token, doh.Summary summary) {
+    if (summary.getHTTPStatus() != 0 && token != null) {
+      // HTTP transaction completed.  Report performance metrics.
+      Metric m = (Metric)token;
+      m.metric.setRequestPayloadSize(len(summary.getQuery()));
+      m.metric.setHttpResponseCode((int)summary.getHTTPStatus());
+      m.metric.setResponsePayloadSize(len(summary.getResponse()));
+      m.metric.stop();  // Finalizes the metric and queues it for upload.
+    }
+
     final DnsPacket query;
     try {
       query = new DnsPacket(summary.getQuery());
