@@ -16,18 +16,21 @@ limitations under the License.
 package app.intra.net.go;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import app.intra.net.VpnAdapter;
+import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.go.TLSProbe.Result;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.LogWrapper;
+import app.intra.sys.PersistentState;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import doh.Transport;
 import java.io.IOException;
 import java.util.Locale;
-import tun2socks.IntraTunnel;
+import tunnel.IntraTunnel;
 import tun2socks.Tun2socks;
 
 /**
@@ -59,7 +62,7 @@ public class GoVpnAdapter extends VpnAdapter {
   }
 
   // Service context in which the VPN is running.
-  private final Context context;
+  private final IntraVpnService vpnService;
 
   // DNS resolver running on localhost.
   private final LocalhostResolver resolver;
@@ -69,6 +72,7 @@ public class GoVpnAdapter extends VpnAdapter {
 
   // The Intra session object from go-tun2socks.  Initially null.
   private IntraTunnel tunnel;
+  private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
     LocalhostResolver resolver = LocalhostResolver.get(vpnService);
@@ -82,8 +86,8 @@ public class GoVpnAdapter extends VpnAdapter {
     return new GoVpnAdapter(vpnService, tunFd, resolver);
   }
 
-  private GoVpnAdapter(Context context, ParcelFileDescriptor tunFd, LocalhostResolver resolver) {
-    this.context = context;
+  private GoVpnAdapter(IntraVpnService vpnService, ParcelFileDescriptor tunFd, LocalhostResolver resolver) {
+    this.vpnService = vpnService;
     this.resolver = resolver;
     this.tunFd = tunFd;
   }
@@ -96,17 +100,23 @@ public class GoVpnAdapter extends VpnAdapter {
     final String fakeDnsIp = LanIp.DNS.make(IPV4_TEMPLATE);
     final String fakeDns = fakeDnsIp + ":" + DNS_DEFAULT_PORT;
 
-    Result r = TLSProbe.run(context);
-    LogWrapper.log(Log.INFO, LOG_TAG, "TLS probe result: " + r.name());
-    boolean alwaysSplitHttps = r == Result.TLS_FAILED;
 
     // Strip leading "/" from ip:port string.
     String trueDns = resolver.getAddress().toString().substring(1);
-    GoIntraListener listener = new GoIntraListener(context);
+    listener = new GoIntraListener(vpnService);
+    String dohURL = PersistentState.getServerUrl(vpnService);
 
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
-      tunnel = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns, trueDns, trueDns, alwaysSplitHttps, listener);
+      final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns, trueDns, trueDns,
+          makeDohTransport(dohURL), listener);
+      tunnel = t;
+
+      new Thread(() -> {
+        Result r = TLSProbe.run(vpnService);
+        LogWrapper.log(Log.INFO, LOG_TAG, "TLS probe result: " + r.name());
+        t.setAlwaysSplitHTTPS(r == Result.TLS_FAILED);
+      }).start();
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel = null;
@@ -143,6 +153,39 @@ public class GoVpnAdapter extends VpnAdapter {
     }
     if (resolver != null) {
       resolver.shutdown();
+    }
+  }
+
+  private static boolean useGoDoh() {
+    return FirebaseRemoteConfig.getInstance().getBoolean("use_go_doh");
+  }
+
+  private doh.Transport makeDohTransport(String url) throws Exception {
+    if (!useGoDoh()) {
+      return null;
+    }
+    String dohIPs = ServerConnectionFactory.getIpString(vpnService, url);
+    return Tun2socks.newDoHTransport(url, dohIPs, listener);
+  }
+
+  /**
+   * Sets a DOH server URL for the VPN.  If Go-DoH is enabled, DNS queries will be handled in
+   * Go, and will not use the Java DoH implementation.  If Go-DoH is not enabled, this method
+   * has no effect.
+   * @param url The DOH server URL.  Must be valid and nonempty.
+   */
+  public void setDohUrl(String url) {
+    if (!useGoDoh()) {
+      return;
+    }
+    // Overwrite the DoH Transport with a new one, even if the URL has not changed.  This function
+    // is called on network changes, and it's important to switch to a fresh transport because the
+    // old transport may be using sockets on a deleted interface, which may block until they time
+    // out.
+    try {
+      tunnel.setDNS(makeDohTransport(url));
+    } catch (Exception e) {
+      LogWrapper.logException(e);
     }
   }
 }

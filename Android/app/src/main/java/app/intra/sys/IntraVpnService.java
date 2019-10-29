@@ -190,6 +190,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @WorkerThread
   private void updateServerConnection() {
+    if (vpnAdapter instanceof GoVpnAdapter) {
+      ((GoVpnAdapter)vpnAdapter).setDohUrl(url);
+    }
+
     // This method consists of three steps:
     // 1. a synchronized block to check if an update is necessary and set a flag (pendingUrl)
     // 2. an unsynchronized section to perform the update without holding the lock

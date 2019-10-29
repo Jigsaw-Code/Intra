@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
+import app.intra.net.dns.DnsPacket;
 import app.intra.net.dns.DnsUdpQuery;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -37,6 +38,12 @@ public class Transaction implements Serializable {
     this.name = query.name;
     this.type = query.type;
     this.queryTime = query.timestamp;
+  }
+
+  public Transaction(DnsPacket query, long timestamp) {
+    this.name = query.getQueryName();
+    this.type = query.getQueryType();
+    this.queryTime = timestamp;
   }
 
   public final long queryTime;
