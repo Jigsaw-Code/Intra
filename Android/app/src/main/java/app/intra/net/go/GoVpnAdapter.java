@@ -157,7 +157,8 @@ public class GoVpnAdapter extends VpnAdapter {
   }
 
   private static boolean useGoDoh() {
-    return FirebaseRemoteConfig.getInstance().getBoolean("use_go_doh");
+    return true;
+    //return FirebaseRemoteConfig.getInstance().getBoolean("use_go_doh");
   }
 
   private doh.Transport makeDohTransport(String url) throws Exception {
@@ -178,10 +179,10 @@ public class GoVpnAdapter extends VpnAdapter {
     if (!useGoDoh()) {
       return;
     }
-    Transport transport = tunnel.getDNS();
-    if (transport != null && transport.getURL().equals(url)) {
-      return;
-    }
+    // Overwrite the DoH Transport with a new one, even if the URL has not changed.  This function
+    // is called on network changes, and it's important to switch to a fresh transport because the
+    // old transport may be using sockets on a deleted interface, which may block until they time
+    // out.
     try {
       tunnel.setDNS(makeDohTransport(url));
     } catch (Exception e) {
