@@ -157,8 +157,7 @@ public class GoVpnAdapter extends VpnAdapter {
   }
 
   private static boolean useGoDoh() {
-    return true;
-    //return FirebaseRemoteConfig.getInstance().getBoolean("use_go_doh");
+    return FirebaseRemoteConfig.getInstance().getBoolean("use_go_doh");
   }
 
   private doh.Transport makeDohTransport(String url) throws Exception {
