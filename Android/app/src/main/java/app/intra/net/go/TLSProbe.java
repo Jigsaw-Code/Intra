@@ -18,8 +18,8 @@ package app.intra.net.go;
 import android.content.Context;
 import android.os.Bundle;
 import app.intra.sys.Names;
+import app.intra.sys.RemoteConfig;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.io.IOException;
 import java.net.URL;
 import javax.net.ssl.SSLHandshakeException;
@@ -62,8 +62,6 @@ class TLSProbe {
   }
 
   static Result run(Context context) {
-    String[] domains = FirebaseRemoteConfig.getInstance()
-        .getString("tls_probe_servers").split(",");
-    return run(context, domains);
+    return run(context, RemoteConfig.getTlsProbeServers());
   }
 }

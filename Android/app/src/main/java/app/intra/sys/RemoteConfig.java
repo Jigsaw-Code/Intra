@@ -15,7 +15,9 @@ limitations under the License.
 */
 package app.intra.sys;
 
+import android.content.Context;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 /**
@@ -25,7 +27,29 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
  */
 public class RemoteConfig {
   public static Task<Boolean> update() {
-    FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
-    return config.fetchAndActivate();
+    try {
+      FirebaseRemoteConfig config = FirebaseRemoteConfig.getInstance();
+      return config.fetchAndActivate();
+    } catch (IllegalStateException e) {
+      return Tasks.forResult(false);
+    }
+  }
+
+  public static String[] getTlsProbeServers() {
+    try {
+      return FirebaseRemoteConfig.getInstance()
+          .getString("tls_probe_servers").split(",");
+    } catch (IllegalStateException e) {
+      return new String[0];
+    }
+  }
+
+  public static boolean getUseGoDoh() {
+    try {
+      return FirebaseRemoteConfig.getInstance()
+          .getBoolean("use_go_doh");
+    } catch (IllegalStateException e) {
+      return false;
+    }
   }
 }

@@ -26,12 +26,12 @@ import app.intra.net.go.TLSProbe.Result;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.LogWrapper;
 import app.intra.sys.PersistentState;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import app.intra.sys.RemoteConfig;
 import doh.Transport;
 import java.io.IOException;
 import java.util.Locale;
-import tunnel.IntraTunnel;
 import tun2socks.Tun2socks;
+import tunnel.IntraTunnel;
 
 /**
  * This is a VpnAdapter that captures all traffic and routes it through a go-tun2socks instance with
@@ -106,10 +106,12 @@ public class GoVpnAdapter extends VpnAdapter {
     listener = new GoIntraListener(vpnService);
     String dohURL = PersistentState.getServerUrl(vpnService);
 
+
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
+      Transport transport = RemoteConfig.getUseGoDoh() ? makeDohTransport(dohURL) : null;
       final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns, trueDns, trueDns,
-          makeDohTransport(dohURL), listener);
+          transport, listener);
       tunnel = t;
 
       new Thread(() -> {
@@ -156,14 +158,7 @@ public class GoVpnAdapter extends VpnAdapter {
     }
   }
 
-  private static boolean useGoDoh() {
-    return FirebaseRemoteConfig.getInstance().getBoolean("use_go_doh");
-  }
-
   private doh.Transport makeDohTransport(String url) throws Exception {
-    if (!useGoDoh()) {
-      return null;
-    }
     String dohIPs = ServerConnectionFactory.getIpString(vpnService, url);
     return Tun2socks.newDoHTransport(url, dohIPs, listener);
   }
@@ -175,7 +170,7 @@ public class GoVpnAdapter extends VpnAdapter {
    * @param url The DOH server URL.  Must be valid and nonempty.
    */
   public void setDohUrl(String url) {
-    if (!useGoDoh()) {
+    if (!RemoteConfig.getUseGoDoh()) {
       return;
     }
     // Overwrite the DoH Transport with a new one, even if the URL has not changed.  This function
