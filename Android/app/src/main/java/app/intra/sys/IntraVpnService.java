@@ -46,7 +46,6 @@ import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.ui.MainActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.Calendar;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
