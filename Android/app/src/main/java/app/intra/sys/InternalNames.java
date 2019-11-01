@@ -15,36 +15,11 @@ limitations under the License.
 */
 package app.intra.sys;
 
-// Names for intents and events that are used by multiple components and must agree.
+// Names for intents and settings that are used by multiple components or must remain consistent.
 // Each name is used to generate a string.
-public enum Names {
-  BOOTSTRAP,
-  BOOTSTRAP_FAILED,
-  BYTES,
-  CHUNKS,
+public enum InternalNames {
   CUSTOM_SERVER,
   DNS_STATUS,
-  DOWNLOAD,
-  DURATION,
-  EARLY_RESET,
-  FIRST_BYTE_MS,
-  LATENCY,
-  MODE,
-  PORT,
   RESULT,
-  RETRY,
-  SERVER,
-  SPLIT,
-  STARTVPN,
-  TCP_HANDSHAKE_MS,
-  TIMEOUT,
-  TLS_PROBE,
   TRANSACTION,
-  TRY_ALL_ACCEPTED,
-  TRY_ALL_CANCELLED,
-  TRY_ALL_DIALOG,
-  TRY_ALL_FAILED,
-  TRY_ALL_REQUESTED,
-  UDP,
-  UPLOAD,
 }

@@ -15,15 +15,15 @@ limitations under the License.
 */
 package app.intra.net.go;
 
-import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.collection.LongSparseArray;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
+import app.intra.sys.AnalyticsEvent;
+import app.intra.sys.AnalyticsEvent.Events;
+import app.intra.sys.AnalyticsEvent.Params;
 import app.intra.sys.IntraVpnService;
-import app.intra.sys.Names;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.HttpMetric;
 import doh.Doh;
@@ -62,13 +62,13 @@ public class GoIntraListener implements tunnel.IntraListener {
     // - DURATION: socket lifetime in seconds
     // - TODO: FIRST_BYTE_MS: Time between socket open and first byte from server, in milliseconds.
 
-    Bundle bytesEvent = new Bundle();
-    bytesEvent.putLong(Names.UPLOAD.name(), summary.getUploadBytes());
-    bytesEvent.putLong(Names.DOWNLOAD.name(), summary.getDownloadBytes());
-    bytesEvent.putInt(Names.PORT.name(), summary.getServerPort());
-    bytesEvent.putInt(Names.TCP_HANDSHAKE_MS.name(), summary.getSynack());
-    bytesEvent.putInt(Names.DURATION.name(), summary.getDuration());
-    FirebaseAnalytics.getInstance(vpnService).logEvent(Names.BYTES.name(), bytesEvent);
+    new AnalyticsEvent(vpnService)
+        .put(Params.UPLOAD, summary.getUploadBytes())
+        .put(Params.DOWNLOAD, summary.getDownloadBytes())
+        .put(Params.PORT, summary.getServerPort())
+        .put(Params.TCP_HANDSHAKE_MS, summary.getSynack())
+        .put(Params.DURATION, summary.getDuration())
+        .send(Events.BYTES);
 
     RetryStats retry = summary.getRetry();
     if (retry != null) {
@@ -77,20 +77,20 @@ public class GoIntraListener implements tunnel.IntraListener {
         // Split-retry was not attempted.
         return;
       }
+      boolean success = summary.getDownloadBytes() > 0;
       // Prepare an EARLY_RESET event to collect metrics on success rates for splitting:
       // - BYTES : Amount uploaded before reset
       // - CHUNKS : Number of upload writes before reset
       // - TIMEOUT : Whether the initial connection failed with a timeout.
       // - SPLIT : Number of bytes included in the first retry segment
       // - RETRY : 1 if retry succeeded, otherwise 0
-      Bundle resetEvent = new Bundle();
-      resetEvent.putInt(Names.BYTES.name(), retry.getBytes());
-      resetEvent.putInt(Names.CHUNKS.name(), retry.getChunks());
-      resetEvent.putInt(Names.TIMEOUT.name(), retry.getTimeout() ? 1 : 0);
-      resetEvent.putInt(Names.SPLIT.name(), retry.getSplit());
-      boolean success = summary.getDownloadBytes() > 0;
-      resetEvent.putInt(Names.RETRY.name(), success ? 1 : 0);
-      FirebaseAnalytics.getInstance(vpnService).logEvent(Names.EARLY_RESET.name(), resetEvent);
+      new AnalyticsEvent(vpnService)
+          .put(Params.BYTES, retry.getBytes())
+          .put(Params.CHUNKS, retry.getChunks())
+          .put(Params.TIMEOUT, retry.getTimeout() ? 1 : 0)
+          .put(Params.SPLIT, retry.getSplit())
+          .put(Params.RETRY, success ? 1 : 0)
+          .send(Events.EARLY_RESET);
     }
  }
 
@@ -100,11 +100,11 @@ public class GoIntraListener implements tunnel.IntraListener {
     if (totalBytes < UDP_THRESHOLD_BYTES) {
       return;
     }
-    Bundle event = new Bundle();
-    event.putLong(Names.UPLOAD.name(), summary.getUploadBytes());
-    event.putLong(Names.DOWNLOAD.name(), summary.getDownloadBytes());
-    event.putLong(Names.DURATION.name(), summary.getDuration());
-    FirebaseAnalytics.getInstance(vpnService).logEvent(Names.UDP.name(), event);
+    new AnalyticsEvent(vpnService)
+        .put(Params.UPLOAD, summary.getUploadBytes())
+        .put(Params.DOWNLOAD, summary.getDownloadBytes())
+        .put(Params.DURATION, summary.getDuration())
+        .send(Events.UDP);
   }
 
   private static final LongSparseArray<Status> goStatusMap = new LongSparseArray<>();

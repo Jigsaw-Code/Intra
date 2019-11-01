@@ -160,7 +160,7 @@ public class PersistentState {
     if (Arrays.asList(urls).contains(expanded)) {
       return extractHost(expanded);
     }
-    return Names.CUSTOM_SERVER.name();
+    return InternalNames.CUSTOM_SERVER.name();
   }
 
   private static SharedPreferences getApprovalSettings(Context context) {

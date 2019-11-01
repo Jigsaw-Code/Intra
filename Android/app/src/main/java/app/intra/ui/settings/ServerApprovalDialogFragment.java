@@ -32,9 +32,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import app.intra.R;
-import app.intra.sys.Names;
+import app.intra.sys.AnalyticsEvent;
+import app.intra.sys.AnalyticsEvent.Events;
+import app.intra.sys.AnalyticsEvent.Params;
 import app.intra.sys.PersistentState;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * This dialog shows the user the fastest server we detected and allows them to accept or decline.
@@ -134,13 +135,11 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     return dialogContent;
   }
 
-  private Bundle getAnalyticsBundle() {
+  private AnalyticsEvent getEvent() {
     final int index = getIndex();
     final String url = getResources().getStringArray(R.array.urls)[index];
-    final Bundle bundle = new Bundle();
-    bundle.putString(Names.SERVER.name(),
-        PersistentState.extractHostForAnalytics(getContext(), url));
-    return bundle;
+    return new AnalyticsEvent(getContext())
+        .put(Params.SERVER, PersistentState.extractHostForAnalytics(getContext(), url));
   }
 
   @Override
@@ -155,14 +154,13 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     final boolean showWebsite = getShowWebsite();
     final View body = showWebsite ? makeWebView(index) : makeNoticeText();
 
-    final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
-    analytics.logEvent(Names.TRY_ALL_DIALOG.name(), getAnalyticsBundle());
+    getEvent().send(Events.TRY_ALL_DIALOG);
     builder.setView(body)
         .setTitle(message)
         .setPositiveButton(R.string.intro_accept, (DialogInterface d, int id) -> {
           final String url = getResources().getStringArray(R.array.urls)[index];
           PersistentState.setServerUrl(getContext(), url);
-          analytics.logEvent(Names.TRY_ALL_ACCEPTED.name(), getAnalyticsBundle());
+          getEvent().send(Events.TRY_ALL_ACCEPTED);
         })
         .setNegativeButton(android.R.string.cancel, (d, id) -> onCancel(d));
 
@@ -177,8 +175,7 @@ public class ServerApprovalDialogFragment extends DialogFragment {
 
   @Override
   public void onCancel(DialogInterface dialog) {
-    final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
-    analytics.logEvent(Names.TRY_ALL_CANCELLED.name(), getAnalyticsBundle());
+    getEvent().send(Events.TRY_ALL_CANCELLED);
   }
 }
 
