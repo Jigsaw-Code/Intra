@@ -17,14 +17,13 @@ package app.intra.sys.firebase;
 
 import android.content.Context;
 import android.telephony.TelephonyManager;
-import app.intra.sys.firebase.LogWrapper;
 import java.lang.reflect.Method;
 
 /**
  * Static utility function for getting the Mobile Country Code.
  */
 class MobileCountryCode {
-  // Mobile Country Code, or 0 if it could not be determined.  This is used to memoize getMCC()
+  // Mobile Country Code, or 0 if it could not be determined.  This is used to memoize get()
   // across all the analytics events.
   private static Integer mcc = null;
 

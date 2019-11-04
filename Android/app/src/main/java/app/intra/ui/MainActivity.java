@@ -71,8 +71,7 @@ import app.intra.net.doh.Race;
 import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
-import app.intra.sys.firebase.AnalyticsEvent;
-import app.intra.sys.firebase.AnalyticsEvent.Events;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.InternalNames;
 import app.intra.sys.PersistentState;
@@ -306,7 +305,7 @@ public class MainActivity extends AppCompatActivity
       tryAllButton.setEnabled(false);
       tryAllButton.setText(R.string.checking_servers);
       String[] urls = getResources().getStringArray(R.array.urls);
-      new AnalyticsEvent(this).send(Events.TRY_ALL_REQUESTED);
+      AnalyticsWrapper.get(this).logTryAllRequested();
       // The result needs to be posted to the UI thread before we can make UI changes.
       new Race(new ServerConnectionFactory(this), urls, (int index) -> view.post(() -> {
         if (index >= 0) {
@@ -318,7 +317,7 @@ public class MainActivity extends AppCompatActivity
               .commitAllowingStateLoss();
         } else {
           Toast.makeText(this, R.string.all_servers_failed, Toast.LENGTH_LONG).show();
-          new AnalyticsEvent(this).send(Events.TRY_ALL_FAILED);
+          AnalyticsWrapper.get(this).logTryAllFailed();
         }
         tryAllButton.setText(R.string.try_all_servers);
         tryAllButton.setEnabled(true);

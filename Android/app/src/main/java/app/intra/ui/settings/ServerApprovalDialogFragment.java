@@ -32,9 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import app.intra.R;
-import app.intra.sys.firebase.AnalyticsEvent;
-import app.intra.sys.firebase.AnalyticsEvent.Events;
-import app.intra.sys.firebase.AnalyticsEvent.Params;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.PersistentState;
 
 /**
@@ -135,11 +133,10 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     return dialogContent;
   }
 
-  private AnalyticsEvent getEvent() {
+  private String getHostForAnalytics() {
     final int index = getIndex();
     final String url = getResources().getStringArray(R.array.urls)[index];
-    return new AnalyticsEvent(getContext())
-        .put(Params.SERVER, PersistentState.extractHostForAnalytics(getContext(), url));
+    return PersistentState.extractHostForAnalytics(getContext(), url);
   }
 
   @Override
@@ -154,13 +151,13 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     final boolean showWebsite = getShowWebsite();
     final View body = showWebsite ? makeWebView(index) : makeNoticeText();
 
-    getEvent().send(Events.TRY_ALL_DIALOG);
+    AnalyticsWrapper.get(getContext()).logTryAllDialog(getHostForAnalytics());
     builder.setView(body)
         .setTitle(message)
         .setPositiveButton(R.string.intro_accept, (DialogInterface d, int id) -> {
           final String url = getResources().getStringArray(R.array.urls)[index];
           PersistentState.setServerUrl(getContext(), url);
-          getEvent().send(Events.TRY_ALL_ACCEPTED);
+          AnalyticsWrapper.get(getContext()).logTryAllAccepted(getHostForAnalytics());
         })
         .setNegativeButton(android.R.string.cancel, (d, id) -> onCancel(d));
 
@@ -175,7 +172,7 @@ public class ServerApprovalDialogFragment extends DialogFragment {
 
   @Override
   public void onCancel(DialogInterface dialog) {
-    getEvent().send(Events.TRY_ALL_CANCELLED);
+    AnalyticsWrapper.get(getContext()).logTryAllCancelled(getHostForAnalytics());
   }
 }
 

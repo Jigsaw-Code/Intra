@@ -42,9 +42,7 @@ import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.go.GoVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
-import app.intra.sys.firebase.AnalyticsEvent;
-import app.intra.sys.firebase.AnalyticsEvent.Events;
-import app.intra.sys.firebase.AnalyticsEvent.Params;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.ui.MainActivity;
@@ -85,6 +83,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   // indicates a pending connection, serverConnection should be null to avoid sending queries to the
   // previously selected server.
   private String pendingUrl = NO_PENDING_CONNECTION;
+
+  private AnalyticsWrapper analytics;
 
   public boolean isOn() {
     return vpnAdapter != null;
@@ -225,8 +225,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
     // Bootstrap the new server connection, which may require resolving the new server's name, using
     // the current DNS configuration.
-    AnalyticsEvent bootstrap = new AnalyticsEvent(this)
-        .put(Params.SERVER, PersistentState.extractHostForAnalytics(this, url));
+    String analyticsHost = PersistentState.extractHostForAnalytics(this, url);
     long beforeBootstrap = SystemClock.elapsedRealtime();
     final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 
@@ -235,11 +234,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
       // Measure bootstrap delay.
       long afterBootStrap = SystemClock.elapsedRealtime();
-      bootstrap.put(Params.LATENCY, (int) (afterBootStrap - beforeBootstrap))
-          .send(Events.BOOTSTRAP);
+      analytics.logBootstrap(analyticsHost, (int) (afterBootStrap - beforeBootstrap));
     } else {
       controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
-      bootstrap.send(Events.BOOTSTRAP_FAILED);
+      analytics.logBootstrapFailed(analyticsHost);
     }
 
     // Step 3: Unset the flag and confirm the update.
@@ -300,6 +298,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   public void onCreate() {
     LogWrapper.log(Log.INFO, LOG_TAG, "Creating DNS VPN service");
     VpnController.getInstance().setIntraVpnService(this);
+
+    analytics = AnalyticsWrapper.get(this);
 
     syncNumRequests();
   }
@@ -380,10 +380,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       vpnAdapter = makeVpnAdapter();
       if (vpnAdapter != null) {
         vpnAdapter.start();
-
-        new AnalyticsEvent(this)
-            .put(Params.MODE, vpnAdapter.getClass().getSimpleName())
-            .send(Events.STARTVPN);
+        analytics.logStartVPN(vpnAdapter.getClass().getSimpleName());
       } else {
         LogWrapper.log(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
       }

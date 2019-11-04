@@ -20,9 +20,7 @@ import androidx.collection.LongSparseArray;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
-import app.intra.sys.firebase.AnalyticsEvent;
-import app.intra.sys.firebase.AnalyticsEvent.Events;
-import app.intra.sys.firebase.AnalyticsEvent.Params;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.IntraVpnService;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.HttpMetric;
@@ -47,28 +45,20 @@ public class GoIntraListener implements tunnel.IntraListener {
   private static final int UDP_THRESHOLD_BYTES = 10000;
 
   private final IntraVpnService vpnService;
+  private final AnalyticsWrapper analytics;
   GoIntraListener(IntraVpnService vpnService) {
     this.vpnService = vpnService;
+    analytics = AnalyticsWrapper.get(vpnService);
   }
 
   @Override
   public void onTCPSocketClosed(TCPSocketSummary summary) {
-    // We had a functional socket long enough to record statistics.
-    // Report the BYTES event :
-    // - UPLOAD: total bytes uploaded over the lifetime of a socket
-    // - DOWNLOAD: total bytes downloaded
-    // - PORT: TCP port number (i.e. protocol type)
-    // - TCP_HANDSHAKE_MS: TCP handshake latency in milliseconds
-    // - DURATION: socket lifetime in seconds
-    // - TODO: FIRST_BYTE_MS: Time between socket open and first byte from server, in milliseconds.
-
-    new AnalyticsEvent(vpnService)
-        .put(Params.UPLOAD, summary.getUploadBytes())
-        .put(Params.DOWNLOAD, summary.getDownloadBytes())
-        .put(Params.PORT, summary.getServerPort())
-        .put(Params.TCP_HANDSHAKE_MS, summary.getSynack())
-        .put(Params.DURATION, summary.getDuration())
-        .send(Events.BYTES);
+    analytics.logTCP(
+        summary.getUploadBytes(),
+        summary.getDownloadBytes(),
+        summary.getServerPort(),
+        summary.getSynack(),
+        summary.getDuration());
 
     RetryStats retry = summary.getRetry();
     if (retry != null) {
@@ -78,19 +68,12 @@ public class GoIntraListener implements tunnel.IntraListener {
         return;
       }
       boolean success = summary.getDownloadBytes() > 0;
-      // Prepare an EARLY_RESET event to collect metrics on success rates for splitting:
-      // - BYTES : Amount uploaded before reset
-      // - CHUNKS : Number of upload writes before reset
-      // - TIMEOUT : Whether the initial connection failed with a timeout.
-      // - SPLIT : Number of bytes included in the first retry segment
-      // - RETRY : 1 if retry succeeded, otherwise 0
-      new AnalyticsEvent(vpnService)
-          .put(Params.BYTES, retry.getBytes())
-          .put(Params.CHUNKS, retry.getChunks())
-          .put(Params.TIMEOUT, retry.getTimeout() ? 1 : 0)
-          .put(Params.SPLIT, retry.getSplit())
-          .put(Params.RETRY, success ? 1 : 0)
-          .send(Events.EARLY_RESET);
+      analytics.logEarlyReset(
+          retry.getBytes(),
+          retry.getChunks(),
+          retry.getTimeout(),
+          retry.getSplit(),
+          success);
     }
  }
 
@@ -100,11 +83,10 @@ public class GoIntraListener implements tunnel.IntraListener {
     if (totalBytes < UDP_THRESHOLD_BYTES) {
       return;
     }
-    new AnalyticsEvent(vpnService)
-        .put(Params.UPLOAD, summary.getUploadBytes())
-        .put(Params.DOWNLOAD, summary.getDownloadBytes())
-        .put(Params.DURATION, summary.getDuration())
-        .send(Events.UDP);
+    analytics.logUDP(
+        summary.getUploadBytes(),
+        summary.getDownloadBytes(),
+        summary.getDuration());
   }
 
   private static final LongSparseArray<Status> goStatusMap = new LongSparseArray<>();
