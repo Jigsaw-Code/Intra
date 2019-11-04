@@ -32,9 +32,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import app.intra.R;
-import app.intra.sys.AnalyticsEvent;
-import app.intra.sys.AnalyticsEvent.Events;
-import app.intra.sys.AnalyticsEvent.Params;
+import app.intra.sys.firebase.AnalyticsEvent;
+import app.intra.sys.firebase.AnalyticsEvent.Events;
+import app.intra.sys.firebase.AnalyticsEvent.Params;
 import app.intra.sys.PersistentState;
 
 /**

@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.dns.DnsPacket;
-import app.intra.sys.LogWrapper;
+import app.intra.sys.firebase.LogWrapper;
 import com.google.common.net.InternetDomainName;
 import java.io.IOException;
 import java.net.InetAddress;

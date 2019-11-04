@@ -23,6 +23,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import app.intra.R;
+import app.intra.sys.firebase.LogWrapper;
 import app.intra.ui.settings.Untemplate;
 import java.net.MalformedURLException;
 import java.net.URL;

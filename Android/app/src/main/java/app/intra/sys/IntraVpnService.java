@@ -42,9 +42,11 @@ import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.go.GoVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
-import app.intra.sys.AnalyticsEvent.Events;
-import app.intra.sys.AnalyticsEvent.Params;
+import app.intra.sys.firebase.AnalyticsEvent;
+import app.intra.sys.firebase.AnalyticsEvent.Events;
+import app.intra.sys.firebase.AnalyticsEvent.Params;
 import app.intra.sys.NetworkManager.NetworkListener;
+import app.intra.sys.firebase.LogWrapper;
 import app.intra.ui.MainActivity;
 import java.util.Calendar;
 

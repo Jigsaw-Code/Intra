@@ -13,12 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package app.intra.sys;
+package app.intra.sys.firebase;
 
 import android.content.Context;
 import android.os.Bundle;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import java.lang.reflect.Method;
 
 /**
  * Wrapper for Firebase Analytics event reporting.  In addition to improving the reporting API,
@@ -61,37 +60,6 @@ public class AnalyticsEvent {
     UPLOAD,
   }
 
-  // Mobile Country Code, or 0 if it could not be determined.  This is used to memoize getMCC()
-  // across all the analytics events.
-  private static Integer mcc = null;
-
-  // Get the system's mobile country code, or 0 if it could not be determined.
-  // After the first call to this function, all subsequent calls will return immediately.
-  private int getMCC() {
-    if (mcc != null) {
-      return mcc;
-    }
-    int gsmMCC = context.getResources().getConfiguration().mcc;
-    if (gsmMCC != 0) {
-      mcc = gsmMCC;
-      return mcc;
-    }
-    // User appears to be non-GSM.  Try CDMA.
-    try {
-      // Get the system properties by reflection.
-      Class<?> systemPropertiesClass = Class.forName("android.os.SystemProperties");
-      Method get = systemPropertiesClass.getMethod("get", String.class);
-      String mcc_mnc = (String)get.invoke(systemPropertiesClass, "ro.cdma.home.operator.numeric");
-      if (mcc_mnc.length() >= 3) {
-        mcc = Integer.valueOf(mcc_mnc.substring(0, 3));
-      }
-    } catch (Exception e) {
-      LogWrapper.logException(e);
-      mcc = 0;
-    }
-    return mcc;
-  }
-
   final private Context context;
   final private Bundle bundle = new Bundle();
   public AnalyticsEvent(Context context) {
@@ -114,7 +82,7 @@ public class AnalyticsEvent {
   }
 
   public void send(Events event) {
-    put(Params.MCC, getMCC());
+    put(Params.MCC, MobileCountryCode.get(context));
     FirebaseAnalytics.getInstance(context).logEvent(event.name(), bundle);
   }
 }

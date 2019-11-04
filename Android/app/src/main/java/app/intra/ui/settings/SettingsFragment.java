@@ -26,7 +26,7 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import app.intra.R;
-import app.intra.sys.LogWrapper;
+import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.PersistentState;
 import java.util.ArrayList;
 import java.util.Collections;

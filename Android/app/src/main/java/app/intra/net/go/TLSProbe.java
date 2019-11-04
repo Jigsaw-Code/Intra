@@ -16,10 +16,10 @@ limitations under the License.
 package app.intra.net.go;
 
 import android.content.Context;
-import app.intra.sys.AnalyticsEvent;
-import app.intra.sys.AnalyticsEvent.Events;
-import app.intra.sys.AnalyticsEvent.Params;
-import app.intra.sys.RemoteConfig;
+import app.intra.sys.firebase.AnalyticsEvent;
+import app.intra.sys.firebase.AnalyticsEvent.Events;
+import app.intra.sys.firebase.AnalyticsEvent.Params;
+import app.intra.sys.firebase.RemoteConfig;
 import java.io.IOException;
 import java.net.URL;
 import javax.net.ssl.SSLHandshakeException;

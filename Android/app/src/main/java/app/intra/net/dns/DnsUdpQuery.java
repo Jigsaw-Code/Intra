@@ -17,7 +17,7 @@ package app.intra.net.dns;
 
 import android.os.SystemClock;
 import android.util.Log;
-import app.intra.sys.LogWrapper;
+import app.intra.sys.firebase.LogWrapper;
 import java.net.InetAddress;
 import java.net.ProtocolException;
 

@@ -21,7 +21,7 @@ import app.intra.net.doh.Resolver;
 import app.intra.net.doh.ResponseWriter;
 import app.intra.net.doh.Transaction;
 import app.intra.sys.IntraVpnService;
-import app.intra.sys.LogWrapper;
+import app.intra.sys.firebase.LogWrapper;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
