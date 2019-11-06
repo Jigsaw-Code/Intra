@@ -27,11 +27,12 @@ class BundleBuilder {
   enum Params {
     BYTES,
     CHUNKS,
+    COUNTRY,
     DOWNLOAD,
     DURATION,
     LATENCY,
-    MCC,
     MODE,
+    NETWORK,
     PORT,
     RESULT,
     RETRY,

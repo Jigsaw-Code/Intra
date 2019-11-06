@@ -25,16 +25,16 @@ import android.util.Log;
 
 // This class listens for network connectivity changes and notifies a NetworkListener of
 // connected/disconnected events.
-class NetworkManager {
+public class NetworkManager {
 
   private static final String LOG_TAG = "NetworkManager";
   private static final String EXTRA_NETWORK_INFO = "networkInfo";
 
   public interface NetworkListener {
 
-    public void onNetworkConnected(NetworkInfo networkInfo);
+    void onNetworkConnected(NetworkInfo networkInfo);
 
-    public void onNetworkDisconnected();
+    void onNetworkDisconnected();
   }
 
   private ConnectivityManager connectivityManager;
@@ -42,7 +42,7 @@ class NetworkManager {
   private Context applicationContext;
   private NetworkListener networkListener;
 
-  NetworkManager(Context context, NetworkListener networkListener) {
+  public NetworkManager(Context context, NetworkListener networkListener) {
     applicationContext = context.getApplicationContext();
     connectivityManager =
         (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);

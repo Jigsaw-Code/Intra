@@ -16,16 +16,21 @@ limitations under the License.
 package app.intra.sys.firebase;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import app.intra.sys.NetworkManager;
+import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.sys.firebase.BundleBuilder.Params;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
- * Library of Analytics events reported by Intra.  In addition to improving the reporting API,
- * this class also attaches the Mobile Country Code (MCC) to each event, which indicates the client
- * country, to compensate for country classification errors in Firebase.
+ * Singleton class for reporting Analytics events.  In addition to improving the reporting API,
+ * this class also attaches a country code and network type to each event.
  */
-public class AnalyticsWrapper {
+public class AnalyticsWrapper implements NetworkListener {
+  private static AnalyticsWrapper singleton;
 
   // Analytics events
   private enum Events {
@@ -43,21 +48,62 @@ public class AnalyticsWrapper {
     UDP,
   }
 
-  // Mobile Country Code, or 0 if it is unknown.
-  private final int mcc;
-  private final FirebaseAnalytics analytics;
-  private AnalyticsWrapper(int mcc, FirebaseAnalytics analytics) {
-    this.mcc = mcc;
-    this.analytics = analytics;
+  private enum NetworkTypes {
+    MOBILE,
+    WIFI,
+    OTHER,
+    NONE
+  }
+
+  private final @NonNull CountryCode countryCode;
+  private final @NonNull FirebaseAnalytics analytics;
+  private final @NonNull NetworkManager networkManager;
+
+  private @Nullable NetworkInfo networkInfo = null;
+
+  private AnalyticsWrapper(Context context) {
+    countryCode = new CountryCode(context);
+    analytics = FirebaseAnalytics.getInstance(context);
+
+    // Register for network info updates.  Calling this constructor will synchronously call
+    // onNetworkConnected if there is an active network.
+    networkManager = new NetworkManager(context, this);
   }
 
   public static AnalyticsWrapper get(Context context) {
-    return new AnalyticsWrapper(MobileCountryCode.get(context),
-        FirebaseAnalytics.getInstance(context));
+    if (singleton == null) {
+      singleton = new AnalyticsWrapper(context);
+    }
+    return singleton;
+  }
+
+  @Override
+  public void onNetworkConnected(NetworkInfo networkInfo) {
+    this.networkInfo = networkInfo;
+  }
+
+  @Override
+  public void onNetworkDisconnected() {
+    this.networkInfo = null;
+  }
+
+  private NetworkTypes getNetworkType() {
+    NetworkInfo info = networkInfo;  // For atomicity against network updates in a different thread.
+    if (info == null) {
+      return NetworkTypes.NONE;
+    }
+    int type = info.getType();
+    if (type == ConnectivityManager.TYPE_MOBILE) {
+      return NetworkTypes.MOBILE;
+    } else if (type == ConnectivityManager.TYPE_WIFI) {
+      return NetworkTypes.WIFI;
+    }
+    return NetworkTypes.OTHER;
   }
 
   private void log(Events e, @NonNull BundleBuilder b) {
-    b.put(Params.MCC, mcc);
+    b.put(Params.COUNTRY, countryCode.getCombinedCountry());
+    b.put(Params.NETWORK, getNetworkType().name());
     analytics.logEvent(e.name(), b.build());
   }
 
