@@ -102,7 +102,16 @@ public class AnalyticsWrapper implements NetworkListener {
   }
 
   private void log(Events e, @NonNull BundleBuilder b) {
-    b.put(Params.COUNTRY, countryCode.getCombinedCountry());
+    String deviceCountry = countryCode.getDeviceCountry();
+    String networkCountry = countryCode.getNetworkCountry();
+    if (!deviceCountry.isEmpty() && !networkCountry.isEmpty()
+        && !deviceCountry.equals(networkCountry)) {
+      // The country codes disagree (e.g. device is roaming), so the effective network location is
+      // unclear. Report the ISO code for "unknown or unspecified".
+      networkCountry = "ZZ";
+    }
+    b.put(Params.DEVICE_COUNTRY, deviceCountry);
+    b.put(Params.NETWORK_COUNTRY, networkCountry);
     b.put(Params.NETWORK, getNetworkType().name());
     analytics.logEvent(e.name(), b.build());
   }

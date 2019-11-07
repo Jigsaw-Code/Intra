@@ -46,25 +46,6 @@ class CountryCode {
     return networkCountry;
   }
 
-  /**
-   * @return The consensus country code, or "" if there isn't one.
-   */
-  @NonNull String getCombinedCountry() {
-    if (networkCountry.isEmpty()) {
-      return deviceCountry;
-    }
-
-    if (deviceCountry.isEmpty()) {
-      return networkCountry;
-    }
-
-    if (deviceCountry.equals(networkCountry)) {
-      return networkCountry;
-    }
-
-    return "";
-  }
-
   private static @NonNull String countryFromSim(TelephonyManager telephonyManager) {
     String simCountry = telephonyManager.getSimCountryIso();
     if (!simCountry.isEmpty()) {
