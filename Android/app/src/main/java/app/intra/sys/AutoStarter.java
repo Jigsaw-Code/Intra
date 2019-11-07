@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.VpnService;
 import android.util.Log;
+import app.intra.sys.firebase.LogWrapper;
+import app.intra.sys.firebase.RemoteConfig;
 import app.intra.ui.MainActivity;
 
 /**

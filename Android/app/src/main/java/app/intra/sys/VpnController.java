@@ -57,7 +57,7 @@ public class VpnController {
   }
 
   private void stateChanged(Context context) {
-    Intent broadcast = new Intent(Names.DNS_STATUS.name());
+    Intent broadcast = new Intent(InternalNames.DNS_STATUS.name());
     LocalBroadcastManager.getInstance(context).sendBroadcast(broadcast);
   }
 

@@ -15,15 +15,13 @@ limitations under the License.
 */
 package app.intra.net.go;
 
-import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.collection.LongSparseArray;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.IntraVpnService;
-import app.intra.sys.Names;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.HttpMetric;
 import doh.Doh;
@@ -47,28 +45,20 @@ public class GoIntraListener implements tunnel.IntraListener {
   private static final int UDP_THRESHOLD_BYTES = 10000;
 
   private final IntraVpnService vpnService;
+  private final AnalyticsWrapper analytics;
   GoIntraListener(IntraVpnService vpnService) {
     this.vpnService = vpnService;
+    analytics = AnalyticsWrapper.get(vpnService);
   }
 
   @Override
   public void onTCPSocketClosed(TCPSocketSummary summary) {
-    // We had a functional socket long enough to record statistics.
-    // Report the BYTES event :
-    // - UPLOAD: total bytes uploaded over the lifetime of a socket
-    // - DOWNLOAD: total bytes downloaded
-    // - PORT: TCP port number (i.e. protocol type)
-    // - TCP_HANDSHAKE_MS: TCP handshake latency in milliseconds
-    // - DURATION: socket lifetime in seconds
-    // - TODO: FIRST_BYTE_MS: Time between socket open and first byte from server, in milliseconds.
-
-    Bundle bytesEvent = new Bundle();
-    bytesEvent.putLong(Names.UPLOAD.name(), summary.getUploadBytes());
-    bytesEvent.putLong(Names.DOWNLOAD.name(), summary.getDownloadBytes());
-    bytesEvent.putInt(Names.PORT.name(), summary.getServerPort());
-    bytesEvent.putInt(Names.TCP_HANDSHAKE_MS.name(), summary.getSynack());
-    bytesEvent.putInt(Names.DURATION.name(), summary.getDuration());
-    FirebaseAnalytics.getInstance(vpnService).logEvent(Names.BYTES.name(), bytesEvent);
+    analytics.logTCP(
+        summary.getUploadBytes(),
+        summary.getDownloadBytes(),
+        summary.getServerPort(),
+        summary.getSynack(),
+        summary.getDuration());
 
     RetryStats retry = summary.getRetry();
     if (retry != null) {
@@ -77,20 +67,13 @@ public class GoIntraListener implements tunnel.IntraListener {
         // Split-retry was not attempted.
         return;
       }
-      // Prepare an EARLY_RESET event to collect metrics on success rates for splitting:
-      // - BYTES : Amount uploaded before reset
-      // - CHUNKS : Number of upload writes before reset
-      // - TIMEOUT : Whether the initial connection failed with a timeout.
-      // - SPLIT : Number of bytes included in the first retry segment
-      // - RETRY : 1 if retry succeeded, otherwise 0
-      Bundle resetEvent = new Bundle();
-      resetEvent.putInt(Names.BYTES.name(), retry.getBytes());
-      resetEvent.putInt(Names.CHUNKS.name(), retry.getChunks());
-      resetEvent.putInt(Names.TIMEOUT.name(), retry.getTimeout() ? 1 : 0);
-      resetEvent.putInt(Names.SPLIT.name(), retry.getSplit());
       boolean success = summary.getDownloadBytes() > 0;
-      resetEvent.putInt(Names.RETRY.name(), success ? 1 : 0);
-      FirebaseAnalytics.getInstance(vpnService).logEvent(Names.EARLY_RESET.name(), resetEvent);
+      analytics.logEarlyReset(
+          retry.getBytes(),
+          retry.getChunks(),
+          retry.getTimeout(),
+          retry.getSplit(),
+          success);
     }
  }
 
@@ -100,11 +83,10 @@ public class GoIntraListener implements tunnel.IntraListener {
     if (totalBytes < UDP_THRESHOLD_BYTES) {
       return;
     }
-    Bundle event = new Bundle();
-    event.putLong(Names.UPLOAD.name(), summary.getUploadBytes());
-    event.putLong(Names.DOWNLOAD.name(), summary.getDownloadBytes());
-    event.putLong(Names.DURATION.name(), summary.getDuration());
-    FirebaseAnalytics.getInstance(vpnService).logEvent(Names.UDP.name(), event);
+    analytics.logUDP(
+        summary.getUploadBytes(),
+        summary.getDownloadBytes(),
+        summary.getDuration());
   }
 
   private static final LongSparseArray<Status> goStatusMap = new LongSparseArray<>();

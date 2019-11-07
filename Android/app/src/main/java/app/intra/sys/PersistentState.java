@@ -23,6 +23,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import app.intra.R;
+import app.intra.sys.firebase.LogWrapper;
 import app.intra.ui.settings.Untemplate;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -160,7 +161,7 @@ public class PersistentState {
     if (Arrays.asList(urls).contains(expanded)) {
       return extractHost(expanded);
     }
-    return Names.CUSTOM_SERVER.name();
+    return InternalNames.CUSTOM_SERVER.name();
   }
 
   private static SharedPreferences getApprovalSettings(Context context) {

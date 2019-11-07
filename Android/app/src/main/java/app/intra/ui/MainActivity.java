@@ -71,17 +71,17 @@ import app.intra.net.doh.Race;
 import app.intra.net.doh.ServerConnection;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
-import app.intra.sys.LogWrapper;
-import app.intra.sys.Names;
+import app.intra.sys.firebase.AnalyticsWrapper;
+import app.intra.sys.firebase.LogWrapper;
+import app.intra.sys.InternalNames;
 import app.intra.sys.PersistentState;
 import app.intra.sys.QueryTracker;
-import app.intra.sys.RemoteConfig;
+import app.intra.sys.firebase.RemoteConfig;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
 import app.intra.ui.settings.ServerApprovalDialogFragment;
 import app.intra.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -112,10 +112,10 @@ public class MainActivity extends AppCompatActivity
       new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-          if (Names.RESULT.name().equals(intent.getAction())) {
+          if (InternalNames.RESULT.name().equals(intent.getAction())) {
             updateStatsDisplay(getNumRequests(),
-                (Transaction) intent.getSerializableExtra(Names.TRANSACTION.name()));
-          } else if (Names.DNS_STATUS.name().equals(intent.getAction())) {
+                (Transaction) intent.getSerializableExtra(InternalNames.TRANSACTION.name()));
+          } else if (InternalNames.DNS_STATUS.name().equals(intent.getAction())) {
             syncDnsStatus();
           }
         }
@@ -241,8 +241,8 @@ public class MainActivity extends AppCompatActivity
     recyclerView.setAdapter(adapter);
 
     // Register broadcast receiver
-    IntentFilter intentFilter = new IntentFilter(Names.RESULT.name());
-    intentFilter.addAction(Names.DNS_STATUS.name());
+    IntentFilter intentFilter = new IntentFilter(InternalNames.RESULT.name());
+    intentFilter.addAction(InternalNames.DNS_STATUS.name());
     LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, intentFilter);
 
     prepareHyperlinks(this, findViewById(R.id.activity_main));
@@ -305,8 +305,7 @@ public class MainActivity extends AppCompatActivity
       tryAllButton.setEnabled(false);
       tryAllButton.setText(R.string.checking_servers);
       String[] urls = getResources().getStringArray(R.array.urls);
-      FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
-      analytics.logEvent(Names.TRY_ALL_REQUESTED.name(), null);
+      AnalyticsWrapper.get(this).logTryAllRequested();
       // The result needs to be posted to the UI thread before we can make UI changes.
       new Race(new ServerConnectionFactory(this), urls, (int index) -> view.post(() -> {
         if (index >= 0) {
@@ -318,7 +317,7 @@ public class MainActivity extends AppCompatActivity
               .commitAllowingStateLoss();
         } else {
           Toast.makeText(this, R.string.all_servers_failed, Toast.LENGTH_LONG).show();
-          analytics.logEvent(Names.TRY_ALL_FAILED.name(), null);
+          AnalyticsWrapper.get(this).logTryAllFailed();
         }
         tryAllButton.setText(R.string.try_all_servers);
         tryAllButton.setEnabled(true);

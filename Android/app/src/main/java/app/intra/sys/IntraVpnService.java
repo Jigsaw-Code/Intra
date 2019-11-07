@@ -30,7 +30,6 @@ import android.net.VpnService;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -43,9 +42,10 @@ import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.go.GoVpnAdapter;
 import app.intra.net.split.SplitVpnAdapter;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.NetworkManager.NetworkListener;
+import app.intra.sys.firebase.LogWrapper;
 import app.intra.ui.MainActivity;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Calendar;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
@@ -84,7 +84,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   // previously selected server.
   private String pendingUrl = NO_PENDING_CONNECTION;
 
-  private FirebaseAnalytics firebaseAnalytics;
+  private AnalyticsWrapper analytics;
 
   public boolean isOn() {
     return vpnAdapter != null;
@@ -225,9 +225,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
     // Bootstrap the new server connection, which may require resolving the new server's name, using
     // the current DNS configuration.
-    Bundle bootstrap = new Bundle();
-    bootstrap.putString(Names.SERVER.name(),
-        PersistentState.extractHostForAnalytics(this, url));
+    String analyticsHost = PersistentState.extractHostForAnalytics(this, url);
     long beforeBootstrap = SystemClock.elapsedRealtime();
     final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
 
@@ -236,11 +234,10 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
       // Measure bootstrap delay.
       long afterBootStrap = SystemClock.elapsedRealtime();
-      bootstrap.putInt(Names.LATENCY.name(), (int) (afterBootStrap - beforeBootstrap));
-      firebaseAnalytics.logEvent(Names.BOOTSTRAP.name(), bootstrap);
+      analytics.logBootstrap(analyticsHost, (int) (afterBootStrap - beforeBootstrap));
     } else {
       controller.onConnectionStateChanged(this, ServerConnection.State.FAILING);
-      firebaseAnalytics.logEvent(Names.BOOTSTRAP_FAILED.name(), bootstrap);
+      analytics.logBootstrapFailed(analyticsHost);
     }
 
     // Step 3: Unset the flag and confirm the update.
@@ -302,7 +299,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     LogWrapper.log(Log.INFO, LOG_TAG, "Creating DNS VPN service");
     VpnController.getInstance().setIntraVpnService(this);
 
-    firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    analytics = AnalyticsWrapper.get(this);
 
     syncNumRequests();
   }
@@ -383,10 +380,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       vpnAdapter = makeVpnAdapter();
       if (vpnAdapter != null) {
         vpnAdapter.start();
-
-        Bundle event = new Bundle();
-        event.putString(Names.MODE.name(), vpnAdapter.getClass().getSimpleName());
-        FirebaseAnalytics.getInstance(this).logEvent(Names.STARTVPN.name(), event);
+        analytics.logStartVPN(vpnAdapter.getClass().getSimpleName());
       } else {
         LogWrapper.log(Log.ERROR, LOG_TAG, "Failed to start VPN adapter!");
       }
@@ -460,8 +454,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
     getTracker().recordTransaction(this, transaction);
 
-    Intent intent = new Intent(Names.RESULT.name());
-    intent.putExtra(Names.TRANSACTION.name(), transaction);
+    Intent intent = new Intent(InternalNames.RESULT.name());
+    intent.putExtra(InternalNames.TRANSACTION.name(), transaction);
     LocalBroadcastManager.getInstance(IntraVpnService.this).sendBroadcast(intent);
 
     if (!networkConnected) {

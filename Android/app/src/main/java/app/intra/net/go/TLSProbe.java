@@ -16,10 +16,8 @@ limitations under the License.
 package app.intra.net.go;
 
 import android.content.Context;
-import android.os.Bundle;
-import app.intra.sys.Names;
-import app.intra.sys.RemoteConfig;
-import com.google.firebase.analytics.FirebaseAnalytics;
+import app.intra.sys.firebase.AnalyticsWrapper;
+import app.intra.sys.firebase.RemoteConfig;
 import java.io.IOException;
 import java.net.URL;
 import javax.net.ssl.SSLHandshakeException;
@@ -48,10 +46,7 @@ class TLSProbe {
     for (String target : targets) {
       Result r = probe(target);
       if (context != null) {
-        Bundle b = new Bundle();
-        b.putString(Names.RESULT.name(), r.name());
-        b.putString(Names.SERVER.name(), target);
-        FirebaseAnalytics.getInstance(context).logEvent(Names.TLS_PROBE.name(), b);
+        AnalyticsWrapper.get(context).logTLSProbe(target, r.name());
       }
       if (r == Result.TLS_FAILED ||
           (r == Result.OTHER_FAILED && worstResult == Result.SUCCESS)) {

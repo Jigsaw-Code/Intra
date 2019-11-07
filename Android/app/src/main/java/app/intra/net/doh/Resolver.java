@@ -17,7 +17,7 @@ package app.intra.net.doh;
 
 import android.util.Log;
 import app.intra.net.dns.DnsUdpQuery;
-import app.intra.sys.LogWrapper;
+import app.intra.sys.firebase.LogWrapper;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.nio.BufferOverflowException;
