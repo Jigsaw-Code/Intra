@@ -19,11 +19,11 @@
   </string>
   <string name="website1" translatable="false">https://cloudflare-dns.com/</string>
 
-  <string name="url2" translatable="false">https://dns.quad9.net/dns-query</string>
+  <string name="url2" translatable="false">https://dns.quad9.net:5053/dns-query</string>
   <string name="name2" translatable="false">Quad9 Secure DNS</string>
   <string name="ips2" translatable="false">9.9.9.9,149.112.112.112,2620:fe::fe,2620:fe::fe:9</string>
   <string name="description2" description="Describes the Quad9 DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
-    Large global resolver from IBM and Packet Clearinghouse.  Blocks malicious domains.
+    Large global resolver from IBM and Packet Clearing House.  Blocks malicious domains.
   </string>
   <string name="website2" translatable="false">https://www.quad9.net/</string>
 
