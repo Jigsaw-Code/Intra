@@ -102,8 +102,8 @@ public class AnalyticsWrapper implements NetworkListener {
   }
 
   private void log(Events e, @NonNull BundleBuilder b) {
-    String deviceCountry = countryCode.getDeviceCountry();
-    String networkCountry = countryCode.getNetworkCountry();
+    String deviceCountry = countryCode.getDeviceCountry().toUpperCase();
+    String networkCountry = countryCode.getNetworkCountry().toUpperCase();
     if (!deviceCountry.isEmpty() && !networkCountry.isEmpty()
         && !deviceCountry.equals(networkCountry)) {
       // The country codes disagree (e.g. device is roaming), so the effective network location is
@@ -112,7 +112,7 @@ public class AnalyticsWrapper implements NetworkListener {
     }
     b.put(Params.DEVICE_COUNTRY, deviceCountry);
     b.put(Params.NETWORK_COUNTRY, networkCountry);
-    b.put(Params.NETWORK, getNetworkType().name());
+    b.put(Params.NETWORK_TYPE, getNetworkType().name());
     analytics.logEvent(e.name(), b.build());
   }
 
