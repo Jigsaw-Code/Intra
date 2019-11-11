@@ -112,7 +112,7 @@ public class AnalyticsWrapper implements NetworkListener {
     }
     b.put(Params.DEVICE_COUNTRY, deviceCountry);
     b.put(Params.NETWORK_COUNTRY, networkCountry);
-    b.put(Params.NETWORK, getNetworkType().name());
+    b.put(Params.NETWORK_TYPE, getNetworkType().name());
     analytics.logEvent(e.name(), b.build());
   }
 
