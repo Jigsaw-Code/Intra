@@ -90,4 +90,36 @@
     Served from the UK and Switzerland by a British hosting and networking company.
   </string>
   <string name="website10" translatable="false">https://faelix.net/ref/dns/</string>
+
+  <string name="url11" translatable="false">https://dns.aa.net.uk/dns-query</string>
+  <string name="name11" translatable="false">Andrews &amp; Arnold</string>
+  <string name="ips11" translatable="false">217.169.20.22,217.169.20.23,2001:8b0::2022,201:8b0::2023</string>
+  <string name="description11" description="See https://www.aa.net.uk/dns/ [CHAR_LIMIT=NONE]">
+    Server in London, UK, operated by a British ISP.
+  </string>
+  <string name="website11" translatable="false">https://www.aa.net.uk/dns/</string>
+
+  <string name="url12" translatable="false">https://doh.42l.fr/dns-query</string>
+  <string name="name12" translatable="false">42l Association</string>
+  <string name="ips12" translatable="false">185.216.27.142</string>
+  <string name="description12" description="See https://42l.fr/DoH-service [CHAR_LIMIT=NONE]">
+    Server in Nanterre, France, operated by a French non-profit promoting free culture and ethics.
+  </string>
+  <string name="website12" translatable="false">https://42l.fr/DoH-service</string>
+
+  <string name="url13" translatable="false">https://dns.digitale-gesellschaft.ch/dns-query</string>
+  <string name="name13" translatable="false">Digitale Gesellschaft</string>
+  <string name="ips13" translatable="false">185.95.218.42,185.95.218.43,2a05:fc84::42,2a05:fc84::43</string>
+  <string name="description13" description="See https://www.digitale-gesellschaft.ch/dns/ [CHAR_LIMIT=NONE]">
+    Operated by a Swiss-German association for civil rights online, using servers in Switzerland, Germany, or Austria.
+  </string>
+  <string name="website13" translatable="false">https://www.digitale-gesellschaft.ch/dns/</string>
+
+  <string name="url14" translatable="false">https://fi.doh.dns.snopyta.org/dns-query</string>
+  <string name="name14" translatable="false">Snopyta</string>
+  <string name="ips14" translatable="false">95.216.24.230,2a01:4f9:2a:1919::9301</string>
+  <string name="description14" description="See https://snopyta.org/ [CHAR_LIMIT=NONE]">
+    Server in Helsinki, Finland, operated by a German non-profit service provider.
+  </string>
+  <string name="website14" translatable="false">https://snopyta.org/</string>
 </resources>

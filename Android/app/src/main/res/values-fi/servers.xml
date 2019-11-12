@@ -11,4 +11,8 @@
   <string name="description8">Taiwanissa sijaitseva palvelin, jota ylläpitää .tw-verkkotunnusrekisteri.</string>
   <string name="description9">Brittiläisen hosting-yrityksen ylläpitämä palvelin Yhdistyneessä kuningaskunnassa.</string>
   <string name="description10">Brittiläisen hosting- ja verkkopalveluyrityksen Yhdistyneestä kuningaskunnasta ja Sveitsistä tarjoama.</string>
+  <string name="description11">Yhdistyneessä kuningaskunnassa Lontoossa sijaitseva palvelin, jota ylläpitää brittiläinen ISP.</string>
+  <string name="description12">Ranskassa Nanterressa sijaitseva palvelin, jota ylläpitää ranskalainen vapaata kulttuuria ja etiikkaa edistävä voittoa tavoittelematon järjestö.</string>
+  <string name="description13">Sveitsissä, Saksassa tai Itävallassa sijaitsevia palvelimia käyttävän sveitsiläis-saksalaisen kansalaisoikeuksia verkossa ajavan yhdistyksen ylläpitämä.</string>
+  <string name="description14">Suomessa Helsingissä sijaitseva palvelin, jota ylläpitää saksalainen voittoa tavoittelematon palveluntarjoaja.</string>
 </resources>

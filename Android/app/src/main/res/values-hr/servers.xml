@@ -11,4 +11,8 @@
   <string name="description8">Poslužitelj u Tajvanu kojim upravlja registar domene .tw.</string>
   <string name="description9">Poslužitelj se nalazi u UK-u, a njime upravlja britanska tvrtka za web-hosting.</string>
   <string name="description10">Usluge posluživanja pruža britanska tvrtka za hosting i umrežavanje putem poslužitelja u UK-u i Švicarskoj.</string>
+  <string name="description11">Poslužitelj u Londonu u UK-u kojim upravlja britanski ISP.</string>
+  <string name="description12">Poslužitelj u Nanterreu u Francuskoj kojim upravlja francuska neprofitna organizacija koja promiče besplatnu kulturu i etiku.</string>
+  <string name="description13">Upravitelj je švicarsko-njemačko društvo za građanska prava na internetu, a koristi poslužitelje u Švicarskoj, Njemačkoj ili Austriji.</string>
+  <string name="description14">Poslužitelj u Helsinkiju u Finskoj kojim upravlja njemački neprofitni davatelj usluga.</string>
 </resources>

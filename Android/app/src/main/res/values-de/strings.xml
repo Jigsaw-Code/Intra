@@ -20,9 +20,9 @@
   <string name="indicator_on">An</string>
   <string name="indicator_off">Aus</string>
   <string name="status_exposed">Nicht geschützt</string>
-  <string name="explanation_exposed">Deine Verbindung ist nicht vor DNS-Manipulationen geschützt.</string>
+  <string name="explanation_exposed">Ihre Verbindung ist nicht vor DNS-Manipulationen geschützt.</string>
   <string name="status_protected">Geschützt</string>
-  <string name="explanation_protected">Deine Verbindung ist vor DNS-Manipulationen geschützt.</string>
+  <string name="explanation_protected">Ihre Verbindung ist vor DNS-Manipulationen geschützt.</string>
   <string name="status_upgraded">Geringer Schutz</string>
   <string name="explanation_upgraded">Ihre Verbindung wird aktuell durch die Android-Einstellung \"Privates DNS\" geschützt. Dieser Schutz kann jedoch durch Angreifer deaktiviert oder umgangen werden.</string>
   <string name="status_strict">Geschützt durch Android</string>

@@ -46,7 +46,7 @@
   <string name="queries_per_minute_body">Este valor muestra el número de consultas de DNS que tu dispositivo ha realizado en el último minuto. Para cargar una página web compleja, es posible que se necesiten más de cien consultas de DNS.</string>
   <string name="transport_label">Transporte encriptado</string>
   <string name="transport_headline">El cifrado protege tus consultas frente a las miradas indiscretas</string>
-  <string name="transport_body">Cuando un usuario utiliza Intra, sus consultas de DNS se cifran para que solo él y su servidor DNS puedan ver qué consultas de DNS está haciendo. Intra implementa el DNS a través del protocolo HTTPS para el cifrado.</string>
+  <string name="transport_body">Cuando un usuario utiliza Intra, sus consultas de DNS se cifran para que solo él y su servidor DNS puedan ver qué consultas de DNS está haciendo. Intra implementa el protocolo DNS-over-HTTPS para el cifrado.</string>
   <string name="default_transport_label">Transporte predeterminado</string>
   <string name="insecure_transport">sin cifrar</string>
   <string name="insecure_transport_headline">El DNS básico no está cifrado</string>
@@ -66,7 +66,7 @@
   <string name="latency_label">Latencia</string>
   <string name="resolver_label">Ubicación del servidor DNS</string>
   <string name="destination_label">Servidor de destino</string>
-  <string name="server_choice">Seleccionar servidor DNS sobre HTTPS</string>
+  <string name="server_choice">Seleccionar servidor DNS-over-HTTPS</string>
   <string name="server_choice_summary">Actualmente: %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">su sitio web</a> para revisar la política de privacidad y las condiciones del servicio correspondientes.</string>

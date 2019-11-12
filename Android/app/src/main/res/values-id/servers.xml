@@ -11,4 +11,8 @@
   <string name="description8">Server di Taiwan yang dioperasikan oleh registry domain .tw.</string>
   <string name="description9">Server di Inggris Raya yang dioperasikan oleh perusahaan hosting situs asal Inggris.</string>
   <string name="description10">Ditayangkan dari Inggris Raya dan Swiss oleh perusahaan jaringan dan hosting asal Inggris.</string>
+  <string name="description11">Server di London, Inggris Raya, yang dioperasikan oleh ISP asal Inggris.</string>
+  <string name="description12">Server di Nanterre, Prancis, yang dioperasikan oleh lembaga nonprofit asal Prancis yang mendukung kebebasan budaya dan etika.</string>
+  <string name="description13">Dioperasikan oleh asosiasi Swiss-Jerman untuk hak sipil online, menggunakan server di Swiss, Jerman, atau Austria.</string>
+  <string name="description14">Server di Helsinki, Finlandia, yang dioperasikan oleh penyedia layanan nonprofit asal Jerman.</string>
 </resources>
