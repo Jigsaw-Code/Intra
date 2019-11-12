@@ -11,4 +11,8 @@
   <string name="description8">.tw ドメイン レジストリが運用している台湾のサーバーです。</string>
   <string name="description9">イギリスのウェブサイト ホスティング企業が運用している、イギリス国内にあるサーバーです。</string>
   <string name="description10">イギリスのホスティング企業とネットワーク企業を経由して、イギリスとスイスで提供されているサービスです。</string>
+  <string name="description11">イギリスの ISP が運用している、イギリスのロンドンにあるサーバーです。</string>
+  <string name="description12">自由な文化と倫理を促進するフランスの非営利団体が運用している、フランスのナンテールにあるサーバーです。</string>
+  <string name="description13">スイスとドイツでインターネットでの公民権に取り組む協会が運用している、スイス、ドイツ、オーストリアにあるサーバーです。</string>
+  <string name="description14">ドイツの非営利サービス プロバイダが運用している、フィンランドのヘルシンキにあるサーバーです。</string>
 </resources>

@@ -11,4 +11,8 @@
   <string name="description8">A .tw domainregisztrációs adatbázis által üzemeltetett szerver Taiwanban.</string>
   <string name="description9">Egyesült királyságbeli szerver, melyet egy brit webhelyszolgáltató üzemeltet.</string>
   <string name="description10">Egy brit tárhely- és hálózatszolgáltató üzemelteti az Egyesült Királyságból és Svájcból.</string>
+  <string name="description11">Az Egyesült Királyságban, Londonban működő szerver, amelyet egy brit internetszolgáltató üzemeltet.</string>
+  <string name="description12">Franciaországban, Nanterre-ben működő szerver, amelyet egy a szabad kultúra és erkölcs ügyét szolgáló francia nonprofit szervezet üzemeltet.</string>
+  <string name="description13">Egy svájci-német online polgárjogi szerveződés üzemelteti Svájcban, Németországban és Ausztriában működő szervereken.</string>
+  <string name="description14">Finnországban, Helsinkiben működő szerver, amelyet egy német nonprofit szolgáltató üzemeltet.</string>
 </resources>

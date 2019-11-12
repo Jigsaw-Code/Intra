@@ -11,4 +11,8 @@
   <string name="description8">Strežnik na Tajvanu, ki ga upravlja register domene .tw.</string>
   <string name="description9">Strežnik v Združenem kraljestvu, ki ga upravlja britansko podjetje za gostovanje spletnih mest.</string>
   <string name="description10">Storitev iz Združenega kraljestva in Švice zagotavlja britansko podjetje za gostovanje in omrežne storitve.</string>
+  <string name="description11">Strežnik v Londonu v Združenem kraljestvu, ki ga upravlja britanski ISP.</string>
+  <string name="description12">Strežnik v Nanterru v Franciji, ki ga upravlja francoska neprofitna organizacija za spodbujanje svobodne kulture in etike.</string>
+  <string name="description13">Upravlja ga švicarsko-nemško združenje za državljanske pravice v spletu, ki uporablja strežnike v Švici, Nemčiji ali Avstriji.</string>
+  <string name="description14">Strežnik v Helsinkih na Finskem, ki ga upravlja nemški neprofitni ponudnik storitev.</string>
 </resources>

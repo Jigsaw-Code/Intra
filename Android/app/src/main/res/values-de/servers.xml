@@ -11,4 +11,8 @@
   <string name="description8">Server in Taiwan, der von der Registrierungsstelle für die Top-Level-Domain \"tw.\" betrieben wird.</string>
   <string name="description9">Der Server befindet sich im Vereinigten Königreich, bereitgestellt von einem britischen Unternehmen für Websitehosting.</string>
   <string name="description10">Durch einen britischen Hostinganbieter/Netzwerkbetreiber aus dem Vereinigten Königreich und der Schweiz bereitgestellt.</string>
+  <string name="description11">Server in London, Vereinigtes Königreich, der von einem britischen ISP betrieben wird.</string>
+  <string name="description12">Server in Nanterre, Frankreich, der von einer französischen Nonprofit-Organisation betrieben wird, die sich für freie Kultur und Ethik einsetzt.</string>
+  <string name="description13">Betrieben von einer deutsch-schweizerischen Gesellschaft, die die Grundrechte im digitalen Raum verteidigt. Dazu werden Server in der Schweiz, in Deutschland oder in Österreich verwendet.</string>
+  <string name="description14">Server in Helsinki, Finnland, der von einem deutschen gemeinnützigen Serviceprovider betrieben wird.</string>
 </resources>

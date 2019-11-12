@@ -10,6 +10,12 @@
     <item>@string/url6</item>
     <item>@string/url7</item>
     <item>@string/url8</item>
+    <item>@string/url9</item>
+    <item>@string/url10</item>
+    <item>@string/url11</item>
+    <item>@string/url12</item>
+    <item>@string/url13</item>
+    <item>@string/url14</item>
   </string-array>
   <string-array name="names">
     <item>@string/name0</item>
@@ -21,6 +27,12 @@
     <item>@string/name6</item>
     <item>@string/name7</item>
     <item>@string/name8</item>
+    <item>@string/name9</item>
+    <item>@string/name10</item>
+    <item>@string/name11</item>
+    <item>@string/name12</item>
+    <item>@string/name13</item>
+    <item>@string/name14</item>
   </string-array>
   <string-array name="ips">
     <item>@string/ips0</item>
@@ -32,6 +44,12 @@
     <item>@string/ips6</item>
     <item>@string/ips7</item>
     <item>@string/ips8</item>
+    <item>@string/ips9</item>
+    <item>@string/ips10</item>
+    <item>@string/ips11</item>
+    <item>@string/ips12</item>
+    <item>@string/ips13</item>
+    <item>@string/ips14</item>
   </string-array>
   <string-array name="descriptions">
     <item>@string/description0</item>
@@ -43,6 +61,12 @@
     <item>@string/description6</item>
     <item>@string/description7</item>
     <item>@string/description8</item>
+    <item>@string/description9</item>
+    <item>@string/description10</item>
+    <item>@string/description11</item>
+    <item>@string/description12</item>
+    <item>@string/description13</item>
+    <item>@string/description14</item>
   </string-array>
   <string-array name="server_websites">
     <item>@string/website0</item>
@@ -54,5 +78,11 @@
     <item>@string/website6</item>
     <item>@string/website7</item>
     <item>@string/website8</item>
+    <item>@string/website9</item>
+    <item>@string/website10</item>
+    <item>@string/website11</item>
+    <item>@string/website12</item>
+    <item>@string/website13</item>
+    <item>@string/website14</item>
   </string-array>
 </resources>
