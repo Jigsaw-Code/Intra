@@ -116,6 +116,10 @@ class LocalhostResolver extends Thread implements ResponseWriter {
     } catch (IOException e) {
       Log.i(LOG_TAG, "Read failed", e);
       return false;
+    } catch (NullPointerException e) {
+      // Workaround for an Android platform bug.  See https://github.com/Jigsaw-Code/Intra/issues/160
+      LogWrapper.logException(e);
+      return false;
     }
   }
 
