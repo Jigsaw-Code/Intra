@@ -15,7 +15,10 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
+import android.content.Context;
 import app.intra.net.doh.Probe.Status;
+import app.intra.net.go.GoProbe;
+import app.intra.sys.firebase.RemoteConfig;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +36,9 @@ public class Race {
   }
 
   private final List<Probe> probes;
-  private final Listener listener;
+  private Race(List<Probe> probes) {
+    this.probes = probes;
+  }
 
   /**
    * Creates a race between different servers.  To run the race, call start().
@@ -41,30 +46,59 @@ public class Race {
    * @param urls The URLs for all the DOH servers to compare.
    * @param listener Called once on an arbitrary thread with the result of the race.
    */
-  public Race(ServerConnectionFactory factory, String[] urls, Listener listener) {
-    probes = new ArrayList<>(urls.length);
+  static Race serverConnectionRace(ServerConnectionFactory factory,
+      String[] urls, Listener listener) {
+    List<Probe> probes = new ArrayList<>(urls.length);
     for (int i = 0; i < urls.length; ++i) {
-      probes.add(new Probe(factory, urls[i], new Callback(i)));
+      probes.add(new ServerConnectionProbe(factory, urls[i], new Callback(i, probes, listener)));
     }
-    this.listener = listener;
+    return new Race(probes);
   }
 
-  public synchronized void start() {
-    for (Probe task : probes) {
-      task.start();
+  /**
+   * Creates a race between different servers using Go.  To run the race, call start().
+   * @param context Used to read the IP addresses of the servers from storage.
+   * @param urls The URLs for all the DOH servers to compare.
+   * @param listener Called once on an arbitrary thread with the result of the race.
+   */
+  private static Race goRace(Context context, String[] urls, Listener listener) {
+    List<Probe> probes = new ArrayList<>(urls.length);
+    for (int i = 0; i < urls.length; ++i) {
+      probes.add(new GoProbe(context, urls[i], new Callback(i, probes, listener)));
+    }
+    return new Race(probes);
+  }
+
+  public static Race get(Context context, String[] urls, Listener listener) {
+    if (RemoteConfig.getUseGoDoh()) {
+      return goRace(context, urls, listener);
+    }
+    return serverConnectionRace(new ServerConnectionFactory(context), urls, listener);
+  }
+
+  public void start() {
+    synchronized (probes) {
+      for (Probe task : probes) {
+        task.start();
+      }
     }
   }
 
-  private class Callback implements Probe.Callback {
+  private static class Callback implements ServerConnectionProbe.Callback {
     private final int index;
+    private final List<Probe> probes;
+    private final Listener listener;
 
-    private Callback(int index) {
+
+    private Callback(int index, List<Probe> probes, Listener listener) {
       this.index = index;
+      this.probes = probes;
+      this.listener = listener;
     }
 
     @Override
     public void onFailure() {
-      synchronized(Race.this) {
+      synchronized(probes) {
         if (probes.isEmpty()) {
           return;
         }
@@ -81,7 +115,7 @@ public class Race {
 
     @Override
     public void onSuccess() {
-      synchronized (Race.this) {
+      synchronized (probes) {
         if (probes.isEmpty()) {
           return;
         }

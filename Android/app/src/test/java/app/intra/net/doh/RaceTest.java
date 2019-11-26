@@ -74,7 +74,7 @@ public class RaceTest {
           callbackCaptor.capture());
     }
     Semaphore done = new Semaphore(0);
-    Race race = new Race(mockFactory, urls, (int index) -> {
+    Race race = Race.serverConnectionRace(mockFactory, urls, (int index) -> {
       assertTrue(index >= 0);
       assertTrue(index < N);
       done.release();
@@ -97,7 +97,7 @@ public class RaceTest {
       when(mockFactory.get(urls[i])).thenReturn(null);
     }
     Semaphore done = new Semaphore(0);
-    Race race = new Race(mockFactory, urls, (int index) -> {
+    Race race = Race.serverConnectionRace(mockFactory, urls, (int index) -> {
       assertEquals(-1, index);
       done.release();
     });
@@ -129,7 +129,7 @@ public class RaceTest {
       }
     }
     Semaphore done = new Semaphore(0);
-    Race race = new Race(mockFactory, urls, (int index) -> {
+    Race race = Race.serverConnectionRace(mockFactory, urls, (int index) -> {
       assertTrue(index >= 0);
       assertTrue(index < N);
       // Only the even-numbered servers succeeded.

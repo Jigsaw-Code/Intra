@@ -32,7 +32,7 @@ import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
-public class ProbeTest {
+public class ServerConnectionProbeTest {
   private static final String URL = "foo";
   private ServerConnectionFactory mockFactory;
   private Semaphore done = new Semaphore(0);
@@ -79,7 +79,7 @@ public class ProbeTest {
         dataCaptor.capture(),
         callbackCaptor.capture());
 
-    Probe.Callback callback = new Probe.Callback() {
+    ServerConnectionProbe.Callback callback = new ServerConnectionProbe.Callback() {
       @Override
       public void onSuccess() {
         done.release();
@@ -91,7 +91,7 @@ public class ProbeTest {
         done.release();
       }
     };
-    Probe probe = new Probe(mockFactory, URL, callback);
+    ServerConnectionProbe probe = new ServerConnectionProbe(mockFactory, URL, callback);
     assertEquals(Status.NEW, probe.getStatus());
     probe.start();
     // Wait for call to ServerConnectionFactory.get()
@@ -125,7 +125,7 @@ public class ProbeTest {
         dataCaptor.capture(),
         callbackCaptor.capture());
 
-    Probe.Callback callback = new Probe.Callback() {
+    ServerConnectionProbe.Callback callback = new ServerConnectionProbe.Callback() {
       @Override
       public void onSuccess() {
         fail();
@@ -137,7 +137,7 @@ public class ProbeTest {
         done.release();
       }
     };
-    Probe probe = new Probe(mockFactory, URL, callback);
+    ServerConnectionProbe probe = new ServerConnectionProbe(mockFactory, URL, callback);
     assertEquals(Status.NEW, probe.getStatus());
     probe.start();
     // Wait for call to ServerConnectionFactory.get()
@@ -161,7 +161,7 @@ public class ProbeTest {
       return null;  // Indicates bootstrap failure.
     });
 
-    Probe.Callback callback = new Probe.Callback() {
+    ServerConnectionProbe.Callback callback = new ServerConnectionProbe.Callback() {
       @Override
       public void onSuccess() {
         fail();
@@ -173,7 +173,7 @@ public class ProbeTest {
         done.release();
       }
     };
-    Probe probe = new Probe(mockFactory, URL, callback);
+    ServerConnectionProbe probe = new ServerConnectionProbe(mockFactory, URL, callback);
     assertEquals(Status.NEW, probe.getStatus());
     probe.start();
     // Wait for failure callback.

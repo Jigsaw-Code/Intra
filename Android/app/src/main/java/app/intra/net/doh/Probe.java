@@ -15,18 +15,12 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
-import androidx.annotation.NonNull;
-import app.intra.net.dns.DnsUdpQuery;
-import java.io.IOException;
-import okhttp3.Call;
-import okhttp3.Response;
-
 /**
  * Implements an asynchronous check to determine whether a DOH server is working.  Each instance can
  * only be used once.
  */
-class Probe extends Thread {
-  private static final byte[] QUERY_DATA = {
+public abstract class Probe extends Thread {
+  protected static final byte[] QUERY_DATA = {
       0, 0,  // [0-1]   query ID
       1, 0,  // [2-3]   flags, RD=1
       0, 1,  // [4-5]   QDCOUNT (number of queries) = 1
@@ -41,64 +35,30 @@ class Probe extends Thread {
       0, 1   // QCLASS = IN (Internet)
   };
 
-  private static final DnsUdpQuery QUERY = DnsUdpQuery.fromUdpBody(QUERY_DATA);
-
   enum Status { NEW, RUNNING, SUCCEEDED, FAILED }
-  private Status status = Status.NEW;
+  protected Status status = Status.NEW;
 
-  interface Callback {
+  public interface Callback {
     void onSuccess();
     void onFailure();
   }
+  protected Callback callback;
 
-  private final ServerConnectionFactory factory;
-  private final String url;
-  private final Callback callback;
-
-  /**
-   * Creates a Probe.  Call start() to run the probe asynchronously.
-   * @param factory This factory is used exactly once, to connect to the specified URL.
-   * @param url The URL of the DOH server.
-   * @param callback A callback indicating whether the connection succeeded or failed.  Runs on an
-   *   arbitrary thread.
-   */
-  Probe(ServerConnectionFactory factory, String url, Callback callback) {
-    this.factory = factory;
-    this.url = url;
-    this.callback = callback;
-  }
-
-  synchronized Status getStatus() {
+  public synchronized Status getStatus() {
     return status;
   }
 
-  private synchronized void setStatus(Status s) {
+  protected synchronized void setStatus(Status s) {
     status = s;
   }
 
-  private class QueryCallback implements okhttp3.Callback {
-    @Override
-    public void onFailure(@NonNull Call call, @NonNull IOException e) {
-      setStatus(Status.FAILED);
-      callback.onFailure();
-    }
-
-    @Override
-    public void onResponse(@NonNull Call call, @NonNull Response response) {
-      setStatus(Status.SUCCEEDED);
-      callback.onSuccess();
-    }
+  protected void succeed() {
+    setStatus(Status.SUCCEEDED);
+    callback.onSuccess();
   }
 
-  @Override
-  public void run() {
-    setStatus(Status.RUNNING);
-    ServerConnection conn = factory.get(url);
-    if (isInterrupted() || conn == null) {
-      setStatus(Status.FAILED);
-      callback.onFailure();
-      return;
-    }
-    conn.performDnsRequest(QUERY, QUERY_DATA, new QueryCallback());
+  protected void fail() {
+    setStatus(Status.FAILED);
+    callback.onFailure();
   }
 }

@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity
       String[] urls = getResources().getStringArray(R.array.urls);
       AnalyticsWrapper.get(this).logTryAllRequested();
       // The result needs to be posted to the UI thread before we can make UI changes.
-      new Race(new ServerConnectionFactory(this), urls, (int index) -> view.post(() -> {
+      Race.get(this, urls, (int index) -> view.post(() -> {
         if (index >= 0) {
           // By the time this callback runs, MainActivity may have been stopped.  In this situation
           // showing a DialogFragment directly causes an IllegalStateException.  Using
