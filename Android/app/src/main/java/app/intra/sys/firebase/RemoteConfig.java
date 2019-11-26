@@ -54,11 +54,11 @@ public class RemoteConfig {
       return false;
     }
     try {
-      return FirebaseRemoteConfig.getInstance()
-          .getBoolean("use_go_doh");
+      return !FirebaseRemoteConfig.getInstance()
+          .getBoolean("disable_go_doh");
     } catch (IllegalStateException e) {
       LogWrapper.logException(e);
-      return false;
+      return true;
     }
   }
 }
