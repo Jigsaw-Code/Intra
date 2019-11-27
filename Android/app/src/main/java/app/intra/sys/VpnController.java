@@ -47,7 +47,7 @@ public class VpnController {
     this.intraVpnService = intraVpnService;
   }
 
-  synchronized void onConnectionStateChanged(Context context, ServerConnection.State state) {
+  public synchronized void onConnectionStateChanged(Context context, ServerConnection.State state) {
     if (intraVpnService == null) {
       // User clicked disable while the connection state was changing.
       return;
