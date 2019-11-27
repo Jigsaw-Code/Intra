@@ -24,22 +24,25 @@ import okhttp3.Response;
 /**
  * Implements a Probe using the OkHttp-based DoH client.
  */
-class ServerConnectionProbe extends Probe {
+class JavaProbe extends Probe {
 
   private static final DnsUdpQuery QUERY = DnsUdpQuery.fromUdpBody(QUERY_DATA);
 
-  private final ServerConnectionFactory factory;
+  static Probe.Factory factory = (context, url, callback) ->
+      new JavaProbe(new ServerConnectionFactory(context), url, callback);
+
+  private final ServerConnectionFactory serverConnectionFactory;
   private final String url;
 
   /**
    * Creates a Probe.  Call start() to run the probe asynchronously.
-   * @param factory This factory is used exactly once, to connect to the specified URL.
+   * @param serverConnectionFactory This factory is used to connect to the specified URL.
    * @param url The URL of the DOH server.
    * @param callback A callback indicating whether the connection succeeded or failed.  Runs on an
    *   arbitrary thread.
    */
-  ServerConnectionProbe(ServerConnectionFactory factory, String url, Callback callback) {
-    this.factory = factory;
+  JavaProbe(ServerConnectionFactory serverConnectionFactory, String url, Callback callback) {
+    this.serverConnectionFactory = serverConnectionFactory;
     this.url = url;
     this.callback = callback;
   }
@@ -57,9 +60,8 @@ class ServerConnectionProbe extends Probe {
   }
 
   @Override
-  public void run() {
-    setStatus(Status.RUNNING);
-    ServerConnection conn = factory.get(url);
+  protected void execute() {
+    ServerConnection conn = serverConnectionFactory.get(url);
     if (Thread.interrupted() || conn == null) {
       fail();
       return;

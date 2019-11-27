@@ -25,17 +25,21 @@ import tun2socks.Tun2socks;
  * Implements a Probe using the Go-based DoH client.
  */
 public class GoProbe extends Probe {
+
+  public static Probe.Factory factory = (context, url, callback) ->
+      new GoProbe(context, url, callback);
+
   private final Context context;
   private final String url;
 
-  public GoProbe(Context context, String url, Callback callback) {
+  private GoProbe(Context context, String url, Callback callback) {
     this.context = context;
     this.callback = callback;
     this.url = url;
   }
 
   @Override
-  public void run() {
+  protected void execute() {
     String dohIPs = ServerConnectionFactory.getIpString(context, url);
     if (isInterrupted()) {
       fail();

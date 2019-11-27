@@ -16,65 +16,40 @@ limitations under the License.
 package app.intra.net.doh;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import app.intra.net.dns.DnsUdpQuery;
 import java.util.concurrent.Semaphore;
-import okhttp3.Callback;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
 
 public class RaceTest {
-  private ServerConnectionFactory mockFactory;
 
-  @Captor
-  private ArgumentCaptor<DnsUdpQuery> queryCaptor;
-  @Captor
-  private ArgumentCaptor<byte[]> dataCaptor;
-  @Captor
-  private ArgumentCaptor<Callback> callbackCaptor;
+  private class SuccessProbe extends Probe {
+    SuccessProbe(Callback c) {
+      callback = c;
+    }
 
-  @Before
-  public void init(){
-    MockitoAnnotations.initMocks(this);
+    @Override
+    protected void execute() {
+      succeed();
+    }
   }
 
-  @Before
-  public void setUp() throws Exception {
-    mockFactory = mock(ServerConnectionFactory.class);
-  }
+  private class FailProbe extends Probe {
+    FailProbe(Callback c) {
+      callback = c;
+    }
 
-  @After
-  public void tearDown() throws Exception {
-    mockFactory = null;
+    @Override
+    protected void execute() {
+      fail();
+    }
   }
 
   @Test
   public void Success() throws Exception {
+    Probe.Factory successFactory = (context, url, callback) -> new SuccessProbe(callback);
     final int N = 7;
     String[] urls = new String[N];
-    ServerConnection[] connections = new ServerConnection[N];
-    for (int i = 0; i < N; ++i) {
-      urls[i] = String.format("server%d", i);
-      connections[i] = mock(ServerConnection.class);
-      when(mockFactory.get(urls[i])).thenReturn(connections[i]);
-      doAnswer((InvocationOnMock invocation) -> {
-        callbackCaptor.getValue().onResponse(null, null);
-        return null;
-      }).when(connections[i]).performDnsRequest(
-          queryCaptor.capture(),
-          dataCaptor.capture(),
-          callbackCaptor.capture());
-    }
     Semaphore done = new Semaphore(0);
-    Race race = Race.serverConnectionRace(mockFactory, urls, (int index) -> {
+    Race.start(successFactory, null, urls, (int index) -> {
       assertTrue(index >= 0);
       assertTrue(index < N);
       done.release();
@@ -83,60 +58,51 @@ public class RaceTest {
         fail();
       }
     });
-    race.start();
     // Wait for listener to run.
     done.acquire();
   }
 
   @Test
   public void AllFail() throws Exception {
+    Probe.Factory failFactory = (context, url, callback) -> new FailProbe(callback);
     final int N = 7;
     String[] urls = new String[N];
     for (int i = 0; i < N; ++i) {
       urls[i] = String.format("server%d", i);
-      when(mockFactory.get(urls[i])).thenReturn(null);
     }
     Semaphore done = new Semaphore(0);
-    Race race = Race.serverConnectionRace(mockFactory, urls, (int index) -> {
+    Race.start(failFactory, null, urls, (int index) -> {
       assertEquals(-1, index);
       done.release();
     });
-    race.start();
     done.acquire();
   }
 
   @Test
   public void HalfFail() throws Exception {
+    Probe.Factory halfFactory = (context, url, callback) -> {
+      int i = Integer.parseInt(url);
+      if (i % 2 == 0) {
+        // Even-number servers succeed.
+        return new SuccessProbe(callback);
+      } else {
+        return new FailProbe(callback);
+      }
+    };
     final int N = 7;
     String[] urls = new String[N];
     ServerConnection[] connections = new ServerConnection[N];
     for (int i = 0; i < N; ++i) {
-      urls[i] = String.format("server%d", i);
-      connections[i] = mock(ServerConnection.class);
-      if (i % 2 == 0) {
-        // Even-number servers succeed.
-        when(mockFactory.get(urls[i])).thenReturn(connections[i]);
-        doAnswer((InvocationOnMock invocation) -> {
-          callbackCaptor.getValue().onResponse(null, null);
-          return null;
-        }).when(connections[i]).performDnsRequest(
-            queryCaptor.capture(),
-            dataCaptor.capture(),
-            callbackCaptor.capture());
-      } else {
-        // Odd-number servers fail.
-        when(mockFactory.get(urls[i])).thenReturn(null);
-      }
+      urls[i] = String.format("%d", i);
     }
     Semaphore done = new Semaphore(0);
-    Race race = Race.serverConnectionRace(mockFactory, urls, (int index) -> {
+    Race.start(halfFactory, null, urls, (int index) -> {
       assertTrue(index >= 0);
       assertTrue(index < N);
       // Only the even-numbered servers succeeded.
       assertEquals(0, index % 2);
       done.release();
     });
-    race.start();
     done.acquire();
   }
 

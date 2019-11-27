@@ -35,48 +35,23 @@ public class Race {
     void onResult(int index);
   }
 
-  private final List<Probe> probes;
-  private Race(List<Probe> probes) {
-    this.probes = probes;
-  }
-
   /**
-   * Creates a race between different servers.  To run the race, call start().
-   * @param factory The factory will be called once for each server.
-   * @param urls The URLs for all the DOH servers to compare.
-   * @param listener Called once on an arbitrary thread with the result of the race.
-   */
-  static Race serverConnectionRace(ServerConnectionFactory factory,
-      String[] urls, Listener listener) {
-    List<Probe> probes = new ArrayList<>(urls.length);
-    for (int i = 0; i < urls.length; ++i) {
-      probes.add(new ServerConnectionProbe(factory, urls[i], new Callback(i, probes, listener)));
-    }
-    return new Race(probes);
-  }
-
-  /**
-   * Creates a race between different servers using Go.  To run the race, call start().
+   * Starts a race between different servers.
    * @param context Used to read the IP addresses of the servers from storage.
    * @param urls The URLs for all the DOH servers to compare.
    * @param listener Called once on an arbitrary thread with the result of the race.
    */
-  private static Race goRace(Context context, String[] urls, Listener listener) {
+  public static void start(Context context, String[] urls, Listener listener) {
+    Probe.Factory factory = RemoteConfig.getUseGoDoh() ? GoProbe.factory : JavaProbe.factory;
+    start(factory, context, urls, listener);
+  }
+
+  // Exposed for unit testing only.
+  static void start(Probe.Factory factory, Context context, String[] urls, Listener listener) {
     List<Probe> probes = new ArrayList<>(urls.length);
     for (int i = 0; i < urls.length; ++i) {
-      probes.add(new GoProbe(context, urls[i], new Callback(i, probes, listener)));
+      probes.add(factory.get(context, urls[i], new Callback(i, probes, listener)));
     }
-    return new Race(probes);
-  }
-
-  public static Race get(Context context, String[] urls, Listener listener) {
-    if (RemoteConfig.getUseGoDoh()) {
-      return goRace(context, urls, listener);
-    }
-    return serverConnectionRace(new ServerConnectionFactory(context), urls, listener);
-  }
-
-  public void start() {
     synchronized (probes) {
       for (Probe task : probes) {
         task.start();
@@ -84,7 +59,7 @@ public class Race {
     }
   }
 
-  private static class Callback implements ServerConnectionProbe.Callback {
+  private static class Callback implements JavaProbe.Callback {
     private final int index;
     private final List<Probe> probes;
     private final Listener listener;

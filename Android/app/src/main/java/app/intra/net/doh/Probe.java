@@ -15,11 +15,26 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
+import android.content.Context;
+import androidx.annotation.NonNull;
+
 /**
- * Implements an asynchronous check to determine whether a DOH server is working.  Each instance can
+ * Represents an asynchronous check to determine whether a DOH server is working.  Each instance can
  * only be used once.
  */
 public abstract class Probe extends Thread {
+
+  public interface Factory {
+
+    /**
+     * @param context The application context in which the probe will run.
+     * @param url The DOH server URL to probe.
+     * @param callback How to report the probe results
+     * @return A probe that will check whether a server is working when the owner calls start().
+     */
+    @NonNull Probe get(Context context, String url, Callback callback);
+  }
+
   protected static final byte[] QUERY_DATA = {
       0, 0,  // [0-1]   query ID
       1, 0,  // [2-3]   flags, RD=1
@@ -52,13 +67,30 @@ public abstract class Probe extends Thread {
     status = s;
   }
 
+  /**
+   * Report success to the callback and owner.
+   */
   protected void succeed() {
     setStatus(Status.SUCCEEDED);
     callback.onSuccess();
   }
 
+  /**
+   * Report failure to the callback and owner.
+   */
   protected void fail() {
     setStatus(Status.FAILED);
     callback.onFailure();
   }
+
+  @Override
+  public void run() {
+    setStatus(Status.RUNNING);
+    execute();
+  }
+
+  /**
+   * Called on the thread to execute the probe.
+   */
+  protected abstract void execute();
 }
