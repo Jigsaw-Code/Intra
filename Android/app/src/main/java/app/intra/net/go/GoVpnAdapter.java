@@ -20,10 +20,13 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import app.intra.net.VpnAdapter;
+import app.intra.net.doh.ServerConnection.State;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.go.TLSProbe.Result;
 import app.intra.sys.IntraVpnService;
+import app.intra.sys.VpnController;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.PersistentState;
 import app.intra.sys.firebase.RemoteConfig;
@@ -106,10 +109,22 @@ public class GoVpnAdapter extends VpnAdapter {
     listener = new GoIntraListener(vpnService);
     String dohURL = PersistentState.getServerUrl(vpnService);
 
+    Transport transport;
+    if (RemoteConfig.getUseGoDoh()) {
+      try {
+        transport = makeDohTransport(dohURL);
+      } catch (Exception e) {
+        // Fall back to ServerConnection if Go-DOH setup fails.
+        // TODO: Report this failure properly instead of silently falling back.
+        LogWrapper.logException(e);
+        transport = null;
+      }
+    } else {
+      transport = null;
+    }
 
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
-      Transport transport = RemoteConfig.getUseGoDoh() ? makeDohTransport(dohURL) : null;
       final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns, trueDns, trueDns,
           transport, listener);
       tunnel = t;
@@ -122,6 +137,7 @@ public class GoVpnAdapter extends VpnAdapter {
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel = null;
+      VpnController.getInstance().onConnectionStateChanged(vpnService, State.FAILING);
       close();
     }
   }
@@ -158,9 +174,10 @@ public class GoVpnAdapter extends VpnAdapter {
     }
   }
 
-  private doh.Transport makeDohTransport(String url) throws Exception {
-    String dohIPs = ServerConnectionFactory.getIpString(vpnService, url);
-    return Tun2socks.newDoHTransport(url, dohIPs, listener);
+  private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
+    @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
+    String dohIPs = ServerConnectionFactory.getIpString(vpnService, realUrl);
+    return Tun2socks.newDoHTransport(realUrl, dohIPs, listener);
   }
 
   /**
