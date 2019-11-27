@@ -16,7 +16,7 @@ limitations under the License.
 package app.intra.net.go;
 
 import android.content.Context;
-import app.intra.net.doh.Probe;
+import app.intra.net.doh.Prober;
 import app.intra.net.doh.ServerConnectionFactory;
 import doh.Transport;
 import tun2socks.Tun2socks;
@@ -24,41 +24,33 @@ import tun2socks.Tun2socks;
 /**
  * Implements a Probe using the Go-based DoH client.
  */
-public class GoProbe extends Probe {
-
-  public static Probe.Factory factory = (context, url, callback) ->
-      new GoProbe(context, url, callback);
+public class GoProber extends Prober {
 
   private final Context context;
-  private final String url;
 
-  private GoProbe(Context context, String url, Callback callback) {
+  public GoProber(Context context) {
     this.context = context;
-    this.callback = callback;
-    this.url = url;
   }
 
   @Override
-  protected void execute() {
-    String dohIPs = ServerConnectionFactory.getIpString(context, url);
-    if (isInterrupted()) {
-      fail();
-      return;
-    }
-    try {
-      Transport transport = Tun2socks.newDoHTransport(url, dohIPs, null);
-      if (transport == null || isInterrupted()) {
-        fail();
-        return;
+  public void probe(String url, Callback callback) {
+    new Thread(() -> {
+      String dohIPs = ServerConnectionFactory.getIpString(context, url);
+      try {
+        Transport transport = Tun2socks.newDoHTransport(url, dohIPs, null);
+        if (transport == null) {
+          callback.onCompleted(false);
+          return;
+        }
+        byte[] response = transport.query(QUERY_DATA);
+        if (response != null && response.length > 0) {
+          callback.onCompleted(true);
+          return;
+        }
+        callback.onCompleted(false);
+      } catch (Exception e) {
+        callback.onCompleted(false);
       }
-      byte[] response = transport.query(QUERY_DATA);
-      if (response != null && response.length > 0) {
-        succeed();
-        return;
-      }
-      fail();
-    } catch (Exception e) {
-      fail();
-    }
+    }).start();
   }
 }

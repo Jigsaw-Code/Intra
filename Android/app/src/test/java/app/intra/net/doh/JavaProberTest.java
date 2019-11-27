@@ -21,7 +21,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import app.intra.net.dns.DnsUdpQuery;
-import app.intra.net.doh.Probe.Status;
 import java.util.concurrent.Semaphore;
 import okhttp3.Callback;
 import org.junit.After;
@@ -32,7 +31,7 @@ import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
-public class JavaProbeTest {
+public class JavaProberTest {
   private static final String URL = "foo";
   private ServerConnectionFactory mockFactory;
   private Semaphore done = new Semaphore(0);
@@ -79,25 +78,15 @@ public class JavaProbeTest {
         dataCaptor.capture(),
         callbackCaptor.capture());
 
-    JavaProbe.Callback callback = new JavaProbe.Callback() {
-      @Override
-      public void onSuccess() {
-        done.release();
-      }
-
-      @Override
-      public void onFailure() {
+    Prober prober = new JavaProber(mockFactory);
+    prober.probe(URL, succeeded -> {
+      if (!succeeded) {
         fail();
-        done.release();
       }
-    };
-    JavaProbe probe = new JavaProbe(mockFactory, URL, callback);
-    assertEquals(Status.NEW, probe.getStatus());
-    probe.start();
+      done.release();
+    });
     // Wait for call to ServerConnectionFactory.get()
     done.acquire();
-    // ServerConnectionFactory.get() was called.
-    assertEquals(Status.RUNNING, probe.getStatus());
     // Wait for call to ServerConnection.performDnsRequest()
     done.acquire();
     // performDnsRequest was called.
@@ -106,7 +95,6 @@ public class JavaProbeTest {
     callbackCaptor.getValue().onResponse(null, null);
     // Wait for success callback.
     done.acquire();
-    assertEquals(Status.SUCCEEDED, probe.getStatus());
   }
 
   @Test
@@ -125,25 +113,15 @@ public class JavaProbeTest {
         dataCaptor.capture(),
         callbackCaptor.capture());
 
-    JavaProbe.Callback callback = new JavaProbe.Callback() {
-      @Override
-      public void onSuccess() {
+    Prober prober = new JavaProber(mockFactory);
+    prober.probe(URL, succeeded -> {
+      if (succeeded) {
         fail();
-        done.release();
       }
-
-      @Override
-      public void onFailure() {
-        done.release();
-      }
-    };
-    JavaProbe probe = new JavaProbe(mockFactory, URL, callback);
-    assertEquals(Status.NEW, probe.getStatus());
-    probe.start();
+      done.release();
+    });
     // Wait for call to ServerConnectionFactory.get()
     done.acquire();
-    // ServerConnectionFactory.get() was called.
-    assertEquals(Status.RUNNING, probe.getStatus());
     // Wait for call to ServerConnection.performDnsRequest()
     done.acquire();
     // performDnsRequest was called.
@@ -152,7 +130,6 @@ public class JavaProbeTest {
     callbackCaptor.getValue().onFailure(null, null);
     // Wait for failure callback.
     done.acquire();
-    assertEquals(Status.FAILED, probe.getStatus());
   }
 
   @Test
@@ -161,24 +138,15 @@ public class JavaProbeTest {
       return null;  // Indicates bootstrap failure.
     });
 
-    JavaProbe.Callback callback = new JavaProbe.Callback() {
-      @Override
-      public void onSuccess() {
+    Prober prober = new JavaProber(mockFactory);
+    prober.probe(URL, succeeded -> {
+      if (succeeded) {
         fail();
-        done.release();
       }
-
-      @Override
-      public void onFailure() {
-        done.release();
-      }
-    };
-    JavaProbe probe = new JavaProbe(mockFactory, URL, callback);
-    assertEquals(Status.NEW, probe.getStatus());
-    probe.start();
+      done.release();
+    });
     // Wait for failure callback.
     done.acquire();
-    assertEquals(Status.FAILED, probe.getStatus());
   }
 
 }

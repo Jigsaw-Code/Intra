@@ -21,35 +21,20 @@ import org.junit.Test;
 
 public class RaceTest {
 
-  private class SuccessProbe extends Probe {
-    SuccessProbe(Callback c) {
-      callback = c;
-    }
-
+  private class SuccessProber extends Prober {
     @Override
-    protected void execute() {
-      succeed();
-    }
-  }
+    public void probe(String url, Callback callback) {
+      new Thread(() -> callback.onCompleted(true)).start();
 
-  private class FailProbe extends Probe {
-    FailProbe(Callback c) {
-      callback = c;
-    }
-
-    @Override
-    protected void execute() {
-      fail();
     }
   }
 
   @Test
   public void Success() throws Exception {
-    Probe.Factory successFactory = (context, url, callback) -> new SuccessProbe(callback);
     final int N = 7;
     String[] urls = new String[N];
     Semaphore done = new Semaphore(0);
-    Race.start(successFactory, null, urls, (int index) -> {
+    Race.start(new SuccessProber(), urls, (int index) -> {
       assertTrue(index >= 0);
       assertTrue(index < N);
       done.release();
@@ -62,33 +47,40 @@ public class RaceTest {
     done.acquire();
   }
 
+  private class FailProber extends Prober {
+    @Override
+    public void probe(String url, Callback callback) {
+      new Thread(() -> callback.onCompleted(false)).start();
+    }
+  }
+
   @Test
   public void AllFail() throws Exception {
-    Probe.Factory failFactory = (context, url, callback) -> new FailProbe(callback);
     final int N = 7;
     String[] urls = new String[N];
     for (int i = 0; i < N; ++i) {
       urls[i] = String.format("server%d", i);
     }
     Semaphore done = new Semaphore(0);
-    Race.start(failFactory, null, urls, (int index) -> {
+    Race.start(new FailProber(), urls, (int index) -> {
       assertEquals(-1, index);
       done.release();
     });
     done.acquire();
   }
 
+  private class HalfProber extends Prober {
+    @Override
+    public void probe(String url, Callback callback) {
+      int i = Integer.parseInt(url);
+      // Even-number servers succeed.
+      boolean succeed = (i % 2 == 0);
+      new Thread(() -> callback.onCompleted(succeed)).start();
+    }
+  }
+
   @Test
   public void HalfFail() throws Exception {
-    Probe.Factory halfFactory = (context, url, callback) -> {
-      int i = Integer.parseInt(url);
-      if (i % 2 == 0) {
-        // Even-number servers succeed.
-        return new SuccessProbe(callback);
-      } else {
-        return new FailProbe(callback);
-      }
-    };
     final int N = 7;
     String[] urls = new String[N];
     ServerConnection[] connections = new ServerConnection[N];
@@ -96,7 +88,7 @@ public class RaceTest {
       urls[i] = String.format("%d", i);
     }
     Semaphore done = new Semaphore(0);
-    Race.start(halfFactory, null, urls, (int index) -> {
+    Race.start(new HalfProber(), urls, (int index) -> {
       assertTrue(index >= 0);
       assertTrue(index < N);
       // Only the even-numbered servers succeeded.
