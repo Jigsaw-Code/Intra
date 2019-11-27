@@ -109,18 +109,15 @@ public class GoVpnAdapter extends VpnAdapter {
     listener = new GoIntraListener(vpnService);
     String dohURL = PersistentState.getServerUrl(vpnService);
 
-    Transport transport;
+    Transport transport = null;
     if (RemoteConfig.getUseGoDoh()) {
       try {
         transport = makeDohTransport(dohURL);
       } catch (Exception e) {
         // Fall back to ServerConnection if Go-DOH setup fails.
-        // TODO: Report this failure properly instead of silently falling back.
+        // TODO: Expose this failure to the user instead of silently falling back.
         LogWrapper.logException(e);
-        transport = null;
       }
-    } else {
-      transport = null;
     }
 
     try {
