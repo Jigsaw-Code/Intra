@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.sys.firebase;
 
+import android.os.Build;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -46,6 +47,12 @@ public class RemoteConfig {
   }
 
   public static boolean getUseGoDoh() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+      // Must be kept in sync with the check in IntraVpnService.makeVpnAdapter.
+      // GoVpnAdapter isn't used on versions below M, so Go-DOH shouldn't be used for other purposes
+      // (especially probes) on those versions either.
+      return false;
+    }
     try {
       return FirebaseRemoteConfig.getInstance()
           .getBoolean("use_go_doh");
