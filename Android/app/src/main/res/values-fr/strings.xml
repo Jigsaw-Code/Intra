@@ -1,6 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="intro_benefit_headline">Un accès Internet plus ouvert</string>
-  <string name="intro_benefit_body">Intra vous protège contre la manipulation DNS, une technique de piratage visant à bloquer l\'accès aux sites de presse, aux plates-formes de médias sociaux et aux applications de messagerie.\n\nIl existe cependant des types d\'attaques et de techniques de blocage plus complexes que la manipulation DNS, contre lesquels Intra ne vous protège pas.</string>
+  <string name="intro_benefit_body">Intra vous protège contre la manipulation DNS, une technique de piratage visant à bloquer l\'accès aux sites de presse, aux plates-formes de réseaux sociaux et aux applications de messagerie.\n\nIl existe cependant des types d\'attaques et de techniques de blocage plus complexes que la manipulation DNS, contre lesquels Intra ne vous protège pas.</string>
   <string name="intro_manipulation_headline">Protection contre la manipulation DNS</string>
   <string name="intro_manipulation_body">Intra protège la connexion au système de noms de domaine (DNS) qui fournit les adresses exactes dont vous avez besoin pour consulter un site Internet ou pour ouvrir une application.\n\nIntra recourt au chiffrement pour empêcher toute manipulation des résultats, et pour sécuriser votre accès à Internet.</string>
   <string name="intro_details_headline">Une dernière chose…</string>
