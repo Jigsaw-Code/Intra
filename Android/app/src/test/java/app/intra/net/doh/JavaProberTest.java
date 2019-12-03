@@ -37,8 +37,6 @@ public class JavaProberTest {
   private Semaphore done = new Semaphore(0);
 
   @Captor
-  private ArgumentCaptor<DnsUdpQuery> queryCaptor;
-  @Captor
   private ArgumentCaptor<byte[]> dataCaptor;
   @Captor
   private ArgumentCaptor<Callback> callbackCaptor;
@@ -58,10 +56,6 @@ public class JavaProberTest {
     mockFactory = null;
   }
 
-  private static void confirmEquals(ArgumentCaptor<byte[]> data, ArgumentCaptor<DnsUdpQuery> query) {
-    assertEquals(DnsUdpQuery.fromUdpBody(data.getValue()).name, query.getValue().name);
-  }
-
   @Test
   public void Success() throws Exception {
     ServerConnection mockConn = mock(ServerConnection.class);
@@ -74,7 +68,6 @@ public class JavaProberTest {
       done.release();
       return null;
     }).when(mockConn).performDnsRequest(
-        queryCaptor.capture(),
         dataCaptor.capture(),
         callbackCaptor.capture());
 
@@ -89,8 +82,6 @@ public class JavaProberTest {
     done.acquire();
     // Wait for call to ServerConnection.performDnsRequest()
     done.acquire();
-    // performDnsRequest was called.
-    confirmEquals(dataCaptor, queryCaptor);
     // Simulate query success.
     callbackCaptor.getValue().onResponse(null, null);
     // Wait for success callback.
@@ -109,7 +100,6 @@ public class JavaProberTest {
       done.release();
       return null;
     }).when(mockConn).performDnsRequest(
-        queryCaptor.capture(),
         dataCaptor.capture(),
         callbackCaptor.capture());
 
@@ -124,8 +114,6 @@ public class JavaProberTest {
     done.acquire();
     // Wait for call to ServerConnection.performDnsRequest()
     done.acquire();
-    // performDnsRequest was called.
-    confirmEquals(dataCaptor, queryCaptor);
     // Simulate query failure.
     callbackCaptor.getValue().onFailure(null, null);
     // Wait for failure callback.

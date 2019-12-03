@@ -42,7 +42,7 @@ public class Resolver {
   public static void processQuery(ServerConnection serverConnection, DnsUdpQuery query,
                            byte[] dnsPacketData, ResponseWriter responseWriter) {
     try {
-      serverConnection.performDnsRequest(query, dnsPacketData,
+      serverConnection.performDnsRequest(dnsPacketData,
           new Resolver.DnsResponseCallback(serverConnection, query, responseWriter));
     } catch (NullPointerException e) {
       Transaction transaction = new Transaction(query);

@@ -26,8 +26,6 @@ import okhttp3.Response;
  */
 class JavaProber extends Prober {
 
-  private static final DnsUdpQuery QUERY = DnsUdpQuery.fromUdpBody(QUERY_DATA);
-
   private final ServerConnectionFactory factory;
   JavaProber(ServerConnectionFactory factory) {
     this.factory = factory;
@@ -59,7 +57,7 @@ class JavaProber extends Prober {
         callback.onCompleted(false);
         return;
       }
-      conn.performDnsRequest(QUERY, QUERY_DATA, new QueryCallback(callback));
+      conn.performDnsRequest(QUERY_DATA, new QueryCallback(callback));
     }).start();
   }
 }
