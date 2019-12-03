@@ -15,15 +15,16 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
-import app.intra.net.doh.Probe.Status;
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import app.intra.net.go.GoProber;
+import app.intra.sys.firebase.RemoteConfig;
 
 /**
  * This class performs parallel probes to all of the specified servers and calls the listener when
  * the fastest probe succeeds or all probes have failed.  Each instance can only be used once.
  */
 public class Race {
+
   public interface Listener {
     /**
      * This method is called once, when the race has concluded.
@@ -32,67 +33,67 @@ public class Race {
     void onResult(int index);
   }
 
-  private final List<Probe> probes;
-  private final Listener listener;
-
   /**
-   * Creates a race between different servers.  To run the race, call start().
-   * @param factory The factory will be called once for each server.
+   * Starts a race between different servers.
+   * @param context Used to read the IP addresses of the servers from storage.
    * @param urls The URLs for all the DOH servers to compare.
    * @param listener Called once on an arbitrary thread with the result of the race.
    */
-  public Race(ServerConnectionFactory factory, String[] urls, Listener listener) {
-    probes = new ArrayList<>(urls.length);
+  public static void start(Context context, String[] urls, Listener listener) {
+    Prober prober = RemoteConfig.getUseGoDoh() ? new GoProber(context) :
+        new JavaProber(new ServerConnectionFactory(context));
+    start(prober, urls, listener);
+  }
+
+  // Exposed for unit testing only.
+  static void start(Prober prober, String[] urls, Listener listener) {
+    Collector collector = new Collector(urls.length, listener);
     for (int i = 0; i < urls.length; ++i) {
-      probes.add(new Probe(factory, urls[i], new Callback(i)));
-    }
-    this.listener = listener;
-  }
-
-  public synchronized void start() {
-    for (Probe task : probes) {
-      task.start();
+      prober.probe(urls[i], new Callback(i, collector));
     }
   }
 
-  private class Callback implements Probe.Callback {
+  private static class Collector {
+    private final int numCallbacks;
+    private final Listener listener;
+    private int numFailed = 0;
+    private boolean reportedSuccess = false;
+
+    Collector(int numCallbacks, Listener listener) {
+      this.numCallbacks = numCallbacks;
+      this.listener = listener;
+    }
+
+    synchronized void onCompleted(int index, boolean succeeded) {
+      if (succeeded) {
+        if (!reportedSuccess) {
+          listener.onResult(index);
+          reportedSuccess = true;
+        }
+      } else {
+        ++numFailed;
+        if (numFailed == numCallbacks) {
+          // All probes failed
+          listener.onResult(-1);
+        }
+      }
+    }
+
+  }
+
+  private static class Callback implements Prober.Callback {
     private final int index;
+    private final Collector collector;
 
-    private Callback(int index) {
+
+    private Callback(int index, Collector collector) {
       this.index = index;
+      this.collector = collector;
     }
 
     @Override
-    public void onFailure() {
-      synchronized(Race.this) {
-        if (probes.isEmpty()) {
-          return;
-        }
-        for (Probe task : probes) {
-          if (task.getStatus() != Status.FAILED) {
-            return;
-          }
-        }
-        // All probes have failed.
-        listener.onResult(-1);
-        probes.clear();
-      }
-    }
-
-    @Override
-    public void onSuccess() {
-      synchronized (Race.this) {
-        if (probes.isEmpty()) {
-          return;
-        }
-        listener.onResult(index);
-        // Minor optimization: cancel any probes that haven't issued a probe query yet.
-        for (Probe probe : probes) {
-          probe.interrupt();
-        }
-        // Mark the race as completed to prevent additional Listener callbacks.
-        probes.clear();
-      }
+    public void onCompleted(boolean succeeded) {
+      collector.onCompleted(index, succeeded);
     }
   }
 }

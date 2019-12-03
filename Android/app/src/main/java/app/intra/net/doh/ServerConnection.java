@@ -15,7 +15,6 @@ limitations under the License.
 */
 package app.intra.net.doh;
 
-import app.intra.net.dns.DnsUdpQuery;
 import okhttp3.Callback;
 
 /**
@@ -33,12 +32,10 @@ public interface ServerConnection {
 
   /**
    * Performs a binary, asynchronous DNS request over HTTPS.
-   *
-   * @param metadata Information about the request
    * @param data The request body
    * @param cb An OkHttp response callback to receive the result.
    */
-  void performDnsRequest(final DnsUdpQuery metadata, final byte[] data, Callback cb);
+  void performDnsRequest(final byte[] data, Callback cb);
 
   /**
    * @return The URL identifying this ServerConnection.

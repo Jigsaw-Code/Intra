@@ -21,7 +21,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import app.intra.net.dns.DnsUdpQuery;
-import app.intra.net.doh.Probe.Status;
 import java.util.concurrent.Semaphore;
 import okhttp3.Callback;
 import org.junit.After;
@@ -32,13 +31,11 @@ import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
-public class ProbeTest {
+public class JavaProberTest {
   private static final String URL = "foo";
   private ServerConnectionFactory mockFactory;
   private Semaphore done = new Semaphore(0);
 
-  @Captor
-  private ArgumentCaptor<DnsUdpQuery> queryCaptor;
   @Captor
   private ArgumentCaptor<byte[]> dataCaptor;
   @Captor
@@ -59,10 +56,6 @@ public class ProbeTest {
     mockFactory = null;
   }
 
-  private static void confirmEquals(ArgumentCaptor<byte[]> data, ArgumentCaptor<DnsUdpQuery> query) {
-    assertEquals(DnsUdpQuery.fromUdpBody(data.getValue()).name, query.getValue().name);
-  }
-
   @Test
   public void Success() throws Exception {
     ServerConnection mockConn = mock(ServerConnection.class);
@@ -75,38 +68,24 @@ public class ProbeTest {
       done.release();
       return null;
     }).when(mockConn).performDnsRequest(
-        queryCaptor.capture(),
         dataCaptor.capture(),
         callbackCaptor.capture());
 
-    Probe.Callback callback = new Probe.Callback() {
-      @Override
-      public void onSuccess() {
-        done.release();
-      }
-
-      @Override
-      public void onFailure() {
+    Prober prober = new JavaProber(mockFactory);
+    prober.probe(URL, succeeded -> {
+      if (!succeeded) {
         fail();
-        done.release();
       }
-    };
-    Probe probe = new Probe(mockFactory, URL, callback);
-    assertEquals(Status.NEW, probe.getStatus());
-    probe.start();
+      done.release();
+    });
     // Wait for call to ServerConnectionFactory.get()
     done.acquire();
-    // ServerConnectionFactory.get() was called.
-    assertEquals(Status.RUNNING, probe.getStatus());
     // Wait for call to ServerConnection.performDnsRequest()
     done.acquire();
-    // performDnsRequest was called.
-    confirmEquals(dataCaptor, queryCaptor);
     // Simulate query success.
     callbackCaptor.getValue().onResponse(null, null);
     // Wait for success callback.
     done.acquire();
-    assertEquals(Status.SUCCEEDED, probe.getStatus());
   }
 
   @Test
@@ -121,38 +100,24 @@ public class ProbeTest {
       done.release();
       return null;
     }).when(mockConn).performDnsRequest(
-        queryCaptor.capture(),
         dataCaptor.capture(),
         callbackCaptor.capture());
 
-    Probe.Callback callback = new Probe.Callback() {
-      @Override
-      public void onSuccess() {
+    Prober prober = new JavaProber(mockFactory);
+    prober.probe(URL, succeeded -> {
+      if (succeeded) {
         fail();
-        done.release();
       }
-
-      @Override
-      public void onFailure() {
-        done.release();
-      }
-    };
-    Probe probe = new Probe(mockFactory, URL, callback);
-    assertEquals(Status.NEW, probe.getStatus());
-    probe.start();
+      done.release();
+    });
     // Wait for call to ServerConnectionFactory.get()
     done.acquire();
-    // ServerConnectionFactory.get() was called.
-    assertEquals(Status.RUNNING, probe.getStatus());
     // Wait for call to ServerConnection.performDnsRequest()
     done.acquire();
-    // performDnsRequest was called.
-    confirmEquals(dataCaptor, queryCaptor);
     // Simulate query failure.
     callbackCaptor.getValue().onFailure(null, null);
     // Wait for failure callback.
     done.acquire();
-    assertEquals(Status.FAILED, probe.getStatus());
   }
 
   @Test
@@ -161,24 +126,15 @@ public class ProbeTest {
       return null;  // Indicates bootstrap failure.
     });
 
-    Probe.Callback callback = new Probe.Callback() {
-      @Override
-      public void onSuccess() {
+    Prober prober = new JavaProber(mockFactory);
+    prober.probe(URL, succeeded -> {
+      if (succeeded) {
         fail();
-        done.release();
       }
-
-      @Override
-      public void onFailure() {
-        done.release();
-      }
-    };
-    Probe probe = new Probe(mockFactory, URL, callback);
-    assertEquals(Status.NEW, probe.getStatus());
-    probe.start();
+      done.release();
+    });
     // Wait for failure callback.
     done.acquire();
-    assertEquals(Status.FAILED, probe.getStatus());
   }
 
 }

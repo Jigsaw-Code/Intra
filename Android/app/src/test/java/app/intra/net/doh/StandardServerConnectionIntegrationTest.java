@@ -67,10 +67,7 @@ public class StandardServerConnectionIntegrationTest {
         StandardServerConnection s = StandardServerConnection.get(CLOUDFLARE_URL, EMPTY_LIST);
 
         TestDnsCallback cb = new TestDnsCallback();
-        DnsUdpQuery metadata = new DnsUdpQuery();
-        metadata.name = "youtube.com";
-        metadata.type = 1;
-        s.performDnsRequest(metadata, QUERY_DATA, cb);
+        s.performDnsRequest(QUERY_DATA, cb);
         cb.semaphore.acquire();  // Wait for the response.
         assertNotNull(cb.response);
         assertEquals(200, cb.response.code());

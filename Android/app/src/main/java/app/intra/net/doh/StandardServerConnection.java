@@ -17,7 +17,7 @@ package app.intra.net.doh;
 
 import android.util.Log;
 import app.intra.BuildConfig;
-import app.intra.net.dns.DnsUdpQuery;
+
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -95,7 +95,7 @@ public class StandardServerConnection implements ServerConnection {
   }
 
   @Override
-  public void performDnsRequest(DnsUdpQuery metadata, byte[] data, Callback cb) {
+  public void performDnsRequest(byte[] data, Callback cb) {
     // Zero out the ID
     data[0] = 0;
     data[1] = 0;
