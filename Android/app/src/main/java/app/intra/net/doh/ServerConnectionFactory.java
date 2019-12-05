@@ -66,6 +66,9 @@ public class ServerConnectionFactory {
   private Collection<InetAddress> getKnownIps(String url) {
     Set<InetAddress> ret = new HashSet<>();
     for (String ip : getIpString(context, url).split(",")) {
+      if (ip.isEmpty()) {
+        continue;
+      }
       try {
         ret.addAll(Arrays.asList(InetAddress.getAllByName(ip)));
       } catch (IOException e) {

@@ -15,8 +15,9 @@ limitations under the License.
 */
 package app.intra.net.go;
 
-import android.annotation.TargetApi;
+import android.net.VpnService;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -32,6 +33,8 @@ import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
 import java.io.IOException;
 import java.util.Locale;
+import protect.Protect;
+import protect.Protector;
 import tun2socks.Tun2socks;
 import tunnel.IntraTunnel;
 
@@ -63,6 +66,8 @@ public class GoVpnAdapter extends VpnAdapter {
     }
   }
 
+  public static final String FAKE_DNS_IP = LanIp.DNS.make(IPV4_TEMPLATE);
+
   // Service context in which the VPN is running.
   private final IntraVpnService vpnService;
 
@@ -70,7 +75,7 @@ public class GoVpnAdapter extends VpnAdapter {
   private final LocalhostResolver resolver;
 
   // TUN device representing the VPN.
-  private final ParcelFileDescriptor tunFd;
+  private ParcelFileDescriptor tunFd;
 
   // The Intra session object from go-tun2socks.  Initially null.
   private IntraTunnel tunnel;
@@ -97,57 +102,59 @@ public class GoVpnAdapter extends VpnAdapter {
   @Override
   public synchronized void start() {
     resolver.start();
+    connectTunnel();
+  }
 
+  private void connectTunnel() {
+    if (tunnel != null) {
+      return;
+    }
     // VPN parameters
-    final String fakeDnsIp = LanIp.DNS.make(IPV4_TEMPLATE);
-    final String fakeDns = fakeDnsIp + ":" + DNS_DEFAULT_PORT;
-
+    final String fakeDns = FAKE_DNS_IP + ":" + DNS_DEFAULT_PORT;
 
     // Strip leading "/" from ip:port string.
     String trueDns = resolver.getAddress().toString().substring(1);
     listener = new GoIntraListener(vpnService);
     String dohURL = PersistentState.getServerUrl(vpnService);
 
-    Transport transport = null;
-    if (RemoteConfig.getUseGoDoh()) {
-      try {
-        transport = makeDohTransport(dohURL);
-      } catch (Exception e) {
-        // Fall back to ServerConnection if Go-DOH setup fails.
-        // TODO: Expose this failure to the user instead of silently falling back.
-        LogWrapper.logException(e);
-      }
-    }
-
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
+      Transport transport = RemoteConfig.getUseGoDoh() ? makeDohTransport(dohURL) : null;
       final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns, trueDns, trueDns,
-          transport, listener);
+          transport, getProtector(), listener);
       tunnel = t;
-
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel = null;
       VpnController.getInstance().onConnectionStateChanged(vpnService, State.FAILING);
-      close();
     }
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   private static ParcelFileDescriptor establishVpn(IntraVpnService vpnService) {
     try {
-      return vpnService.newBuilder()
+      VpnService.Builder builder = vpnService.newBuilder()
           .setSession("Intra go-tun2socks VPN")
           .setMtu(VPN_INTERFACE_MTU)
           .addAddress(LanIp.GATEWAY.make(IPV4_TEMPLATE), IPV4_PREFIX_LENGTH)
           .addRoute("0.0.0.0", 0)
-          .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE))
-          .addDisallowedApplication(vpnService.getPackageName())
-          .establish();
+          .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE));
+      if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        builder.addDisallowedApplication(vpnService.getPackageName());
+      }
+      return builder.establish();
     } catch (Exception e) {
       LogWrapper.logException(e);
       return null;
     }
+  }
+
+  private @Nullable Protector getProtector() {
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      // We don't need socket protection in these versions because the call to
+      // "addDisallowedApplication" effectively protects all sockets in this app.
+      return null;
+    }
+    return vpnService;
   }
 
   @Override
@@ -155,11 +162,14 @@ public class GoVpnAdapter extends VpnAdapter {
     if (tunnel != null) {
       tunnel.disconnect();
     }
-    try {
-      tunFd.close();
-    } catch (IOException e) {
-      LogWrapper.logException(e);
+    if (tunFd != null) {
+      try {
+        tunFd.close();
+      } catch (IOException e) {
+        LogWrapper.logException(e);
+      }
     }
+    tunFd = null;
     if (resolver != null) {
       resolver.shutdown();
     }
@@ -168,27 +178,40 @@ public class GoVpnAdapter extends VpnAdapter {
   private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
     @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
     String dohIPs = ServerConnectionFactory.getIpString(vpnService, realUrl);
-    return Tun2socks.newDoHTransport(realUrl, dohIPs, listener);
+    return Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
   }
 
   /**
-   * Sets a DOH server URL for the VPN.  If Go-DoH is enabled, DNS queries will be handled in
+   * Updates the DOH server URL for the VPN.  If Go-DoH is enabled, DNS queries will be handled in
    * Go, and will not use the Java DoH implementation.  If Go-DoH is not enabled, this method
    * has no effect.
-   * @param url The DOH server URL.  Must be valid and nonempty.
    */
-  public void setDohUrl(String url) {
+  public synchronized void updateDohUrl() {
+    if (tunFd == null) {
+      // Adapter is closed.
+      return;
+    }
     if (!RemoteConfig.getUseGoDoh()) {
+      return;
+    }
+    if (tunnel == null) {
+      // Attempt to re-create the tunnel.  Creation may have failed originally because the DoH
+      // server could not be reached.  This will update the DoH URL as well.
+      connectTunnel();
       return;
     }
     // Overwrite the DoH Transport with a new one, even if the URL has not changed.  This function
     // is called on network changes, and it's important to switch to a fresh transport because the
     // old transport may be using sockets on a deleted interface, which may block until they time
     // out.
+    String url = PersistentState.getServerUrl(vpnService);
     try {
       tunnel.setDNS(makeDohTransport(url));
     } catch (Exception e) {
       LogWrapper.logException(e);
+      tunnel.disconnect();
+      tunnel = null;
+      VpnController.getInstance().onConnectionStateChanged(vpnService, State.FAILING);
     }
   }
 }

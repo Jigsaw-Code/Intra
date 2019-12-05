@@ -18,6 +18,7 @@ package app.intra.sys;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.net.doh.ServerConnection;
 
@@ -45,6 +46,10 @@ public class VpnController {
 
   void setIntraVpnService(IntraVpnService intraVpnService) {
     this.intraVpnService = intraVpnService;
+  }
+
+  public @Nullable IntraVpnService getIntraVpnService() {
+    return this.intraVpnService;
   }
 
   public synchronized void onConnectionStateChanged(Context context, ServerConnection.State state) {
