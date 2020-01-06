@@ -24,7 +24,6 @@ import androidx.annotation.Nullable;
 import app.intra.net.VpnAdapter;
 import app.intra.net.doh.ServerConnection.State;
 import app.intra.net.doh.ServerConnectionFactory;
-import app.intra.net.go.TLSProbe.Result;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.VpnController;
 import app.intra.sys.firebase.LogWrapper;
@@ -126,11 +125,6 @@ public class GoVpnAdapter extends VpnAdapter {
           transport, listener);
       tunnel = t;
 
-      new Thread(() -> {
-        Result r = TLSProbe.run(vpnService);
-        LogWrapper.log(Log.INFO, LOG_TAG, "TLS probe result: " + r.name());
-        t.setAlwaysSplitHTTPS(r == Result.TLS_FAILED);
-      }).start();
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel = null;

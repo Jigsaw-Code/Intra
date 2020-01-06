@@ -36,16 +36,6 @@ public class RemoteConfig {
     }
   }
 
-  public static String[] getTlsProbeServers() {
-    try {
-      return FirebaseRemoteConfig.getInstance()
-          .getString("tls_probe_servers").split(",");
-    } catch (IllegalStateException e) {
-      LogWrapper.logException(e);
-      return new String[0];
-    }
-  }
-
   public static boolean getUseGoDoh() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
       // Must be kept in sync with the check in IntraVpnService.makeVpnAdapter.
