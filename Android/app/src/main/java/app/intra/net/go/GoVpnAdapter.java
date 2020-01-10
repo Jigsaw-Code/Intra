@@ -16,7 +16,7 @@ limitations under the License.
 package app.intra.net.go;
 
 import android.net.VpnService;
-import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -26,14 +26,13 @@ import app.intra.net.VpnAdapter;
 import app.intra.net.doh.ServerConnection.State;
 import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.sys.IntraVpnService;
+import app.intra.sys.PersistentState;
 import app.intra.sys.VpnController;
 import app.intra.sys.firebase.LogWrapper;
-import app.intra.sys.PersistentState;
 import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
 import java.io.IOException;
 import java.util.Locale;
-import protect.Protect;
 import protect.Protector;
 import tun2socks.Tun2socks;
 import tunnel.IntraTunnel;
@@ -138,7 +137,7 @@ public class GoVpnAdapter extends VpnAdapter {
           .addAddress(LanIp.GATEWAY.make(IPV4_TEMPLATE), IPV4_PREFIX_LENGTH)
           .addRoute("0.0.0.0", 0)
           .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE));
-      if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
         builder.addDisallowedApplication(vpnService.getPackageName());
       }
       return builder.establish();
@@ -149,7 +148,7 @@ public class GoVpnAdapter extends VpnAdapter {
   }
 
   private @Nullable Protector getProtector() {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       // We don't need socket protection in these versions because the call to
       // "addDisallowedApplication" effectively protects all sockets in this app.
       return null;
