@@ -68,8 +68,9 @@
         android:layout_gravity="end|center_vertical"
         android:layout_margin="10dp"
         android:layout_weight="0"
+        android:scrollbars="none"
         android:textOff=""
-        android:textOn=""/>
+        android:textOn="" />
   </LinearLayout>
 
   <androidx.constraintlayout.widget.ConstraintLayout
