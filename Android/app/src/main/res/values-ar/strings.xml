@@ -36,8 +36,8 @@
   <string name="status_waiting">جارٍ الانتظار…</string>
   <string name="status_failing">يتعذّر الاتصال</string>
   <string name="explanation_offline">جهازك غير متصّل بالإنترنت، وIntra في انتظار الاتصال بالشبكة.</string>
-  <string name="explanation_vpn">لقد رصدت أداة Intra شبكة ظاهرية خاصة أخرى على جهازك. وفي حال تفعيل Intra، سيتم إيقاف تلك الشبكة.
-    لا تتمتع أداة Intra بنفس مستوى الأمان الذي تتمتع به شبكة ظاهرية خاصة موثوقة.</string>
+  <string name="explanation_vpn">لقد رصدت أداة Intra شبكة افتراضية خاصة أخرى على جهازك. وفي حال تفعيل Intra، سيتم إيقاف تلك الشبكة.
+    لا تتمتع أداة Intra بنفس مستوى الأمان الذي تتمتع به شبكة افتراضية خاصة موثوقة.</string>
   <string name="explanation_failing">تحذير: يتعذّر إجراء طلبات البحث. يمكنك اختيار خادم مختلف أو إعادة تشغيل Intra.</string>
   <string name="system_details">تفاصيل النظام</string>
   <string name="num_requests">الطلبات حتى الآن</string>

@@ -1,0 +1,100 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Has açyk internet girişi</string>
+  <string name="intro_benefit_body">Intra sizi täzelik saýtlaryna, sosial media platformalaryna we habarlaşyk programmalaryna girişi beklemekde ulanylýan kiber hüjüm bolan DNS manipulýasiýasyndan goraýar.\n\nIntra sizi DNS manipulýasiýasynda goraýan-da bolsa, Intra-nyň gorap bilmejek başga, has çylşyrymly bekleme usullary we hüjümleri hem bardyr.</string>
+  <string name="intro_manipulation_headline">DNS manipulýasiýasyndan gorag</string>
+  <string name="intro_manipulation_body">Intra bir websaýta girmek ýa-da programma açmak üçin zerur bolan takyk salgylary üpjün edýän Domen ady ulgamyna (DNS) birikmäňizi goraýar.\n\nIntra netijeleri manipulirläp bolmaz ýaly şifrleme ulanmak bilen, internete howpsuz girmegiňize kömek edýär.</string>
+  <string name="intro_details_headline">Ýene birje zat…</string>
+  <string name="intro_details_body">Intra-nyň DNS haýyşlaryňyzy goramagyna rugsat bermek üçin, OK-i basyň. Standart görnüşde, olar Google Public DNS-e gönükdirer (<a href="https://developers.google.com/speed/public-dns/privacy">Gizlinlik syýasaty</a>). Programma sazlamalarynda başga hyzmat saýlap bilersiňiz.</string>
+  <string name="intro_back">yza</string>
+  <string name="intro_next">indiki</string>
+  <string name="intro_accept">kabul et</string>
+  <string name="drawer_open">Nawigasiýa çekerini aç</string>
+  <string name="drawer_close">Nawigasiýa çekerini ýap</string>
+  <string name="home">Öý</string>
+  <string name="settings">Sazlamalar</string>
+  <string name="support">Goldaw</string>
+  <string name="privacy_link">Gizlinlik syýasaty</string>
+  <string name="tos_link">Hyzmat şertleri</string>
+  <string name="source_code">Çeşme kod</string>
+  <string name="credits_text">Intra <a href="https://jigsaw.google.com">Jigsaw</a>tarapyndan ýasaldy. IP ýerleşişleri DB-IP.com-dan alynýan
+    maglumata esaslanýar.</string>
+  <string name="indicator_on">Açyk</string>
+  <string name="indicator_off">Ýapyk</string>
+  <string name="status_exposed">Sezewar bolýan</string>
+  <string name="explanation_exposed">Birikmäňiz DNS hüjümlerine sezewar.</string>
+  <string name="status_protected">Goralýar</string>
+  <string name="explanation_protected">Birikme DNS hüjümlerinden goralýar.</string>
+  <string name="status_upgraded">Goragsyz</string>
+  <string name="explanation_upgraded">Birikmäňiz häzirki wagtda Android Hususy DNS tarapyndan goralýar, ýöne bir hüjümçi ol goragy
+    ýapyp ýa-da ýeňip biler.</string>
+  <string name="status_strict">Android tarapyndan goralýar</string>
+  <string name="explanation_strict">Intra Android Hususy DNS sazlamasynyň işledilendigini anyklady.  Ýagny, DNS talaplaryňyz
+    eýýäm goralýar, şol sebäpli Intra-ny işletmek gerek däl.</string>
+  <string name="status_starting">Başlaýar…</string>
+  <string name="explanation_starting">Biraz garaşyň.  Intra serwer birikmesini gurýar.</string>
+  <string name="status_waiting">Garaşylýar…</string>
+  <string name="status_failing">Başa barmaýar</string>
+  <string name="explanation_offline">Enjamyňyz awtonomda.  Intra tor birikmesine garaşýar.</string>
+  <string name="explanation_vpn">Intra enjamyňyzda başga VPN anyklady.  Eger Intra-ny işletseňiz, ol VPN ýapylar.
+    Intra ynamdar VPN-çe goragly däldir.</string>
+  <string name="explanation_failing">Duýduryş: Sowallar başa barmaýar.  Başga serwer saýlap ýa-da Intra-ny täzeden işledip bilersiňiz.</string>
+  <string name="system_details">Ulgam jikme-jikligi</string>
+  <string name="num_requests">Ömürlik talaplar</string>
+  <string name="num_requests_headline">DNS talaplary enjamyňyz IP salgysyndan domen adyna seredende bolup geçýär</string>
+  <string name="num_requests_body">Bu baha Intra-nyň işjeň wagty enjamyňyzyň ýerine ýetiren DNS talaplarynyň jemi sanyny
+    görkezýär.  Hakykylygy barlanan netijeleri almagyňyz üçin, Intra ol talaplary şifrleýär we ynamdar serwere
+    iberýär.</string>
+  <string name="queries_per_minute">Soňky talaplar</string>
+  <string name="queries_per_minute_headline">DNS taaplary her birikmäniň başynda bolup geçýär</string>
+  <string name="queries_per_minute_body">Bu baha enjamyňyzyň soňky minutda ýerine ýetiren DNS talaplaryňyzyň sanyny görkezýär.
+    Çylşyrymly web-sahypany ýüklemek üçin ýüz DNS talabyndan köp gerek.</string>
+  <string name="transport_label">Şifrlenen transport</string>
+  <string name="transport_headline">Şifrleme talaplaryňyzy del gözlerden goraýar</string>
+  <string name="transport_body">Intra-ny ulanýan wagtyňyz, DNS talaplaryňyz şifrlenýär, şol sebäpli diňe siz we DNS serweriňiz
+    näme DNS talaplaryny berýäniňizi bilip bilýär.  Intra şifrlemek üçin HTTPS-arkaly-DNS protokolyny ornaşdyrýar.</string>
+  <string name="default_transport_label">Standart transport</string>
+  <string name="insecure_transport">şifrlenmedik</string>
+  <string name="insecure_transport_headline">Esasy DNS şifrlenmedik</string>
+  <string name="insecure_transport_body">Köp enjamlar we torlar şifrlenmedik esasy DNS-i ulanýar, şol sebäpli DNS talaplaryňyz tordaky
+    islendik adam tarapyndan görlüp ýa-da üýtgedilip biler.  Käbir täze enjamlar TLS-arkaly-DNS-i goldaýar, ol
+    talaplaryňyzy şifrleýär, ýöne serwer zyýanly bolsa, sizi gorap bilmeýär.</string>
+  <string name="server_label">Goragly DNS serweri</string>
+  <string name="server_headline">Siz ynamdar DNS serwerini ulanmaga mynasyp</string>
+  <string name="server_body">Bu zolak ulanýan goragly DNS serweriňiziň adyny görkezýär.  Sazlamalar menýusynda
+    başga serwere üýtgedip hem bilersiňiz.</string>
+  <string name="default_server_label">Häzirki DNS serweri</string>
+  <string name="insecure_server_headline">Siz öz DNS serweriňizi saýlap bilersiňiz</string>
+  <string name="insecure_server_body">Haçanda Intra ýapylsa, köp enjamlar siziň ulgam operatoryňyzyň saýlan DNS serwerini ulanmaga sazlanandyr. Bu ýerde enjamyňyzyň häzirki DNS serweriniň IP salgysy görkezilýär. Intra ýa-da Android P bilen, siz öz isleýän serweriňizi saýlap bilersiňiz.</string>
+  <string name="strict_mode_server_headline">Siz howpsuz serweri saýladyňyz</string>
+  <string name="strict_mode_server_body">Bu ýerde Android-yň Şahsy DNS sazlamasyndaky siziň sazlan DNS serweriňiziň ady görkezilýär.  Haçanda Intra ýapylsa, siziň programmalaryňyz DNS ýüztutmalaryny bu serwere iberer.</string>
+  <string name="unknown_server">(Näbelli serwer)</string>
+  <string name="show_history">Soňky talaplary görkez</string>
+  <string name="query_label">Talap</string>
+  <string name="type_label">Görnüş</string>
+  <string name="latency_label">Gijikme</string>
+  <string name="resolver_label">Çözüji ýerleşişi</string>
+  <string name="destination_label">Barylmaly serwer</string>
+  <string name="server_choice">HTTPS-arkaly-DNS serwerini saýla</string>
+  <string name="server_choice_summary">Häzirki wagtda %s</string>
+  <string name="server_choice_builtin">Gurnalgy serwer</string>
+  <string name="server_choice_website_notice">Olaryň gizlinlik syýasatyny we islendik degişli hyzmat şertlerini gözden geçirmek üçin, öz <a href="https://www.example.com/">websaýtyna</a> giriň.</string>
+  <string name="server_website_button">Websaýta git</string>
+  <string name="try_all_servers">Ähli gurnalgy serwerleri synap gör</string>
+  <string name="checking_servers">Ähli serwerler barlanylýar</string>
+  <string name="found_fastest">Iň çalt serweriňiz %s.</string>
+  <string name="all_servers_failed">Işleýän serweri anyklap bolmady: ähli gurnalgy serwerlere birigip bolmady.</string>
+  <string name="server_choice_custom">Laýyk serwer URL-si</string>
+  <string name="server_choice_warning">Laýyk serwer hakyky https:// URL-si bolmaly</string>
+  <string name="excluded_apps">Kadadan çykýan programmalar</string>
+  <string name="excluded_apps_summary">Hiç bir saýlanan programmadan DNS talaplary Intra arkaly gitmez.  Eger bir programma Intra
+    bilen ylalşyksyz bolsa, ony şu ýere goşup bilersiňiz.</string>
+  <string name="excluded_apps_title">Intra-da kadadan çykarmaga programmalary belle</string>
+  <string name="old_android">Bu funksionallyk siziň Android wersiýaňyzda elýeterli däl.</string>
+  <string name="notification_title">DNS goragy işjeň</string>
+  <string name="notification_content">DNS gorag sazlamasyny üýtgetmek üçin bas</string>
+  <string name="channel_name">DNS goragy işjeň habarnamasy</string>
+  <string name="channel_description">DNS goragy işjeň wagty şu habarnama peýda bolýar.</string>
+  <string name="warning_title">Duýduryş: Intra deaktiwirlendi</string>
+  <string name="warning_channel_name">Duýduryş</string>
+  <string name="warning_channel_description">Intra problema duş gelende görkezilýär.</string>
+</resources>
