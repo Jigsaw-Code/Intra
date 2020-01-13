@@ -21,7 +21,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.Log;
+import app.intra.sys.firebase.LogWrapper;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 // This class listens for network connectivity changes and notifies a NetworkListener of
 // connected/disconnected events.
@@ -112,5 +120,61 @@ public class NetworkManager {
       return false;
     }
     return networkInfo.isConnectedOrConnecting() && networkInfo.isAvailable();
+  }
+
+  /**
+   * Post-Lollipop, we can use VpnService.Builder.addDisallowedApplication to exclude Intra from its
+   * own VPN.  If for some reason we needed to get the IP address of the non-VPN resolvers, we could
+   * use ConnectivityManager.getActiveNetwork().getLinkProperties().getDnsServers().
+   *
+   * Pre-Lollipop, there is no official way to get the non-VPN DNS servers, but we need them in
+   * order to do DNS lookups on protected sockets in Go, in order to resolve DNS server names when
+   * the current server connection is broken, without disabling the VPN.  This implementation
+   * exposes the hidden version of LinkProperties that was present prior to Lollipop, in order to
+   * extract the DNS server IPs.
+   *
+   * @return The (unencrypted) DNS servers used by the underlying networks.
+   */
+  List<InetAddress> getSystemResolvers() {
+    // This list of network types is in roughly descending priority order, so that the first
+    // entries in the returned list are most likely to be the appropriate resolvers.
+    int[] networkTypes = new int[]{
+        ConnectivityManager.TYPE_ETHERNET,
+        ConnectivityManager.TYPE_WIFI,
+        ConnectivityManager.TYPE_MOBILE,
+        ConnectivityManager.TYPE_WIMAX,
+    };
+
+    List<InetAddress> resolvers = new ArrayList<>();
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      LogWrapper.log(Log.ASSERT, LOG_TAG, "This function should never be called in L+.");
+      return resolvers;
+    }
+
+    try {
+      // LinkProperties ConnectivityManager.getLinkProperties(int type) (removed in Lollipop)
+      Method getLinkProperties = ConnectivityManager.class
+          .getMethod("getLinkProperties", int.class);
+      // LinkProperties, which existed before Lollipop but had a different API and was not exposed.
+      Class<?> linkPropertiesClass = Class.forName("android.net.LinkProperties");
+      // Collection<InetAddress> LinkProperties.getDnses() (replaced by getDnsServers in Lollipop).
+      Method getDnses = linkPropertiesClass.getMethod("getDnses");
+
+      for (int networkType : networkTypes) {
+        Object linkProperties = getLinkProperties.invoke(connectivityManager, networkType);
+        if (linkProperties == null) {
+          // No network of this type.
+          continue;
+        }
+        Collection<?> addresses = (Collection<?>) getDnses.invoke(linkProperties);
+        for (Object address : addresses) {
+          resolvers.add((InetAddress)address);
+        }
+      }
+    } catch (Exception e) {
+      LogWrapper.logException(e);
+    }
+
+    return resolvers;
   }
 }
