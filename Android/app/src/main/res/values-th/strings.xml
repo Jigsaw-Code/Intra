@@ -24,7 +24,7 @@
   <string name="status_protected">ปลอดภัย</string>
   <string name="explanation_protected">การเชื่อมต่อของคุณได้รับการป้องกันจากการโจมตี DNS</string>
   <string name="status_upgraded">ไม่ปลอดภัย</string>
-  <string name="explanation_upgraded">ขณะนี้การเชื่อมต่อของคุณได้รับการป้องกันโดย DNS ส่วนตัวของ Andriod แต่ผู้โจมตีอาจปิดใช้
+  <string name="explanation_upgraded">ขณะนี้การเชื่อมต่อของคุณได้รับการป้องกันโดย DNS ส่วนตัวของ Android แต่ผู้โจมตีอาจปิดใช้
     หรือเจาะระบบรักษาความปลอดภัยได้</string>
   <string name="status_strict">รักษาความปลอดภัยโดย Android</string>
   <string name="explanation_strict">Intra ตรวจพบว่ามีการเปิดใช้งานการตั้งค่า DNS ส่วนตัวของ Android ซึ่งหมายความว่าคำขอ DNS 

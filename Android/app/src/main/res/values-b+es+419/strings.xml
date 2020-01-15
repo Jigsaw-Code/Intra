@@ -14,7 +14,7 @@
   <string name="settings">Configuración</string>
   <string name="support">Asistencia</string>
   <string name="privacy_link">Política de Privacidad</string>
-  <string name="tos_link">Condiciones del servicio</string>
+  <string name="tos_link">Condiciones del Servicio</string>
   <string name="source_code">Código fuente</string>
   <string name="credits_text">Intra es una creación de <a href="https://jigsaw.google.com">Jigsaw</a>. Las ubicaciones de IP están basadas en datos de DB-IP.com.</string>
   <string name="indicator_on">Activado</string>
