@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.util.Log;
 import app.intra.sys.firebase.LogWrapper;
-import app.intra.sys.firebase.RemoteConfig;
 import app.intra.ui.MainActivity;
 
 /**
@@ -48,8 +47,7 @@ public class AutoStarter extends BroadcastReceiver {
         context.startActivity(startIntent);
         return;
       }
-      // Fetch remote config, then start the VPN.
-      RemoteConfig.update().addOnCompleteListener(task -> controller.start(context));
+      controller.start(context);
     }
   }
 }

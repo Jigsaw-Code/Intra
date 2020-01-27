@@ -83,7 +83,6 @@ public class RaceTest {
   public void HalfFail() throws Exception {
     final int N = 7;
     String[] urls = new String[N];
-    ServerConnection[] connections = new ServerConnection[N];
     for (int i = 0; i < N; ++i) {
       urls[i] = String.format("%d", i);
     }

@@ -40,16 +40,11 @@ import androidx.annotation.GuardedBy;
 import androidx.annotation.WorkerThread;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import app.intra.R;
-import app.intra.net.VpnAdapter;
-import app.intra.net.doh.ServerConnection;
-import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
 import app.intra.net.go.GoVpnAdapter;
-import app.intra.net.split.SplitVpnAdapter;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
-import app.intra.sys.firebase.RemoteConfig;
 import app.intra.ui.MainActivity;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -59,6 +54,14 @@ import protect.Protector;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
     SharedPreferences.OnSharedPreferenceChangeListener, Protector {
+
+  /**
+   * null: There is no connection
+   * NEW: The connection has not yet completed bootstrap.
+   * WORKING: The last query (or bootstrap) succeeded.
+   * FAILING: The last query (or bootstrap) failed.
+   */
+  public enum State { NEW, WORKING, FAILING };
 
   private static final String LOG_TAG = "IntraVpnService";
   private static final int SERVICE_ID = 1; // Only has to be unique within this app.
@@ -81,12 +84,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   // passing packets to the network.  vpnAdapter is only null before startup and after shutdown,
   // but it may be atomically replaced by restartVpn().
   @GuardedBy("vpnController")
-  private VpnAdapter vpnAdapter = null;
-
-  // The server connection represents a DNS query transport.  It is null before shutdown, during a
-  // reconfiguration, and if connection bootstrap fails.
-  @GuardedBy("vpnController")
-  private ServerConnection serverConnection = null;
+  private GoVpnAdapter vpnAdapter = null;
 
   // The URL of the DNS server.  null and "" are special values indicating the default server.
   // This value can change if the user changes their configuration after starting the VPN.
@@ -201,85 +199,9 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     }
   }
 
-  public ServerConnection getServerConnection() {
-    return serverConnection;
-  }
-
-  private boolean equalUrls(String url1, String url2) {
-    return ServerConnectionFactory.equalUrls(this, url1, url2);
-  }
-
   @WorkerThread
   private void updateServerConnection() {
-    if (vpnAdapter instanceof GoVpnAdapter) {
-      ((GoVpnAdapter)vpnAdapter).updateDohUrl();
-
-      if (RemoteConfig.getUseGoDoh()) {
-        return;
-      }
-    }
-
-    // This method consists of three steps:
-    // 1. a synchronized block to check if an update is necessary and set a flag (pendingUrl)
-    // 2. an unsynchronized section to perform the update without holding the lock
-    // 3. a synchronized block to unset the flag and confirm the update
-
-    // Step 1: Check if an update is necessary and set a flag (pendingUrl).
-    synchronized (vpnController) {
-      if (serverConnection != null && equalUrls(url, serverConnection.getUrl())) {
-        // Connection state is consistent.  No need for an update.
-        return;
-      }
-
-      if (equalUrls(url, pendingUrl)) {
-        // There's a pending update for this URL already.
-        return;
-      }
-
-      // Indicate that there is a pending update.
-      pendingUrl = url;
-
-      // Stop using the old connection if present.
-      serverConnection = null;
-    }
-
-    // Step 2: Perform the update (which blocks on network activity) without holding the lock.
-
-    // Inform the controller that we are starting a new connection.
-    vpnController.onConnectionStateChanged(this, ServerConnection.State.NEW);
-
-    // Bootstrap the new server connection, which may require resolving the new server's name, using
-    // the current DNS configuration.
-    String analyticsHost = PersistentState.extractHostForAnalytics(this, url);
-    long beforeBootstrap = SystemClock.elapsedRealtime();
-    final ServerConnection newConnection = (new ServerConnectionFactory(this)).get(url);
-
-    if (newConnection != null) {
-      vpnController.onConnectionStateChanged(this, ServerConnection.State.WORKING);
-
-      // Measure bootstrap delay.
-      long afterBootStrap = SystemClock.elapsedRealtime();
-      analytics.logBootstrap(analyticsHost, (int) (afterBootStrap - beforeBootstrap));
-    } else {
-      vpnController.onConnectionStateChanged(this, ServerConnection.State.FAILING);
-      analytics.logBootstrapFailed(analyticsHost);
-    }
-
-    // Step 3: Unset the flag and confirm the update.
-    synchronized (vpnController) {
-      pendingUrl = NO_PENDING_CONNECTION;
-
-      if (serverConnection != null && equalUrls(url, serverConnection.getUrl())) {
-        // Connection state has somehow become consistent, so an update is no longer needed.
-        return;
-      }
-
-      if (newConnection != null && equalUrls(url, newConnection.getUrl())) {
-        // Current connection state is not consistent, but newConnection is consistent with the
-        // current URL, so perform the update.
-        serverConnection = newConnection;
-      }
-    }
+    vpnAdapter.updateDohUrl();
   }
 
   /**
@@ -307,13 +229,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   private void restartVpn() {
     synchronized (vpnController) {
       // Attempt seamless handoff as described in the docs for VpnService.Builder.establish().
-      final VpnAdapter oldAdapter = vpnAdapter;
+      final GoVpnAdapter oldAdapter = vpnAdapter;
       vpnAdapter = makeVpnAdapter();
-      if (serverConnection != null) {
-        // Cancel all outstanding queries, and establish a new client bound to the new active network.
-        // Subsequent queries will flow into the new tunFd, and then into the new HTTP client.
-        serverConnection.reset();
-      }
       oldAdapter.close();
       if (vpnAdapter != null) {
         vpnAdapter.start();
@@ -387,10 +304,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     updateQuickSettingsTile();
   }
 
-  private VpnAdapter makeVpnAdapter() {
-    if (RemoteConfig.getUseSplitMode()) {
-      return SplitVpnAdapter.establish(this);
-    }
+  private GoVpnAdapter makeVpnAdapter() {
     return GoVpnAdapter.establish(this);
   }
 
@@ -439,7 +353,6 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       }
 
       syncNumRequests();
-      serverConnection = null;
 
       vpnController.setIntraVpnService(null);
 
@@ -501,9 +414,9 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // If the transaction was canceled, then we don't have any new information about the status
     // of the connection, so we don't send an update.
     if (transaction.status == Transaction.Status.COMPLETE) {
-      vpnController.onConnectionStateChanged(this, ServerConnection.State.WORKING);
+      vpnController.onConnectionStateChanged(this, State.WORKING);
     } else if (transaction.status != Transaction.Status.CANCELED) {
-      vpnController.onConnectionStateChanged(this, ServerConnection.State.FAILING);
+      vpnController.onConnectionStateChanged(this, State.FAILING);
     }
   }
 

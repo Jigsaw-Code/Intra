@@ -68,15 +68,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intra.R;
 import app.intra.net.doh.Race;
-import app.intra.net.doh.ServerConnection;
-import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.net.doh.Transaction;
+import app.intra.sys.IntraVpnService;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.InternalNames;
 import app.intra.sys.PersistentState;
 import app.intra.sys.QueryTracker;
-import app.intra.sys.firebase.RemoteConfig;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
 import app.intra.ui.settings.ServerApprovalDialogFragment;
@@ -159,9 +157,6 @@ public class MainActivity extends AppCompatActivity
 
     // Sync old settings into new preferences if necessary.
     PersistentState.syncLegacyState(this);
-
-    // Start an asynchronous fetch for the Firebase remote configuration.
-    RemoteConfig.update();
 
     // Export defaults into preferences.  See https://developer.android.com/guide/topics/ui/settings#Defaults
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -626,10 +621,10 @@ public class MainActivity extends AppCompatActivity
       if (status.connectionState == null) {
         statusId = R.string.status_waiting;
         explanationId = R.string.explanation_offline;
-      } else if (status.connectionState == ServerConnection.State.NEW) {
+      } else if (status.connectionState == IntraVpnService.State.NEW) {
         statusId = R.string.status_starting;
         explanationId = R.string.explanation_starting;
-      } else if (status.connectionState == ServerConnection.State.WORKING) {
+      } else if (status.connectionState == IntraVpnService.State.WORKING) {
         statusId = R.string.status_protected;
         explanationId = R.string.explanation_protected;
       } else {
@@ -657,7 +652,7 @@ public class MainActivity extends AppCompatActivity
 
     final int colorId;
     if (status.on) {
-      colorId = status.connectionState != ServerConnection.State.FAILING ? R.color.accent_good :
+      colorId = status.connectionState != IntraVpnService.State.FAILING ? R.color.accent_good :
           R.color.accent_bad;
     } else if (privateDnsMode == PrivateDnsMode.STRICT) {
       // If the VPN is off but we're in strict mode, show the status in white.  This isn't a bad

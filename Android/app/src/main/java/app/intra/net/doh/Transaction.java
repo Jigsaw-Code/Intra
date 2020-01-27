@@ -16,7 +16,6 @@ limitations under the License.
 package app.intra.net.doh;
 
 import app.intra.net.dns.DnsPacket;
-import app.intra.net.dns.DnsUdpQuery;
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -32,12 +31,6 @@ public class Transaction implements Serializable {
     BAD_RESPONSE,
     INTERNAL_ERROR,
     CANCELED
-  }
-
-  public Transaction(DnsUdpQuery query) {
-    this.name = query.name;
-    this.type = query.type;
-    this.queryTime = query.timestamp;
   }
 
   public Transaction(DnsPacket query, long timestamp) {

@@ -15,6 +15,8 @@ limitations under the License.
 */
 package app.intra.net.go;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.net.VpnService;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -22,14 +24,11 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import app.intra.net.VpnAdapter;
-import app.intra.net.doh.ServerConnection.State;
-import app.intra.net.doh.ServerConnectionFactory;
+import app.intra.R;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.PersistentState;
 import app.intra.sys.VpnController;
 import app.intra.sys.firebase.LogWrapper;
-import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
 import java.io.IOException;
 import java.util.Locale;
@@ -41,8 +40,13 @@ import tunnel.IntraTunnel;
  * This is a VpnAdapter that captures all traffic and routes it through a go-tun2socks instance with
  * custom logic for Intra.
  */
-public class GoVpnAdapter extends VpnAdapter {
+public class GoVpnAdapter {
   private static final String LOG_TAG = "GoVpnAdapter";
+
+  // This value must match the hardcoded MTU in outline-go-tun2socks.
+  // TODO: Make outline-go-tun2socks's MTU configurable.
+  private static final int VPN_INTERFACE_MTU = 1500;
+  private static final int DNS_DEFAULT_PORT = 53;
 
   // IPv4 VPN constants
   private static final String IPV4_TEMPLATE = "10.111.222.%d";
@@ -70,9 +74,6 @@ public class GoVpnAdapter extends VpnAdapter {
   // Service context in which the VPN is running.
   private final IntraVpnService vpnService;
 
-  // DNS resolver running on localhost.
-  private final LocalhostResolver resolver;
-
   // TUN device representing the VPN.
   private ParcelFileDescriptor tunFd;
 
@@ -81,26 +82,19 @@ public class GoVpnAdapter extends VpnAdapter {
   private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
-    LocalhostResolver resolver = LocalhostResolver.get(vpnService);
-    if (resolver == null) {
-      return null;
-    }
     ParcelFileDescriptor tunFd = establishVpn(vpnService);
     if (tunFd == null) {
       return null;
     }
-    return new GoVpnAdapter(vpnService, tunFd, resolver);
+    return new GoVpnAdapter(vpnService, tunFd);
   }
 
-  private GoVpnAdapter(IntraVpnService vpnService, ParcelFileDescriptor tunFd, LocalhostResolver resolver) {
+  private GoVpnAdapter(IntraVpnService vpnService, ParcelFileDescriptor tunFd) {
     this.vpnService = vpnService;
-    this.resolver = resolver;
     this.tunFd = tunFd;
   }
 
-  @Override
   public synchronized void start() {
-    resolver.start();
     connectTunnel();
   }
 
@@ -112,20 +106,19 @@ public class GoVpnAdapter extends VpnAdapter {
     final String fakeDns = FAKE_DNS_IP + ":" + DNS_DEFAULT_PORT;
 
     // Strip leading "/" from ip:port string.
-    String trueDns = resolver.getAddress().toString().substring(1);
     listener = new GoIntraListener(vpnService);
     String dohURL = PersistentState.getServerUrl(vpnService);
 
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
-      Transport transport = RemoteConfig.getUseGoDoh() ? makeDohTransport(dohURL) : null;
-      final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns, trueDns, trueDns,
+      Transport transport = makeDohTransport(dohURL);
+      final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
           transport, getProtector(), listener);
       tunnel = t;
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel = null;
-      VpnController.getInstance().onConnectionStateChanged(vpnService, State.FAILING);
+      VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
     }
   }
 
@@ -156,7 +149,6 @@ public class GoVpnAdapter extends VpnAdapter {
     return vpnService;
   }
 
-  @Override
   public synchronized void close() {
     if (tunnel != null) {
       tunnel.disconnect();
@@ -169,14 +161,11 @@ public class GoVpnAdapter extends VpnAdapter {
       }
     }
     tunFd = null;
-    if (resolver != null) {
-      resolver.shutdown();
-    }
   }
 
   private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
     @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
-    String dohIPs = ServerConnectionFactory.getIpString(vpnService, realUrl);
+    String dohIPs = getIpString(vpnService, realUrl);
     return Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
   }
 
@@ -188,9 +177,6 @@ public class GoVpnAdapter extends VpnAdapter {
   public synchronized void updateDohUrl() {
     if (tunFd == null) {
       // Adapter is closed.
-      return;
-    }
-    if (!RemoteConfig.getUseGoDoh()) {
       return;
     }
     if (tunnel == null) {
@@ -210,7 +196,20 @@ public class GoVpnAdapter extends VpnAdapter {
       LogWrapper.logException(e);
       tunnel.disconnect();
       tunnel = null;
-      VpnController.getInstance().onConnectionStateChanged(vpnService, State.FAILING);
+      VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
     }
+  }
+
+  static String getIpString(Context context, String url) {
+    Resources res = context.getResources();
+    String[] urls = res.getStringArray(R.array.urls);
+    String[] ips = res.getStringArray(R.array.ips);
+    for (int i = 0; i < urls.length; ++i) {
+      // TODO: Consider relaxing this equality condition to a match on just the domain.
+      if (urls[i].equals(url)) {
+        return ips[i];
+      }
+    }
+    return "";
   }
 }
