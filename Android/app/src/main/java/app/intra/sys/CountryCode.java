@@ -13,24 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package app.intra.sys.firebase;
+package app.intra.sys;
 
 import android.content.Context;
 import android.telephony.TelephonyManager;
 import androidx.annotation.NonNull;
+import app.intra.sys.firebase.LogWrapper;
 import java.lang.reflect.Method;
 
 /**
  * Static class for getting the system's country code.
  */
-class CountryCode {
+public class CountryCode {
   // The SIM or CDMA country.
   private final @NonNull String deviceCountry;
 
   // The country claimed by the attached cell network.
   private final @NonNull String networkCountry;
 
-  CountryCode(Context context) {
+  public CountryCode(Context context) {
     TelephonyManager telephonyManager =
         (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -38,11 +39,11 @@ class CountryCode {
     networkCountry = telephonyManager.getNetworkCountryIso();
   }
 
-  @NonNull String getDeviceCountry() {
+  public @NonNull String getDeviceCountry() {
     return deviceCountry;
   }
 
-  @NonNull String getNetworkCountry() {
+  public @NonNull String getNetworkCountry() {
     return networkCountry;
   }
 
