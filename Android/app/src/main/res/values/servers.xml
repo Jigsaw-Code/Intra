@@ -35,13 +35,13 @@
   </string>
   <string name="website3" translatable="false">https://cleanbrowsing.org/</string>
 
-  <string name="url4" translatable="false">https://doh.appliedprivacy.net/query</string>
+  <string name="url4" translatable="false">https://doh.applied-privacy.net/query</string>
   <string name="name4" translatable="false">Foundation for Applied Privacy</string>
-  <string name="ips4" translatable="false">37.252.185.229,2a00:63c1:a:229::2</string>
+  <string name="ips4" translatable="false">93.177.65.183,2a03:4000:38:53c::2</string>
   <string name="description4" description="Describes a DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Server in Austria operated by a non-profit privacy group.
   </string>
-  <string name="website4" translatable="false">https://appliedprivacy.net/services/dns/</string>
+  <string name="website4" translatable="false">https://applied-privacy.net/services/dns/</string>
 
   <string name="url5" translatable="false">https://doh.powerdns.org/</string>
   <string name="name5" translatable="false">PowerDNS</string>
