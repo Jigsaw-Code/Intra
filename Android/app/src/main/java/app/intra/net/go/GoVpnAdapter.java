@@ -112,9 +112,8 @@ public class GoVpnAdapter {
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
       Transport transport = makeDohTransport(dohURL);
-      final IntraTunnel t = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
+      tunnel = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
           transport, getProtector(), listener);
-      tunnel = t;
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel = null;

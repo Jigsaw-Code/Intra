@@ -158,6 +158,8 @@ public class MainActivity extends AppCompatActivity
     // Sync old settings into new preferences if necessary.
     PersistentState.syncLegacyState(this);
 
+    // If RemoteConfig is in use, start an asynchronous RemoteConfig.update() here.
+
     // Export defaults into preferences.  See https://developer.android.com/guide/topics/ui/settings#Defaults
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 

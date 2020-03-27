@@ -48,6 +48,8 @@ public class AutoStarter extends BroadcastReceiver {
         return;
       }
       controller.start(context);
+      // If RemoteConfig is being used, delay the above line until after a call to
+      // RemoteConfig.update() completes.
     }
   }
 }
