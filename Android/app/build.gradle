@@ -85,11 +85,7 @@ repositories {
 }
 
 dependencies {
-    // Third-party dependency: OkHttp3
     implementation fileTree(include: [
-            // 3.12.* has branched to support API <21.  3.13+ doesn't.
-            'okhttp-3.12.8.jar',
-            'okio-1.17.5.jar',
             'guava-28.2-android.jar',
             'failureaccess-1.0.1.jar' // Dependency of Guava
     ], dir: 'libs')

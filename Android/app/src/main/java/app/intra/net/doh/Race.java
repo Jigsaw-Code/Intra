@@ -17,7 +17,6 @@ package app.intra.net.doh;
 
 import android.content.Context;
 import app.intra.net.go.GoProber;
-import app.intra.sys.firebase.RemoteConfig;
 
 /**
  * This class performs parallel probes to all of the specified servers and calls the listener when
@@ -40,8 +39,7 @@ public class Race {
    * @param listener Called once on an arbitrary thread with the result of the race.
    */
   public static void start(Context context, String[] urls, Listener listener) {
-    Prober prober = RemoteConfig.getUseGoDoh() ? new GoProber(context) :
-        new JavaProber(new ServerConnectionFactory(context));
+    Prober prober = new GoProber(context);
     start(prober, urls, listener);
   }
 

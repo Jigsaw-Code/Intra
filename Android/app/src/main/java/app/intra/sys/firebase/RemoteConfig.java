@@ -15,9 +15,6 @@ limitations under the License.
 */
 package app.intra.sys.firebase;
 
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -38,53 +35,4 @@ public class RemoteConfig {
     }
   }
 
-  private static boolean goDohDisabled() {
-    try {
-      return FirebaseRemoteConfig.getInstance().getBoolean("disable_go_doh");
-    } catch (IllegalStateException e) {
-      LogWrapper.logException(e);
-      return false;
-    }
-  }
-
-  public static boolean getUseGoDoh() {
-    if (getUseSplitMode()) {
-      // Split mode doesn't use Go-DOH, so Go-DOH shouldn't be used for other purposes
-      // (especially probes) in split mode, for consistency.
-      return false;
-    }
-    return !goDohDisabled();
-  }
-
-  public static boolean getUseSplitMode() {
-    // On M and later, Chrome uses getActiveNetwork() to determine which DNS servers to use.
-    // A full tunnel configuration makes this VPN the active network, whereas a
-    // split-tunnel configuration does not.  Therefore, on M and later, we cannot use
-    // split mode.  Additionally, M and later also exhibit DownloadManager bugs when used
-    // with a split-tunnel VPN.
-    if (VERSION.SDK_INT >= VERSION_CODES.M) {
-      return false;
-    }
-
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && goDohDisabled()) {
-      // Versions below Lollipop can only use full-VPN in combination with Go-DOH, because
-      // StandardServerConnection does not use socket protection.  (It also relies on
-      // InetAddress.getAllByName(), which cannot be protected.)
-      return true;
-    }
-
-    try {
-      // go_min_version is the minimum Android version that should use the GoVpnAdapter (i.e. the
-      // full tunnel configuration).
-      long minVersion = FirebaseRemoteConfig.getInstance().getLong("go_min_version");
-      if (minVersion == FirebaseRemoteConfig.DEFAULT_VALUE_FOR_LONG) {
-        // The minimum version is not specified.  Use split mode.
-        return true;
-      }
-      return VERSION.SDK_INT < minVersion;
-    } catch (IllegalStateException e) {
-      LogWrapper.logException(e);
-      return true;
-    }
-  }
 }

@@ -15,8 +15,6 @@ limitations under the License.
 */
 package app.intra.sys;
 
-import app.intra.net.doh.ServerConnection;
-
 public final class VpnState {
   // Whether the user has requested that the VPN be active.  This is persistent state, sync'd to
   // disk.
@@ -27,9 +25,9 @@ public final class VpnState {
 
   // Whether we have a connection to a DOH server, and if so, whether the connection is ready or
   // has recently been failing.
-  public final ServerConnection.State connectionState;
+  public final IntraVpnService.State connectionState;
 
-  VpnState(boolean activationRequested, boolean on, ServerConnection.State connectionState) {
+  VpnState(boolean activationRequested, boolean on, IntraVpnService.State connectionState) {
     this.activationRequested = activationRequested;
     this.on = on;
     this.connectionState = connectionState;

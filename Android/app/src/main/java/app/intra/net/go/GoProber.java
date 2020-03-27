@@ -19,7 +19,6 @@ import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import app.intra.net.doh.Prober;
-import app.intra.net.doh.ServerConnectionFactory;
 import app.intra.sys.VpnController;
 import doh.Transport;
 import protect.Protector;
@@ -39,7 +38,7 @@ public class GoProber extends Prober {
   @Override
   public void probe(String url, Callback callback) {
     new Thread(() -> {
-      String dohIPs = ServerConnectionFactory.getIpString(context, url);
+      String dohIPs = GoVpnAdapter.getIpString(context, url);
       try {
         // Protection isn't needed for Lollipop+, or if the VPN is not active.
         Protector protector = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? null :
