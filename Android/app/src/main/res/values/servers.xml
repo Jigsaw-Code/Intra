@@ -122,4 +122,28 @@
     Server in Helsinki, Finland, operated by a German non-profit service provider.
   </string>
   <string name="website14" translatable="false">https://snopyta.org/</string>
+
+  <string name="url15" translatable="false">https://doh.opendns.com/dns-query</string>
+  <string name="name15" translatable="false">OpenDNS</string>
+  <string name="ips15" translatable="false">146.112.41.2,2620:119:fc::2</string>
+  <string name="description15" description="See https://www.opendns.com/about/ [CHAR_LIMIT=NONE]">
+    Large global resolver owned by Cisco.
+  </string>
+  <string name="website15" translatable="false">https://www.opendns.com/about/</string>
+
+  <string name="url16" translatable="false">https://doh.dnslify.com/dns-query</string>
+  <string name="name16" translatable="false">DNSlify</string>
+  <string name="ips16" translatable="false">185.235.81.1,2a0d:4d00:81::1</string>
+  <string name="description16" description="See https://www.dnslify.com/services/doh/ [CHAR_LIMIT=NONE]">
+    Operated by an IT services company in London and Bulgaria.
+  </string>
+  <string name="website16" translatable="false">https://www.dnslify.com/services/doh/</string>
+
+  <string name="url17" translatable="false">https://private.canadianshield.cira.ca/dns-query</string>
+  <string name="name17" translatable="false">Canadian Shield</string>
+  <string name="ips17" translatable="false">149.112.121.10,149.112.122.10,2620:10a:80bb::10,2620:10a:80bc::10</string>
+  <string name="description17" description="See https://www.cira.ca/cybersecurity-services/canadian-shield [CHAR_LIMIT=NONE]">
+    Operated by the Canadian Internet Registration Authority.
+  </string>
+  <string name="website17" translatable="false">https://www.cira.ca/cybersecurity-services/canadian-shield</string>
 </resources>
