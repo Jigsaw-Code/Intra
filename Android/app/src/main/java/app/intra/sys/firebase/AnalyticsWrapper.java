@@ -24,6 +24,7 @@ import app.intra.sys.NetworkManager;
 import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.sys.firebase.BundleBuilder.Params;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import java.util.Locale;
 
 /**
  * Singleton class for reporting Analytics events.  In addition to improving the reporting API,
@@ -102,8 +103,8 @@ public class AnalyticsWrapper implements NetworkListener {
   }
 
   private void log(Events e, @NonNull BundleBuilder b) {
-    String deviceCountry = countryCode.getDeviceCountry().toUpperCase();
-    String networkCountry = countryCode.getNetworkCountry().toUpperCase();
+    String deviceCountry = countryCode.getDeviceCountry().toUpperCase(Locale.ROOT);
+    String networkCountry = countryCode.getNetworkCountry().toUpperCase(Locale.ROOT);
     if (!deviceCountry.isEmpty() && !networkCountry.isEmpty()
         && !deviceCountry.equals(networkCountry)) {
       // The country codes disagree (e.g. device is roaming), so the effective network location is
