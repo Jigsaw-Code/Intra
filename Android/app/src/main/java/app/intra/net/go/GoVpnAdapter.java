@@ -32,6 +32,8 @@ import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 import protect.Protector;
 import tun2socks.Tun2socks;
@@ -177,6 +179,17 @@ public class GoVpnAdapter extends VpnAdapter {
   private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
     @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
     String dohIPs = ServerConnectionFactory.getIpString(vpnService, realUrl);
+    try {
+      String domain = new URL(url).getHost();
+      String extraIPs = RemoteConfig.getExtraIPs(domain);
+      if (dohIPs.isEmpty()) {
+        dohIPs = extraIPs;
+      } else if (!extraIPs.isEmpty()) {
+        dohIPs += "," + extraIPs;
+      }
+    } catch (MalformedURLException e) {
+      LogWrapper.logException(e);
+    }
     return Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
   }
 
