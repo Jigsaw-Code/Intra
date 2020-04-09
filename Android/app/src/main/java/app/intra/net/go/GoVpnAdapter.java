@@ -167,17 +167,6 @@ public class GoVpnAdapter {
   private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
     @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
     String dohIPs = getIpString(vpnService, realUrl);
-    try {
-      String domain = new URL(url).getHost();
-      String extraIPs = RemoteConfig.getExtraIPs(domain);
-      if (dohIPs.isEmpty()) {
-        dohIPs = extraIPs;
-      } else if (!extraIPs.isEmpty()) {
-        dohIPs += "," + extraIPs;
-      }
-    } catch (MalformedURLException e) {
-      LogWrapper.logException(e);
-    }
     return Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
   }
 
