@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import java.util.Locale;
+
 /**
  * Utility class for initializing Firebase Remote Config.  Remote Configuration allows us to conduct
  * A/B tests of experimental functionality, and to enable or disable features without having to
@@ -35,4 +37,14 @@ public class RemoteConfig {
     }
   }
 
+  // Return any additional IPs known for this domain.
+  public static String getExtraIPs(String domain) {
+    String key = "extra_ips_" + domain.toLowerCase(Locale.ROOT).replace(".", "_");
+    try {
+      return FirebaseRemoteConfig.getInstance().getString(key);
+    } catch (IllegalStateException e) {
+      LogWrapper.logException(e);
+      return "";
+    }
+  }
 }
