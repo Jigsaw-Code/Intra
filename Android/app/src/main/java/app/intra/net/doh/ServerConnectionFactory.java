@@ -20,8 +20,13 @@ import android.content.res.Resources;
 import android.util.Log;
 import app.intra.R;
 import app.intra.sys.PersistentState;
+import app.intra.sys.firebase.LogWrapper;
+import app.intra.sys.firebase.RemoteConfig;
+
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -52,13 +57,28 @@ public class ServerConnectionFactory {
     Resources res = context.getResources();
     String[] urls = res.getStringArray(R.array.urls);
     String[] ips = res.getStringArray(R.array.ips);
+    String ret = "";
     for (int i = 0; i < urls.length; ++i) {
       // TODO: Consider relaxing this equality condition to a match on just the domain.
       if (urls[i].equals(url)) {
-        return ips[i];
+        ret = ips[i];
+        break;
       }
     }
-    return "";
+
+    try {
+      String domain = new URL(url).getHost();
+      String extraIPs = RemoteConfig.getExtraIPs(domain);
+      if (ret.isEmpty()) {
+        ret = extraIPs;
+      } else if (!extraIPs.isEmpty()) {
+        ret += "," + extraIPs;
+      }
+    } catch (MalformedURLException e) {
+      LogWrapper.logException(e);
+    }
+
+    return ret;
   }
 
   private Collection<InetAddress> getKnownIps(String url) {
