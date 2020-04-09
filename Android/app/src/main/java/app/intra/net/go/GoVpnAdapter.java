@@ -31,8 +31,6 @@ import app.intra.sys.VpnController;
 import app.intra.sys.firebase.LogWrapper;
 import doh.Transport;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Locale;
 import protect.Protector;
 import tun2socks.Tun2socks;
