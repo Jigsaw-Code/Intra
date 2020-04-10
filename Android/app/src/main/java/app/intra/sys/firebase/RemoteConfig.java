@@ -37,11 +37,16 @@ public class RemoteConfig {
     }
   }
 
+  static String getExtraIPKey(String domain) {
+    // Convert everything to lowercase for consistency.
+    // The only allowed characters in a remote config key are A-Z, a-z, 0-9, and _.
+    return "extra_ips_" + domain.toLowerCase(Locale.ROOT).replaceAll("\\W", "_");
+  }
+
   // Returns any additional IPs known for this domain, as a comma-separated list.
   public static String getExtraIPs(String domain) {
-    String key = "extra_ips_" + domain.toLowerCase(Locale.ROOT).replace(".", "_");
     try {
-      return FirebaseRemoteConfig.getInstance().getString(key);
+      return FirebaseRemoteConfig.getInstance().getString(getExtraIPKey(domain));
     } catch (IllegalStateException e) {
       LogWrapper.logException(e);
       return "";
