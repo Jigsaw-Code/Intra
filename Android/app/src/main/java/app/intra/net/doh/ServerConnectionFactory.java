@@ -53,6 +53,9 @@ public class ServerConnectionFactory {
     return url1.equals(url2);
   }
 
+  // Returns the known IPs for this URL as a comma-separated list.
+  // This is the native format used in servers.xml, and also the format accepted by
+  // Tun2socks.newDoHTransport (due to lack of Gomobile support for String[]).
   public static String getIpString(Context context, String url) {
     Resources res = context.getResources();
     String[] urls = res.getStringArray(R.array.urls);
