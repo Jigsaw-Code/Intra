@@ -90,7 +90,7 @@ public class RemoteConfig {
     }
   }
 
-  // Return any additional IPs known for this domain.
+  // Returns any additional IPs known for this domain, as a comma-separated list.
   public static String getExtraIPs(String domain) {
     String key = "extra_ips_" + domain.toLowerCase(Locale.ROOT).replace(".", "_");
     try {
