@@ -43,7 +43,8 @@ public class RemoteConfig {
     return "extra_ips_" + domain.toLowerCase(Locale.ROOT).replaceAll("\\W", "_");
   }
 
-  // Returns any additional IPs known for this domain, as a comma-separated list.
+  // Returns any additional IPs known for this domain, as a string containing a comma-separated
+  // list, or the empty string if none are known.
   public static String getExtraIPs(String domain) {
     try {
       return FirebaseRemoteConfig.getInstance().getString(getExtraIPKey(domain));

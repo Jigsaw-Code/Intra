@@ -202,6 +202,7 @@ public class GoVpnAdapter {
     }
   }
 
+  // Returns the known IPs for this URL as a string containing a comma-separated list.
   static String getIpString(Context context, String url) {
     Resources res = context.getResources();
     String[] urls = res.getStringArray(R.array.urls);
