@@ -77,6 +77,7 @@ import app.intra.sys.PersistentState;
 import app.intra.sys.QueryTracker;
 import app.intra.sys.VpnController;
 import app.intra.sys.VpnState;
+import app.intra.sys.firebase.RemoteConfig;
 import app.intra.ui.settings.ServerApprovalDialogFragment;
 import app.intra.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -158,7 +159,8 @@ public class MainActivity extends AppCompatActivity
     // Sync old settings into new preferences if necessary.
     PersistentState.syncLegacyState(this);
 
-    // If RemoteConfig is in use, start an asynchronous RemoteConfig.update() here.
+    // Start an asynchronous fetch of remote configuration info from Firebase.
+    RemoteConfig.update();
 
     // Export defaults into preferences.  See https://developer.android.com/guide/topics/ui/settings#Defaults
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
