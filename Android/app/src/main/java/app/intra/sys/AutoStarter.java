@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.net.VpnService;
 import android.util.Log;
 import app.intra.sys.firebase.LogWrapper;
+import app.intra.sys.firebase.RemoteConfig;
 import app.intra.ui.MainActivity;
 
 /**
@@ -30,12 +31,12 @@ public class AutoStarter extends BroadcastReceiver {
   private static final String LOG_TAG = "AutoStarter";
 
   @Override
-  public void onReceive(Context context, Intent intent) {
+  public void onReceive(final Context context, Intent intent) {
     if (!Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
       return;
     }
     LogWrapper.log(Log.DEBUG, LOG_TAG, "Boot event");
-    VpnController controller = VpnController.getInstance();
+    final VpnController controller = VpnController.getInstance();
     VpnState state = controller.getState(context);
     if (state.activationRequested && !state.on) {
       LogWrapper.log(Log.DEBUG, LOG_TAG, "Autostart enabled");
@@ -47,9 +48,8 @@ public class AutoStarter extends BroadcastReceiver {
         context.startActivity(startIntent);
         return;
       }
-      controller.start(context);
-      // If RemoteConfig is being used, delay the above line until after a call to
-      // RemoteConfig.update() completes.
+      // Delay start until after the remote configuration has been updated, or failed to update.
+      RemoteConfig.update().addOnCompleteListener(success -> controller.start(context));
     }
   }
 }
