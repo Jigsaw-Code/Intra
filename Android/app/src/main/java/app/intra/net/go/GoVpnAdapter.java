@@ -29,8 +29,11 @@ import app.intra.sys.IntraVpnService;
 import app.intra.sys.PersistentState;
 import app.intra.sys.VpnController;
 import app.intra.sys.firebase.LogWrapper;
+import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 import protect.Protector;
 import tun2socks.Tun2socks;
@@ -199,16 +202,32 @@ public class GoVpnAdapter {
     }
   }
 
+  // Returns the known IPs for this URL as a string containing a comma-separated list.
   static String getIpString(Context context, String url) {
     Resources res = context.getResources();
     String[] urls = res.getStringArray(R.array.urls);
     String[] ips = res.getStringArray(R.array.ips);
+    String ret = "";
     for (int i = 0; i < urls.length; ++i) {
       // TODO: Consider relaxing this equality condition to a match on just the domain.
       if (urls[i].equals(url)) {
-        return ips[i];
+        ret = ips[i];
+        break;
       }
     }
-    return "";
+
+    try {
+      String domain = new URL(url).getHost();
+      String extraIPs = RemoteConfig.getExtraIPs(domain);
+      if (ret.isEmpty()) {
+        ret = extraIPs;
+      } else if (!extraIPs.isEmpty()) {
+        ret += "," + extraIPs;
+      }
+    } catch (MalformedURLException e) {
+      LogWrapper.logException(e);
+    }
+
+    return ret;
   }
 }
