@@ -201,7 +201,11 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   @WorkerThread
   private void updateServerConnection() {
-    vpnAdapter.updateDohUrl();
+    synchronized (vpnController) {
+      if (vpnAdapter != null) {
+        vpnAdapter.updateDohUrl();
+      }
+    }
   }
 
   /**
