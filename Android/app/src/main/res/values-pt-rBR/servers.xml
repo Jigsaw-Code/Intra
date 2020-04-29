@@ -5,7 +5,7 @@
   <string name="description2">Grande resolvedor global da IBM e da Packet Clearing House.  Bloqueia domínios mal-intencionados.</string>
   <string name="description3">Provedor de filtragem de DNS global.  Bloqueia domínios mal-intencionados.</string>
   <string name="description4">Servidor na Áustria operado por um grupo de privacidade sem fins lucrativos.</string>
-  <string name="description5">Servidor na Países Baixos operado por uma empresa de software de DNS de código aberto.</string>
+  <string name="description5">Servidor nos Países Baixos operado por uma empresa de software de DNS de código aberto.</string>
   <string name="description6">Operado pela xTom e outros provedores de hospedagem internacionais.  Usa a CDN da Cloudflare.</string>
   <string name="description7">Servidor no Japão operado por um ISP.</string>
   <string name="description8">Servidor em Taiwan operado pelo registro de domínio .tw.</string>
@@ -15,4 +15,7 @@
   <string name="description12">Servidor em Nanterre, França, operado por uma organização francesa sem fins lucrativos que promove ética e cultura gratuita.</string>
   <string name="description13">Operado por uma associação alemã suíça de direitos civis on-line que usa servidores na Suíça, Alemanha ou Áustria.</string>
   <string name="description14">Servidor em Helsinque, Finlândia, operado por um provedor de serviços alemão sem fins lucrativos.</string>
+  <string name="description15">Grande resolvedor global da Cisco.</string>
+  <string name="description16">Operado por uma empresa de serviços de TI em Londres e na Bulgária.</string>
+  <string name="description17">Operado pela Autoridade Canadense de Registro da Internet (CIRA, na sigla em inglês)</string>
 </resources>
