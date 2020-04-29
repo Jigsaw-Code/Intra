@@ -45,7 +45,7 @@
     Per carregar una pàgina web complexa, és possible que calguin més de cent consultes de DNS.</string>
   <string name="transport_label">Protocol de transport encriptat</string>
   <string name="transport_headline">L\'encriptació protegeix les consultes de les mirades indiscretes</string>
-  <string name="transport_body">Quan utilitzis Intra, les consultes de DNS s\'encriptaran perquè només tu i el servidor DNS pugueu veure quines consultes de DNS esteu duent a terme.  Intra implementa el DNS a través del protocol HTTPS per a l\'encriptació.</string>
+  <string name="transport_body">Quan utilitzis Intra, les consultes de DNS s\'encriptaran perquè només tu i el servidor DNS pugueu veure quines consultes de DNS esteu duent a terme. Intra implementa el protocol DNS a través d\'HTTPS per a l\'encriptació.</string>
   <string name="default_transport_label">Protocol de transport predeterminat</string>
   <string name="insecure_transport">no encriptat</string>
   <string name="insecure_transport_headline">El DNS bàsic no està encriptat</string>
@@ -65,7 +65,7 @@
   <string name="latency_label">Latència</string>
   <string name="resolver_label">Ubicació del sistema de resolució</string>
   <string name="destination_label">Servidor de destinació</string>
-  <string name="server_choice">Selecciona el DNS a través d\'un servidor HTTPS</string>
+  <string name="server_choice">Selecciona el servidor DNS a través d\'HTTPS</string>
   <string name="server_choice_summary">Servidor actual: %s</string>
   <string name="server_choice_builtin">Servidor integrat</string>
   <string name="server_choice_website_notice">Visita <a href="https://www.example.com/">el seu lloc web</a> per consultar-ne la política de privadesa i les condicions del servei aplicables.</string>

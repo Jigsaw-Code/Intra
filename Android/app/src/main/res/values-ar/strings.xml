@@ -4,7 +4,7 @@
   <string name="intro_manipulation_headline">الحماية من التلاعب بنظام أسماء النطاقات</string>
   <string name="intro_manipulation_body">تحمي Intra اتصالك بنظام أسماء النطاقات (DNS) الذي يمنحك العناوين الدقيقة التي تحتاج إليها لزيارة موقع إلكتروني محدَّد أو فتح أحد التطبيقات.\n\nتستخدم هذه الأداة ميزة التشفير لضمان عدم التلاعب بالنتائج، مما يساعدك على الاتصال بالإنترنت بأمان.</string>
   <string name="intro_details_headline">هناك شيء أخير…</string>
-  <string name="intro_details_body">انقر على \"موافق\" للسماح لأداة Intra بحماية طلبات بحث نظام أسماء النطاقات لديك. سيتم توجيه هذه الطلبات تلقائيًا إلى \"نظام أسماء النطاقات العام من Google\" (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>). ويمكنك اختيار خدمة أخرى من إعدادات التطبيق.</string>
+  <string name="intro_details_body">انقر على \"حسنًا\" للسماح لأداة Intra بحماية طلبات بحث نظام أسماء النطاقات لديك. سيتم توجيه هذه الطلبات تلقائيًا إلى \"نظام أسماء النطاقات العام من Google\" (<a href="https://developers.google.com/speed/public-dns/privacy">سياسة الخصوصية</a>). ويمكنك اختيار خدمة أخرى من إعدادات التطبيق.</string>
   <string name="intro_back">السابق</string>
   <string name="intro_next">التالي</string>
   <string name="intro_accept">قبول</string>
@@ -42,13 +42,13 @@
   <string name="system_details">تفاصيل النظام</string>
   <string name="num_requests">الطلبات حتى الآن</string>
   <string name="num_requests_headline">يتم تنفيذ طلبات بحث نظام أسماء النطاقات عند بحث جهازك عن عنوان IP لاسم أحد النطاقات</string>
-  <string name="num_requests_body">تعرِض هذه القيمة إجمالي عدد طلبات بحث نظام أسماء النطاقات التي نفَّذها جهازك أثناء نشاط أداة Intra. وتعمل الأداة على تشفير طلبات البحث المعنية وإرسالها إلى خادِم موثوق به للتأكُّد من حصولك على نتائج حقيقية.</string>
+  <string name="num_requests_body">تعرِض هذه القيمة إجمالي عدد طلبات بحث نظام أسماء النطاقات التي نفَّذها جهازك أثناء نشاط أداة Intra. وتعمل الأداة على ترميز طلبات البحث المعنية وإرسالها إلى خادِم موثوق به للتأكُّد من حصولك على نتائج حقيقية.</string>
   <string name="queries_per_minute">الطلبات الحديثة</string>
   <string name="queries_per_minute_headline">تنفيذ طلبات بحث نظام أسماء النطاقات في بداية كل اتصال</string>
   <string name="queries_per_minute_body">تعرِض هذه القيمة عدد طلبات بحث نظام أسماء النطاقات التي نفَّذها جهازك في الدقيقة الأخيرة. قد يتطلّب تحميل صفحة ويب معقّدة أكثر من مئة طلب بحث لنظام أسماء النطاقات.</string>
   <string name="transport_label">النقل المشفر</string>
   <string name="transport_headline">التشفير يحمي طلبات بحثك من المتطفّلين</string>
-  <string name="transport_body">عندما تستخدم Intra، يتم تشفير طلبات بحث نظام أسماء النطاقات، بحيث تتمكّن أنت وخادِم نظام أسماء النطاقات فقط من الاطلّاع على طلبات بحث نظام أسماء النطاقات التي تنفِّذها. وتنفِّذ Intra هذه الطلبات عبر بروتوكول HTTPS لتشفيرها.</string>
+  <string name="transport_body">عندما تستخدم Intra، يتم ترميز طلبات بحث نظام أسماء النطاقات، بحيث تتمكّن أنت وخادِم نظام أسماء النطاقات فقط من الاطلّاع على طلبات بحث نظام أسماء النطاقات التي تنفِّذها. وتنفِّذ Intra هذه الطلبات عبر بروتوكول HTTPS لترميزها.</string>
   <string name="default_transport_label">بروتوكول النقل التلقائي</string>
   <string name="insecure_transport">غير مُشفَّر</string>
   <string name="insecure_transport_headline">نظام أسماء النطاقات الأساسي غير مُشفَّر</string>
@@ -91,7 +91,7 @@
   <string name="notification_content">انقر لتغيير إعداد حماية نظام أسماء النطاقات</string>
   <string name="channel_name">إشعار الحماية النشطة لنظام أسماء النطاقات</string>
   <string name="channel_description">يظهر هذا الإشعار عندما يكون إعداد حماية نظام أسماء النطاقات نشطًا.</string>
-  <string name="warning_title">تحذير: تم إلغاء تنشيط Intra</string>
+  <string name="warning_title">تحذير: تم إيقاف Intra</string>
   <string name="warning_channel_name">تحذير</string>
   <string name="warning_channel_description">يظهر هذا الإشعار عندما يصادف Intra مشكلة ما.</string>
 </resources>
