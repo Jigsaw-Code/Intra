@@ -37,7 +37,7 @@
 
   <string name="url4" translatable="false">https://doh.applied-privacy.net/query</string>
   <string name="name4" translatable="false">Foundation for Applied Privacy</string>
-  <string name="ips4" translatable="false">93.177.65.183,2a03:4000:38:53c::2</string>
+  <string name="ips4" translatable="false">doh.appliedprivacy.net</string>
   <string name="description4" description="Describes a DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
     Server in Austria operated by a non-profit privacy group.
   </string>
