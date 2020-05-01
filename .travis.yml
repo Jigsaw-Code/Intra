@@ -2,7 +2,7 @@ language: android
 env:
  global:
  - ANDROID_API=29
- - ANDROID_BUILD_TOOLS=29.0.2
+ - ANDROID_BUILD_TOOLS=29.0.3
 before_install:
   cd Android;
 android:
