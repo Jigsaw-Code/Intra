@@ -173,11 +173,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
         builder = new Notification.Builder(this, MAIN_CHANNEL_ID);
       } else {
         builder = new Notification.Builder(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          // Min-priority notifications don't show an icon in the notification bar, reducing clutter.
-          // Only available in API >= 16.  Deprecated in API 26.
-          builder = builder.setPriority(Notification.PRIORITY_MIN);
-        }
+        // Min-priority notifications don't show an icon in the notification bar, reducing clutter.
+        builder = builder.setPriority(Notification.PRIORITY_MIN);
       }
 
       builder.setSmallIcon(R.drawable.ic_status_bar)
@@ -280,10 +277,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       } else {
         builder = new Notification.Builder(this);
         builder.setVibrate(vibrationPattern);
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-          // Only available in API >= 16.  Deprecated in API 26.
-          builder = builder.setPriority(Notification.PRIORITY_MAX);
-        }
+        // Deprecated in API 26.
+        builder = builder.setPriority(Notification.PRIORITY_MAX);
       }
 
       PendingIntent mainActivityIntent = PendingIntent.getActivity(

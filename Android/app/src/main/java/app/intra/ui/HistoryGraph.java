@@ -252,14 +252,7 @@ public class HistoryGraph extends View implements ActivityReceiver {
       canvas.drawCircle(tagX, yoffset, radius, pulsePaint);
     }
 
-    // Queue up the next animation frame.
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-      // Redraw the UI at its preferred update frequency.
-      postInvalidateOnAnimation();
-    } else {
-      // postInvalidateOnAnimation is only available in Jelly Bean and higher.  On older devices,
-      // update every RESOLUTION_MS (currently 10 FPS, which is choppy but good enough).
-      postInvalidateDelayed(RESOLUTION_MS);
-    }
+    // Draw the next frame at the UI's preferred update frequency.
+    postInvalidateOnAnimation();
   }
 }

@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="5" by="lint 3.4.2" client="gradle" variant="all" version="3.4.2">
-
-    <issue
-        id="DefaultLocale"
-        message="Implicitly using the default locale is a common source of bugs: Use `toLowerCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
-        errorLine1="      if (e.getMessage().toLowerCase().contains(&quot;cert&quot;)) {"
-        errorLine2="                         ~~~~~~~~~~~">
-        <location
-            file="src/main/java/app/intra/net/go/TLSProbe.java"
-            line="35"
-            column="26"/>
-    </issue>
+<issues format="5" by="lint 4.0.1" client="gradle" variant="all" version="4.0.1">
 
     <issue
         id="LocaleFolder"
@@ -20,86 +9,42 @@
     </issue>
 
     <issue
-        id="UnusedAttribute"
-        message="Attribute `layoutDirection` is only used in API level 17 and higher (current min is 15)"
-        errorLine1="                                                    android:layoutDirection=&quot;ltr&quot;"
-        errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="    final View dialogContent = inflater.inflate(R.layout.server_notice_dialog, null);"
+        errorLine2="                                                                               ~~~~">
         <location
-            file="src/main/res/layout/intro_pager.xml"
-            line="12"
-            column="53"/>
+            file="src/main/java/app/intra/ui/settings/ServerApprovalDialogFragment.java"
+            line="125"
+            column="80"/>
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of androidx.annotation:annotation than 1.0.0 is available: 1.1.0"
-        errorLine1="    androidTestImplementation &apos;androidx.annotation:annotation:1.0.0&apos;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="UseCompatLoadingForDrawables"
+        message="Use `ResourcesCompat.getDrawable()`"
+        errorLine1="    Drawable leftChevron = getResources().getDrawable(R.drawable.ic_chevron_left);"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="build.gradle"
-            line="110"
-            column="5"/>
+            file="src/main/java/app/intra/ui/IntroDialog.java"
+            line="70"
+            column="28"/>
     </issue>
 
     <issue
-        id="GradleDependency"
-        message="A newer version of androidx.appcompat:appcompat than 1.0.2 is available: 1.1.0"
-        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.0.2&apos;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="UseCompatLoadingForDrawables"
+        message="Use `ResourcesCompat.getDrawable()`"
+        errorLine1="    Drawable rightChevron = getResources().getDrawable(R.drawable.ic_chevron_right);"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="build.gradle"
-            line="113"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.preference:preference than 1.0.0 is available: 1.1.0"
-        errorLine1="    implementation &apos;androidx.preference:preference:1.0.0&apos;"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="115"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-core than 16.0.9 is available: 17.2.0"
-        errorLine1="    implementation &apos;com.google.firebase:firebase-core:16.0.9&apos;  // Last version to support API &lt;16"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="120"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-perf than 16.2.5 is available: 19.0.0"
-        errorLine1="    implementation &apos;com.google.firebase:firebase-perf:16.2.5&apos;  // Last version to support API &lt;17"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="121"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of com.google.firebase:firebase-config than 16.5.0 is available: 19.0.1"
-        errorLine1="    implementation &apos;com.google.firebase:firebase-config:16.5.0&apos; // Last version to support API &lt;16"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="124"
-            column="5"/>
+            file="src/main/java/app/intra/ui/IntroDialog.java"
+            line="71"
+            column="29"/>
     </issue>
 
     <issue
         id="Typos"
         message="&quot;Packet&quot; is a common misspelling; did you mean &quot;Paket&quot; ?"
-        errorLine1="  &lt;string name=&quot;description2&quot;>Großer globaler Resolver von IBM und Packet Clearinghouse.  Blockt bösartige Domains.&lt;/string>"
+        errorLine1="  &lt;string name=&quot;description2&quot;>Großer globaler Resolver von IBM und Packet Clearinghouse. Blockt bösartige Domains.&lt;/string>"
         errorLine2="                                                                   ^">
         <location
             file="src/main/res/values-de/servers.xml"
@@ -108,14 +53,14 @@
     </issue>
 
     <issue
-        id="SetJavaScriptEnabled"
-        message="Using `setJavaScriptEnabled` can introduce XSS vulnerabilities into your application, review carefully."
-        errorLine1="    webView.getSettings().setJavaScriptEnabled(true);"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        id="Typos"
+        message="Repeated word &quot;die&quot; in message: possible typo"
+        errorLine1="  &lt;string name=&quot;description13&quot;>Betrieben von einer deutsch-schweizerischen Gesellschaft, die die Grundrechte im digitalen Raum verteidigt. Dazu werden Server in der Schweiz, in Deutschland oder in Österreich verwendet.&lt;/string>"
+        errorLine2="                                                                                         ^">
         <location
-            file="src/main/java/app/intra/ui/settings/ServerApprovalDialogFragment.java"
-            line="114"
-            column="5"/>
+            file="src/main/res/values-de/servers.xml"
+            line="16"
+            column="90"/>
     </issue>
 
     <issue
@@ -127,17 +72,6 @@
             file="src/main/AndroidManifest.xml"
             line="11"
             column="6"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; SDK_INT is always >= 15"
-        errorLine1="    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/app/intra/ui/MainActivity.java"
-            line="472"
-            column="12"/>
     </issue>
 
     <issue
@@ -163,28 +97,10 @@
     </issue>
 
     <issue
-        id="IconLauncherShape"
-        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
-        <location
-            file="src/main/res/mipmap-hdpi/ic_launcher_background.png"/>
-    </issue>
-
-    <issue
         id="IconLocation"
         message="Found bitmap drawable `res/drawable/logo_backdrop.png` in densityless folder">
         <location
             file="src/main/res/drawable/logo_backdrop.png"/>
-    </issue>
-
-    <issue
-        id="GoogleAppIndexingWarning"
-        message="App is not indexable by Google Search; consider adding at least one Activity with an ACTION-VIEW intent filter. See issue explanation for more details."
-        errorLine1="    &lt;application"
-        errorLine2="    ^">
-        <location
-            file="src/main/AndroidManifest.xml"
-            line="11"
-            column="5"/>
     </issue>
 
 </issues>
