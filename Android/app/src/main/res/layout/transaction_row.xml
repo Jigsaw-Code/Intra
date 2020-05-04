@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:layout_margin="8dp"
-            android:layout_gravity="start|center_vertical"
+            android:layout_gravity="center"
             android:ellipsize="none"
             android:minWidth="40dp"
             android:singleLine="true"
