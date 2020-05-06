@@ -21,6 +21,7 @@ import android.net.VpnService;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.ParcelFileDescriptor;
+import android.os.SystemClock;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ import app.intra.R;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.PersistentState;
 import app.intra.sys.VpnController;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
@@ -168,7 +170,18 @@ public class GoVpnAdapter {
   private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
     @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
     String dohIPs = getIpString(vpnService, realUrl);
-    return Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
+    String host = new URL(realUrl).getHost();
+    long startTime = SystemClock.elapsedRealtime();
+    final doh.Transport transport;
+    try {
+      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
+    } catch (Exception e) {
+      AnalyticsWrapper.get(vpnService).logBootstrapFailed(host);
+      throw e;
+    }
+    int delta = (int) (SystemClock.elapsedRealtime() - startTime);
+    AnalyticsWrapper.get(vpnService).logBootstrap(host, delta);
+    return transport;
   }
 
   /**
