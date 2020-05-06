@@ -26,12 +26,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
 import app.intra.R;
 import app.intra.sys.PersistentState;
 import app.intra.sys.VpnController;
@@ -59,13 +63,9 @@ public class IntroDialog extends DialogFragment {
       savedInstanceState) {
     View welcomeView = inflater.inflate(R.layout.intro_pager, container);
 
-    Adapter adapter = new Adapter(getChildFragmentManager());
-    ViewPager pager = welcomeView.findViewById(R.id.welcome_pager);
+    Adapter adapter = new Adapter(this);
+    ViewPager2 pager = welcomeView.findViewById(R.id.welcome_pager);
     pager.setAdapter(adapter);
-
-    if (Rtl.isRtl(this)) {
-      pager.setRotationY(180);
-    }
 
     Drawable leftChevron = getResources().getDrawable(R.drawable.ic_chevron_left);
     Drawable rightChevron = getResources().getDrawable(R.drawable.ic_chevron_right);
@@ -114,7 +114,12 @@ public class IntroDialog extends DialogFragment {
       }
     });
 
-    pager.addOnPageChangeListener(new TabListener(backButton, nextButton, acceptButton));
+    pager.registerOnPageChangeCallback(
+            new ButtonVisibilityUpdater(backButton, nextButton, acceptButton));
+
+    // Register the dots for actions and updates.
+    TabLayout dots = welcomeView.findViewById(R.id.intro_dots);
+    new TabLayoutMediator(dots, pager, true, (tab, position) -> {}).attach();
 
     isShown = true;
     return welcomeView;
@@ -139,9 +144,6 @@ public class IntroDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
       View view = inflater.inflate(R.layout.intro_page, container, false);
-      if (Rtl.isRtl(this)) {
-        view.setRotationY(180);
-      }
 
       ImageView imageView = view.findViewById(R.id.intro_image);
       imageView.setImageResource(getArguments().getInt(IMAGE));
@@ -156,7 +158,7 @@ public class IntroDialog extends DialogFragment {
     }
   }
 
-  private class Adapter extends FragmentPagerAdapter {
+  private static class Adapter extends FragmentStateAdapter {
     private final int[] images = {
         R.drawable.intro0,
         R.drawable.intro1,
@@ -174,8 +176,8 @@ public class IntroDialog extends DialogFragment {
     };
 
     private final Fragment[] pages;
-    Adapter(FragmentManager fm) {
-      super(fm);
+    Adapter(Fragment fragment) {
+      super(fragment);
       pages = new Fragment[NUM_PAGES];
       for (int i = 0; i < pages.length; ++i) {
         pages[i] = Page.newInstance(images[i], headlines[i], text[i]);
@@ -183,23 +185,20 @@ public class IntroDialog extends DialogFragment {
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
       return pages.length;
     }
 
     @Override
-    public Fragment getItem(int position) {
-      if (position >= 0 && position < pages.length) {
-        return pages[position];
-      }
-      return null;
+    public @NonNull Fragment createFragment(int position) {
+      return pages[position];
     }
   }
 
-  private class TabListener extends ViewPager.SimpleOnPageChangeListener {
+  private static class ButtonVisibilityUpdater extends ViewPager2.OnPageChangeCallback {
     private final Button backButton, nextButton, acceptButton;
 
-    TabListener(Button backButton, Button nextButton, Button acceptButton) {
+    ButtonVisibilityUpdater(Button backButton, Button nextButton, Button acceptButton) {
       this.backButton = backButton;
       this.nextButton = nextButton;
       this.acceptButton = acceptButton;
