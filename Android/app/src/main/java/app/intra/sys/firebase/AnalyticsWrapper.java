@@ -40,7 +40,6 @@ public class AnalyticsWrapper implements NetworkListener {
     BYTES,
     EARLY_RESET,
     STARTVPN,
-    TLS_PROBE,
     TRY_ALL_ACCEPTED,
     TRY_ALL_CANCELLED,
     TRY_ALL_DIALOG,
@@ -166,7 +165,7 @@ public class AnalyticsWrapper implements NetworkListener {
   public void logEarlyReset(int bytes, int chunks, boolean timeout, int split, boolean success) {
     log(Events.EARLY_RESET, new BundleBuilder()
         .put(Params.BYTES, bytes)
-        .put(Params.CHUNKS, 1)
+        .put(Params.CHUNKS, chunks)
         .put(Params.TIMEOUT, timeout ? 1 : 0)
         .put(Params.SPLIT, split)
         .put(Params.RETRY, success ? 1 : 0));
@@ -178,17 +177,6 @@ public class AnalyticsWrapper implements NetworkListener {
    */
   public void logStartVPN(String mode) {
     log(Events.STARTVPN, new BundleBuilder().put(Params.MODE, mode));
-  }
-
-  /**
-   * A TLS probe completed
-   * @param server The name of the server used for TLS probing
-   * @param result The TLSProbe.Result of the measurement.
-   */
-  public void logTLSProbe(String server, String result) {
-    log(Events.TLS_PROBE, new BundleBuilder()
-        .put(Params.SERVER, server)
-        .put(Params.RESULT, result));
   }
 
   /**
