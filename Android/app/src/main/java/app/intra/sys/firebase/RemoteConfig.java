@@ -53,4 +53,13 @@ public class RemoteConfig {
       return "";
     }
   }
+
+  public static boolean getChoirEnabled() {
+    try {
+      return FirebaseRemoteConfig.getInstance().getBoolean("choir");
+    } catch (IllegalStateException e) {
+      LogWrapper.logException(e);
+      return false;
+    }
+  }
 }

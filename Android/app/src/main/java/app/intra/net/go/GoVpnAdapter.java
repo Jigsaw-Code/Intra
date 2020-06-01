@@ -26,6 +26,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import app.intra.R;
+import app.intra.sys.CountryCode;
 import app.intra.sys.IntraVpnService;
 import app.intra.sys.PersistentState;
 import app.intra.sys.VpnController;
@@ -33,6 +34,7 @@ import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.firebase.RemoteConfig;
 import doh.Transport;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,6 +58,9 @@ public class GoVpnAdapter {
   // IPv4 VPN constants
   private static final String IPV4_TEMPLATE = "10.111.222.%d";
   private static final int IPV4_PREFIX_LENGTH = 24;
+
+  // Choir salt file name
+  private static final String CHOIR_FILENAME = "choir-salt";
 
   // The VPN service and tun2socks must agree on the layout of the network.  By convention, we
   // assign the following values to the final byte of an address within a subnet.
@@ -121,8 +126,34 @@ public class GoVpnAdapter {
           transport, getProtector(), listener);
     } catch (Exception e) {
       LogWrapper.logException(e);
-      tunnel = null;
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
+      return;
+    }
+
+    if (RemoteConfig.getChoirEnabled()) {
+      enableChoir();
+    }
+  }
+
+  // Set up failure reporting with Choir.
+  private void enableChoir() {
+    CountryCode countryCode = new CountryCode(vpnService);
+    @NonNull String country = countryCode.getNetworkCountry();
+    if (country.isEmpty()) {
+      country = countryCode.getDeviceCountry();
+    }
+    if (country.isEmpty()) {
+      // Country code is mandatory for Choir.
+      Log.i(LOG_TAG, "No country code found");
+      return;
+    }
+    String file = vpnService.getFilesDir() + File.separator + CHOIR_FILENAME;
+    try {
+      tunnel.enableSNIReporter(file, "intra.metrics.gstatic.com", country);
+    } catch (Exception e) {
+      // Choir setup failure is logged but otherwise ignored, because it does not prevent Intra
+      // from functioning correctly.
+      LogWrapper.logException(e);
     }
   }
 
