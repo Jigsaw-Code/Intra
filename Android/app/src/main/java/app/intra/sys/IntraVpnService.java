@@ -134,8 +134,8 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     synchronized (vpnController) {
-      Log.i(LOG_TAG, String.format("Starting DNS VPN service, url=%s", url));
       url = PersistentState.getServerUrl(this);
+      Log.i(LOG_TAG, String.format("Starting DNS VPN service, url=%s", url));
 
       // Registers this class as a listener for user preference changes.
       PreferenceManager.getDefaultSharedPreferences(this).
