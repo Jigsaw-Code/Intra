@@ -62,6 +62,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
    * FAILING: The last query (or bootstrap) failed.
    */
   public enum State { NEW, WORKING, FAILING };
+  public enum AuthRequirement { NO_AUTH, BASIC_AUTH, CERT_AUTH }
 
   private static final String LOG_TAG = "IntraVpnService";
   private static final int SERVICE_ID = 1; // Only has to be unique within this app.
@@ -332,7 +333,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       if (vpnAdapter != null) {
         vpnAdapter.close();
         vpnAdapter = null;
-        vpnController.onConnectionStateChanged(this, null);
+        vpnController.onConnectionStateChanged(this, null, null);
       }
     }
   }
@@ -418,9 +419,18 @@ public class IntraVpnService extends VpnService implements NetworkListener,
     // If the transaction was canceled, then we don't have any new information about the status
     // of the connection, so we don't send an update.
     if (transaction.status == Transaction.Status.COMPLETE) {
-      vpnController.onConnectionStateChanged(this, State.WORKING);
+      vpnController.onConnectionStateChanged(this, State.WORKING, null);
     } else if (transaction.status != Transaction.Status.CANCELED) {
-      vpnController.onConnectionStateChanged(this, State.FAILING);
+      AuthRequirement authRequirement = null;
+      switch(transaction.statusDetail) {
+        case AUTHENTICATION_REQUESTED:
+          authRequirement = AuthRequirement.BASIC_AUTH;
+          break;
+        case CERTIFICATE_REQUESTED:
+          authRequirement = AuthRequirement.CERT_AUTH;
+          break;
+      }
+      vpnController.onConnectionStateChanged(this, State.FAILING, authRequirement);
     }
   }
 
@@ -463,7 +473,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   public void onNetworkDisconnected() {
     LogWrapper.log(Log.INFO, LOG_TAG, "Disconnected event.");
     setNetworkConnected(false);
-    vpnController.onConnectionStateChanged(this, null);
+    vpnController.onConnectionStateChanged(this, null, null);
   }
 
   @Override // From the Protect interface.

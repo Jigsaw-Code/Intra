@@ -26,10 +26,12 @@ public final class VpnState {
   // Whether we have a connection to a DOH server, and if so, whether the connection is ready or
   // has recently been failing.
   public final IntraVpnService.State connectionState;
+  public final IntraVpnService.AuthRequirement connectionAuthRequirement;
 
-  VpnState(boolean activationRequested, boolean on, IntraVpnService.State connectionState) {
+  VpnState(boolean activationRequested, boolean on, IntraVpnService.State connectionState, IntraVpnService.AuthRequirement authRequirement) {
     this.activationRequested = activationRequested;
     this.on = on;
     this.connectionState = connectionState;
+    this.connectionAuthRequirement = authRequirement;
   }
 }

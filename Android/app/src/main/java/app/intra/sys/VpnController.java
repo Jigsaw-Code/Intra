@@ -39,6 +39,7 @@ public class VpnController {
 
   private IntraVpnService intraVpnService = null;
   private IntraVpnService.State connectionState = null;
+  private IntraVpnService.AuthRequirement connectionAuthReq = null;
   private QueryTracker tracker = null;
 
   private VpnController() {}
@@ -51,12 +52,17 @@ public class VpnController {
     return this.intraVpnService;
   }
 
-  public synchronized void onConnectionStateChanged(Context context, IntraVpnService.State state) {
+  public synchronized void onConnectionStateChanged(Context context, IntraVpnService.State state, IntraVpnService.AuthRequirement authReq) {
+    if (state == connectionState) {
+      // The state has not changed.
+      return;
+    }
     if (intraVpnService == null) {
       // User clicked disable while the connection state was changing.
       return;
     }
     connectionState = state;
+    connectionAuthReq = authReq;
     stateChanged(context);
   }
 
@@ -99,6 +105,7 @@ public class VpnController {
   public synchronized void stop(Context context) {
     PersistentState.setVpnEnabled(context, false);
     connectionState = null;
+    connectionAuthReq = null;
     if (intraVpnService != null) {
       intraVpnService.signalStopService(true);
     }
@@ -109,7 +116,6 @@ public class VpnController {
   public synchronized VpnState getState(Context context) {
     boolean requested = PersistentState.getVpnEnabled(context);
     boolean on = intraVpnService != null && intraVpnService.isOn();
-    return new VpnState(requested, on, connectionState);
+    return new VpnState(requested, on, connectionState, connectionAuthReq);
   }
-
 }

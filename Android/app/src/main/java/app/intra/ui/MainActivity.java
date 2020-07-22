@@ -631,6 +631,12 @@ public class MainActivity extends AppCompatActivity
       } else if (status.connectionState == IntraVpnService.State.WORKING) {
         statusId = R.string.status_protected;
         explanationId = R.string.explanation_protected;
+      } else if (status.connectionAuthRequirement == IntraVpnService.AuthRequirement.BASIC_AUTH) {
+        statusId = R.string.status_failing;
+        explanationId = R.string.explanation_authentication_requested;
+      } else if (status.connectionAuthRequirement == IntraVpnService.AuthRequirement.CERT_AUTH) {
+        statusId = R.string.status_failing;
+        explanationId = R.string.explanation_certificate_requested;
       } else {
         // status.connectionState == ServerConnection.State.FAILING
         statusId = R.string.status_failing;

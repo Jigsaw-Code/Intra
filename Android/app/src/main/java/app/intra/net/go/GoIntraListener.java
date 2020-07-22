@@ -20,6 +20,7 @@ import androidx.collection.LongSparseArray;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
+import app.intra.net.doh.Transaction.StatusDetail;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.IntraVpnService;
 import com.google.firebase.perf.FirebasePerformance;
@@ -98,6 +99,12 @@ public class GoIntraListener implements tunnel.IntraListener {
     goStatusMap.put(Doh.BadResponse, Status.BAD_RESPONSE);
     goStatusMap.put(Doh.InternalError, Status.INTERNAL_ERROR);
   }
+  private static final LongSparseArray<StatusDetail> goStatusDetailMap = new LongSparseArray<>();
+  static {
+    goStatusDetailMap.put(Doh.NoDetail, StatusDetail.NO_DETAIL);
+    goStatusDetailMap.put(Doh.WWWAuthenticate, StatusDetail.AUTHENTICATION_REQUESTED);
+    goStatusDetailMap.put(Doh.ClientCertRequested, StatusDetail.CERTIFICATE_REQUESTED);
+  }
 
   // Wrapping HttpMetric into a doh.Token allows us to get paired query and response notifications
   // from Go without reverse-binding any Java APIs into Go.  Pairing these notifications is
@@ -147,6 +154,7 @@ public class GoIntraListener implements tunnel.IntraListener {
     transaction.responseTime = (long)(1000 * summary.getLatency());
     transaction.serverIp = summary.getServer();
     transaction.status = goStatusMap.get(summary.getStatus());
+    transaction.statusDetail = goStatusDetailMap.get(summary.getStatusDetail());
     transaction.responseCalendar = Calendar.getInstance();
 
     vpnService.recordTransaction(transaction);

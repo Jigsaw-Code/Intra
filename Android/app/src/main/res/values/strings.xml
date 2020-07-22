@@ -172,6 +172,14 @@
     Warning: Queries are failing.  You may want to choose a different server or restart Intra.
   </string>
 
+  <string name="explanation_authentication_requested">
+    Warning: Queries are failing because this server requires authentication.  You may want to choose a different server or restart Intra.
+  </string>
+
+  <string name="explanation_certificate_requested">
+    Warning: Queries are failing because this server requires a client certificate.  You may want to choose a different server or restart Intra.
+  </string>
+
   <string name="system_details"
           description="This is the title of a section containing information on the system configuration and
   status.">

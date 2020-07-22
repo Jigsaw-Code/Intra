@@ -126,7 +126,7 @@ public class GoVpnAdapter {
           transport, getProtector(), listener);
     } catch (Exception e) {
       LogWrapper.logException(e);
-      VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
+      VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING, null);
       return;
     }
 
@@ -242,7 +242,7 @@ public class GoVpnAdapter {
       LogWrapper.logException(e);
       tunnel.disconnect();
       tunnel = null;
-      VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
+      VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING, null);
     }
   }
 

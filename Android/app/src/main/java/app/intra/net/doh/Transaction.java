@@ -33,6 +33,12 @@ public class Transaction implements Serializable {
     CANCELED
   }
 
+  public enum StatusDetail {
+    NO_DETAIL,
+    AUTHENTICATION_REQUESTED,
+    CERTIFICATE_REQUESTED
+  }
+
   public Transaction(DnsPacket query, long timestamp) {
     this.name = query.getQueryName();
     this.type = query.getQueryType();
@@ -44,6 +50,7 @@ public class Transaction implements Serializable {
   public final short type;
   public long responseTime;
   public Status status;
+  public StatusDetail statusDetail;
   public byte[] response;
   public Calendar responseCalendar;
   public String serverIp;
