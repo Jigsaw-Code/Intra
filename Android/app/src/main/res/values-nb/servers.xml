@@ -19,7 +19,7 @@
   </string>
 
   <string name="description4" description="Describes a DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
-    Tjener i Østerrike, drevet at en non-profit privatlivsgruppe.
+    Tjener i Østerrike, drevet av en non-profit privatlivsgruppe.
   </string>
 
   <string name="description5" description="Describes PowerDNS's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
