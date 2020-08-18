@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:tint="@color/accent_good"
+                    app:tint="@color/accent_good"
                     app:srcCompat="@drawable/ic_dns"
                     tools:ignore="ContentDescription"/>
 
@@ -85,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:tint="@color/accent_good"
+                    app:tint="@color/accent_good"
                     app:srcCompat="@drawable/ic_trending_up_black_24dp"
                     tools:ignore="ContentDescription"/>
 
@@ -126,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:tint="@color/accent_good"
+                    app:tint="@color/accent_good"
                     app:srcCompat="@drawable/ic_lock_black_24dp"
                     tools:ignore="ContentDescription"/>
 
@@ -165,7 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:tint="@color/accent_good"
+                    app:tint="@color/accent_good"
                     app:srcCompat="@drawable/ic_server"
                     tools:ignore="ContentDescription"/>
 
@@ -226,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:tint="@color/accent_bad"
+                    app:tint="@color/accent_bad"
                     app:srcCompat="@drawable/ic_lock_open_black_24dp"
                     tools:ignore="ContentDescription"/>
 
@@ -266,7 +266,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="64dp"
-                    android:tint="@color/accent_bad"
+                    app:tint="@color/accent_bad"
                     app:srcCompat="@drawable/ic_server"
                     tools:ignore="ContentDescription"/>
 

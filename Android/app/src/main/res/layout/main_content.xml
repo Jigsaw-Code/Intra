@@ -21,7 +21,7 @@
         android:alpha="0.4"
         android:scaleType="fitXY"
         android:src="@drawable/gradient_backdrop"
-        android:tint="@color/accent_good"
+        app:tint="@color/accent_good"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
             tools:text="@string/indicator_on"
             android:textColor="@color/indicator"/>
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/dns_switch" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
@@ -58,7 +58,7 @@
 
     <TextView
             android:id="@+id/status"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -71,7 +71,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/indicator"
             app:layout_constraintBottom_toTopOf="@id/explanation"
-            app:layout_constraintWidth_default="wrap"
+            app:layout_constrainedWidth="true"
             tools:text="@string/status_protected"
             android:textColor="@color/accent_good"/>
 

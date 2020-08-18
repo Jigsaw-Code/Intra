@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.ui.settings;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -106,6 +107,7 @@ public class ServerApprovalDialogFragment extends DialogFragment {
     return getArgs().getBoolean(SHOW_WEBSITE_KEY);
   }
 
+  @SuppressLint("SetJavaScriptEnabled")
   private View makeWebView(int index) {
     final String url = getResources().getStringArray(R.array.server_websites)[index];
 

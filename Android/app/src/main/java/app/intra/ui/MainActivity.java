@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -81,6 +82,8 @@ import app.intra.sys.firebase.RemoteConfig;
 import app.intra.ui.settings.ServerApprovalDialogFragment;
 import app.intra.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -264,7 +267,7 @@ public class MainActivity extends AppCompatActivity
         false);
 
     // Set up the main UI
-    final Switch switchButton = controlView.findViewById(R.id.dns_switch);
+    final SwitchMaterial switchButton = controlView.findViewById(R.id.dns_switch);
     switchButton.setOnCheckedChangeListener(
         new CompoundButton.OnCheckedChangeListener() {
           @Override
@@ -466,6 +469,8 @@ public class MainActivity extends AppCompatActivity
   }
 
   // Returns whether the device supports the tunnel VPN service.
+  // This is just in case someone sideloads the app onto an ancient device.
+  @SuppressLint("ObsoleteSdkInt")
   private boolean hasVpnService() {
     return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
   }
@@ -606,7 +611,7 @@ public class MainActivity extends AppCompatActivity
     VpnState status = VpnController.getInstance().getState(this);
 
     // Change switch-button state
-    final Switch switchButton = controlView.findViewById(R.id.dns_switch);
+    final SwitchMaterial switchButton = controlView.findViewById(R.id.dns_switch);
     switchButton.setChecked(status.activationRequested);
 
     // Change indicator text

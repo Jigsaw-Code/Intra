@@ -15,6 +15,7 @@ limitations under the License.
 */
 package app.intra.sys;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class CountryCode {
     // User appears to be non-GSM.  Try CDMA.
     try {
       // Get the system properties by reflection.
+      @SuppressLint("PrivateApi")
       Class<?> systemPropertiesClass = Class.forName("android.os.SystemProperties");
       Method get = systemPropertiesClass.getMethod("get", String.class);
       String cdmaOperator = (String)get.invoke(systemPropertiesClass,
@@ -64,6 +66,7 @@ public class CountryCode {
         return "";
       }
       String mcc = cdmaOperator.substring(0, 3);
+      @SuppressLint("PrivateApi")
       Class<?> mccTableClass = Class.forName("com.android.internal.telephony.MccTable");
       Method countryCodeForMcc = mccTableClass.getMethod("countryCodeForMcc", String.class);
       return (String)countryCodeForMcc.invoke(mccTableClass, mcc);
