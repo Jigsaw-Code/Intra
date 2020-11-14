@@ -170,9 +170,6 @@ public class GoVpnAdapter {
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
         builder.addDisallowedApplication(vpnService.getPackageName());
       }
-      if (VERSION.SDK_INT >= VERSION_CODES.Q) {
-        builder.setMetered(false); // There's no charge for using Intra.
-      }
       return builder.establish();
     } catch (Exception e) {
       LogWrapper.logException(e);
