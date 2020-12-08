@@ -33,7 +33,7 @@ import app.intra.sys.VpnController;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.firebase.RemoteConfig;
-import doh.CertificateLoader;
+import doh.ClientAuth;
 import doh.Transport;
 import java.io.File;
 import java.io.IOException;
@@ -210,9 +210,9 @@ public class GoVpnAdapter {
     String host = new URL(realUrl).getHost();
     long startTime = SystemClock.elapsedRealtime();
     final doh.Transport transport;
-    CertificateLoader certLoader = null;
+    ClientAuth clientAuth = null;
     try {
-      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), certLoader, listener);
+      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), clientAuth, listener);
     } catch (Exception e) {
       AnalyticsWrapper.get(vpnService).logBootstrapFailed(host);
       throw e;
