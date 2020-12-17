@@ -42,7 +42,7 @@ import java.net.URL;
 import java.util.Locale;
 import protect.Protector;
 import tun2socks.Tun2socks;
-import tunnel.IntraTunnel;
+import intra.Tunnel;
 
 /**
  * This is a VpnAdapter that captures all traffic and routes it through a go-tun2socks instance with
@@ -89,7 +89,7 @@ public class GoVpnAdapter {
   private ParcelFileDescriptor tunFd;
 
   // The Intra session object from go-tun2socks.  Initially null.
-  private IntraTunnel tunnel;
+  private Tunnel tunnel;
   private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
