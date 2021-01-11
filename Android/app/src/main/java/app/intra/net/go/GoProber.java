@@ -43,7 +43,7 @@ public class GoProber extends Prober {
         // Protection isn't needed for Lollipop+, or if the VPN is not active.
         Protector protector = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? null :
             VpnController.getInstance().getIntraVpnService();
-        Transport transport = Tun2socks.newDoHTransport(url, dohIPs, protector, null);
+        Transport transport = Tun2socks.newDoHTransport(url, dohIPs, protector, null, null);
         if (transport == null) {
           callback.onCompleted(false);
           return;
