@@ -37,7 +37,7 @@ import split.RetryStats;
  * when a socket has concluded, with performance metrics for that socket, and this class forwards
  * those metrics to Firebase.
  */
-public class GoIntraListener implements tunnel.IntraListener {
+public class GoIntraListener implements intra.Listener {
 
   // UDP is often used for one-off messages and pings.  The relative overhead of reporting metrics
   // on these short messages would be large, so we only report metrics on sockets that transfer at

@@ -41,7 +41,6 @@ import java.net.URL;
 import java.util.Locale;
 import protect.Protector;
 import tun2socks.Tun2socks;
-import tunnel.IntraTunnel;
 
 /**
  * This is a VpnAdapter that captures all traffic and routes it through a go-tun2socks instance with
@@ -88,7 +87,7 @@ public class GoVpnAdapter {
   private ParcelFileDescriptor tunFd;
 
   // The Intra session object from go-tun2socks.  Initially null.
-  private IntraTunnel tunnel;
+  private intra.Tunnel tunnel;
   private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
@@ -122,10 +121,9 @@ public class GoVpnAdapter {
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
       Transport transport = makeDohTransport(dohURL);
-      // connectIntraTunnel takes ownership of the file descriptor.
-      tunnel = Tun2socks.connectIntraTunnel(tunFd.detachFd(), fakeDns,
+      // connectIntraTunnel makes a copy of the file descriptor.
+      tunnel = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
           transport, getProtector(), listener);
-      tunFd = null;
     } catch (Exception e) {
       LogWrapper.logException(e);
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
@@ -210,7 +208,7 @@ public class GoVpnAdapter {
     long startTime = SystemClock.elapsedRealtime();
     final doh.Transport transport;
     try {
-      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), listener);
+      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), null, listener);
     } catch (Exception e) {
       AnalyticsWrapper.get(vpnService).logBootstrapFailed(host);
       throw e;
