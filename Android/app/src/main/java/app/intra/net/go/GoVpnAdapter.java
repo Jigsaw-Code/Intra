@@ -121,10 +121,9 @@ public class GoVpnAdapter {
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
       Transport transport = makeDohTransport(dohURL);
-      // connectIntraTunnel takes ownership of the file descriptor.
-      tunnel = Tun2socks.connectIntraTunnel(tunFd.detachFd(), fakeDns,
+      // connectIntraTunnel makes a copy of the file descriptor.
+      tunnel = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
           transport, getProtector(), listener);
-      tunFd = null;
     } catch (Exception e) {
       LogWrapper.logException(e);
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
