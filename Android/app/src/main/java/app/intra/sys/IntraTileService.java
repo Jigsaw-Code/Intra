@@ -35,6 +35,9 @@ public class IntraTileService extends TileService {
         VpnState vpnState = VpnController.getInstance().getState(this);
 
         Tile tile = getQsTile();
+        if (tile == null) {
+            return;
+        }
 
         if (vpnState.activationRequested) {
             tile.setState(Tile.STATE_ACTIVE);
