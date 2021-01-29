@@ -36,12 +36,11 @@ class CountryMap {
   // Number of bytes used to store each country string.
   private static final int COUNTRY_SIZE = 2;
 
-  private final byte[] v4db;
-  private final byte[] v6db;
+  // TODO: Reintroduce IPv6 support when Intra supports IPv6 again.
+  private final byte[] db;
 
   CountryMap(AssetManager assetManager) throws IOException {
-    v4db = read(assetManager.open("dbip.v4"));
-    v6db = read(assetManager.open("dbip.v6"));
+    db = read(assetManager.open("dbip.v4"));
   }
 
   private static byte[] read(InputStream input) throws IOException {
@@ -76,7 +75,10 @@ class CountryMap {
 
   String getCountryCode(InetAddress address) {
     byte[] key = address.getAddress();
-    byte[] db = key.length == 4 ? v4db : v6db;
+    if (key.length != 4) {
+      // Only IPv4 is supported
+      return "ZZ";
+    }
     int recordSize = key.length + COUNTRY_SIZE;
     int low = 0;
     int high = db.length / recordSize;
