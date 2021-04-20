@@ -81,14 +81,14 @@
   <string name="server_choice_summary">Atualmente %s</string>
   <string name="server_choice_builtin">Servidor integrado</string>
   <string name="server_choice_website_notice">Visite <a href="https://www.example.com/">o website da empresa</a> para ler a respetiva política de privacidade e todos os termos de utilização aplicáveis.</string>
-  <string name="server_website_button">Visitar o Website</string>
+  <string name="server_website_button">Visitar Website</string>
   <string name="try_all_servers">Experimentar todos os servidores integrados</string>
   <string name="checking_servers">A verificar todos os servidores</string>
   <string name="found_fastest">O seu servidor mais rápido é %s.</string>
   <string name="all_servers_failed">Falha ao identificar um servidor operacional: falhou a ligação a todos os servidores integrados.</string>
   <string name="server_choice_custom">URL de servidor personalizado</string>
   <string name="server_choice_warning">O servidor personalizado tem de ser um https:// válido URL</string>
-  <string name="excluded_apps">Aplicações excluídas</string>
+  <string name="excluded_apps">Apps excluídas</string>
   <string name="excluded_apps_summary">As consultas DNS das aplicações selecionadas não passam pelo Intra.  Se uma aplicação aparentar ser
     incompatível com o Intra, pode adicioná-la aqui.</string>
   <string name="excluded_apps_title">Marcar aplicações para exclusão do Intra</string>

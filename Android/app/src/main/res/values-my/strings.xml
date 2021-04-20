@@ -1,0 +1,103 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">ပိုမိုလွတ်လပ်သော အင်တာနက်အသုံးပြုခွင့်</string>
+  <string name="intro_benefit_body">ဝဘ်ဆိုက်အသစ်များ၊ လူမှုမီဒီယာ ပလတ်ဖောင်းများနှင့် မက်ဆေ့ဂျ်ပို့ရန်အက်ပ်များသို့ ဝင်ခွင့်ကို ပိတ်ရန်သုံးသော ဆိုက်ဘာတိုက်ခိုက်မှုဖြစ်သည့် DNS ကြိုးကိုင်ခြယ်လှယ်မှုမှ သင့်ကို Intra က ကာကွယ်ပေးပါသည်။\n\nIntra သည် DNS ကြိုးကိုင်ခြယ်လှယ်မှုမှ သင့်ကို ကာကွယ်ပေးသော်လည်း အခြား ပိုမိုရှုပ်ထွေးသော ပိတ်ဆို့မှုနည်းပညာများနှင့် Intra မကာကွယ်နိုင်သည့် တိုက်ခိုက်မှုများ ရှိပါသည်။</string>
+  <string name="intro_manipulation_headline">DNS ကြိုးကိုင်ခြယ်လှယ်မှုမှ ကာကွယ်ခြင်း</string>
+  <string name="intro_manipulation_body">Intra သည် ဝဘ်ဆိုက်တစ်ခုသို့ ဝင်ကြည့်ရန် (သို့) အက်ပ်တစ်ခုဖွင့်ရန် သင်လိုအပ်သော လိပ်စာအတိအကျကို ပေးအပ်သည့် ဒိုမိန်းအမည်ပေးစနစ် (DNS) သို့ သင်၏ချိတ်ဆက်မှုကို ကာကွယ်ပေးသည်။\n\nIntra သည် ထိုရလဒ်များကို ကြိုးကိုင်ခြယ်လှယ်ခြင်း မရှိကြောင်းသေချာစေရန် အသွင်ဝှက်ခြင်းကို အသုံးပြုပြီး အင်တာနက်ဘေးကင်းစွာ သုံးခွင့်ရရန် သင့်အား ကူညီသည်။</string>
+  <string name="intro_details_headline">နောက်ဆုံးတစ်ခု…</string>
+  <string name="intro_details_body">သင်၏ DNS တောင်းဆိုချက်များကို ကာကွယ်ရန်အတွက် Intra အား ခွင့်ပြုရန် OK ကိုတို့ပါ။ မူရင်းသတ်မှတ်ချက်အနေနှင့် ၎င်းတို့ကို Google အများသုံး DNS (<a href="https://developers.google.com/speed/public-dns/privacy">ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ</a>) သို့ လမ်းကြောင်းအတိုင်း ပို့ဆောင်ပါမည်။ အက်ပ်ဆက်တင်များတွင် ဝန်ဆောင်မှုနောက်တစ်ခုကို ရွေးနိုင်သည်။</string>
+  <string name="intro_back">နောက်သို့</string>
+  <string name="intro_next">ရှေ့သို့</string>
+  <string name="intro_accept">လက်ခံရန်</string>
+  <string name="drawer_open">လမ်းကြောင်းပြအံဆွဲ ဖွင့်ရန်</string>
+  <string name="drawer_close">လမ်းကြောင်းပြအံဆွဲ ပိတ်ရန်</string>
+  <string name="home">ပင်မစာမျက်နှာ</string>
+  <string name="settings">ဆက်တင်များ</string>
+  <string name="support">အကူအညီ</string>
+  <string name="privacy_link">ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ</string>
+  <string name="tos_link">ဝန်ဆောင်မှု စည်းမျဉ်းများ</string>
+  <string name="source_code">ရင်းမြစ်ကုဒ်</string>
+  <string name="credits_text">Intra ကို <a href="https://jigsaw.google.com">Jigsaw</a> ဖြင့် ပြုလုပ်ထားသည်။ IP တည်နေရာများကို DB-IP.com မှ ဒေတာများပေါ်
+    အခြေခံသည်။</string>
+  <string name="indicator_on">ဖွင့်ထားသည်</string>
+  <string name="indicator_off">ပိတ်ထားသည်</string>
+  <string name="status_exposed">ဖော်ထုတ်ထားသည်</string>
+  <string name="explanation_exposed">သင့်ချိတ်ဆက်မှုကို DNS တိုက်ခိုက်မှုများထံ ဖော်ထုတ်ထားသည်။</string>
+  <string name="status_protected">ကာကွယ်ထားသည်</string>
+  <string name="explanation_protected">သင့်ချိတ်ဆက်မှုကို DNS တိုက်ခိုက်မှုများမှ ကာကွယ်ထားသည်။</string>
+  <string name="status_upgraded">အားနည်းချက်ရှိသည်</string>
+  <string name="explanation_upgraded">သင့်ချိတ်ဆက်မှုကို လက်ရှိတွင် Android သီးသန့် DNS က ကာကွယ်ထားသော်လည်း တိုက်ခိုက်သူသည် ဤကာကွယ်မှုကို
+    ပိတ်နိုင် (သို့) လျော့ပါးစေနိုင်သည်။</string>
+  <string name="status_strict">Android က ကာကွယ်ထားသည်</string>
+  <string name="explanation_strict">Android သီးသန့် DNS ဆက်တင်ကို ဖွင့်ထားကြောင်း Intra က တွေ့ရှိထားသည်။  ယင်းသည် သင်၏ DNS
+    တောင်းဆိုချက်များကို ကာကွယ်ထားပြီးဖြစ်၍ Intra ဖွင့်ရန် မလိုပါဟု ဆိုလိုပါသည်။</string>
+  <string name="status_starting">စတင်နေသည်…</string>
+  <string name="explanation_starting">ခနစောင့်ပါ။  Intra သည် ဆာဗာချိတ်ဆက်မှုကို စတင်နေသည်။</string>
+  <string name="status_waiting">စောင့်ဆိုင်းနေသည်…</string>
+  <string name="status_failing">မအောင်မြင်ပါ</string>
+  <string name="explanation_offline">သင့်စက်ပစ္စည်း အော့ဖ်လိုင်းဖြစ်နေသည်။  Intra သည် ကွန်ရက်ချိတ်ဆက်မှုကို စောင့်နေသည်။</string>
+  <string name="explanation_vpn">Intra သည် သင့်စက်တွင် VPN နောက်တစ်ခုကို တွေ့ရှိထားသည်။  Intra ကို ဖွင့်ပါက ထို VPN ကို ပိတ်လိုက်ပါမည်။
+    Intra သည် ယုံကြည်ရသော VPN တစ်ခုလောက် မလုံခြုံပါ။</string>
+  <string name="explanation_failing">သတိပေးချက်- တောင်းဆိုချက်များ မအောင်မြင်ပါ။  အခြားဆာဗာကို ရွေးချယ်နိုင်သည် (သို့) Intra ကို ပြန်စတင်နိုင်သည်။</string>
+  <string name="system_details">စနစ် အသေးစိတ်</string>
+  <string name="num_requests">တစ်သက်စာ တောင်းဆိုချက်များ</string>
+  <string name="num_requests_headline">သင့်စက်သည် ဒိုမိန်းအမည်တစ်ခုအတွက် IP လိပ်စာကို ရှာဖွေသောအခါ DNS တောင်းဆိုချက်များ ဖြစ်ပေါ်သည်</string>
+  <string name="num_requests_body">ဤတန်ဖိုးသည် Intra အသုံးပြုထားချိန်တွင် သင့်စက်ကလုပ်ဆောင်ထားသည့် DNS တောင်းဆိုချက် အရေအတွက်စုစုပေါင်းကို
+    ပြသည်။  Intra သည် ဤတောင်းဆိုချက်များကို အသွင်ဝှက်ပြီး သင့်အနေနှင့် စစ်မှန်သောရလဒ်များ ရရှိကြောင်း သေချာစေရန် ၎င်းတို့ကို
+    ယုံကြည်ရသောဆာဗာသို့ ပို့သည်။</string>
+  <string name="queries_per_minute">လတ်တလော တောင်းဆိုချက်များ</string>
+  <string name="queries_per_minute_headline">ချိတ်ဆက်မှုတစ်ခုစီ၏ အစတွင် DNS တောင်းဆိုချက်များ ဖြစ်ပေါ်သည်</string>
+  <string name="queries_per_minute_body">ဤတန်ဖိုးသည် ပြီးခဲ့သောမိနစ်ပိုင်းတွင် သင့်စက်ကလုပ်ဆောင်ထားသည့် DNS တောင်းဆိုချက် အရေအတွက်ကို ပြသည်။
+    ရှုပ်ထွေးသောဝဘ်စာမျက်နှာကို ဖွင့်ခြင်းသည် DNS တောင်းဆိုချက်တစ်ရာအထက်ကို လိုအပ်သည်။</string>
+  <string name="transport_label">အသွင်ဝှက်ထားသော ပို့ဆောင်မှု</string>
+  <string name="transport_headline">အသွင်ဝှက်ခြင်းက ထောက်လှမ်းနေသူများထံမှ သင့်မေးမြန်းချက်များကို ကာကွယ်ပေးသည်</string>
+  <string name="transport_body">Intra အသုံးပြုသောအခါ သင်၏ DNS မေးမြန်းချက်များကို အသွင်ဝှက်ထားသဖြင့် သင်နှင့် သင်၏ DNS ဆာဗာတို့ကသာ သင်ပြုလုပ်နေသော
+    DNS တောင်းဆိုချက်များကို မြင်နိုင်သည်။  Intra သည် အသွင်ဝှက်ခြင်းအတွက် HTTPS ပရိုတိုကောထက် DNS ကို အကောင်အထည်ဖော်ဆောင်သည်။</string>
+  <string name="default_transport_label">မူရင်း ပို့ဆောင်မှု</string>
+  <string name="insecure_transport">ကုဒ်ပြန်ဖော်ထားသည်</string>
+  <string name="insecure_transport_headline">အခြေခံ DNS ကို ကုဒ်ပြန်ဖော်ထားသည်</string>
+  <string name="insecure_transport_body">စက်ပစ္စည်းနှင့် ကွန်ရက်အများစုသည် ကုဒ်ပြန်ဖော်ထားသော အခြေခံ DNS သုံးသဖြင့် သင်၏ DNS တောင်းဆိုချက်များကို
+    စောင့်ကြည့်နိုင်သည် (သို့) ကွန်ရက်ပေါ်ရှိလူတိုင်းက ပြင်ဆင်နိုင်သည်။  စက်အသစ်အချို့က သင့်တောင်းဆိုချက်များကို အသွင်ဝှက်သော TLS ထက် DNS ကို
+    ပံ့ပိုးသော်လည်း ဆာဗာတွင် အန္တရာယ်ရှိသောအခါ သင့်အား မကာကွယ်နိုင်ပါ။</string>
+  <string name="server_label">လုံခြုံသည့် DNS ဆာဗာ</string>
+  <string name="server_headline">သင်သည် ယုံကြည်ရသော DNS ဆာဗာကို အသုံးပြုခွင့်ရှိသည်</string>
+  <string name="server_body">ဤအကွက်သည် သင်အသုံးပြုနေသော လုံခြုံသည့် DNS ဆာဗာအမည်ကို ပြသည်။  ‘ဆက်တင်များ’ မီနူးတွင်
+    အခြားဆာဗာသို့လည်း ပြောင်းနိုင်သည်။</string>
+  <string name="default_server_label">လက်ရှိ DNS ဆာဗာ</string>
+  <string name="insecure_server_headline">သင့်ကိုယ်ပိုင် DNS ဆာဗာကို ရွေးနိုင်သည်</string>
+  <string name="insecure_server_body">Intra ကို ပိတ်ထားသောအခါ သင့်ကွန်ရက်အော်ပရေတာ ရွေးချယ်သော DNS ဆာဗာကို အသုံးပြုရန် စက်အများစုအား
+    ကြိုတင်စီစဉ်သတ်မှတ်ထားသည်။ ဤအကွက်သည် သင့်စက် လက်ရှိသုံးနေသော DNS ဆာဗာ၏ IP လိပ်စာကို
+    ပြသသည်။ Intra သို့မဟုတ် Android P သုံးပြီး သင့်စိတ်ကြိုက်ဆာဗာကို အလွယ်တကူ ရွေးနိုင်သည်။</string>
+  <string name="strict_mode_server_headline">လုံခြုံသောဆာဗာကို ရွေးချယ်ထားသည်</string>
+  <string name="strict_mode_server_body">ဤအကွက်သည် Android ၏ သီးသန့် DNS ဆက်တင်တွင် သင် စီစဉ်သတ်မှတ်ထားသော DNS ဆာဗာအမည်ကို
+    ပြသသည်။  Intra ကို ပိတ်ထားသောအခါ သင်၏အက်ပ်များသည် DNS တောင်းဆိုချက်များကို ဤဆာဗာသို့ ပို့ရပါမည်။</string>
+  <string name="unknown_server">(အမျိုးအမည်မသိ ဆာဗာ)</string>
+  <string name="show_history">လတ်တလောတောင်းဆိုချက်များ ပြရန်</string>
+  <string name="query_label">တောင်းဆိုချက်</string>
+  <string name="type_label">အမျိုးအစား</string>
+  <string name="latency_label">တုံ့ပြန်ချိန်</string>
+  <string name="resolver_label">ဖြေရှင်းစနစ် တည်နေရာ</string>
+  <string name="destination_label">သွားရောက်မည့် ဆာဗာ</string>
+  <string name="server_choice">HTTPS အစား DNS ဆာဗာကို ရွေးခြင်း</string>
+  <string name="server_choice_summary">လက်ရှိတွင် %s ဖြစ်သည်</string>
+  <string name="server_choice_builtin">အသင့်ပါ ဆာဗာ</string>
+  <string name="server_choice_website_notice">၎င်း၏ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒနှင့် သက်ဆိုင်သော ဝန်ဆောင်မှုစည်းမျဉ်းများ အားလုံးကို ပြန်ကြည့်ရန် <a href="https://www.example.com/">၎င်း၏ဝဘ်ဆိုက်</a> သို့ ဝင်ကြည့်ပါ။</string>
+  <string name="server_website_button">ဝဘ်ဆိုက်သို့ ဝင်ကြည့်ရန်</string>
+  <string name="try_all_servers">အသင့်ပါဆာဗာအားလုံးကို စမ်းကြည့်ရန်</string>
+  <string name="checking_servers">ဆာဗာအားလုံးကို စစ်ဆေးနေသည်</string>
+  <string name="found_fastest">သင်၏အမြန်ဆုံးဆာဗာမှာ %s ဖြစ်သည်။</string>
+  <string name="all_servers_failed">အလုပ်လုပ်နေသော ဆာဗာကို ရှာဖွေ၍မရပါ- အသင့်ပါဆာဗာအားလုံးသို့ ချိတ်ဆက်မှု မအောင်မြင်ပါ။</string>
+  <string name="server_choice_custom">စိတ်ကြိုက် ဆာဗာ URL</string>
+  <string name="server_choice_warning">စိတ်ကြိုက် ဆာဗာသည် မှန်ကန်သော https:// URL ဖြစ်ရမည်</string>
+  <string name="excluded_apps">ဖယ်ထုတ်ထားသော အက်ပ်များ</string>
+  <string name="excluded_apps_summary">ရွေးထားသောအက်ပ်အားလုံးမှ DNS တောင်းဆိုချက်များသည် Intra မှ ဖြတ်သန်းသွားမည် မဟုတ်ပါ။  အက်ပ်တစ်ခုသည် Intra နှင့် တွဲဖက်သုံးနိုင်ပုံ
+    မပေါ်ပါက ၎င်းကို ဤနေရာတွင်ထည့်နိုင်သည်။</string>
+  <string name="excluded_apps_title">Intra မှ ဖယ်ရန် အက်ပ်များကို အမှတ်အသားပြုပါ</string>
+  <string name="old_android">ဤလုပ်ဆောင်ချက်ကို သင့် Android ဗားရှင်းတွင် မရနိုင်ပါ။</string>
+  <string name="notification_title">DNS အကာအကွယ် ဖွင့်ထားသည်</string>
+  <string name="notification_content">DNS အကာအကွယ် ဆက်တင်ကိုပြောင်းရန် တို့ပါ</string>
+  <string name="channel_name">DNS အကာအကွယ် ဖွင့်ထားချိန် အကြောင်းကြားချက်</string>
+  <string name="channel_description">DNS အကာအကွယ် ဖွင့်ထားစဉ်တွင် ဤအကြောင်းကြားချက် ပေါ်လာသည်။</string>
+  <string name="warning_title">သတိပေးချက်- Intra ကို ပိတ်လိုက်သည်</string>
+  <string name="warning_channel_name">သတိပေးချက်</string>
+  <string name="warning_channel_description">Intra တွင် ပြဿနာတွေ့ကြုံသောအခါ ပြသည်။</string>
+</resources>

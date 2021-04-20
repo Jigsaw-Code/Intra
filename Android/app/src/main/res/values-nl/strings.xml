@@ -1,6 +1,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="intro_benefit_headline">Opener internettoegang</string>
-  <string name="intro_benefit_body">Intra beschermt je tegen DNS-manipulatie, een cyberaanval waarbij de toegang tot nieuwssites, social media-platforms en berichten-apps wordt geblokkeerd.\n\nHoewel Intra je beschermt tegen DNS-manipulatie, zijn er andere, ingewikkeldere technieken en aanvallen waartegen Intra geen bescherming biedt.</string>
+  <string name="intro_benefit_body">Intra beschermt je tegen DNS-manipulatie, een cyberaanval waarbij de toegang tot nieuwssites, socialmedia-platforms en berichten-apps wordt geblokkeerd.\n\nHoewel Intra je beschermt tegen DNS-manipulatie, zijn er andere, ingewikkeldere technieken en aanvallen waartegen Intra geen bescherming biedt.</string>
   <string name="intro_manipulation_headline">Bescherming tegen DNS-manipulatie</string>
   <string name="intro_manipulation_body">Intra beschermt je verbinding met het Domain Name System (DNS). DNS levert de exacte adressen waarmee je een website kunt bezoeken of een app kunt openen.\n\nIntra versleutelt resultaten, zodat deze niet kunnen worden gemanipuleerd en je veilig blijft op internet.</string>
   <string name="intro_details_headline">Nog iets…</string>
@@ -12,7 +12,7 @@
   <string name="drawer_close">Zijmenu sluiten</string>
   <string name="home">Home</string>
   <string name="settings">Instellingen</string>
-  <string name="support">Ondersteuning</string>
+  <string name="support">Support</string>
   <string name="privacy_link">Privacybeleid</string>
   <string name="tos_link">Algemene voorwaarden</string>
   <string name="source_code">Broncode</string>
@@ -60,7 +60,7 @@
   <string name="show_history">Recente query\'s weergeven</string>
   <string name="query_label">Zoekopdracht</string>
   <string name="type_label">Type</string>
-  <string name="latency_label">Vertraging</string>
+  <string name="latency_label">Latentie</string>
   <string name="resolver_label">Locatie van oplosser</string>
   <string name="destination_label">Bestemmingsserver</string>
   <string name="server_choice">DNS-over-HTTPS-server selecteren</string>
