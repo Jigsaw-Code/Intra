@@ -146,4 +146,12 @@
     Operated by the Canadian Internet Registration Authority.
   </string>
   <string name="website17" translatable="false">https://www.cira.ca/cybersecurity-services/canadian-shield</string>
+
+  <string name="url18" translatable="false">https://dns.adguard.com/dns-query</string>
+  <string name="name18" translatable="false">AdGuard DNS</string>
+  <string name="ips18" translatable="false">94.140.14.14,94.140.15.15,2a10:50c0::ad1:ff,2a10:50c0::ad2:ff</string>
+  <string name="description18" description="See https://adguard-dns.com/ [CHAR_LIMIT=NONE]">
+    Operated by AdGuard.  Blocks ads and trackers.
+  </string>
+  <string name="website18" translatable="false">https://adguard-dns.com/</string>
 </resources>
