@@ -7,4 +7,7 @@
 .DS_Store
 /Android/build/
 /Android/app/build/
+/Android/app/obj/
+/Android/app/release/
+/Android/tun2socks/build/
 /captures
