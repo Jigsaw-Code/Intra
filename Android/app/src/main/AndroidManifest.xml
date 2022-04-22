@@ -66,6 +66,10 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="@bool/FIREBASE_ENABLED" />
+        <!-- See https://firebase.google.com/docs/analytics/configure-data-collection?platform=android#disable_advertising_id_collection -->
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
         <!-- Uncomment the below line for network performance debug logging -->
         <!-- <meta-data android:name="firebase_performance_logcat_enabled" android:value="true" /> -->
