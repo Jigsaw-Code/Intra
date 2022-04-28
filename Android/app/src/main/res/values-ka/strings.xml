@@ -1,0 +1,103 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">მეტი ღია წვდომა ინტერნეტზე</string>
+  <string name="intro_benefit_body">Intra გიცავთ DNS-ის მანიპულაციისგან, კიბერშეტევისგან, რომელიც გამოიყენება ახალი ამბების საიტებზე, სოციალური მედიის პლატფორმებსა და შეტყობინებების აპებზე წვდომის დასაბლოკად.\n\nმიუხედავად იმისა, რომ Intra გიცავთ DNS-ის მანიპულაციისგან, არსებობს სხვა, უფრო რთული დაბლოკვის ტექნიკები და შეტევები, რომელთაგანაც Intra ვერ გიცავთ.</string>
+  <string name="intro_manipulation_headline">DNS-ის მანიპულაციისგან დაცვა</string>
+  <string name="intro_manipulation_body">Intra იცავს თქვენს კავშირს დომენური სახელის სისტემასთან (DNS), რომელიც გთავაზობთ ზუსტ მისამართებს, რაც ვებსაიტის მოსანახულებლად ან აპის გასახსნელად გჭირდებათ.\n\nIntra იყენებს დაშიფვრას იმის უზრუნველსაყოფად, რომ შედეგების მანიპულირება შეუძლებელი იყოს, რაც დაგეხმარებათ, უსაფრთხოდ შეხვიდეთ ინტერნეტში.</string>
+  <string name="intro_details_headline">დაბოლოს…</string>
+  <string name="intro_details_body">შეეხეთ კარგის, Intra-მ თქვენი DNS-ის მოთხოვნები რომ დაიცვას. ნაგულისხმევად, ისინი გადამისამართდება Google Public DNS-ზე (<a href="https://developers.google.com/speed/public-dns/privacy">კონფიდენციალურობის დებულება</a>). თქვენ შეგიძლიათ სხვა სერვისი აირჩიოთ აპის პარამეტრებში.</string>
+  <string name="intro_back">უკან</string>
+  <string name="intro_next">შემდეგი</string>
+  <string name="intro_accept">თანხმობა</string>
+  <string name="drawer_open">ნავიგაციის უჯრის გახსნა</string>
+  <string name="drawer_close">ნავიგაციის უჯრის დახურვა</string>
+  <string name="home">მთავარი</string>
+  <string name="settings">პარამეტრები</string>
+  <string name="support">მხარდაჭერა</string>
+  <string name="privacy_link">კონფიდენციალურობის დებულება</string>
+  <string name="tos_link">მომსახურების პირობები</string>
+  <string name="source_code">საწყისი კოდი</string>
+  <string name="credits_text">Intra შექმნა <a href="https://jigsaw.google.com">Jigsaw-მ</a>. IP მდებარეობები დაფუძნებულია DB-IP.com-ის
+    მონაცემებზე.</string>
+  <string name="indicator_on">ჩართული</string>
+  <string name="indicator_off">გამორთული</string>
+  <string name="status_exposed">გამოაშკარავებულია</string>
+  <string name="explanation_exposed">თქვენი კავშირი გამოაშკარავებულია DNS-ის შეტევებისთვის.</string>
+  <string name="status_protected">დაცული</string>
+  <string name="explanation_protected">თქვენი კავშირი დაცულია DNS-ის შეტევებისგან</string>
+  <string name="status_upgraded">მოწყვლადი</string>
+  <string name="explanation_upgraded">თქვენი კავშირი ამჟამად დაცულია Android-ის პირადი DNS-ით, მაგრამ თავდამსხმელს შეუძლია გამორთოს
+     ან საფუძველი გამოუთხაროს ამ დაცვას.</string>
+  <string name="status_strict">დაცულია Android-ის მიერ</string>
+  <string name="explanation_strict">Intra-მ აღმოაჩინა, რომ Android-ის პირადი DNS-ის პარამეტრი ჩართულია.  ეს ნიშნავს, რომ თქვენი DNS-ის
+    მოთხოვნები უკვე დაცულია, ამიტომ არ არის საჭირო Intra-ს ჩართვა.</string>
+  <string name="status_starting">იწყება…</string>
+  <string name="explanation_starting">მოითმინეთ.  Intra სერვერთან კავშირს ამყარებს.</string>
+  <string name="status_waiting">ელოდება…</string>
+  <string name="status_failing">ვერ სრულდება</string>
+  <string name="explanation_offline">თქვენი მოწყობილობა ხაზგარეშე რეჟიმშია.  Intra ქსელთან კავშირს ელოდება.</string>
+  <string name="explanation_vpn">Intra-მ თქვენს მოწყობილობაზე სხვა VPN აღმოაჩინა.  თუ Intra-ს ჩართავთ, ეს VPN გაითიშება.
+    Intra არ არის ისეთი უსაფრთხო, როგორც სანდო VPN.</string>
+  <string name="explanation_failing">გაფრთხილება: მოთხოვნები ვერ სრულდება.  შეგიძლიათ სხვა სერვერი აირჩიოთ ან გადატვირთოთ Intra.</string>
+  <string name="system_details">სისტემის დეტალები</string>
+  <string name="num_requests">მოთხოვნები არსებობის დროის განმავლობაში</string>
+  <string name="num_requests_headline">DNS მოთხოვნები ხდება მაშინ, როდესაც თქვენი მოწყობილობა ეძებს IP მისამართს დომენის სახელისთვის</string>
+  <string name="num_requests_body">ეს მნიშვნელობა აჩვენებს DNS-ის მოთხოვნების მთლიან რაოდენობას, რომელიც თქვენმა მოწყობილობამ შეასრულა, სანამ Intra
+    აქტიური იყო.  Intra ამ მოთხოვნებს შიფრავს და აგზავნის სანდო სერვერზე, რათა თქვენთვის ავთენტური
+    შედეგების მიღება უზრუნველყოს.</string>
+  <string name="queries_per_minute">ბოლოდროინდელი მოთხოვნები</string>
+  <string name="queries_per_minute_headline">DNS-ის მოთხოვნები ყოველი კავშირის დასაწყისში ხდება</string>
+  <string name="queries_per_minute_body">ეს მნიშვნელობა აჩვენებს DNS-ის მოთხოვნების რაოდენობას, რომელიც თქვენს მოწყობილობამ ბოლო წუთში შეასრულა.
+    რთული ვებგვერდის ჩატვირთვას შეიძლება ასზე მეტი DNS-ის მოთხოვნა დასჭირდეს.</string>
+  <string name="transport_label">დაშიფრული ტრანსპორტი</string>
+  <string name="transport_headline">დაშიფვრა თქვენს შეკითხვებს ცნობისმოყვარე თვალებისგან იცავს</string>
+  <string name="transport_body">როდესაც Intra-ს იყენებთ, თქვენი DNS-ის მოთხოვნები დაშიფრულია, ასე რომ მხოლოდ თქვენ და თქვენს DNS-ის სერვერს შეგიძლიათ დაინახოთ,
+     რას აკეთებს DNS-ის მოთხოვნები.  Intra ახორციელებს DNS-ს HTTPS პროტოკოლზე დაშიფვრის მიზნით.</string>
+  <string name="default_transport_label">ნაგულისხმევი ტრანსპორტი</string>
+  <string name="insecure_transport">დაუშიფრავი</string>
+  <string name="insecure_transport_headline">ძირითადი DNS დაუშიფრავია</string>
+  <string name="insecure_transport_body">მოწყობილობებისა და ქსელების უმეტესობა ძირითად DNS-ს იყენებს, რომელიც დაუშიფრავია, ასე რომ თქვენს DNS-ის მოთხოვნებს შეიძლება
+    ვინმე აკვირდებოდეს ან ვინმეს მიერ შეცვლილი იყოს ქსელში.  ზოგიერთ ახალ მოწყობილობას DNS-ის მხარდაჭერა აქვს TLS-ის მეშვეობით, რაც
+    შიფრავს თქვენს მოთხოვნებს, მაგრამ ვერ დაგიცავთ, თუ სერვერი მავნეა.</string>
+  <string name="server_label">დაცული DNS-ის სერვერი</string>
+  <string name="server_headline">თქვენ სანდო DNS-ის სერვერის გამოყენებას იმსახურებთ</string>
+  <string name="server_body">ეს ველი დაცული DNS-ის სერვერის სახელს აჩვენებს, რომელსაც იყენებთ.  თქვენ ასევე შეგიძლიათ გადახვიდეთ
+    სერვერზე პარამეტრების მენიუდან.</string>
+  <string name="default_server_label">ამჟამინდელი DNS-ის სერვერი</string>
+  <string name="insecure_server_headline">შეგიძლიათ აირჩიოთ თქვენი საკუთარი DNS-ის სერვერი</string>
+  <string name="insecure_server_body">როდესაც Intra გამორთულია, მოწყობილობების უმეტესობა წინასწარ არის კონფიგურირებული თქვენი ქსელის ოპერატორის მიერ არჩეული
+    DNS-ის სერვერის გამოსაყენებლად. ეს ველი აჩვენებს DNS-ის სერვერის IP მისამართს, რომელსაც თქვენი მოწყობილობა ამჟამად
+    იყენებს. Intra-ს ან Android P-ის საშუალებით შეგიძლიათ მარტივად აირჩიოთ თქვენთვის სასურველი სერვერი.</string>
+  <string name="strict_mode_server_headline">თქვენ აირჩიეთ დაცული სერვერი</string>
+  <string name="strict_mode_server_body">ეს ველი DNS-ის სერვერის სახელს აჩვენებს, რომელიც თქვენ დააკონფიგურირეთ Android-ის პირადი DNS-ის
+    პარამეტრებში  როდესაც Intra გათიშულია, თქვენმა აპებმა DNS-ის მოთხოვნები ამ სერვერზე უნდა გაგზავნონ.</string>
+  <string name="unknown_server">(უცნობი სერვერი)</string>
+  <string name="show_history">ბოლოდროინდელი მოთხოვნების ჩვენება</string>
+  <string name="query_label">მოთხოვნა</string>
+  <string name="type_label">ტიპი</string>
+  <string name="latency_label">რეაგირების დრო</string>
+  <string name="resolver_label">გადამყვანის მდებარეობა</string>
+  <string name="destination_label">დანიშნულების ადგილის სერვერი</string>
+  <string name="server_choice">DNS აირჩიეთ HTTPS სერვერზე</string>
+  <string name="server_choice_summary">ამჟამად არის %s</string>
+  <string name="server_choice_builtin">ჩაშენებული სერვერი</string>
+  <string name="server_choice_website_notice">გთხოვთ, <a href="https://www.example.com/">მათ ვებსაიტს</a> ეწვიოთ მათი კონფიდენციალურობის დებულებისა და მომსახურების ნებისმიერი მოქმედი პირობის გადასახედად.</string>
+  <string name="server_website_button">ვებსაიტის მონახულება</string>
+  <string name="try_all_servers">ყველა ჩაშენებული სერვერის მოსინჯვა</string>
+  <string name="checking_servers">მიმდინარეობს ყველა სერვერის შემოწმება</string>
+  <string name="found_fastest">თქვენი ყველაზე სწრაფი სერვერია %s.</string>
+  <string name="all_servers_failed">მოქმედი სერვერის იდენტიფიცირება ვერ მოხერხდა: კავშირი ვერ დამყარდა ყველა ჩაშენებულ სერვერთან.</string>
+  <string name="server_choice_custom">მორგებული სერვერის URL</string>
+  <string name="server_choice_warning">მორგებული სერვერი უნდა იყოს მოქმედი https:// URL</string>
+  <string name="excluded_apps">გამორიცხული აპები</string>
+  <string name="excluded_apps_summary">DNS-ის მოთხოვნები ნებისმიერი არჩეული აპიდან, რომლებიც არ გაივლის Intra-ს.  თუ ჩანს, რომ აპი შეუთავსებელია
+    Intra-სთან, მისი დამატება აქედან შეგიძლიათ.</string>
+  <string name="excluded_apps_title">მონიშნეთ აპები, რომ გამორიცხოთ Intra-დან</string>
+  <string name="old_android">ეს ფუნქცია მიუწვდომელია Android-ის თქვენს ვერსიაზე.</string>
+  <string name="notification_title">DNS-ის დაცვა აქტიურია</string>
+  <string name="notification_content">შეეხეთ DNS-ის დაცვის პარამეტრის შესაცვლელად</string>
+  <string name="channel_name">DNS-ის დაცვის აქტიური შეტყობინება</string>
+  <string name="channel_description">ეს შეტყობინება ჩანს, როდესაც DNS-ის დაცვა აქტიურია.</string>
+  <string name="warning_title">გაფრთხილება: Intra გამორთულია</string>
+  <string name="warning_channel_name">გაფრთხილება</string>
+  <string name="warning_channel_description">გამოჩნდება, როდესაც Intra-ს პრობლემა ექმნება</string>
+</resources>

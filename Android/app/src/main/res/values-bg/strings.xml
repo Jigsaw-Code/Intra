@@ -4,7 +4,7 @@
   <string name="intro_manipulation_headline">Защита от манипулиране на DNS</string>
   <string name="intro_manipulation_body">Intra защитава връзката ви до Системата за имена на домейни (DNS), която осигурява адресите, необходими за посещение на уебсайт или отваряне на приложение.\n\nIntra използва шифроване, за да предпази резултатите от манипулиране, и така подпомага безопасния ви достъп до интернет.</string>
   <string name="intro_details_headline">И накрая…</string>
-  <string name="intro_details_body">Докоснете „OK“, за да позволите на Intra да защитава DNS заявките ви. По подразбиране те ще бъдат насочвани към публичния DNS сървър на Google (<a href="https://developers.google.com/speed/public-dns/privacy">Декларация за поверителност</a>). Можете да изберете друга услуга в настройките на приложението.</string>
+  <string name="intro_details_body">Докоснете OK, за да позволите на Intra да защитава DNS заявките ви. По подразбиране те ще бъдат насочвани към публичния DNS сървър на Google (<a href="https://developers.google.com/speed/public-dns/privacy">Декларация за поверителност</a>). Можете да изберете друга услуга в настройките на приложението.</string>
   <string name="intro_back">назад</string>
   <string name="intro_next">напред</string>
   <string name="intro_accept">приемам</string>
@@ -26,7 +26,7 @@
   <string name="status_upgraded">Уязвима връзка</string>
   <string name="explanation_upgraded">Понастоящем връзката ви е защитена от настройката „Частен DNS“ в Android, но атакуващ може да деактивира или компрометира тази защита.</string>
   <string name="status_strict">Защитено от Android</string>
-  <string name="explanation_strict">Intra установи, че връзката „Частен DNS“ в Android е активирана.  Това значи, че DNS заявките ви вече са защитени, така че няма нужда да активирате Intra.</string>
+  <string name="explanation_strict">Intra установи, че настройката „Частен DNS“ в Android е активирана.  Това значи, че DNS заявките ви вече са защитени, така че няма нужда да активирате Intra.</string>
   <string name="status_starting">Стартира…</string>
   <string name="explanation_starting">Един момент.  Intra установява връзка със сървъра.</string>
   <string name="status_waiting">Чака се…</string>
@@ -49,7 +49,7 @@
   <string name="default_transport_label">Стандартен транспортен протокол</string>
   <string name="insecure_transport">нешифровано</string>
   <string name="insecure_transport_headline">Базовата услуга DNS не е шифрована</string>
-  <string name="insecure_transport_body">Повечето устройства и системи използват базовата услуга DNS, която не е шифрована и DNS заявките ви може да се наблюдават или променят от всеки в мрежата.  Някои нови устройства поддържат DNS през TLS, при което заявките се шифроват, но няма защита срещу злонамерен сървър.</string>
+  <string name="insecure_transport_body">Повечето устройства и системи използват базовата услуга DNS, която не е шифрована, и DNS заявките ви може да се наблюдават или променят от всеки в мрежата.  Някои нови устройства поддържат DNS през TLS, при което заявките се шифроват, но няма защита срещу злонамерен сървър.</string>
   <string name="server_label">Сигурен DNS сървър</string>
   <string name="server_headline">Заслужавате DNS сървър, на който да имате доверие</string>
   <string name="server_body">В това поле се показва името на сигурния DNS сървър, който използвате.  Можете да посочите и друг сървър в менюто „Настройки“.</string>

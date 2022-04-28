@@ -4,7 +4,7 @@
   <string name="intro_manipulation_headline">Skydd mot DNS-manipulation</string>
   <string name="intro_manipulation_body">Med Intra skyddas din anslutning till domännamnssystemet (DNS) som tillhandahåller den precisa adressen som behövs för att besöka en webbplats eller öppna en app.\n\nKryptering används i Intra för att säkerställa att dessa inte kan manipuleras så att du tryggt kan använda internet.</string>
   <string name="intro_details_headline">En sak till …</string>
-  <string name="intro_details_body">Tryck på OK om du vill skydda dina DNS-förfrågningar med Intra. Förfrågningarna dirigeras via Google Public DNS som standard (<a href="https://developers.google.com/speed/public-dns/privacy">sekretesspolicy</a>). Du kan välja en annan tjänst i appinställningarna.</string>
+  <string name="intro_details_body">Tryck på OK om du vill skydda dina DNS-förfrågningar med Intra. Förfrågningarna dirigeras via Google Public DNS som standard (<a href="https://developers.google.com/speed/public-dns/privacy">integritetspolicy</a>). Du kan välja en annan tjänst i appinställningarna.</string>
   <string name="intro_back">tillbaka</string>
   <string name="intro_next">nästa</string>
   <string name="intro_accept">godkänn</string>
@@ -13,7 +13,7 @@
   <string name="home">Startsida</string>
   <string name="settings">Inställningar</string>
   <string name="support">Support</string>
-  <string name="privacy_link">Sekretesspolicy</string>
+  <string name="privacy_link">Integritetspolicy</string>
   <string name="tos_link">Användarvillkor</string>
   <string name="source_code">Källkod</string>
   <string name="credits_text">Intra har skapats av <a href="https://jigsaw.google.com">Jigsaw</a>. IP-bestämda platser baseras på data
@@ -80,14 +80,14 @@
   <string name="server_choice">Välj server för DNS över HTTPS</string>
   <string name="server_choice_summary">Nuvarande: %s</string>
   <string name="server_choice_builtin">Inbyggd server</string>
-  <string name="server_choice_website_notice">Läs sekretesspolicyn och eventuella tillämpliga användarvillkor på <a href="https://www.example.com/">webbplatsen</a>.</string>
+  <string name="server_choice_website_notice">Läs integritetspolicyn och eventuella tillämpliga användarvillkor på <a href="https://www.example.com/">webbplatsen</a>.</string>
   <string name="server_website_button">Besök webbplatsen</string>
   <string name="try_all_servers">Testa alla inbyggda servrar</string>
   <string name="checking_servers">Alla servrar kontrolleras</string>
   <string name="found_fastest">Den snabbaste servern är %s.</string>
   <string name="all_servers_failed">Det gick inte att identifiera någon fungerande server: anslutningen misslyckades för alla inbyggda servrar.</string>
   <string name="server_choice_custom">Anpassad serverwebbadress</string>
-  <string name="server_choice_warning">Anpassad server måste ha en giltig https://-adress Webbadress</string>
+  <string name="server_choice_warning">Anpassad server måste ha en giltig https://-adress</string>
   <string name="excluded_apps">Uteslutna appar</string>
   <string name="excluded_apps_summary">DNS-förfrågningar från valda appar görs inte via Intra.  Du kan lägga till appar
     som inte verkar vara kompatibla med Intra här.</string>

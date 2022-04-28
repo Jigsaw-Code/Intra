@@ -14,10 +14,9 @@
   <string name="settings">Ustawienia</string>
   <string name="support">Pomoc</string>
   <string name="privacy_link">Polityka prywatności</string>
-  <string name="tos_link">Warunki świadczenia usług</string>
+  <string name="tos_link">Warunki usługi</string>
   <string name="source_code">Kod źródłowy</string>
-  <string name="credits_text">Aplikacja Intra została stworzona przez <a href="https://jigsaw.google.com">Jigsaw</a>. Lokalizacja adresu IP jest ustalana
-    na podstawie danych ze strony DB-IP.com.</string>
+  <string name="credits_text">Aplikację Intra opracował zespół <a href="https://jigsaw.google.com">Jigsaw</a>. Lokalizacje IP są podawane na podstawie danych z DB-IP.com.</string>
   <string name="indicator_on">Włączono</string>
   <string name="indicator_off">Wyłączono</string>
   <string name="status_exposed">Narażone</string>
@@ -27,22 +26,24 @@
   <string name="status_upgraded">Podatne</string>
   <string name="explanation_upgraded">Połączenie jest obecnie chronione ustawieniem Prywatny DNS Androida, ale atakujący może je wyłączyć lub obejść.</string>
   <string name="status_strict">Chronione przez Androida</string>
-  <string name="explanation_strict">Aplikacja Intra wykryła, że jest włączone ustawienie Prywatny DNS Androida. Oznacza to, że zapytania DNS są już chronione i nie ma potrzeby włączać aplikacji Intra.</string>
+  <string name="explanation_strict">Intra wykryła, że włączone jest ustawienie Prywatny DNS Androida. Oznacza to,
+    że zapytania DNS są już chronione i nie ma potrzeby włączać aplikacji Intra.</string>
   <string name="status_starting">Uruchamiam…</string>
-  <string name="explanation_starting">Daj nam chwilę. Intra nawiązuje połączenie z serwerem.</string>
+  <string name="explanation_starting">Zaczekaj.  Intra nawiązuje połączenie z serwerem.</string>
   <string name="status_waiting">Czekam…</string>
   <string name="status_failing">Połączenie nie działa prawidłowo</string>
-  <string name="explanation_offline">Twoje urządzenie jest w trybie offline. Intra czeka na połączenie z internetem.</string>
-  <string name="explanation_vpn">Aplikacja Intra wykryła na tym urządzeniu inny VPN. Jeśli ją włączysz, VPN zostanie wyłączony. Intra nie jest tak bezpieczna jak zaufana sieć VPN.</string>
+  <string name="explanation_offline">Twoje urządzenie jest offline.  Intra czeka na połączenie sieciowe.</string>
+  <string name="explanation_vpn">Intra wykryła na tym urządzeniu inny VPN. Jeśli ją włączysz, VPN zostanie wyłączony.
+    Intra nie jest tak bezpieczna jak zaufany VPN.</string>
   <string name="explanation_failing">Ostrzeżenie: zapytania nie są realizowane.  Wybierz inny serwer i ponownie uruchom aplikację Intra.</string>
-  <string name="system_details">Szczegółowe informacje o systemie</string>
-  <string name="num_requests">Zapytania od początku używania</string>
+  <string name="system_details">Informacje o systemie</string>
+  <string name="num_requests">Zapytania od początku</string>
   <string name="num_requests_headline">Zapytania DNS są wykonywane, gdy urządzenie sprawdza adres IP odpowiadający nazwie domenowej</string>
   <string name="num_requests_body">Ta wartość to łączna liczba zapytań DNS wykonanych przez Twoje urządzenie, gdy aplikacja Intra była aktywna. Intra szyfruje te zapytania i wysyła je do zaufanego serwera, by mieć pewność, że uzyskiwane odpowiedzi są autentyczne.</string>
   <string name="queries_per_minute">Ostatnie zapytania</string>
   <string name="queries_per_minute_headline">Zapytania DNS są wykonywane na początku każdego połączenia</string>
   <string name="queries_per_minute_body">Ta wartość to liczba zapytań DNS wykonanych przez Twoje urządzenie w ostatniej minucie. Załadowanie skomplikowanej strony internetowej wymaga czasem ponad stu zapytań DNS.</string>
-  <string name="transport_label">Szyfrowany protokół</string>
+  <string name="transport_label">Szyfrowany protokół transportowy</string>
   <string name="transport_headline">Szyfrowanie chroni Twoje zapytania przed podsłuchaniem</string>
   <string name="transport_body">Gdy używasz aplikacji Intra, Twoje zapytania DNS są szyfrowane, dzięki czemu tylko Ty i Twój serwer DNS znacie ich treść. Intra do szyfrowania używa protokołu DNS przez HTTPS.</string>
   <string name="default_transport_label">Domyślny protokół transportowy</string>
@@ -61,8 +62,8 @@
   <string name="show_history">Pokaż ostatnie zapytania</string>
   <string name="query_label">Zapytanie</string>
   <string name="type_label">Typ</string>
-  <string name="latency_label">Opóźnienie</string>
-  <string name="resolver_label">Lokalizacja programu rozpoznawania nazw</string>
+  <string name="latency_label">Czas oczekiwania</string>
+  <string name="resolver_label">Lokalizacja resolvera</string>
   <string name="destination_label">Serwer docelowy</string>
   <string name="server_choice">Wybierz serwer DoH (DNS over HTTPS)</string>
   <string name="server_choice_summary">Obecnie: %s</string>
@@ -81,10 +82,10 @@
   <string name="excluded_apps_title">Wybierz aplikacje do wykluczenia w Intra</string>
   <string name="old_android">Ta funkcja jest niedostępna w tej wersji Androida.</string>
   <string name="notification_title">Ochrona DNS jest aktywna</string>
-  <string name="notification_content">Kliknij, by zmienić ustawienia ochrony DNS</string>
+  <string name="notification_content">Kliknij, aby zmienić ustawienia ochrony DNS</string>
   <string name="channel_name">Powiadomienie o aktywnej ochronie DNS</string>
   <string name="channel_description">To powiadomienie wyświetla się, gdy ochrona DNS jest aktywna.</string>
-  <string name="warning_title">Ostrzeżenie: aplikacja Intra została dezaktywowana</string>
+  <string name="warning_title">Ostrzeżenie: Intra została dezaktywowana</string>
   <string name="warning_channel_name">Ostrzeżenie</string>
-  <string name="warning_channel_description">Wyświetla się, gdy w aplikacji Intra wystąpił problem.</string>
+  <string name="warning_channel_description">Pokaż, gdy Intra natrafi na problem.</string>
 </resources>

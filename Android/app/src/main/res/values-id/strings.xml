@@ -82,7 +82,7 @@
   <string name="try_all_servers">Coba semua server default</string>
   <string name="checking_servers">Memeriksa semua server</string>
   <string name="found_fastest">Server tercepat Anda adalah %s.</string>
-  <string name="all_servers_failed">Gagal mengidentifikasi server yang masih berfungsi: gagal tersambung ke semua server default.</string>
+  <string name="all_servers_failed">Gagal mengidentifikasi server yang masih berfungsi: gagal terhubung ke semua server default.</string>
   <string name="server_choice_custom">URL server kustom</string>
   <string name="server_choice_warning">Server kustom harus berupa URL https:// yang valid</string>
   <string name="excluded_apps">Aplikasi yang dikecualikan</string>

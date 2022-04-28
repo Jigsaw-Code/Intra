@@ -55,9 +55,9 @@
   <string name="default_transport_label">Transport prestabilit</string>
   <string name="insecure_transport">necriptat</string>
   <string name="insecure_transport_headline">DNS de bază este necriptat</string>
-  <string name="insecure_transport_body">Majoritatea dispozitivelor și a rețelelor folosesc un DNS de bază, care este necriptat, astfel încât interogările DNS ar putea fi
+  <string name="insecure_transport_body">Majoritatea dispozitivelor și a rețelelor folosesc un DNS de bază, care este necriptat, prin urmare interogările DNS ar putea fi
     observate sau modificate de orice utilizator din rețea.  Unele dispozitive noi sunt compatibile cu DNS peste protocolul TLS, care
-    vă criptează interogările, dar nu vă poate proteja dacă serverul este rău-intenționat.</string>
+    vă criptează interogările, dar nu vă poate proteja dacă serverul este rău intenționat.</string>
   <string name="server_label">Server DNS securizat</string>
   <string name="server_headline">Meritați să folosiți un server DNS de încredere</string>
   <string name="server_body">Acest câmp afișează numele serverului DNS securizat pe care îl folosiți.  Puteți să schimbați și cu
@@ -84,7 +84,7 @@
   <string name="found_fastest">Cel mai rapid server este %s.</string>
   <string name="all_servers_failed">Nu a fost identificat niciun server care funcționează: nu s-a efectuat conexiunea la toate serverele încorporate.</string>
   <string name="server_choice_custom">Adresă URL de server personalizat</string>
-  <string name="server_choice_warning">Serverul personalizat trebuie să fie o adresă URL https:// validă</string>
+  <string name="server_choice_warning">Serverul personalizat trebuie să fie o adresă URL validă https://</string>
   <string name="excluded_apps">Aplicații excluse</string>
   <string name="excluded_apps_summary">Interogările DNS din aplicațiile selectate nu vor trece prin Intra.  Dacă o aplicație pare să fie
     incompatibilă cu Intra, o puteți adăuga aici.</string>
