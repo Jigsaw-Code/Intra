@@ -101,9 +101,9 @@
 
   <string name="url12" translatable="false">https://doh.42l.fr/dns-query</string>
   <string name="name12" translatable="false">42l Association</string>
-  <string name="ips12" translatable="false">185.216.27.142</string>
+  <string name="ips12" translatable="false">45.155.171.163,2a09:6382:4000:3:45:155:171:163</string>
   <string name="description12" description="See https://42l.fr/DoH-service [CHAR_LIMIT=NONE]">
-    Server in Nanterre, France, operated by a French non-profit promoting free culture and ethics.
+    Server in Nice, France, operated by a French non-profit promoting free culture and ethics.
   </string>
   <string name="website12" translatable="false">https://42l.fr/DoH-service</string>
 
