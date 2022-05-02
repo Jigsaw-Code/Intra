@@ -43,13 +43,7 @@
   </string>
   <string name="website4" translatable="false">https://applied-privacy.net/services/dns/</string>
 
-  <string name="url5" translatable="false">https://doh.powerdns.org/</string>
-  <string name="name5" translatable="false">PowerDNS</string>
-  <string name="ips5" translatable="false">136.144.215.158,2a01:7c8:d002:1ef:5054:ff:fe40:3703</string>
-  <string name="description5" description="Describes PowerDNS's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
-    Server in the Netherlands, operated by an open-source DNS software company.
-  </string>
-  <string name="website5" translatable="false">https://powerdns.org/</string>
+  <!-- Server 5 was PowerDNS DoH, which has been shut down. -->
 
   <string name="url6" translatable="false">https://doh.dns.sb/dns-query</string>
   <string name="name6" translatable="false">DNS.SB</string>
@@ -75,13 +69,7 @@
   </string>
   <string name="website8" translatable="false">https://101.101.101.101/</string>
 
-  <string name="url9" translatable="false">https://doh.netweaver.uk/dns-query</string>
-  <string name="name9" translatable="false">NetWeaver</string>
-  <string name="ips9" translatable="false"></string>
-  <string name="description9" description="See https://www.netweaver.uk/labs/ [CHAR_LIMIT=NONE]">
-    Server in the UK, operated by a British website hosting company.
-  </string>
-  <string name="website9" translatable="false">https://www.netweaver.uk/dns-over-https/</string>
+  <!-- Server 9 was Netweaver DoH, which has been shut down. -->
 
   <string name="url10" translatable="false">https://rdns.faelix.net/</string>
   <string name="name10" translatable="false">FAELIX</string>
