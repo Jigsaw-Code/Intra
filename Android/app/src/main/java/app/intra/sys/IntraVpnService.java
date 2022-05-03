@@ -155,9 +155,11 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       // survives under memory pressure.  Since this is a VPN service, it is presumably protected
       // anyway, but the foreground service mechanism allows us to set a persistent notification,
       // which helps users understand what's going on, and return to the app if they want.
-      PendingIntent mainActivityIntent =
-          PendingIntent.getActivity(
-              this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+      PendingIntent mainActivityIntent = PendingIntent.getActivity(
+              this,
+              0,
+              new Intent(this, MainActivity.class),
+              PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
       Notification.Builder builder;
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
