@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Një zgjidhës i madh global nën drejtimin e Google.</string>
+  <string name="description1">Një zgjidhës i madh global nën drejtimin e Cloudflare.</string>
+  <string name="description2">Një zgjidhës i madh global nga IBM dhe Packet Clearinghouse.  Bllokon domenet keqdashëse.</string>
+  <string name="description3">Ofrues global i filtrimit të DNS-së.  Bllokon domenet keqdashëse.</string>
+  <string name="description4">Server në Austri nën drejtimin e një grupi jofitimprurës në fushën e privatësisë.</string>
+  <string name="description5">Server në Holandë nën drejtimin e një kompanie softuerësh me burim të hapur të DNS-së.</string>
+  <string name="description6">Nën drejtimin e xTom dhe disa ofruesve të tjerë ndërkombëtarë të shërbimit të strehimit.  Përdor rrjetin CDN të Cloudflare.</string>
+  <string name="description7">Server në Japoni nën drejtimin e një ofruesi të shërbimit të internetit.</string>
+  <string name="description8">Server në Tajvan nën drejtimin e një regjistruesi të domeneve me .tw.</string>
+  <string name="description9">Server në Mbretërinë e Bashkuar nën drejtimin e një kompanie britanike të shërbimit të strehimit të sajteve të uebit.</string>
+  <string name="description10">Shërbimi ofrohet nga Mbretëria e bashkuar dhe Zvicra nga një kompani britanike e rrjeteve dhe e shërbimit të strehimit.</string>
+  <string name="description11">Server në Londër, Mbretërinë e Bashkuar, nën drejtimin e një ofruesi britanik të shërbimit të internetit.</string>
+  <string name="description12">Server në Nanterre, Francë, nën drejtimin e një organizate jofitimprurëse franceze që promovon kulturën e lirisë dhe etikën.</string>
+  <string name="description13">Nën drejtimin e një shoqate zvicerano-gjermane për të drejtat civile në linjë, duke përdorur serverë në Zvicër, Gjermani ose Austri.</string>
+  <string name="description14">Server në Helsinki, Finlandë, nën drejtimin e një ofruesi gjerman jofitimprurës të shërbimit.</string>
+  <string name="description15">Një zgjidhës i madh global në zotërimin e Cisco.</string>
+  <string name="description16">Nën drejtimin e një kompanie të shërbimeve të teknologjisë së informacionit në Londër dhe Bullgari.</string>
+  <string name="description17">Nën drejtimin e Autoritetit Kanadez për Regjistrimin e Internetit.</string>
+</resources>

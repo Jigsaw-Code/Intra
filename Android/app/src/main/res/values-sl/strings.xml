@@ -36,7 +36,7 @@
   <string name="explanation_offline">Naprava je brez povezave.  Aplikacija Intra čaka na omrežno povezavo.</string>
   <string name="explanation_vpn">Aplikacija Intra je zaznala drugo omrežje VPN v napravi.  Če omogočite aplikacijo Intra, bo to omrežje VPN onemogočeno.
     Aplikacija Intra ni tako varna kot zaupanja vredno omrežje VPN.</string>
-  <string name="explanation_failing">Opozorilo: poizvedbe niso uspele.  Izberite drug strežnik ali znova zaženite aplikacijo Intra.</string>
+  <string name="explanation_failing">Opozorilo: Poizvedbe niso uspele.  Izberite drug strežnik ali znova zaženite aplikacijo Intra.</string>
   <string name="system_details">Podrobnosti o sistemu</string>
   <string name="num_requests">Število poizvedb (od začetka)</string>
   <string name="num_requests_headline">Poizvedbe DNS se izvajajo, ko naprava išče naslov IP za ime domene</string>
@@ -80,19 +80,19 @@
   <string name="try_all_servers">Preizkusi vgrajene strežnike</string>
   <string name="checking_servers">Preverjanje vseh strežnikov</string>
   <string name="found_fastest">Najhitrejši je strežnik %s.</string>
-  <string name="all_servers_failed">Identifikacija delujočega strežnika ni uspela: povezave ni bilo mogoče vzpostaviti z nobenim vgrajenim strežnikom.</string>
+  <string name="all_servers_failed">Identifikacija delujočega strežnika ni uspela: Povezave ni bilo mogoče vzpostaviti z nobenim vgrajenim strežnikom.</string>
   <string name="server_choice_custom">URL strežnika po meri</string>
-  <string name="server_choice_warning">Veljavni naslov strežnika po meri se mora začeti s https:// URL</string>
+  <string name="server_choice_warning">Veljavni naslov strežnika po meri se mora začeti z URL-jem https://.</string>
   <string name="excluded_apps">Izključene aplikacije</string>
   <string name="excluded_apps_summary">Poizvedbe DNS iz katere koli izbrane aplikacije ne bodo izvedene prek aplikacije Intra.  Če se zdi aplikacija nezdružljiva
     z aplikacijo Intra, jo lahko dodate tukaj.</string>
   <string name="excluded_apps_title">Označevanje aplikacij, ki naj jih Intra izključi</string>
   <string name="old_android">Ta funkcija ni na voljo v vaši različici Androida.</string>
   <string name="notification_title">Varovanje DNS je aktivno</string>
-  <string name="notification_content">Dotaknite se, da spremenite nastavitev varovanja DNS</string>
+  <string name="notification_content">Dotaknite se, da spremenite nastavitev varovanja DNS.</string>
   <string name="channel_name">Obvestilo o aktivnem varovanju DNS</string>
   <string name="channel_description">To obvestilo je prikazano, ko je varovanje DNS aktivno.</string>
-  <string name="warning_title">Opozorilo: Aplikacija Intra je deaktivirana</string>
+  <string name="warning_title">Opozorilo: Aplikacija Intra je deaktivirana.</string>
   <string name="warning_channel_name">Opozorilo</string>
   <string name="warning_channel_description">Prikazano, kadar pride v aplikaciji Intra do težave.</string>
 </resources>

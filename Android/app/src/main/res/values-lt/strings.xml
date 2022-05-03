@@ -87,7 +87,7 @@
   <string name="found_fastest">Sparčiausias serveris yra „%s“.</string>
   <string name="all_servers_failed">Nepavyko nustatyti veikiančio serverio: nepavyko prisijungti prie visų įtaisytųjų serverių.</string>
   <string name="server_choice_custom">Tinkintas serverio URL</string>
-  <string name="server_choice_warning">Tinkintas serveris turi būti tinkamas https:// URL</string>
+  <string name="server_choice_warning">Tinkintas serveris turi būti tinkamas „https://“ URL</string>
   <string name="excluded_apps">Išskirtos programos</string>
   <string name="excluded_apps_summary">Visų pasirinktų programų DNS užklausos nebus siunčiamos programai „Intra“.  Jei programa
     nesuderinama su „Intra“, galite ją pridėti čia.</string>

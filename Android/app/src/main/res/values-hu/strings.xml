@@ -4,7 +4,7 @@
   <string name="intro_manipulation_headline">Védelem a DNS-manipulációval szemben</string>
   <string name="intro_manipulation_body">Az Intra biztonságossá teszi a DNS rendszerrel létrehozott kapcsolatot. A DNS rendszer felel azon pontos címek meghatározásáért, amely a webhelyek vagy alkalmazások megnyitásához szükséges.\n\nAz Intra titkosítással biztosítja, hogy az eredmények ne legyenek manipulálhatók, így segítségével biztonságosan böngészhet az interneten.</string>
   <string name="intro_details_headline">Még egy dolog…</string>
-  <string name="intro_details_body">Koppintson az OK, ha engedélyezni szeretné, hogy az Intra védelmet biztosítson a DNS-lekérdezéseknek. Alapértelmezés szerint a lekérdezések a Google nyilvános DNS rendszeren haladnak keresztül (<a href="https://developers.google.com/speed/public-dns/privacy">adatvédelmi irányelvek</a>). Az alkalmazás beállításainál választhat másik szolgáltatást.</string>
+  <string name="intro_details_body">Koppintson az OK gombra, ha engedélyezni szeretné, hogy az Intra védelmet biztosítson a DNS-lekérdezéseknek. Alapértelmezés szerint a lekérdezések a Google nyilvános DNS rendszeren haladnak keresztül (<a href="https://developers.google.com/speed/public-dns/privacy">adatvédelmi irányelvek</a>). Az alkalmazás beállításainál választhat másik szolgáltatást.</string>
   <string name="intro_back">vissza</string>
   <string name="intro_next">következő</string>
   <string name="intro_accept">elfogadás</string>
@@ -16,7 +16,7 @@
   <string name="privacy_link">Adatvédelmi irányelvek</string>
   <string name="tos_link">Általános Szerződési Feltételek</string>
   <string name="source_code">Forráskód</string>
-  <string name="credits_text">Az Intrát a <a href="https://jigsaw.google.com">Jigsaw</a> fejlesztette. Az IP-helyadatok a DB-IP.com webhelyről származó adatokra alapulnak.</string>
+  <string name="credits_text">Az Intrát a <a href="https://jigsaw.google.com">Jigsaw</a> fejlesztette. Az IP-helyadatok a DB-IP.com webhelyről származó adatokon alapulnak.</string>
   <string name="indicator_on">Aktív</string>
   <string name="indicator_off">Nem aktív</string>
   <string name="status_exposed">Nem biztonságos</string>
@@ -26,7 +26,7 @@
   <string name="status_upgraded">Sérülékeny</string>
   <string name="explanation_upgraded">A kapcsolatot jelenleg az Android Private DNS védi, de egy támadó képes lehet bénítani ezt a védelmet.</string>
   <string name="status_strict">A védelmet az Android biztosítja</string>
-  <string name="explanation_strict">Az Intra azt észlelte, hogy az Android Private DNS beállítás engedélyezve van.  Ez azt jelenti, hogy a DNS-lekérdezések biztonságosan, ezért nincs szükség az Intra engedélyezésére.</string>
+  <string name="explanation_strict">Az Intra azt észlelte, hogy az Android Private DNS beállítás engedélyezve van.  Ez azt jelenti, hogy a DNS-lekérdezések biztonságosak, ezért nincs szükség az Intra bekapcsolására.</string>
   <string name="status_starting">Indítás…</string>
   <string name="explanation_starting">Várjon egy pillanatot.  Az Intra létrehozza a kapcsolatot egy szerverrel.</string>
   <string name="status_waiting">Várakozás…</string>
@@ -45,7 +45,7 @@
     Egy bonyolult webhely betöltése száznál is több DNS-lekérdezést igényelhet.</string>
   <string name="transport_label">Titkosított átvitel</string>
   <string name="transport_headline">A titkosítással elrejtheti a lekérdezéseket a kíváncsi szemek elől</string>
-  <string name="transport_body">Az Intra használata során a DNS-lekérdezések titkosítottak, így csak Ön és a DNS-szerver láthatja a DNS-lekérdezéseit.  Az Intra a titkosításhoz HTTPS protokollon keresztüli DNS-t használ.</string>
+  <string name="transport_body">Az Intra használata során a DNS-lekérdezések titkosítva vannak, így csak Ön és a DNS-szerver láthatja a DNS-lekérdezéseit.  Az Intra HTTPS feletti DNS eljárással végzi a titkosítást.</string>
   <string name="default_transport_label">Alapértelmezett átvitel</string>
   <string name="insecure_transport">nincs titkosítva</string>
   <string name="insecure_transport_headline">Az egyszerű DNS rendszer nincs titkosítva</string>
@@ -55,7 +55,7 @@
   <string name="server_body">A mezőben a használt biztonságos DNS-szerver neve látható.  A Beállítások menüben másik szerverre is válthat.</string>
   <string name="default_server_label">Jelenlegi DNS-szerver</string>
   <string name="insecure_server_headline">Kiválaszthatja a saját DNS-szerverét</string>
-  <string name="insecure_server_body">Ha az Intra alkalmazás le van tiltva, a legtöbb eszköz az előzetes beállítása alapján a hálózati szolgáltató által kiválasztott DNS-szervert használja. A mezőben az eszköz által jelenleg használt DNS-szerver IP-címe látható. Az Intra vagy az Android P segítségével egyszerűen választhat ki tetszőleges szervert.</string>
+  <string name="insecure_server_body">Ha az Intra alkalmazás le van tiltva, a legtöbb eszköz az előzetes beállítása alapján a hálózati szolgáltató által kiválasztott DNS-szervert használja. A mezőben az eszköz által jelenleg használt DNS-szerver IP-címe látható. Az Intra vagy az Android P segítségével egyszerűen választhat ki egy tetszőleges szervert.</string>
   <string name="strict_mode_server_headline">Kiválasztott egy biztonságos szervert</string>
   <string name="strict_mode_server_body">A mezőben az Android rendszer Privát DNS beállításában konfigurált DNS-szerver neve látható.  Ha az Intra alkalmazás le van tiltva, az alkalmazásoknak DNS-kérelmeket kell küldeniük erre a szerverre.</string>
   <string name="unknown_server">(ismeretlen szerver)</string>
@@ -75,7 +75,7 @@
   <string name="found_fastest">A leggyorsabb szervere: %s.</string>
   <string name="all_servers_failed">Nem sikerült működő szervert találni: nem sikerült csatlakozni az összes beépített szerverhez.</string>
   <string name="server_choice_custom">Egyéni szerver URL-címe</string>
-  <string name="server_choice_warning">Az egyéni szerver címének érvényes https://-címnek kell lennie.</string>
+  <string name="server_choice_warning">Az egyéni szerver címének egy érvényes https:// URL-nek kell lennie</string>
   <string name="excluded_apps">Kizárt alkalmazások</string>
   <string name="excluded_apps_summary">A kiválasztott alkalmazásokból származó DNS-lekérdezések nem mennek keresztül az Intrán.  Ha úgy tűnik, hogy egy alkalmazás inkompatibilis az Intrával, itt adhatja hozzá.</string>
   <string name="excluded_apps_title">Alkalmazások kizárása az Intrából</string>
@@ -84,7 +84,7 @@
   <string name="notification_content">Koppintson ide, ha módosítani szeretné a DNS-védelmi beállítást</string>
   <string name="channel_name">A DNS-védelem aktív állapotáról szóló értesítés</string>
   <string name="channel_description">Az értesítés akkor jelenik meg, ha a DNS-védelem aktív.</string>
-  <string name="warning_title">Figyelmeztetés: Az Intra inaktiválva lett.</string>
+  <string name="warning_title">Figyelmeztetés: Az Intra most már inaktív</string>
   <string name="warning_channel_name">Figyelmeztetés</string>
   <string name="warning_channel_description">Akkor jelenik meg, ha az Intra hibába ütközött.</string>
 </resources>

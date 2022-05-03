@@ -17,22 +17,22 @@
   <string name="tos_link">Algemene voorwaarden</string>
   <string name="source_code">Broncode</string>
   <string name="credits_text">Intra is gemaakt door <a href="https://jigsaw.google.com">Jigsaw</a>. IP-locaties worden gebaseerd op gegevens van DB-IP.com.</string>
-  <string name="indicator_on">Ingeschakeld</string>
-  <string name="indicator_off">Uitgeschakeld</string>
+  <string name="indicator_on">Aan</string>
+  <string name="indicator_off">Uit</string>
   <string name="status_exposed">Blootgesteld</string>
   <string name="explanation_exposed">Je verbinding is blootgesteld aan DNS-aanvallen.</string>
   <string name="status_protected">Beschermd</string>
   <string name="explanation_protected">Je verbinding is beschermd tegen DNS-aanvallen.</string>
   <string name="status_upgraded">Kwetsbaar</string>
-  <string name="explanation_upgraded">Je verbinding wordt momenteel beschermd door Android Private DNS, maar hackers kunnen deze bescherming uitschakelen of omzeilen.</string>
+  <string name="explanation_upgraded">Je verbinding wordt momenteel beschermd door Android Private DNS, maar hackers kunnen deze bescherming uitzetten of omzeilen.</string>
   <string name="status_strict">Beschermd door Android</string>
-  <string name="explanation_strict">Intra heeft gedetecteerd dat de instelling \'Android Private DNS\' is ingeschakeld. Dit betekent dat je DNS-zoekopdrachten al worden beschermd. Je hoeft Intra dus niet in te schakelen.</string>
+  <string name="explanation_strict">Intra heeft gedetecteerd dat de instelling \'Android Private DNS\' aanstaat. Dit betekent dat je DNS-zoekopdrachten al worden beschermd. Je hoeft Intra dus niet aan te zetten.</string>
   <string name="status_starting">Starten…</string>
   <string name="explanation_starting">Een ogenblik geduld. Intra maakt verbinding met de server.</string>
   <string name="status_waiting">Wachten…</string>
   <string name="status_failing">Mislukt</string>
   <string name="explanation_offline">Je apparaat is offline. Intra wacht op een netwerkverbinding.</string>
-  <string name="explanation_vpn">Intra heeft een ander VPN gedetecteerd op je apparaat. Als je Intra inschakelt, wordt dit VPN uitgeschakeld. Intra is minder veilig dan een vertrouwd VPN.</string>
+  <string name="explanation_vpn">Intra heeft een ander VPN gedetecteerd op je apparaat. Als je Intra aanzet, wordt dit VPN uitgezet. Intra is minder veilig dan een vertrouwd VPN.</string>
   <string name="explanation_failing">Waarschuwing: Zoekopdrachten mislukken. Kies een andere server of start Intra opnieuw.</string>
   <string name="system_details">Systeemgegevens</string>
   <string name="num_requests">Aantal query\'s</string>
@@ -53,11 +53,11 @@
   <string name="server_body">In dit veld staat de naam van de veilige DNS-server die je gebruikt. Je kunt deze wijzigen in een andere server in het menu Instellingen.</string>
   <string name="default_server_label">Huidige DNS-server</string>
   <string name="insecure_server_headline">Je kunt je eigen DNS-server kiezen</string>
-  <string name="insecure_server_body">Wanneer Intra is uitgeschakeld, geldt voor de meeste apparaten dat deze zo zijn geconfigureerd dat de DNS-server wordt gebruikt die wordt gekozen door je netwerkoperator. In dit veld staat het IP-adres van de DNS-server die je apparaat momenteel gebruikt. Met Intra of Android P kun je eenvoudig een server kiezen.</string>
+  <string name="insecure_server_body">Wanneer Intra uitstaat, geldt voor de meeste apparaten dat deze zo zijn geconfigureerd dat de DNS-server wordt gebruikt die wordt gekozen door je netwerkoperator. In dit veld staat het IP-adres van de DNS-server die je apparaat momenteel gebruikt. Met Intra of Android P kun je eenvoudig een server kiezen.</string>
   <string name="strict_mode_server_headline">Je hebt een veilige server geselecteerd</string>
-  <string name="strict_mode_server_body">In dit veld staat de naam van de DNS-server die je hebt geconfigureerd in de instelling \'Privé DNS\' van Android.  Wanneer Intra is ingeschakeld, sturen je apps DNS-zoekopdrachten naar deze server.</string>
+  <string name="strict_mode_server_body">In dit veld staat de naam van de DNS-server die je hebt geconfigureerd in de instelling \'Privé DNS\' van Android.  Wanneer Intra aanstaat, sturen je apps DNS-zoekopdrachten naar deze server.</string>
   <string name="unknown_server">(onbekende server)</string>
-  <string name="show_history">Recente query\'s weergeven</string>
+  <string name="show_history">Recente query\'s tonen</string>
   <string name="query_label">Zoekopdracht</string>
   <string name="type_label">Type</string>
   <string name="latency_label">Latentie</string>
@@ -83,7 +83,7 @@
   <string name="notification_content">Tik hier om de instelling voor DNS-bescherming te wijzigen</string>
   <string name="channel_name">Melding \'DNS-bescherming actief\'</string>
   <string name="channel_description">Deze melding verschijnt wanneer de DNS-bescherming actief is.</string>
-  <string name="warning_title">Waarschuwing: Intra is uitgeschakeld</string>
+  <string name="warning_title">Waarschuwing: Intra is uitgezet</string>
   <string name="warning_channel_name">Waarschuwing</string>
-  <string name="warning_channel_description">Wordt weergegeven wanneer er een probleem is met Intra.</string>
+  <string name="warning_channel_description">Wordt getoond wanneer er een probleem is met Intra.</string>
 </resources>

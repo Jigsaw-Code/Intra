@@ -1,0 +1,103 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Поотворен пристап на интернет</string>
+  <string name="intro_benefit_body">Intra ве штити од DNS-манипулација, напад на интернет што се користи за блокирање пристап до сајтови за вести, платформи на друштвени мрежи и апликации за разменување пораки.\n\nИако Intra ве заштитува од DNS-манипулација, постојат други, посложени техники и напади за блокирање од коишто Intra не штити.</string>
+  <string name="intro_manipulation_headline">Заштита од DNS-манипулација</string>
+  <string name="intro_manipulation_body">Intra ја штити вашата врска со „Системот за имиња на домени“ (DNS), што ги обезбедува точните адреси што ви се потребни за да одите на веб-сајт или да отворите апликација.\n\nIntra користи шифрирање за да не може да се манипулира со резултатите, што ви помага безбедно да пристапувате на интернет.</string>
+  <string name="intro_details_headline">Уште ова…</string>
+  <string name="intro_details_body">Допрете на „Во ред“ за да овозможите Intra да ги штити вашите DNS-барања. Стандардно, барањата ќе се проследуваат на Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">„Политика за приватност“</a>). Може да изберете друга услуги во поставките за апликацијата.</string>
+  <string name="intro_back">претходно</string>
+  <string name="intro_next">следно</string>
+  <string name="intro_accept">прифаќам</string>
+  <string name="drawer_open">Отворете ја фиоката за навигација</string>
+  <string name="drawer_close">Затворете ја фиоката за навигација</string>
+  <string name="home">Почетна страница</string>
+  <string name="settings">Поставки</string>
+  <string name="support">Поддршка</string>
+  <string name="privacy_link">Политика за приватност</string>
+  <string name="tos_link">Услови за користење</string>
+  <string name="source_code">Изворен код</string>
+  <string name="credits_text">Intra е создадена од <a href="https://jigsaw.google.com">Jigsaw</a>. IP-локациите се засноваат на податоци
+    од DB-IP.com.</string>
+  <string name="indicator_on">Вклучено</string>
+  <string name="indicator_off">Исклучено</string>
+  <string name="status_exposed">Изложено</string>
+  <string name="explanation_exposed">Вашата врска е изложена на напади на DNS.</string>
+  <string name="status_protected">Заштитено</string>
+  <string name="explanation_protected">Вашата врска е заштитена од напади на DNS.</string>
+  <string name="status_upgraded">Чувствително</string>
+  <string name="explanation_upgraded">Во моментов, вашата врска е заштитена со Android Private DNS, но напаѓач би можел да ја оневозможи
+    или наруши заштитава.</string>
+  <string name="status_strict">Заштитено од Android</string>
+  <string name="explanation_strict">Intra откри дека поставката за Android Private DNS е овозможена.  Тоа значи дека вашите DNS-барања
+    веќе се заштитени, па нема потреба да се овозможи Intra.</string>
+  <string name="status_starting">Се стартува…</string>
+  <string name="explanation_starting">Почекајте.  Intra воспоставува врска со серверот.</string>
+  <string name="status_waiting">На чекање…</string>
+  <string name="status_failing">Се прекинува врската</string>
+  <string name="explanation_offline">Уредот е офлајн.  Intra чека мрежна врска.</string>
+  <string name="explanation_vpn">Intra откри друга VPN-мрежа на уредот.  Ако ја овозможите Intra, другата VPN-мрежа ќе се оневозможи.
+    Intra не е толку безбедна како доверлива VPN-мрежа.</string>
+  <string name="explanation_failing">Предупредување: врската на барањата се прекинува.  Можеби ќе сакате да изберете друг сервер или да ја рестартирате Intra.</string>
+  <string name="system_details">Детали за системот</string>
+  <string name="num_requests">Вкупен број барања</string>
+  <string name="num_requests_headline">DNS-барања се извршуваат кога уредот ќе ја побара IP-адресата за конкретно име на домен</string>
+  <string name="num_requests_body">Оваа вредност го прикажува вкупниот број DNS-барања што ги извршил уредот додека Intra била
+    активна.  Intra ги шифрира барањава и ги испраќа до довелрив сервер за да се погрижи да
+    добиете веродостојни резултати.</string>
+  <string name="queries_per_minute">Неодамнешни барања</string>
+  <string name="queries_per_minute_headline">DNS-барањата се извршуваат на почетокот на секое поврзување</string>
+  <string name="queries_per_minute_body">Оваа вредност го прикажува вкупниот број DNS-барања што ги извршил уредот во текот на изминатата минута.
+    За вчитување сложена веб-страница може да бидат потребни преку сто DNS-барања.</string>
+  <string name="transport_label">Шифриран пренос</string>
+  <string name="transport_headline">Шифрирањето ги штити вашите барања од наметливо љубопитни очи</string>
+  <string name="transport_body">Кога користите Intra, вашите DNS-барања се шифрирани, така што само вие и вашиот DNS-сервер може да видите
+    какви DNS-барања испраќате.  За шифрирање, Intra го применува протоколот „DNS преку HTTPS“.</string>
+  <string name="default_transport_label">Стандарден пренос</string>
+  <string name="insecure_transport">нешифрирано</string>
+  <string name="insecure_transport_headline">Основниот DNS е нешифриран</string>
+  <string name="insecure_transport_body">Повеќето уреди и мрежи користат основен DNS којшто е нешифриран, па секој на мрежата би можел
+    да ги прегледува или менува вашите DNS-барања.  Некои нови уреди поддржуваат „DNS преку TLS“, што
+    ги шифрира вашите барања, но не може да обезбеди заштита ако серверот е злонамерен.</string>
+  <string name="server_label">Безбеден DNS-сервер</string>
+  <string name="server_headline">Заслужувате да користите доверлив DNS-сервер</string>
+  <string name="server_body">Во полево се прикажува името на безбедниот DNS-сервер што го користите.  Може и да го
+    промените серверот во менито „Поставки“.</string>
+  <string name="default_server_label">Тековен DNS-сервер</string>
+  <string name="insecure_server_headline">Може да изберете ваш сопствен DNS-сервер</string>
+  <string name="insecure_server_body">Кога Intra е оневозможена, повеќето уреди се претходно конфигурирани да го користат DNS-серверот што го избира
+    операторот на вашата мрежа. Во полево се прикажува IP-адресата на DNS-серверот што го користи вашиот уред
+    во моментов. Со Intra или Android P, може лесно да изберете сервер по желба.</string>
+  <string name="strict_mode_server_headline">Избравте безбеден сервер</string>
+  <string name="strict_mode_server_body">Во полево се прикажува името на DNS-серверот што сте го конфигурирале во поставката за Private DNS
+    на Android.  Кога Intra е оневозможена, вашите апликации би требало да испраќаат DNS-барања до серверов.</string>
+  <string name="unknown_server">(непознат сервер)</string>
+  <string name="show_history">Прикажи ги неодамнешните барања</string>
+  <string name="query_label">Барање</string>
+  <string name="type_label">Тип</string>
+  <string name="latency_label">Латенција</string>
+  <string name="resolver_label">Локација на одредувачот</string>
+  <string name="destination_label">Сервер на дестинацијата</string>
+  <string name="server_choice">Избирање сервер со „DNS преку HTTPS“</string>
+  <string name="server_choice_summary">Во моментов, %s</string>
+  <string name="server_choice_builtin">Вграден сервер</string>
+  <string name="server_choice_website_notice">Одете на <a href="https://www.example.com/">веб-сајтот на серверот</a> за да ги прегледате нивната „Политика за приватност“ и сите важечки „Услови за користење“.</string>
+  <string name="server_website_button">Одете на веб-сајтот</string>
+  <string name="try_all_servers">Испробајте ги сите вградени сервери</string>
+  <string name="checking_servers">Се проверуваат сите сервери</string>
+  <string name="found_fastest">Вашиот најбрз сервер е %s.</string>
+  <string name="all_servers_failed">Не можеше да се идентификува функционален сервер: не можеше да се воспостави врска со ниеден од вградените сервери.</string>
+  <string name="server_choice_custom">Приспособена URL-адреса на серверот</string>
+  <string name="server_choice_warning">Приспособениот сервер мора да биде важечка URL-адреса со https://</string>
+  <string name="excluded_apps">Изземени апликации</string>
+  <string name="excluded_apps_summary">DNS-барањата од избраните апликации нема да минуваат низ Intra.  Ако дадена апликације е
+    некомпатибилна со Intra, може да ја додадете тука.</string>
+  <string name="excluded_apps_title">Означување апликации за изземање од Intra</string>
+  <string name="old_android">Функцијава не е достапна на вашата верзија на Android.</string>
+  <string name="notification_title">DNS-заштитата е активна</string>
+  <string name="notification_content">Допрете за да ја промените поставката за DNS-заштита</string>
+  <string name="channel_name">Известување за активна DNS-заштита</string>
+  <string name="channel_description">Известувањево се појавува додека е активна DNS-заштитата.</string>
+  <string name="warning_title">Предупредување: Intra е деактивирана</string>
+  <string name="warning_channel_name">Предупредување</string>
+  <string name="warning_channel_description">Се прикажува кога Intra ќе наиде на проблем.</string>
+</resources>
