@@ -284,7 +284,7 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       }
 
       PendingIntent mainActivityIntent = PendingIntent.getActivity(
-          this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+          this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
       builder.setSmallIcon(R.drawable.ic_status_bar)
           .setContentTitle(getResources().getText(R.string.warning_title))
