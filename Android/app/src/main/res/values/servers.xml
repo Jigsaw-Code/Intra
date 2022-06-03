@@ -134,4 +134,12 @@
     Operated by the Canadian Internet Registration Authority.
   </string>
   <string name="website17" translatable="false">https://www.cira.ca/cybersecurity-services/canadian-shield</string>
+
+  <string name="url18" translatable="false">https://puredns.org/dns-query</string>
+  <string name="name18" translatable="false">PureDNS</string>
+  <string name="ips18" translatable="false"></string>
+  <string name="description18" description="See https://puredns.org/ [CHAR_LIMIT=NONE]">
+    Server in Asia-Pacific region operated by a non-profit privacy group.
+  </string>
+  <string name="website18" translatable="false">https://puredns.org/</string>
 </resources>
