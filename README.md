@@ -5,7 +5,7 @@ Intra is an experimental tool that allows you to test new DNS-over-HTTPS
 services that encrypt domain name lookups and prevent manipulation by your
 network. It currently supports services from Cloudflare and Google, and
 additional options may be added over time.  You can get it from the
-Google Play Store [here](https://play.google.com/store/apps/details?id=app.intra).
+[Google Play Store](https://play.google.com/store/apps/details?id=app.intra) or from [F-Droid](https://f-droid.org/packages/app.intra/).
 
 Features:
 * Built-in support for public DNS services from Cloudflare and Google
