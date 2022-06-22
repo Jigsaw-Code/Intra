@@ -1,0 +1,103 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Više otvorenog pristupa internetu</string>
+  <string name="intro_benefit_body">Intra vas štiti od DNS manipulacije, cyber napada koji se koristi za blokiranje pristupa web lokacijama s vijestima, platformama društvenih mreža i aplikacijama za razmjenu poruka.\n\nIako vas Intra štiti od DNS manipulacije, postoje i druge, kompliciranije tehnike blokiranja i napada od kojih Intra ne štiti.</string>
+  <string name="intro_manipulation_headline">Zaštita od DNS manipulacije</string>
+  <string name="intro_manipulation_body">Intra štiti vašu vezu sa sistemom naziva domena (Domain Name System, DNS), koji pruža tačne adrese potrebne za posjete web lokacijama ili otvaranje aplikacija.\n\nIntra koristi šifriranje kako bi osigurala da se rezultatima ne može manipulirati, čime vam pomaže da sigurno pristupate internetu.</string>
+  <string name="intro_details_headline">Još nešto…</string>
+  <string name="intro_details_body">Dodirnite Uredu i dozvolite da Intra zaštiti vaše DNS zahtjeve. Zadano, oni će biti usmjereni na Google javni DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Pravila privatnosti</a>). Možete odabrati drugu uslugu u postavkama aplikacije.</string>
+  <string name="intro_back">nazad</string>
+  <string name="intro_next">naprijed</string>
+  <string name="intro_accept">prihvatam</string>
+  <string name="drawer_open">Otvaranje panela za navigaciju</string>
+  <string name="drawer_close">Zatvaranje panela za navigaciju</string>
+  <string name="home">Početna stranica</string>
+  <string name="settings">Postavke</string>
+  <string name="support">Podrška</string>
+  <string name="privacy_link">Pravila privatnosti</string>
+  <string name="tos_link">Uslovi korištenja usluge</string>
+  <string name="source_code">Izvorni kôd</string>
+  <string name="credits_text">Uslugu Intra je napravio <a href="https://jigsaw.google.com">Jigsaw</a>. Lokacije IP-a su zasnovane na podacima
+    s web lokacije DB-IP.com.</string>
+  <string name="indicator_on">Uključeno</string>
+  <string name="indicator_off">Isključeno</string>
+  <string name="status_exposed">Izloženo</string>
+  <string name="explanation_exposed">Vaša veza je izložena DNS napadima.</string>
+  <string name="status_protected">Zaštićeno</string>
+  <string name="explanation_protected">Vaša veza je zaštićena od DNS napada.</string>
+  <string name="status_upgraded">Ranjivo</string>
+  <string name="explanation_upgraded">Vašu vezu trenutno štiti Android privatni DNS, ali napadač može onemogućiti
+    ili narušiti ovu zaštitu.</string>
+  <string name="status_strict">Štiti Android</string>
+  <string name="explanation_strict">Intra je otkrila da je omogućena postavka Android privatni DNS.  To znači da su vaši DNS
+    upiti već zaštićeni, zato nema potrebe da se omogući Intra.</string>
+  <string name="status_starting">Pokretanje…</string>
+  <string name="explanation_starting">Pričekajte.  Intra uspostavlja vezu sa serverom.</string>
+  <string name="status_waiting">Čekanje…</string>
+  <string name="status_failing">Nije uspjelo</string>
+  <string name="explanation_offline">Uređaj je offline.  Intra čeka mežnu vezu.</string>
+  <string name="explanation_vpn">Intra je otkrila drugi VPN na uređaju.  Ako omogućite uslugu Intra, taj VPN će se onemogućiti.
+    Intra nije toliko sigurna kao pouzdani VPN.</string>
+  <string name="explanation_failing">Upozorenje: upiti ne uspijevaju.  Možda želite odabrati drugi server ili ponovo pokrenuti uslugu Intra.</string>
+  <string name="system_details">Detalji o sistemu</string>
+  <string name="num_requests">Dosadašnji upiti</string>
+  <string name="num_requests_headline">DNS upiti se upućuju kada vaš uređaj potraži IP adresu za naziv domene</string>
+  <string name="num_requests_body">Ova vrijednost pokazuje ukupan broj DNS upita koje je vaš uređaj izvršio dok je Intra bila
+    aktivna.  Intra šifrira te upite i šalje ih na pouzdan server kako bi osigurala da
+    dobijete autentične rezultate.</string>
+  <string name="queries_per_minute">Nedavni upiti</string>
+  <string name="queries_per_minute_headline">DNS upiti se upućuju na početku svakog povezivanja</string>
+  <string name="queries_per_minute_body">Ova vrijednost pokazuje broj DNS upita koje je vaš uređaj izvršio u posljednjoj minuti.
+    Učitavanje složene web stranice može zahtijevati preko sto DNS upita.</string>
+  <string name="transport_label">Šifrirani prijenos</string>
+  <string name="transport_headline">Šifriranje štiti vaše upite od znatiželjnih očiju</string>
+  <string name="transport_body">Kada koristite uslugu Intra, vaši DNS upiti se šifriraju, tako da smo vi i DNS server možete vidjeti
+    koji DNS upiti se upućuju.  Intra implementira DNS preko HTTPS protokola za šifriranje.</string>
+  <string name="default_transport_label">Zadani prijenos</string>
+  <string name="insecure_transport">nešifrirano</string>
+  <string name="insecure_transport_headline">Osnovni DNS je nešifriran</string>
+  <string name="insecure_transport_body">Većina uređaja i mreža koriste osnovni DNS, koji je nešifriran, tako da vaše DNS upite može
+    uočiti ili izmijeniti bilo ko na mreži.  Neki novi uređaji podržavaju DNS preko TLS-a, koji
+    šifrira upite, ali vas ne može zaštiti ako je server zlonamjeran.</string>
+  <string name="server_label">Siguran DNS server</string>
+  <string name="server_headline">Zaslužujete da koristite pouzdan DNS server</string>
+  <string name="server_body">U ovom polju je prikazan naziv sigurnog DNS servera koji kristite.  Možete ga i promijeniti u
+    drugi server u meniju Postavke.</string>
+  <string name="default_server_label">Trenutni DNS server</string>
+  <string name="insecure_server_headline">Možete odabrati vlastiti DNS server</string>
+  <string name="insecure_server_body">Kada je Intra onemogućena, većina uređaja je unaprijed konfigurirana da koristi DNS server koji bira vaš
+    mrežni operater. U ovom polju je prikazana IP adresa DNS servera koji uređaj trenutno
+    koristi. Uz usluge Intra ili Android P jednostavno možete odabrati server koji želite.</string>
+  <string name="strict_mode_server_headline">Odabrali ste siguran server</string>
+  <string name="strict_mode_server_body">U ovom polju je prikazan naziv DNS servera koji ste konfigurirali u postavci Android
+    privatni DNS.  Kada je Intra onemogućena, aplikacije bi trebale slati DNS upite ovom serveru.</string>
+  <string name="unknown_server">(nepoznat server)</string>
+  <string name="show_history">Prikaži nedavne upite</string>
+  <string name="query_label">Upit</string>
+  <string name="type_label">Vrsta</string>
+  <string name="latency_label">Latentnost</string>
+  <string name="resolver_label">Lokacija razrješivača</string>
+  <string name="destination_label">Server odredišta</string>
+  <string name="server_choice">Odaberite DNS preko HTTPS servera</string>
+  <string name="server_choice_summary">Trenutno: %s</string>
+  <string name="server_choice_builtin">Ugrađeni server</string>
+  <string name="server_choice_website_notice">Posjetite <a href="https://www.example.com/">njegovu web lokaciju</a> da pregledate pravila privatnosti i važeće uslove korištenja usluge, ako postoje.</string>
+  <string name="server_website_button">Posjetite web lokaciju</string>
+  <string name="try_all_servers">Isprobajte sve ugrađene servere</string>
+  <string name="checking_servers">Provjeravanje svih servera</string>
+  <string name="found_fastest">Najbrži server je %s.</string>
+  <string name="all_servers_failed">Identifikacija servera koji radi nije uspjela: nije uspjelo povezivanje ni sa jednim ugrađenim serverom.</string>
+  <string name="server_choice_custom">URL prilagođenog servera</string>
+  <string name="server_choice_warning">Prilagođeni server mora biti važeći https:// URL</string>
+  <string name="excluded_apps">Izuzete aplikacije</string>
+  <string name="excluded_apps_summary">DNS upiti iz odabranih aplikacija neće prolaziti kroz uslugu Intra.  Ako vam se čini da aplikacija
+    nije kompatibilna s uslugom Intra, možete je dodati ovdje.</string>
+  <string name="excluded_apps_title">Označite aplikacije koje će se izuzeti iz usluge Intra</string>
+  <string name="old_android">Ova funkcionalnost nije dostupna na vašoj verziji Androida.</string>
+  <string name="notification_title">DNS zaštita je aktivna</string>
+  <string name="notification_content">Dodirnite da promijenite postavku DNS zaštite</string>
+  <string name="channel_name">Obavještenje o aktivnoj DNS zaštiti</string>
+  <string name="channel_description">Ovo obavještenje se pojavljuje kada je DNS zaštita aktivna.</string>
+  <string name="warning_title">Upozorenje: Intra je deaktivirana</string>
+  <string name="warning_channel_name">Upozorenje</string>
+  <string name="warning_channel_description">Prikazuje se kada Intra naiđe na problem.</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Veliki globalni razrješivač kojim upravlja Google.</string>
+  <string name="description1">Veliki globalni razrješivač kojim upravlja Cloudflare.</string>
+  <string name="description2">Veliki globalni razrješivač iz IBM-a i Packet Clearinghousea.  Blokira zlonamjerne domene.</string>
+  <string name="description3">Globalni pružalac DNS filtriranja.  Blokira zlonamjerne domene.</string>
+  <string name="description4">Server u Austriji kojim upravlja neprofitna grupa za zaštitu privatnosti.</string>
+  <string name="description5">Server u Nizozemskoj kojim upravlja kompanija koja pruža DNS softver otvorenog koda.</string>
+  <string name="description6">Njime upravlja xTom i drugi pružaoci usluge hostiranja.  Koristi CDN Cloudflarea.</string>
+  <string name="description7">Server u Japanu kojim upravlja ISP.</string>
+  <string name="description8">Server u Tajvanu kojim upravlja registar domene .tw.</string>
+  <string name="description9">Server u UK kojim upravlja britanska kompanija za hostiranje web lokacija.</string>
+  <string name="description10">Usluge iz UK i Švicarske pruža britanska kompanija za hostiranje i mreže.</string>
+  <string name="description11">Server u Londonu, UK, kojim upravlja britanski ISP.</string>
+  <string name="description12">Server u Nici, Francuska, kojim upravlja francuska neprofitna organizacija za promociju slobodne kulture i etike.</string>
+  <string name="description13">Njime upravlja švicarsko-njemačko udruženje za ljudska prava na mreži, koristi servere u Švicarskoj, Njemačkoj ili Austriji.</string>
+  <string name="description14">Server u Helsinkiju, Finska, kojim upravlja njemački neprofitni pružalac usluga.</string>
+  <string name="description15">Veliki globalni razrješivač u vlasništvu kompanije Cisco.</string>
+  <string name="description16">Njime upravlja kompanija za pružanje IT usluga u Londonu i Bugarskoj.</string>
+  <string name="description17">Njime upravlja kanadsko nadležno tijelo za registraciju na internetu.</string>
+</resources>

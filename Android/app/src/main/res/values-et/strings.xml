@@ -1,0 +1,103 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="intro_benefit_headline">Avatum juurdepääs Internetile</string>
+  <string name="intro_benefit_body">Intra kaitseb teid DNS-i manipuleerimise eest. See on küberrünnak, millega blokeeritakse juurdepääs uudistesaitidele, sotsiaalmeediaplatvormidele ja sõnumsiderakendustele.\n\nIntra kaitseb teid küll DNS-i manipuleerimise vastu, ent on ka muid, keerukamaid blokeerimistehnikaid ja -rünnakuid, mille vastu Intra ei kaitse.</string>
+  <string name="intro_manipulation_headline">DNS-i manipuleerimise vastane kaitse</string>
+  <string name="intro_manipulation_body">Intra kaitseb teie ühendust domeeninimesüsteemiga (DNS), mis esitab täpsed aadressid, mida vajate veebisaidi külastamiseks või rakenduse avamiseks.\n\nIntra kasutab krüpteerimist, et tulemusi ei saaks manipuleerida, mis aitab teil ohutult Internetile juurde pääseda.</string>
+  <string name="intro_details_headline">Veel üks asi …</string>
+  <string name="intro_details_body">Puudutage valikut OK, et lubada Intral teie DNS-päringuid kaitsta. Need edastatakse vaikimisi Google\'i avalikku DNS-i (<a href="https://developers.google.com/speed/public-dns/privacy">privaatsuseeskirjad</a>). Võite rakenduse seadetes valida muu teenuse.</string>
+  <string name="intro_back">tagasi</string>
+  <string name="intro_next">edasi</string>
+  <string name="intro_accept">nõustun</string>
+  <string name="drawer_open">Avage navigeerimissahtel</string>
+  <string name="drawer_close">Sulgege navigeerimissahtel</string>
+  <string name="home">Avakuva</string>
+  <string name="settings">Seaded</string>
+  <string name="support">Tugi</string>
+  <string name="privacy_link">Privaatsuseeskirjad</string>
+  <string name="tos_link">Teenusetingimused</string>
+  <string name="source_code">Lähtekood</string>
+  <string name="credits_text">Intra looja on <a href="https://jigsaw.google.com">Jigsaw</a>. IP-aadresside asukohad põhinevad andmetel
+    saidilt DB-IP.com.</string>
+  <string name="indicator_on">Sees</string>
+  <string name="indicator_off">Väljas</string>
+  <string name="status_exposed">Kaitsmata</string>
+  <string name="explanation_exposed">Teie ühendus on DNS-rünnakute vastu kaitsetu.</string>
+  <string name="status_protected">Kaitstud</string>
+  <string name="explanation_protected">Teie ühendus on DNS-rünnakute eest kaitstud.</string>
+  <string name="status_upgraded">Haavatav</string>
+  <string name="explanation_upgraded">Teie ühendust kaitseb praegu Androidi privaatne DNS, ent ründaja võib selle kaitsemeetme keelata
+    või seda õõnestada.</string>
+  <string name="status_strict">Kaitseb Android</string>
+  <string name="explanation_strict">Intra tuvastas, et Androidi privaatse DNS-i seade on lubatud.  See tähendab, et teie DNS-päringud
+    on juba kaitstud, seega ei ole teil vaja Intrat lubada.</string>
+  <string name="status_starting">Käivitamine …</string>
+  <string name="explanation_starting">Oodake pisut.  Intra loob ühendust serveriga.</string>
+  <string name="status_waiting">Ootel …</string>
+  <string name="status_failing">Nurjub</string>
+  <string name="explanation_offline">Teie seadmel puudub võrguühendus.  Intra on võrguühenduse ootel.</string>
+  <string name="explanation_vpn">Intra tuvastas teie seadmes teise VPN-i.  Kui lubate Intra, keelatakse teine VPN.
+    Intra on vähem turvaline kui usaldusväärne VPN.</string>
+  <string name="explanation_failing">Hoiatus. Päringud nurjuvad.  Võib-olla soovite muu serveri valida või Infra taaskäivitada.</string>
+  <string name="system_details">Süsteemi üksikasjad</string>
+  <string name="num_requests">Eluaja jooksul tehtud päringud</string>
+  <string name="num_requests_headline">DNS-päringud tehakse siis, kui teie seade otsib domeeninime IP-aadressi</string>
+  <string name="num_requests_body">Väärtus näitab DNS-i päringute koguarvu, mille teie seade tegi ajal, mil Intra oli
+    aktiivne.  Intra krüpteerib päringud ja saadab need usaldusväärsesse serverisse, et saaksite
+    kindlasti ehtsad tulemused.</string>
+  <string name="queries_per_minute">Hiljutised päringud</string>
+  <string name="queries_per_minute_headline">DNS-päringud edastatakse iga ühenduse alguses</string>
+  <string name="queries_per_minute_body">Väärtus näitab DNS-päringute arvu, mille teie seade tegi viimase minuti jooksul.
+    Keeruke veebilehe laadimiseks võib olla vaja üle saja DNS-päringu.</string>
+  <string name="transport_label">Krüpteeritud transport</string>
+  <string name="transport_headline">Krüpteerimine kaitseb teie päringuid uudishimulike pilkude eest</string>
+  <string name="transport_body">Kui kasutate Intrat, on teie DNS-päringud krüpteeritud, et ainult teie ja teie DNS-server näeksite,
+    milliseid DNS-päringuid te teete.  Krüpteerimiseks juurutab Intra DNS-i HTTPS-protokolli kaudu.</string>
+  <string name="default_transport_label">Vaiketransport</string>
+  <string name="insecure_transport">krüpteerimata</string>
+  <string name="insecure_transport_headline">Harilik DNS on krüpteerimata</string>
+  <string name="insecure_transport_body">Enamik seadmeid ja võrke kasutab harilikku DNS-i, mis on krüpteerimata. Seega saab igaüks võrgus teie DNS-päringuid
+    jälgida või muuta.  Teatud uued seadmed toetavad DNS-i TLS-i kaudu, mis
+    krüpteerib teie päringud, ent ei suuda teid kaitsta juhul, kui server on pahatahtlik.</string>
+  <string name="server_label">Turvaline DNS-server</string>
+  <string name="server_headline">Väärite usaldusväärset DNS-serverit</string>
+  <string name="server_body">See väli näitab teie kasutatava turvalise DNS-serveri nime.  Samuti võite menüüs Seaded
+    võtta kasutusele muu serveri.</string>
+  <string name="default_server_label">Praegune DNS-server</string>
+  <string name="insecure_server_headline">Võite valida oma isikliku DNS-serveri</string>
+  <string name="insecure_server_body">Kui Intra on keelatud, on enamik seadmeid eelseadistatud kasutama teie võrguoperaatori valitud
+    DNS-serverit. See väli näitab teie seadmes praegu kasutatava DNS-serveri
+    IP-aadressi. Intra või Android P abil saate hõlpsasti valida soovitud serveri.</string>
+  <string name="strict_mode_server_headline">Olete valinud turvalise serveri</string>
+  <string name="strict_mode_server_body">See väli näitab Androidi privaatse DNS-i seadetes loodud DNS-serveri 
+    nime.  Kui Intra on keelatud, peaksid teie rakendused saatma DNS-päringud sellesse serverisse.</string>
+  <string name="unknown_server">(tundmatu server)</string>
+  <string name="show_history">Kuva hiljutised päringud</string>
+  <string name="query_label">Päring</string>
+  <string name="type_label">Tüüp</string>
+  <string name="latency_label">Latentsusaeg</string>
+  <string name="resolver_label">Resolveri asukoht</string>
+  <string name="destination_label">Sihtserver</string>
+  <string name="server_choice">Valige HTTPS-i kaudu DNS-päringuid edastav server</string>
+  <string name="server_choice_summary">Praegu %s</string>
+  <string name="server_choice_builtin">Sisseehitatud server</string>
+  <string name="server_choice_website_notice">Külastage <a href="https://www.example.com/">nende veebisaiti</a>, et vaadata üle nende privaatsuseeskirjad ja kohalduvad teenusetingimused.</string>
+  <string name="server_website_button">Külastage veebisaiti</string>
+  <string name="try_all_servers">Proovi kõiki sisseehitatud servereid</string>
+  <string name="checking_servers">Kõigi serverite kontrollimine</string>
+  <string name="found_fastest">Teie kiireim server on %s.</string>
+  <string name="all_servers_failed">Töötava serveri tuvastamine nurjus: kõigi sisseehitatud serveritega ühenduse loomine nurjus.</string>
+  <string name="server_choice_custom">Kohandatud serveri URL</string>
+  <string name="server_choice_warning">Kohandatud server peab olema kehtiv URL eesliitega https://</string>
+  <string name="excluded_apps">Välistatud rakendused</string>
+  <string name="excluded_apps_summary">Valitud rakendustest pärinevaid DNS-päringuid ei saadeta Intra kaudu.  Kui näib, et rakendus ei
+    ühildu Intraga, võite selle siia lisada.</string>
+  <string name="excluded_apps_title">Märkige Intrast välistatavad rakendused</string>
+  <string name="old_android">See funktsioon ei ole teie Androidi versioonis saadaval.</string>
+  <string name="notification_title">DNS-i kaitse on aktiivne</string>
+  <string name="notification_content">Puudutage DNS-i kaitse seade muutmiseks</string>
+  <string name="channel_name">Aktiivse DNS-i kaitse märguanne</string>
+  <string name="channel_description">See märguanne kuvatakse siis, kui DNS-i kaitse on aktiivne.</string>
+  <string name="warning_title">Hoiatus: Intra on inaktiveeritud</string>
+  <string name="warning_channel_name">Hoiatus</string>
+  <string name="warning_channel_description">Kuvatakse juhul, kui Intras ilmneb probleem.</string>
+</resources>

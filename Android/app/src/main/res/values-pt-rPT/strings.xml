@@ -89,7 +89,7 @@
   <string name="server_choice_custom">URL de servidor personalizado</string>
   <string name="server_choice_warning">O servidor personalizado tem de ser um https:// válido URL</string>
   <string name="excluded_apps">Apps excluídas</string>
-  <string name="excluded_apps_summary">As consultas DNS das aplicações selecionadas não passam pelo Intra.  Se uma aplicação aparentar ser
+  <string name="excluded_apps_summary">As consultas DNS das apps selecionadas não passam pelo Intra.  Se uma aplicação aparentar ser
     incompatível com o Intra, pode adicioná-la aqui.</string>
   <string name="excluded_apps_title">Marcar aplicações para exclusão do Intra</string>
   <string name="old_android">Esta funcionalidade não está disponível na sua versão do Android.</string>
