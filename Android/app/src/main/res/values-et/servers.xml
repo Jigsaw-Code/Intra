@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="description0">Suur globaalne resolver, mida käitab Google.</string>
+  <string name="description1">Suur globaalne resolver, mida käitab Cloudflare.</string>
+  <string name="description2">Suur globaalne resolver IBM-ilt ja Packet Clearinghouse\'ilt.  Blokeerib pahatahtlikud domeenid.</string>
+  <string name="description3">Globaalne DNS-i filtreerimisteenuse pakkuja.  Blokeerib pahatahtlikud domeenid.</string>
+  <string name="description4">Austrias asuv server, mida käitab mittetulunduslik privaatsusgrupp.</string>
+  <string name="description5">Hollandis asuv server, mida käitab avatud lähtekoodiga DNS-tarkvaraga tegelev ettevõte.</string>
+  <string name="description6">Serverit käitab xTom ja muud rahvusvahelised hostimisteenuse pakkujad.  Kasutab Cloudflare\'i CDN-i.</string>
+  <string name="description7">Jaapanis asuv server, mida käitab Interneti-teenuse pakkuja.</string>
+  <string name="description8">Taiwanis asuv server, mida käitab .tw domeeni registraator.</string>
+  <string name="description9">Ühendkuningriigis asuv server, mida käitab Briti veebisaitide hostimisettevõtte.</string>
+  <string name="description10">Esitab Briti hostimis- ja võrguettevõte Ühendkuningriigist ja Šveitsist.</string>
+  <string name="description11">Ühendkuningriigis Londonis asuv server, mida käitab Briti Interneti-teenuse pakkuja.</string>
+  <string name="description12">Prantsusmaal Nice’is asuv server, mida käitab kultuuri- ja eetikavabadust propageeriv Prantsuse mittetulundusühing.</string>
+  <string name="description13">Seda käitab veebis inimõiguste kaitsmisega tegelev Šveitsi-Saksa assotsiatsioon, mis kasutab Šveitsis, Saksamaal või Austrias asuvaid servereid.</string>
+  <string name="description14">Soomes Helsingis asuv server, mida käitab Saksa mittetulunduslik teenusepakkuja.</string>
+  <string name="description15">Suur globaalne resolver, mille omanik on Cisco.</string>
+  <string name="description16">Seda käitab Londonis ja Bulgaarias tegutsev IT-teenuste ettevõtte.</string>
+  <string name="description17">Seda käitab Canadian Internet Registration Authority.</string>
+</resources>
