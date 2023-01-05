@@ -87,13 +87,13 @@
   </string>
   <string name="website11" translatable="false">https://www.aa.net.uk/dns/</string>
 
-  <string name="url12" translatable="false">https://doh.42l.fr/dns-query</string>
-  <string name="name12" translatable="false">42l Association</string>
+  <string name="url12" translatable="false">https://doh.lacontrevoie.fr/dns-query</string>
+  <string name="name12" translatable="false">La Contre-Voie</string>
   <string name="ips12" translatable="false">45.155.171.163,2a09:6382:4000:3:45:155:171:163</string>
-  <string name="description12" description="See https://42l.fr/DoH-service [CHAR_LIMIT=NONE]">
+  <string name="description12" description="See https://lacontrevoie.fr/en/services/doh/ [CHAR_LIMIT=NONE]">
     Server in Nice, France, operated by a French non-profit promoting free culture and ethics.
   </string>
-  <string name="website12" translatable="false">https://42l.fr/DoH-service</string>
+  <string name="website12" translatable="false">https://lacontrevoie.fr/en/services/doh/</string>
 
   <string name="url13" translatable="false">https://dns.digitale-gesellschaft.ch/dns-query</string>
   <string name="name13" translatable="false">Digitale Gesellschaft</string>
