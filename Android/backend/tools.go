@@ -12,19 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package doh
+//go:build tools
+// +build tools
+
+// See https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
+// and https://github.com/go-modules-by-example/index/blob/master/010_tools/README.md
+
+package tools
 
 import (
-	"github.com/Jigsaw-Code/outline-go-tun2socks/intra"
-	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/doh"
+	_ "golang.org/x/mobile/bind"
 )
-
-type TCPListener = intra.TCPListener
-type UDPListener = intra.UDPListener
-type DoHListener = doh.Listener
-
-type Listener interface {
-	TCPListener
-	UDPListener
-	DoHListener
-}

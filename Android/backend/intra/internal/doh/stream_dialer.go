@@ -25,7 +25,7 @@ import (
 	"time"
 
 	"github.com/Jigsaw-Code/Intra/Android/backend/intra/internal/sni"
-	"github.com/Jigsaw-Code/outline-go-tun2socks/intra"
+	intraLegacy "github.com/Jigsaw-Code/outline-go-tun2socks/intra"
 	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/doh"
 	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/protect"
 	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/split"
@@ -38,20 +38,20 @@ type DoHStreamDialer interface {
 	SetDoHTransport(DoHTransport) error
 }
 
-type tcpTrafficStats = intra.TCPSocketSummary
+type tcpTrafficStats = intraLegacy.TCPSocketSummary
 
 type dohSplitStreamDialer struct {
 	fakeDNSAddr      netip.AddrPort
 	dohServer        atomic.Pointer[DoHTransport]
 	dialer           *net.Dialer
 	alwaysSplitHTTPS atomic.Bool
-	listener         TCPListener
+	listener         intraLegacy.TCPListener
 	sniReporter      sni.TCPSNIReporter
 }
 
 var _ DoHStreamDialer = (*dohSplitStreamDialer)(nil)
 
-func MakeDoHStreamDialer(fakeDNS netip.AddrPort, dohServer DoHTransport, protector Protector, listener TCPListener) (DoHStreamDialer, error) {
+func MakeDoHStreamDialer(fakeDNS netip.AddrPort, dohServer DoHTransport, protector Protector, listener intraLegacy.TCPListener, sniReporter sni.TCPSNIReporter) (DoHStreamDialer, error) {
 	if dohServer == nil {
 		return nil, errors.New("dohServer is required")
 	}
@@ -60,7 +60,7 @@ func MakeDoHStreamDialer(fakeDNS netip.AddrPort, dohServer DoHTransport, protect
 		fakeDNSAddr: fakeDNS,
 		dialer:      protect.MakeDialer(protector),
 		listener:    listener,
-		sniReporter: sni.MakeTCPReporter(dohServer),
+		sniReporter: sniReporter,
 	}
 	dohsd.dohServer.Store(&dohServer)
 	return dohsd, nil

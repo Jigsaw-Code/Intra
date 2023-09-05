@@ -15,14 +15,14 @@
 package doh
 
 import (
-	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/doh"
+	dohLegacy "github.com/Jigsaw-Code/outline-go-tun2socks/intra/doh"
 	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/protect"
 )
 
-type DoHTransport = doh.Transport
+type DoHTransport = dohLegacy.Transport
 
-func MakeTransport(serverURL, fallbackAddrs string, protector Protector, listener Listener) (DoHTransport, error) {
+func MakeTransport(serverURL, fallbackAddrs string, protector Protector, listener dohLegacy.Listener) (DoHTransport, error) {
 	fallbacks := parseFallbackAddrs(fallbackAddrs)
 	dialer := protect.MakeDialer(protector)
-	return doh.NewTransport(serverURL, fallbacks, dialer, nil, listener)
+	return dohLegacy.NewTransport(serverURL, fallbacks, dialer, nil, listener)
 }

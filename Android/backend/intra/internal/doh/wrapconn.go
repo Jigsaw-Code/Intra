@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/Jigsaw-Code/Intra/Android/backend/intra/internal/sni"
+	intraLegacy "github.com/Jigsaw-Code/outline-go-tun2socks/intra"
 	"github.com/Jigsaw-Code/outline-sdk/transport"
 )
 
@@ -34,13 +35,13 @@ type dohConnAdapter struct {
 	beginTime time.Time
 	stats     *tcpTrafficStats
 
-	listener    TCPListener
+	listener    intraLegacy.TCPListener
 	sniReporter sni.TCPSNIReporter
 }
 
 var _ transport.StreamConn = (*dohConnAdapter)(nil)
 
-func makeWrapConnWithStats(c transport.StreamConn, stats *tcpTrafficStats, listener TCPListener, sniReporter sni.TCPSNIReporter) (conn *dohConnAdapter) {
+func makeWrapConnWithStats(c transport.StreamConn, stats *tcpTrafficStats, listener intraLegacy.TCPListener, sniReporter sni.TCPSNIReporter) (conn *dohConnAdapter) {
 	defer log.Println("[info] New TCP session initialized")
 
 	conn = &dohConnAdapter{

@@ -38,7 +38,7 @@ const values = 2
 const burst = 10 * time.Second
 
 type TCPSNIReporter interface {
-	SetDNS(doh.Transport)
+	SetDoHTransport(doh.Transport) error
 	Report(TCPSummary)
 	Configure(file io.ReadWriter, suffix, country string) error
 }
@@ -60,10 +60,11 @@ func MakeTCPReporter(dns doh.Transport) TCPSNIReporter {
 }
 
 // SetDNS changes the DNS transport used for uploading reports.
-func (r *tcpSNIReporter) SetDNS(dns doh.Transport) {
+func (r *tcpSNIReporter) SetDoHTransport(dns doh.Transport) error {
 	r.mu.Lock()
 	r.dns = dns
 	r.mu.Unlock()
+	return nil
 }
 
 // Send implements choir.ReportSender.

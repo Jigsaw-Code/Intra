@@ -23,7 +23,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jigsaw-Code/outline-go-tun2socks/intra"
+	intraLegacy "github.com/Jigsaw-Code/outline-go-tun2socks/intra"
 	"github.com/Jigsaw-Code/outline-go-tun2socks/intra/protect"
 	"github.com/Jigsaw-Code/outline-sdk/network"
 	"github.com/Jigsaw-Code/outline-sdk/transport"
@@ -39,12 +39,12 @@ type dohPacketProxy struct {
 	fakeDNSAddr netip.AddrPort
 	dohServer   atomic.Pointer[DoHTransport]
 	proxy       network.PacketProxy
-	listener    UDPListener
+	listener    intraLegacy.UDPListener
 }
 
 var _ DoHPacketProxy = (*dohPacketProxy)(nil)
 
-func MakeDoHPacketProxy(fakeDNS netip.AddrPort, dohServer DoHTransport, protector Protector, listener UDPListener) (DoHPacketProxy, error) {
+func MakeDoHPacketProxy(fakeDNS netip.AddrPort, dohServer DoHTransport, protector Protector, listener intraLegacy.UDPListener) (DoHPacketProxy, error) {
 	if dohServer == nil {
 		return nil, errors.New("dohServer is required")
 	}
@@ -125,7 +125,7 @@ type dohPacketRespReceiver struct {
 	network.PacketResponseReceiver
 
 	stats    *udpTrafficStats
-	listener UDPListener
+	listener intraLegacy.UDPListener
 }
 
 var _ network.PacketRequestSender = (*dohPacketReqSender)(nil)
@@ -168,7 +168,7 @@ func (resp *dohPacketRespReceiver) Close() error {
 	defer log.Printf("[info] UDP session terminated, stats = %v\n", resp.stats)
 	log.Println("[debug] UDP session terminating...")
 	if resp.listener != nil {
-		resp.listener.OnUDPSocketClosed(&intra.UDPSocketSummary{
+		resp.listener.OnUDPSocketClosed(&intraLegacy.UDPSocketSummary{
 			Duration:      int32(time.Since(resp.stats.sessionStartTime)),
 			UploadBytes:   resp.stats.uploadBytes.Load(),
 			DownloadBytes: resp.stats.downloadBytes.Load(),

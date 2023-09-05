@@ -57,7 +57,7 @@ func sendReport(t *testing.T, r *tcpSNIReporter, summary TCPSummary, response []
 		c <- name
 		return response, responseErr
 	})
-	r.SetDNS(dns)
+	r.SetDoHTransport(dns)
 	r.Report(summary)
 	return <-c
 }
@@ -170,7 +170,7 @@ func TestNoSplit(t *testing.T) {
 		t.Error("DNS query function should not be called because no split was performed")
 		return nil, errors.New("Unreachable")
 	})
-	r.SetDNS(dns)
+	r.SetDoHTransport(dns)
 	r.Report(summary)
 }
 
@@ -189,7 +189,7 @@ func TestUnconfigured(t *testing.T) {
 		t.Error("DNS query function should not be called because the reporter is not configured")
 		return nil, errors.New("Unreachable")
 	})
-	r.SetDNS(dns)
+	r.SetDoHTransport(dns)
 	r.Report(summary)
 }
 
