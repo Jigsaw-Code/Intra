@@ -91,7 +91,12 @@ func (s tcpSocketStatsAdapter) GetUploadBytes() int64   { return s.UploadBytes }
 func (s tcpSocketStatsAdapter) GetDuration() int32      { return s.Duration }
 func (s tcpSocketStatsAdapter) GetServerPort() int16    { return s.ServerPort }
 func (s tcpSocketStatsAdapter) GetSynack() int32        { return s.Synack }
-func (s tcpSocketStatsAdapter) GetRetry() TCPRetryStats { return tcpRetryStatsAdapter{s.Retry} }
+func (s tcpSocketStatsAdapter) GetRetry() TCPRetryStats {
+	if s.Retry == nil {
+		return nil
+	}
+	return tcpRetryStatsAdapter{s.Retry}
+}
 
 ////////// UDPListener type redefinitions
 

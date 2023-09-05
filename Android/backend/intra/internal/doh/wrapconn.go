@@ -42,7 +42,10 @@ type dohConnAdapter struct {
 var _ transport.StreamConn = (*dohConnAdapter)(nil)
 
 func makeWrapConnWithStats(c transport.StreamConn, stats *tcpTrafficStats, listener intraLegacy.TCPListener, sniReporter sni.TCPSNIReporter) (conn *dohConnAdapter) {
-	defer log.Println("[info] New TCP session initialized")
+	log.Println("[debug] establishing new TCP session")
+	defer func() {
+		log.Printf("[info] New TCP session [%p] initialized\n", conn)
+	}()
 
 	conn = &dohConnAdapter{
 		StreamConn:  c,
@@ -56,8 +59,12 @@ func makeWrapConnWithStats(c transport.StreamConn, stats *tcpTrafficStats, liste
 	// Wait until both read and write are done
 	conn.wg.Add(2)
 	go func() {
-		defer func() { log.Printf("[info] TCP session terminated, stats = %v\n", conn.stats) }()
+		defer func() {
+			log.Printf("[info] TCP session [%p] terminated: down = %v, up = %v, span = %v\n",
+				conn, conn.stats.DownloadBytes, conn.stats.UploadBytes, conn.stats.Duration)
+		}()
 		conn.wg.Wait()
+		log.Printf("[debug] calculating TCP session [%p] statistics data\n", conn)
 		conn.stats.Duration = int32(time.Since(conn.beginTime))
 		if conn.listener != nil {
 			conn.listener.OnTCPSocketClosed(conn.stats)
@@ -71,54 +78,58 @@ func makeWrapConnWithStats(c transport.StreamConn, stats *tcpTrafficStats, liste
 }
 
 func (conn *dohConnAdapter) Close() error {
-	log.Println("[debug] TCP session terminating...")
+	log.Printf("[debug] TCP session [%p] terminating...\n", conn)
 	defer conn.close(&conn.wDone)
 	defer conn.close(&conn.rDone)
 	return conn.StreamConn.Close()
 }
 
 func (conn *dohConnAdapter) CloseRead() error {
-	log.Println("[debug] TCP read session terminating...")
+	log.Printf("[debug] TCP read session [%p] terminating...\n", conn)
 	defer conn.close(&conn.rDone)
 	return conn.StreamConn.CloseRead()
 }
 
 func (conn *dohConnAdapter) CloseWrite() error {
-	log.Println("[debug] TCP write session terminating...")
+	log.Printf("[debug] TCP write session [%p] terminating...\n", conn)
 	defer conn.close(&conn.wDone)
 	return conn.StreamConn.CloseWrite()
 }
 
 func (conn *dohConnAdapter) Read(b []byte) (n int, err error) {
+	log.Printf("[debug] start downloading bytes in TCP session [%p]\n", conn)
 	defer func() {
-		log.Printf("[debug] TCP Session: download %v bytes, with err = %v\n", n, err)
+		log.Printf("[debug] TCP Session [%p]: download %v bytes, with err = %v\n", conn, n, err)
 		conn.stats.DownloadBytes += int64(n)
 	}()
 	return conn.StreamConn.Read(b)
 }
 
 func (conn *dohConnAdapter) WriteTo(w io.Writer) (n int64, err error) {
+	log.Printf("[debug] start downloading bytes until EOF in TCP session [%p]\n", conn)
 	defer func() {
-		log.Printf("[debug] TCP Session: download %v bytes, with err = %v\n", n, err)
+		log.Printf("[debug] TCP Session [%p]: download %v bytes, with err = %v\n", conn, n, err)
 		conn.stats.DownloadBytes += n
 	}()
-	return io.Copy(w, conn)
+	return io.Copy(w, conn.StreamConn)
 }
 
 func (conn *dohConnAdapter) Write(b []byte) (n int, err error) {
+	log.Printf("[debug] start uploading bytes in TCP session [%p]\n", conn)
 	defer func() {
-		log.Printf("[debug] TCP Session: upload %v bytes, with err = %v\n", n, err)
+		log.Printf("[debug] TCP Session [%p]: upload %v bytes, with err = %v\n", conn, n, err)
 		conn.stats.UploadBytes += int64(n)
 	}()
 	return conn.StreamConn.Write(b)
 }
 
 func (conn *dohConnAdapter) ReadFrom(r io.Reader) (n int64, err error) {
+	log.Printf("[debug] start uploading bytes until EOF in TCP session [%p]\n", conn)
 	defer func() {
-		log.Printf("[debug] TCP Session: upload %v bytes, with err = %v\n", n, err)
+		log.Printf("[debug] TCP Session [%p]: upload %v bytes, with err = %v\n", conn, n, err)
 		conn.stats.UploadBytes += n
 	}()
-	return io.Copy(conn, r)
+	return io.Copy(conn.StreamConn, r)
 }
 
 func (conn *dohConnAdapter) close(done *atomic.Bool) {

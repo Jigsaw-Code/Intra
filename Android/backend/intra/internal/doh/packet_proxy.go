@@ -96,6 +96,7 @@ func (p *dohPacketProxy) NewSession(resp network.PacketResponseReceiver) (networ
 
 // SetDoHTransport implements DoHPacketProxy.SetDoHTransport.
 func (p *dohPacketProxy) SetDoHTransport(dohServer DoHTransport) error {
+	log.Println("[debug] updating DoH server for UDP sessions")
 	if dohServer == nil {
 		return errors.New("dohServer is required")
 	}
@@ -133,6 +134,7 @@ var _ network.PacketResponseReceiver = (*dohPacketRespReceiver)(nil)
 
 // WriteTo implements PacketRequestSender.WriteTo. It will query the DoH server if the packet a DNS packet.
 func (req *dohPacketReqSender) WriteTo(p []byte, destination netip.AddrPort) (int, error) {
+	log.Printf("[debug] Sending raw UDP packet (%v bytes) to %v\n", len(p), destination)
 	if destination == req.proxy.fakeDNSAddr {
 		defer func() {
 			// conn was only used for this DNS query, so it's unlikely to be used again
@@ -165,8 +167,8 @@ func (req *dohPacketReqSender) WriteTo(p []byte, destination netip.AddrPort) (in
 
 // Close terminates the UDP session, and reports session stats to the listener.
 func (resp *dohPacketRespReceiver) Close() error {
-	defer log.Printf("[info] UDP session terminated, stats = %v\n", resp.stats)
 	log.Println("[debug] UDP session terminating...")
+	defer log.Printf("[info] UDP session terminated: down = %v, up = %v\n", resp.stats.downloadBytes.Load(), resp.stats.uploadBytes.Load())
 	if resp.listener != nil {
 		resp.listener.OnUDPSocketClosed(&intraLegacy.UDPSocketSummary{
 			Duration:      int32(time.Since(resp.stats.sessionStartTime)),
@@ -179,6 +181,7 @@ func (resp *dohPacketRespReceiver) Close() error {
 
 // WriteFrom implements PacketResponseReceiver.WriteFrom.
 func (resp *dohPacketRespReceiver) WriteFrom(p []byte, source net.Addr) (int, error) {
+	log.Printf("[debug] Receiving raw UDP packet (%v bytes) from %v\n", len(p), source)
 	return resp.writeFrom(p, source, true)
 }
 

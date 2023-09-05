@@ -80,9 +80,9 @@ func NewIntraDevice(fakeDNS, serverURL, fallbackAddrs string, protector SocketPr
 	return
 }
 
-func (d *IntraDevice) Close() error {
-	return d.t2s.Close()
-}
+func (d *IntraDevice) Close() error                { return d.t2s.Close() }
+func (d *IntraDevice) Read(p []byte) (int, error)  { return d.t2s.Read(p) }
+func (d *IntraDevice) Write(p []byte) (int, error) { return d.t2s.Write(p) }
 
 func (d *IntraDevice) UpdateDoHServer(serverURL, fallbackAddrs string) error {
 	dohServer, err := doh.MakeTransport(serverURL, fallbackAddrs, d.protector, d.listener)

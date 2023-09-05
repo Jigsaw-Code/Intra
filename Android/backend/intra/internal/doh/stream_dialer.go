@@ -75,6 +75,7 @@ func (sd *dohSplitStreamDialer) Dial(ctx context.Context, raddr string) (transpo
 		return conn, nil
 	}
 
+	log.Printf("[debug] Dialing TCP traffic to %v\n", raddr)
 	dest, err := netip.ParseAddrPort(raddr)
 	if err != nil {
 		return nil, fmt.Errorf("invalid raddr (%v): %w", raddr, err)
@@ -93,6 +94,7 @@ func (sd *dohSplitStreamDialer) Dial(ctx context.Context, raddr string) (transpo
 
 // SetDoHTransport implements DoHStreamDialer.SetDoHTransport.
 func (sd *dohSplitStreamDialer) SetDoHTransport(dohServer DoHTransport) error {
+	log.Println("[debug] updating DoH server for TCP sessions")
 	if dohServer == nil {
 		return errors.New("dohServer is required")
 	}
@@ -103,13 +105,17 @@ func (sd *dohSplitStreamDialer) SetDoHTransport(dohServer DoHTransport) error {
 
 func (sd *dohSplitStreamDialer) dial(ctx context.Context, dest netip.AddrPort, stats *tcpTrafficStats) (transport.StreamConn, error) {
 	if dest.Port() == 443 {
+		log.Println("[debug] Dialing HTTPS traffic")
 		if sd.alwaysSplitHTTPS.Load() {
+			log.Println("[debug] Dialing TCP traffic over split dialer")
 			return split.DialWithSplit(sd.dialer, net.TCPAddrFromAddrPort(dest))
 		} else {
+			log.Println("[debug] Dialing TCP traffic over retryable split dialer")
 			stats.Retry = &split.RetryStats{}
 			return split.DialWithSplitRetry(sd.dialer, net.TCPAddrFromAddrPort(dest), stats.Retry)
 		}
 	} else {
+		log.Println("[debug] Dialing TCP traffic directly over internet")
 		tcpsd := &transport.TCPStreamDialer{
 			Dialer: *sd.dialer,
 		}
