@@ -33,14 +33,15 @@ import app.intra.sys.VpnController;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.firebase.RemoteConfig;
-import doh.Transport;
+import intra.IPDevice;
+import intra.Intra;
+import intra.IntraDevice;
+import intra.SocketProtector;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
-import protect.Protector;
-import tun2socks.Tun2socks;
 
 /**
  * This is a VpnAdapter that captures all traffic and routes it through a go-tun2socks instance with
@@ -87,7 +88,8 @@ public class GoVpnAdapter {
   private ParcelFileDescriptor tunFd;
 
   // The Intra session object from go-tun2socks.  Initially null.
-  private intra.Tunnel tunnel;
+  private IPDevice tun;
+  private IntraDevice device;
   private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
@@ -108,7 +110,7 @@ public class GoVpnAdapter {
   }
 
   private void connectTunnel() {
-    if (tunnel != null) {
+    if (device != null && tun != null) {
       return;
     }
     // VPN parameters
@@ -116,14 +118,13 @@ public class GoVpnAdapter {
 
     // Strip leading "/" from ip:port string.
     listener = new GoIntraListener(vpnService);
-    String dohURL = PersistentState.getServerUrl(vpnService);
 
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
-      Transport transport = makeDohTransport(dohURL);
-      // connectIntraTunnel makes a copy of the file descriptor.
-      tunnel = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
-          transport, getProtector(), listener);
+      device = makeIntraDevice(fakeDns);
+      // newTunFromFile makes a copy of the file descriptor
+      tun = Intra.newTunFromFile(tunFd.getFd());
+      Intra.bridgeAsync(tun, device);
     } catch (Exception e) {
       LogWrapper.logException(e);
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
@@ -133,6 +134,26 @@ public class GoVpnAdapter {
     if (RemoteConfig.getChoirEnabled()) {
       enableChoir();
     }
+  }
+
+  private void disconnectTunnel() {
+    if (device != null) {
+      try {
+        device.close();
+      } catch (Exception e) {
+        LogWrapper.logException(e);
+      }
+    }
+    device = null;
+
+    if (tun != null) {
+      try {
+        tun.close();
+      } catch (Exception e) {
+        LogWrapper.logException(e);
+      }
+    }
+    tun = null;
   }
 
   // Set up failure reporting with Choir.
@@ -149,7 +170,7 @@ public class GoVpnAdapter {
     }
     String file = vpnService.getFilesDir() + File.separator + CHOIR_FILENAME;
     try {
-      tunnel.enableSNIReporter(file, "intra.metrics.gstatic.com", country);
+      device.enableSNIReporter(file, "intra.metrics.gstatic.com", country);
     } catch (Exception e) {
       // Choir setup failure is logged but otherwise ignored, because it does not prevent Intra
       // from functioning correctly.
@@ -178,7 +199,7 @@ public class GoVpnAdapter {
     }
   }
 
-  private @Nullable Protector getProtector() {
+  private @Nullable SocketProtector getProtector() {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       // We don't need socket protection in these versions because the call to
       // "addDisallowedApplication" effectively protects all sockets in this app.
@@ -188,9 +209,8 @@ public class GoVpnAdapter {
   }
 
   public synchronized void close() {
-    if (tunnel != null) {
-      tunnel.disconnect();
-    }
+    disconnectTunnel();
+
     if (tunFd != null) {
       try {
         tunFd.close();
@@ -201,21 +221,21 @@ public class GoVpnAdapter {
     tunFd = null;
   }
 
-  private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
-    @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
-    String dohIPs = getIpString(vpnService, realUrl);
-    String host = new URL(realUrl).getHost();
+  private IntraDevice makeIntraDevice(String fakeDns) throws Exception {
+    String dohUrl = getDoHServerUrl(vpnService);
+    String dohIPs = getDoHServerFallbackIPsString(vpnService, dohUrl);
+    String host = new URL(dohUrl).getHost();
     long startTime = SystemClock.elapsedRealtime();
-    final doh.Transport transport;
+    final IntraDevice device;
     try {
-      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), null, listener);
+      device = new IntraDevice(fakeDns, dohUrl, dohIPs, getProtector(), listener);
     } catch (Exception e) {
       AnalyticsWrapper.get(vpnService).logBootstrapFailed(host);
       throw e;
     }
     int delta = (int) (SystemClock.elapsedRealtime() - startTime);
     AnalyticsWrapper.get(vpnService).logBootstrap(host, delta);
-    return transport;
+    return device;
   }
 
   /**
@@ -228,7 +248,7 @@ public class GoVpnAdapter {
       // Adapter is closed.
       return;
     }
-    if (tunnel == null) {
+    if (device == null || tun == null) {
       // Attempt to re-create the tunnel.  Creation may have failed originally because the DoH
       // server could not be reached.  This will update the DoH URL as well.
       connectTunnel();
@@ -238,19 +258,24 @@ public class GoVpnAdapter {
     // is called on network changes, and it's important to switch to a fresh transport because the
     // old transport may be using sockets on a deleted interface, which may block until they time
     // out.
-    String url = PersistentState.getServerUrl(vpnService);
+    String dohUrl = getDoHServerUrl(vpnService);
+    String dohFallbackIPs = getDoHServerFallbackIPsString(vpnService, dohUrl);
     try {
-      tunnel.setDNS(makeDohTransport(url));
+      device.updateDoHServer(dohUrl, dohFallbackIPs);
     } catch (Exception e) {
       LogWrapper.logException(e);
-      tunnel.disconnect();
-      tunnel = null;
+      disconnectTunnel();
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
     }
   }
 
+  private static String getDoHServerUrl(Context context) {
+    final @Nullable String url = PersistentState.getServerUrl(context);
+    return PersistentState.expandUrl(context, url);
+  }
+
   // Returns the known IPs for this URL as a string containing a comma-separated list.
-  static String getIpString(Context context, String url) {
+  static String getDoHServerFallbackIPsString(Context context, String url) {
     Resources res = context.getResources();
     String[] urls = res.getStringArray(R.array.urls);
     String[] ips = res.getStringArray(R.array.ips);

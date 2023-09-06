@@ -46,14 +46,14 @@ import app.intra.sys.NetworkManager.NetworkListener;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.ui.MainActivity;
+import intra.SocketProtector;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import protect.Protector;
 
 public class IntraVpnService extends VpnService implements NetworkListener,
-    SharedPreferences.OnSharedPreferenceChangeListener, Protector {
+    SharedPreferences.OnSharedPreferenceChangeListener, SocketProtector {
 
   /**
    * null: There is no connection

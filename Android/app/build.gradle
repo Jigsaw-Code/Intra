@@ -106,9 +106,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:18.2.6'
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.6'
     implementation 'com.google.firebase:firebase-config:21.0.1'
-    // For go-tun2socks
-    implementation project(":tun2socks")
+    // For Golang based backend
+    implementation project(":backend")
 }
+
 // For Firebase Analytics
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'

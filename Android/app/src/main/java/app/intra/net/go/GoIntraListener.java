@@ -20,24 +20,26 @@ import androidx.collection.LongSparseArray;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
-import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.IntraVpnService;
+import app.intra.sys.firebase.AnalyticsWrapper;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.HttpMetric;
-import doh.Doh;
-import doh.Token;
-import intra.TCPSocketSummary;
-import intra.UDPSocketSummary;
+import intra.DoHQueryStats;
+import intra.DoHToken;
+import intra.EventListener;
+import intra.Intra;
+import intra.TCPRetryStats;
+import intra.TCPSocketStats;
+import intra.UDPSocketStats;
 import java.net.ProtocolException;
 import java.util.Calendar;
-import split.RetryStats;
 
 /**
  * This is a callback class that is passed to our go-tun2socks code.  Go calls this class's methods
  * when a socket has concluded, with performance metrics for that socket, and this class forwards
  * those metrics to Firebase.
  */
-public class GoIntraListener implements intra.Listener {
+public class GoIntraListener implements EventListener {
 
   // UDP is often used for one-off messages and pings.  The relative overhead of reporting metrics
   // on these short messages would be large, so we only report metrics on sockets that transfer at
@@ -52,7 +54,7 @@ public class GoIntraListener implements intra.Listener {
   }
 
   @Override
-  public void onTCPSocketClosed(TCPSocketSummary summary) {
+  public void onTCPSocketClosed(TCPSocketStats summary) {
     analytics.logTCP(
         summary.getUploadBytes(),
         summary.getDownloadBytes(),
@@ -60,7 +62,7 @@ public class GoIntraListener implements intra.Listener {
         summary.getSynack(),
         summary.getDuration());
 
-    RetryStats retry = summary.getRetry();
+    TCPRetryStats retry = summary.getRetry();
     if (retry != null) {
       // Connection was eligible for split-retry.
       if (retry.getSplit() == 0) {
@@ -78,7 +80,7 @@ public class GoIntraListener implements intra.Listener {
  }
 
   @Override
-  public void onUDPSocketClosed(UDPSocketSummary summary) {
+  public void onUDPSocketClosed(UDPSocketStats summary) {
     long totalBytes = summary.getUploadBytes() + summary.getDownloadBytes();
     if (totalBytes < UDP_THRESHOLD_BYTES) {
       return;
@@ -91,12 +93,12 @@ public class GoIntraListener implements intra.Listener {
 
   private static final LongSparseArray<Status> goStatusMap = new LongSparseArray<>();
   static {
-    goStatusMap.put(Doh.Complete, Status.COMPLETE);
-    goStatusMap.put(Doh.SendFailed, Status.SEND_FAIL);
-    goStatusMap.put(Doh.HTTPError, Status.HTTP_ERROR);
-    goStatusMap.put(Doh.BadQuery, Status.INTERNAL_ERROR); // TODO: Add a BAD_QUERY Status
-    goStatusMap.put(Doh.BadResponse, Status.BAD_RESPONSE);
-    goStatusMap.put(Doh.InternalError, Status.INTERNAL_ERROR);
+    goStatusMap.put(Intra.DoHStatusComplete, Status.COMPLETE);
+    goStatusMap.put(Intra.DoHStatusSendFailed, Status.SEND_FAIL);
+    goStatusMap.put(Intra.DoHStatusHTTPError, Status.HTTP_ERROR);
+    goStatusMap.put(Intra.DoHStatusBadQuery, Status.INTERNAL_ERROR); // TODO: Add a BAD_QUERY Status
+    goStatusMap.put(Intra.DoHStatusBadResponse, Status.BAD_RESPONSE);
+    goStatusMap.put(Intra.DoHStatusInternalError, Status.INTERNAL_ERROR);
   }
 
   // Wrapping HttpMetric into a doh.Token allows us to get paired query and response notifications
@@ -104,7 +106,7 @@ public class GoIntraListener implements intra.Listener {
   // required by the structure of the HttpMetric API (which does not have any other way to record
   // latency), and reverse binding is worth avoiding, especially because it's not compatible with
   // the Go module system (https://github.com/golang/go/issues/27234).
-  private class Metric implements doh.Token {
+  private static class Metric implements DoHToken {
     final HttpMetric metric;
     Metric(String url) {
       metric = FirebasePerformance.getInstance().newHttpMetric(url, "POST");
@@ -112,7 +114,7 @@ public class GoIntraListener implements intra.Listener {
   }
 
   @Override
-  public Token onQuery(String url) {
+  public DoHToken onQuery(String url) {
     Metric m = new Metric(url);
     m.metric.start();
     return m;
@@ -123,7 +125,7 @@ public class GoIntraListener implements intra.Listener {
   }
 
   @Override
-  public void onResponse(Token token, doh.Summary summary) {
+  public void onResponse(DoHToken token, DoHQueryStats summary) {
     if (summary.getHTTPStatus() != 0 && token != null) {
       // HTTP transaction completed.  Report performance metrics.
       Metric m = (Metric)token;
