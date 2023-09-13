@@ -86,13 +86,16 @@ repositories {
 
 dependencies {
     implementation 'com.google.guava:guava:31.0.1-android'
+
     // Third-party test dependencies.
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.json:json:20180813'
     testImplementation 'org.mockito:mockito-core:2.13.0'
+
     // Required for instrumented tests
     androidTestImplementation 'androidx.annotation:annotation:1.3.0'
     androidTestImplementation 'androidx.test:runner:1.4.0'
+
     // UI libraries.
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
@@ -100,14 +103,16 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+
     // For Firebase Analytics, etc.
     implementation 'com.google.firebase:firebase-analytics:19.0.2'  // Last version for API <19
     implementation 'com.google.firebase:firebase-perf:20.0.4'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.6'
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.6'
     implementation 'com.google.firebase:firebase-config:21.0.1'
+
     // For Golang based backend
-    implementation project(":backend")
+    implementation project(path: ':backend', configuration: 'aarBinary')
 }
 
 // For Firebase Analytics
