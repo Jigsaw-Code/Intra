@@ -27,11 +27,6 @@ task ensureBuildDir() {
 task ensureGoMobile(type: Exec, dependsOn: ensureBuildDir) {
     environment 'GOBIN', goBuildDir.getPath()
     commandLine 'go', 'install', 'golang.org/x/mobile/cmd/gomobile@latest', 'golang.org/x/mobile/cmd/gobind@latest'
-} doLast {
-    exec {
-        environment 'GOBIN', goBuildDir.getPath()
-        commandLine "${goBuildDir}/gomobile", 'init'
-    }
 }
 
 task gobind(type: Exec, dependsOn: ensureGoMobile) {
