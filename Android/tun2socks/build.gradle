@@ -1,2 +1,45 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('tun2socks.aar'))
+plugins {
+    id('com.android.library')
+}
+
+android {
+    compileSdkVersion 33
+}
+
+configurations {
+    aarBinary {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+}
+
+
+def goBuildDir = file("${buildDir}/go")
+def outputAAR = file("${buildDir}/tun2socks.aar")
+def srcPkgs = ["${rootDir}/tun2socks/intra", "${rootDir}/tun2socks/intra/android", "${rootDir}/tun2socks/intra/doh", "${rootDir}/tun2socks/intra/split", "${rootDir}/tun2socks/intra/protect"]
+
+task ensureBuildDir() {
+    doLast {
+        goBuildDir.mkdirs()
+    }
+}
+
+task ensureGoMobile(type: Exec, dependsOn: ensureBuildDir) {
+    environment 'GOBIN', goBuildDir.getPath()
+    commandLine 'go', 'install', 'golang.org/x/mobile/cmd/gomobile@latest', 'golang.org/x/mobile/cmd/gobind@latest'
+}
+
+task gobind(type: Exec, dependsOn: ensureGoMobile) {
+    workingDir goBuildDir
+    environment 'ANDROID_HOME', android.sdkDirectory
+    environment 'PATH', goBuildDir.getPath() + System.getProperty('path.separator') + System.getenv('PATH')
+    commandLine("${goBuildDir}/gomobile", 'bind', '-target=android', '-androidapi=16', '-o', outputAAR, *srcPkgs)
+}
+
+
+// AAR file that can be consumed by other projects
+artifacts {
+    aarBinary(outputAAR) {
+        builtBy(gobind)
+    }
+}

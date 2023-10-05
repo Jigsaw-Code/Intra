@@ -107,7 +107,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.6'
     implementation 'com.google.firebase:firebase-config:21.0.1'
     // For go-tun2socks
-    implementation project(":tun2socks")
+    implementation project(path: ':tun2socks', configuration: 'aarBinary')
 }
 
 // For Firebase Analytics
