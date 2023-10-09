@@ -4,9 +4,9 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion ANDROID_COMPILE_SDK_VERSION as int
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion ANDROID_MIN_SDK_VERSION as int
     }
 }
 
@@ -44,8 +44,8 @@ task ensureGoMobile(type: Exec, dependsOn: ensureBuildDir) {
     environment 'GOBIN', goBuildDir.getPath()
 
     commandLine('go', 'install',
-                'golang.org/x/mobile/cmd/gomobile@latest',
-                'golang.org/x/mobile/cmd/gobind@latest')
+                'golang.org/x/mobile/cmd/gomobile',
+                'golang.org/x/mobile/cmd/gobind')
 }
 
 // Invoke `gomobile bind` to build from `srcPackages` to `outputAAR`.
@@ -63,7 +63,8 @@ task gobind(type: Exec, dependsOn: ensureGoMobile) {
                         System.getenv('PATH')
 
     commandLine("${goBuildDir}/gomobile", 'bind',
-                '-target=android', '-androidapi=16',
+                '-target=android',
+                "-androidapi=${android.defaultConfig.minSdk}",
                 '-o', outputAAR,
                 *srcPackages)
 }
