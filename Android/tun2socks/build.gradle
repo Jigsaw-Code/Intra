@@ -41,9 +41,8 @@ task ensureGoMobile(type: Exec, dependsOn: ensureBuildDir) {
     outputs.file("${goBuildDir}/gomobile")
     outputs.file("${goBuildDir}/gobind")
 
-    environment 'GOBIN', goBuildDir.getPath()
-
-    commandLine('go', 'install',
+    commandLine('go', 'build',
+                '-o', goBuildDir,
                 'golang.org/x/mobile/cmd/gomobile',
                 'golang.org/x/mobile/cmd/gobind')
 }
