@@ -63,6 +63,7 @@ task gobind(type: Exec, dependsOn: ensureGoMobile) {
                         System.getenv('PATH')
 
     commandLine("${goBuildDir}/gomobile", 'bind',
+                '-ldflags=-s -w',
                 '-target=android',
                 "-androidapi=${android.defaultConfig.minSdk}",
                 '-o', outputAAR,
