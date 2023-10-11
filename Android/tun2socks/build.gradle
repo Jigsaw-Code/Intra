@@ -1,2 +1,78 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('tun2socks.aar'))
+// We use Android library plugin to get the Android SDK path.
+plugins {
+    id('com.android.library')
+}
+
+android {
+    compileSdkVersion ANDROID_COMPILE_SDK_VERSION as int
+    defaultConfig {
+        minSdkVersion ANDROID_MIN_SDK_VERSION as int
+    }
+}
+
+configurations {
+    aarBinary {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+}
+
+def goBuildDir = file("${buildDir}/go")
+def outputAAR = file("${buildDir}/tun2socks.aar")
+
+def srcDir = "${rootDir}/tun2socks/intra"
+def srcPackages = [srcDir,
+                   "${srcDir}/android",
+                   "${srcDir}/doh",
+                   "${srcDir}/split",
+                   "${srcDir}/protect"]
+
+// Make sure that the go build directory exists.
+task ensureBuildDir() {
+    doLast {
+        goBuildDir.mkdirs()
+    }
+}
+
+// Install `gomobile` and `gobind` to the build directory, so that the user
+// does not need to install them on their system or call `gomobile init`.
+task ensureGoMobile(type: Exec, dependsOn: ensureBuildDir) {
+    // Define outputs so this task will only be executed when they don't exist
+    outputs.file("${goBuildDir}/gomobile")
+    outputs.file("${goBuildDir}/gobind")
+
+    commandLine('go', 'build',
+                '-o', goBuildDir,
+                'golang.org/x/mobile/cmd/gomobile',
+                'golang.org/x/mobile/cmd/gobind')
+}
+
+// Invoke `gomobile bind` to build from `srcPackages` to `outputAAR`.
+// `gomobile` needs the `ANDROID_HOME` environment variable to be set, and the
+// parent directory of `gobind` must be in the `PATH` as well.
+task gobind(type: Exec, dependsOn: ensureGoMobile) {
+    // Define inputs and outputs so Gradle will enable incremental builds
+    inputs.dir(srcDir)
+    outputs.file(outputAAR)
+
+    workingDir goBuildDir
+    environment 'ANDROID_HOME', android.sdkDirectory
+    environment 'PATH', goBuildDir.getPath() +
+                        System.getProperty('path.separator') +
+                        System.getenv('PATH')
+
+    commandLine("${goBuildDir}/gomobile", 'bind',
+                '-ldflags=-s -w',
+                '-target=android',
+                "-androidapi=${android.defaultConfig.minSdk}",
+                '-o', outputAAR,
+                *srcPackages)
+}
+
+// AAR file that can be consumed by other projects. For example:
+//   implementation project(path: ':tun2socks', configuration: 'aarBinary')
+artifacts {
+    aarBinary(outputAAR) {
+        builtBy(gobind)
+    }
+}
