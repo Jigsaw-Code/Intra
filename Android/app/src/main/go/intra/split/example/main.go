@@ -22,7 +22,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/Jigsaw-Code/Intra/Android/tun2socks/intra/split"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/split"
 )
 
 func main() {

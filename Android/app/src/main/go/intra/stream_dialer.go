@@ -23,9 +23,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/tun2socks/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/tun2socks/intra/protect"
-	"github.com/Jigsaw-Code/Intra/Android/tun2socks/intra/split"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/doh"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/protect"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/split"
 	"github.com/Jigsaw-Code/outline-sdk/transport"
 )
 

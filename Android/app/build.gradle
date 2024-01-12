@@ -15,6 +15,18 @@ try {
     keystoreProperties['storePassword'] = ''
 }
 
+// Go backend build constants
+def goToolChain = 'go1.21.1'
+def goSourceDir = "${projectDir}/src/main/go"
+def goSourcePackages = ["${goSourceDir}/intra",
+                        "${goSourceDir}/intra/android",
+                        "${goSourceDir}/intra/doh",
+                        "${goSourceDir}/intra/split",
+                        "${goSourceDir}/intra/protect"]
+def goBuildDir = file("${buildDir}/go")
+def goBackendAAR = file("${goBuildDir}/tun2socks.aar")
+
+// Standard Android build definition
 android {
     signingConfigs {
         config {
@@ -106,10 +118,49 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:18.2.6'
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.6'
     implementation 'com.google.firebase:firebase-config:21.0.1'
-    // For go-tun2socks
-    implementation project(path: ':tun2socks', configuration: 'aarBinary')
+
+    // Go backend
+    implementation files(goBackendAAR) {
+        builtBy 'compileGoBackend'
+    }
 }
 
 // For Firebase Analytics
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
+
+// Go backend build tasks
+tasks.register('compileGoBackend', Exec) {
+    dependsOn 'ensureGoMobile'
+    // invoke gomobile to compile backend code
+    inputs.dir(goSourceDir)
+    outputs.file(goBackendAAR)
+
+    environment 'ANDROID_HOME', android.sdkDirectory
+    environment 'GOTOOLCHAIN', goToolChain
+    environment 'PATH', goBuildDir.getPath() +
+                        System.getProperty('path.separator') +
+                        System.getenv('PATH')
+
+    commandLine("${goBuildDir}/gomobile", 'bind',
+                '-ldflags=-s -w',
+                '-target=android',
+                "-androidapi=${android.defaultConfig.minSdk}",
+                '-o', goBackendAAR,
+                *goSourcePackages)
+}
+
+tasks.register('ensureGoMobile', Exec) {
+    // install gomobile and gobind into the build folder
+    outputs.file("${goBuildDir}/gomobile")
+    outputs.file("${goBuildDir}/gobind")
+
+    doFirst { goBuildDir.mkdirs() }
+
+    environment 'GOTOOLCHAIN', goToolChain
+
+    commandLine('go', 'build',
+                '-o', goBuildDir,
+                'golang.org/x/mobile/cmd/gomobile',
+                'golang.org/x/mobile/cmd/gobind')
+}

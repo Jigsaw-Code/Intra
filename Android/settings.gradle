@@ -1,1 +1,1 @@
-include ':app', ':tun2socks'
+include ':app'
