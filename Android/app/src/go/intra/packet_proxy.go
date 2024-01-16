@@ -22,8 +22,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/protect"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/protect"
 	"github.com/Jigsaw-Code/outline-sdk/network"
 	"github.com/Jigsaw-Code/outline-sdk/transport"
 )

@@ -17,7 +17,7 @@ try {
 
 // Go backend build constants
 def goToolChain = 'go1.21.1'
-def goSourceDir = "${projectDir}/src/main/go"
+def goSourceDir = "${projectDir}/src/go"
 def goSourcePackages = ["${goSourceDir}/intra",
                         "${goSourceDir}/intra/android",
                         "${goSourceDir}/intra/doh",

@@ -19,7 +19,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/doh"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
 	"github.com/Jigsaw-Code/choir"
 	"github.com/eycorsican/go-tun2socks/common/log"
 )

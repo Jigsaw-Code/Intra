@@ -22,8 +22,8 @@ import (
 
 	"golang.org/x/net/dns/dnsmessage"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/split"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
 )
 
 type qfunc func(q []byte) ([]byte, error)

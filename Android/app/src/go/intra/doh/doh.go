@@ -32,8 +32,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/doh/ipmap"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/main/go/intra/split"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh/ipmap"
+	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
 	"github.com/eycorsican/go-tun2socks/common/log"
 	"golang.org/x/net/dns/dnsmessage"
 )
