@@ -16,7 +16,6 @@ try {
 }
 
 // Go backend build constants
-def goToolChain = 'go1.21.1'
 def goSourceDir = "${projectDir}/src/go"
 def goSourcePackages = ["${goSourceDir}/intra",
                         "${goSourceDir}/intra/android",
@@ -24,7 +23,25 @@ def goSourcePackages = ["${goSourceDir}/intra",
                         "${goSourceDir}/intra/split",
                         "${goSourceDir}/intra/protect"]
 def goBuildDir = file("${buildDir}/go")
-def goBackendAAR = file("${goBuildDir}/tun2socks.aar")
+def goBackendAAR = file("${goBuildDir}/backend.aar")
+
+// gomobile won't use the Go version in go.mod. So we need to manually read it from go.mod and
+// explicitly set the GOTOOLCHAIN environment variable later.
+def goModLines = new File("${rootDir}/../go.mod").readLines()
+def goToolchain = goModLines.find { it.startsWith('toolchain ') }
+if (goToolchain != null) {
+    // for example: goToolchain == 'toolchain go1.21.1'
+    goToolchain = goToolchain.substring('toolchain '.length())
+} else {
+    goToolchain = goModLines.find { it.startsWith('go ') }
+    if (goToolchain != null) {
+        // for example: goToolchain == 'go 1.21.1'
+        goToolchain = 'go' + goToolchain.substring('go '.length())
+    } else {
+        throw new GradleException('cannot locate Go toolchain version in go.mod')
+    }
+}
+println "using Go toolchain ${goToolchain}"
 
 // Standard Android build definition
 android {
@@ -132,12 +149,13 @@ apply plugin: 'com.google.firebase.firebase-perf'
 // Go backend build tasks
 tasks.register('compileGoBackend', Exec) {
     dependsOn 'ensureGoMobile'
+
     // invoke gomobile to compile backend code
     inputs.dir(goSourceDir)
     outputs.file(goBackendAAR)
 
+    environment 'GOTOOLCHAIN', goToolchain
     environment 'ANDROID_HOME', android.sdkDirectory
-    environment 'GOTOOLCHAIN', goToolChain
     environment 'PATH', goBuildDir.getPath() +
                         System.getProperty('path.separator') +
                         System.getenv('PATH')
@@ -157,7 +175,7 @@ tasks.register('ensureGoMobile', Exec) {
 
     doFirst { goBuildDir.mkdirs() }
 
-    environment 'GOTOOLCHAIN', goToolChain
+    environment 'GOTOOLCHAIN', goToolchain
 
     commandLine('go', 'build',
                 '-o', goBuildDir,
