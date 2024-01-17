@@ -36,7 +36,7 @@ if (goToolchain != null) {
     goToolchain = goModLines.find { it.startsWith('go ') }
     if (goToolchain != null) {
         // for example: goToolchain == 'go 1.21.1'
-        goToolchain = 'go' + goToolchain.substring('go '.length())
+        goToolchain = goToolchain.replace(" ", "");
     } else {
         throw new GradleException('cannot locate Go toolchain version in go.mod')
     }
