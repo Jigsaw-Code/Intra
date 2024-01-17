@@ -29,18 +29,14 @@ def goBackendAAR = file("${goBuildDir}/backend.aar")
 // explicitly set the GOTOOLCHAIN environment variable later.
 def goModLines = new File("${rootDir}/../go.mod").readLines()
 def goToolchain = goModLines.find { it.startsWith('toolchain ') }
-if (goToolchain != null) {
-    // for example: goToolchain == 'toolchain go1.21.1'
-    goToolchain = goToolchain.substring('toolchain '.length())
-} else {
+if (goToolchain == null) {
     goToolchain = goModLines.find { it.startsWith('go ') }
-    if (goToolchain != null) {
-        // for example: goToolchain == 'go 1.21.1'
-        goToolchain = goToolchain.replace(" ", "");
-    } else {
+    if (goToolchain == null) {
         throw new GradleException('cannot locate Go toolchain version in go.mod')
     }
 }
+// goToolchain: ['toolchain go1.x.y' or 'go 1.x.y'] -> 'go1.x.y'
+goToolchain = goToolchain.replace("toolchain", "").replace(" ", "")
 println "using Go toolchain ${goToolchain}"
 
 // Standard Android build definition
