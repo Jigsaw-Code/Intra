@@ -136,8 +136,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ndk:18.2.6'
     implementation 'com.google.firebase:firebase-config:21.0.1'
 
-    // Go backend
-    implementation files(goBackendAAR) {
+    // Go backend (use fileTree instead of files to prevent Android Studio sync errors)
+    implementation fileTree(goBuildDir) {
+        include '*.aar'
         builtBy 'compileGoBackend'
     }
 }
