@@ -5,11 +5,9 @@
   <string name="description2">IBM および Packet Clearing House が提供する大規模なグローバル リゾルバです。信頼できないドメインをブロックします。</string>
   <string name="description3">グローバルな DNS フィルタリング プロバイダです。信頼できないドメインをブロックします。</string>
   <string name="description4">非営利のプライバシー保護団体が運用しているオーストリアのサーバーです。</string>
-  <string name="description5">オープンソースの DNS ソフトウェア会社が運用しているオランダのサーバーです。</string>
   <string name="description6">xTom やその他の国際的なホスティング プロバイダが運用しています。Cloudflare の CDN を使用します。</string>
   <string name="description7">ISP が運用している日本のサーバーです。</string>
   <string name="description8">.tw ドメイン レジストリが運用している台湾のサーバーです。</string>
-  <string name="description9">イギリスのウェブサイト ホスティング企業が運用している、イギリス国内にあるサーバーです。</string>
   <string name="description10">イギリスのホスティング企業とネットワーク企業を経由して、イギリスとスイスで提供されているサービスです。</string>
   <string name="description11">イギリスの ISP が運用している、イギリスのロンドンにあるサーバーです。</string>
   <string name="description12">自由な文化と倫理を促進するフランスの非営利団体が運用している、フランスのニースにあるサーバーです。</string>

@@ -5,11 +5,9 @@
   <string name="description2">IBM 和 Packet Clearinghouse 提供的大型全球解析器。封鎖惡意網域。</string>
   <string name="description3">全球 DNS 篩選服務供應商。封鎖惡意網域。</string>
   <string name="description4">非營利私人團體在澳洲營運的伺服器。</string>
-  <string name="description5">開放原始碼 DNS 軟體公司在荷蘭營運的伺服器。</string>
   <string name="description6">由 xTom 和其他國際主機供應商營運。使用 Cloudflare 的 CDN。</string>
   <string name="description7">網際網路服務供應商 (ISP) 在日本營運的伺服器。</string>
   <string name="description8">由 .tw 網域註冊管理機構營運的台灣伺服器。</string>
-  <string name="description9">伺服器位於英國，由英國的一間網站代管公司營運。</string>
   <string name="description10">服務據點位於英國和瑞士，由英國的一間代管與網路公司營運。</string>
   <string name="description11">伺服器位於英國倫敦，由英國的網際網路服務供應商 (ISP) 營運。</string>
   <string name="description12">伺服器位於法國尼斯，由一間倡導自由文化和相關行為準則的法國非營利機構營運。</string>

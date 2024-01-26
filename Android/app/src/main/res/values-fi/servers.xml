@@ -5,11 +5,9 @@
   <string name="description2">Suuri IBM:n ja Packet Clearinghousen kansainvälinen ratkaisija.  Estää haitalliset verkkotunnukset.</string>
   <string name="description3">Kansainvälinen DNS-suodatinpalveluntarjoaja.  Estää haitalliset verkkotunnukset.</string>
   <string name="description4">Itävallassa sijaitseva palvelin, jota ylläpitää voittoa tavoittelematon tietosuojaryhmä.</string>
-  <string name="description5">Alankomaissa sijaitseva palvelin, jota ylläpitää avoimen lähdekoodin DNS-ohjelmistoyhtiö.</string>
   <string name="description6">xTomin ja muiden kansainvälisten hosting-palvelun tarjoajien ylläpitämä.  Käyttää Cloudflaren CDN:ää.</string>
   <string name="description7">Japanissa sijaitseva palvelin, jota ylläpitää ISP.</string>
   <string name="description8">Taiwanissa sijaitseva palvelin, jota ylläpitää .tw-verkkotunnusrekisteri.</string>
-  <string name="description9">Yhdistyneessä kuningaskunnassa sijaitseva palvelin, jota ylläpitää brittiläinen hosting-yritys.</string>
   <string name="description10">Yhdistyneessä kuningaskunnassa ja Sveitsissä sijaitsevat palvelimet, joita ylläpitää brittiläinen hosting- ja verkkopalveluyritys.</string>
   <string name="description11">Yhdistyneessä kuningaskunnassa Lontoossa sijaitseva palvelin, jota ylläpitää brittiläinen ISP.</string>
   <string name="description12">Ranskan Nizzassa sijaitseva palvelin, jota ylläpitää ranskalainen vapaata kulttuuria ja etiikkaa edistävä voittoa tavoittelematon järjestö.</string>

@@ -5,11 +5,9 @@
   <string name="description2">Résolveur mondial majeur géré par IBM et Packet Clearing House.  Bloque les domaines malveillants.</string>
   <string name="description3">Fournisseur mondial de filtrage DNS.  Bloque les domaines malveillants.</string>
   <string name="description4">Serveur situé en Autriche, géré par un groupe à but non lucratif spécialisé dans la confidentialité.</string>
-  <string name="description5">Serveur situé aux Pays-Bas, géré par une entreprise de logiciels DNS Open Source.</string>
   <string name="description6">Géré par xTom et d\'autres fournisseurs d\'hébergement internationaux.  Utilise le CDN de Cloudflare.</string>
   <string name="description7">Serveur situé au Japon, géré par un FAI.</string>
   <string name="description8">Serveur situé à Taïwan, géré par le registre de domaines .tw.</string>
-  <string name="description9">Serveur situé au Royaume-Uni, géré par une entreprise d\'hébergement de sites Web britannique.</string>
   <string name="description10">Diffusé depuis le Royaume-Uni et la Suisse par une entreprise d\'hébergement et de mise en réseau britannique.</string>
   <string name="description11">Serveur situé à Londres (Royaume-Uni), géré par un FAI britannique.</string>
   <string name="description12">Serveur situé à Nice (France), géré par une association française à but non lucratif chargée de promouvoir la culture libre et l\'éthique.</string>
