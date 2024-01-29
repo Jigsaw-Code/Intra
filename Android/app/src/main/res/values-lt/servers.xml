@@ -5,11 +5,9 @@
   <string name="description2">Didelė visuotinė paieškos priemonė, valdoma IBM ir „Packet Clearinghouse“.  Blokuoja kenkėjiškus domenus.</string>
   <string name="description3">Visuotinis DNS filtravimo teikėjas.  Blokuoja kenkėjiškus domenus.</string>
   <string name="description4">Serveris Austrijoje, jį valdo ne pelno siekianti privatumo grupė.</string>
-  <string name="description5">Serveris Nyderlanduose, jį valdo atvirojo šaltinio DNS programinės įrangos įmonė.</string>
   <string name="description6">Valdo „xTom“ ir kiti tarptautiniai prieglobos teikėjai.  Naudoja „Cloudflare“ TPT.</string>
   <string name="description7">Serveris Japonijoje, ji valdo IPT.</string>
   <string name="description8">Serveris Taivane, jį valdo .tw domenų registras.</string>
-  <string name="description9">Serveris yra JK. Jį valdo Didžiosios Britanijos svetainių prieglobos įmonė.</string>
   <string name="description10">Paslaugas iš JK ir Šveicarijos teikia Didžiosios Britanijos prieglobos ir tinklų įmonė.</string>
   <string name="description11">Serveris yra Londone, JK. Jį valdo Didžiosios Britanijos IPT.</string>
   <string name="description12">Serveris yra Nicoje, Prancūzijoje. Jį valdo Prancūzijos ne pelno siekianti organizacija, propaguojanti laisvą kultūrą ir etiką.</string>

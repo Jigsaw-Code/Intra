@@ -5,11 +5,9 @@
   <string name="description2">Stor global resolver fra IBM og Packet Clearinghouse.  Blokerer skadelige domæner.</string>
   <string name="description3">Global udbyder af DNS-filtrering.  Blokerer skadelige domæner.</string>
   <string name="description4">Østrigsk server drevet af en almennyttig gruppe, som arbejder for privatlivsbeskyttelse.</string>
-  <string name="description5">Nederlandsk server drevet af en softwarevirksomhed, der arbejder med open source-DNS.</string>
   <string name="description6">Drevet af xTom og andre internationale webhosts.  Anvender Cloudflares CDN.</string>
   <string name="description7">Japansk server drevet af en internetudbyder.</string>
   <string name="description8">Server i Taiwan, som drives af domæneadministratoren for .tw.</string>
-  <string name="description9">Server i Storbritannien, som drives af en britisk webhostingvirksomhed.</string>
   <string name="description10">Vises fra Storbritannien og Schweiz af en britisk hosting- og netværksvirksomhed.</string>
   <string name="description11">Server i London, Storbritannien, der drives af en britisk internetudbyder.</string>
   <string name="description12">Server i Nice, Frankrig, der drives af en fransk nonprofit, som arbejder for fri kultur og etik.</string>

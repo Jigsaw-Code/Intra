@@ -5,11 +5,9 @@
   <string name="description2">Duży, globalny resolver udostępniany przez IBM i Packet Clearinghouse.  Blokuje złośliwe domeny.</string>
   <string name="description3">Globalny dostawca usług filtrowania DNS.  Blokuje złośliwe domeny.</string>
   <string name="description4">Znajdujący się w Austrii serwer udostępniany przez grupę non-profit zajmującą się ochroną prywatności.</string>
-  <string name="description5">Znajdujący się w Holandii serwer udostępniany przez firmę tworzącą oprogramowanie DNS typu open source.</string>
   <string name="description6">Serwer udostępniany przez xTom i innych międzynarodowych dostawców usług hostingowych.  Korzysta z sieci CDN firmy Cloudflare.</string>
   <string name="description7">Serwer w Japonii udostępniany przez dostawcę usług internetowych.</string>
   <string name="description8">Serwer na Tajwanie figurujący w rejestrze domen .tw.</string>
-  <string name="description9">Serwer w Wielkiej Brytanii udostępniany przez brytyjską firmą zajmującą się hostingiem stron internetowych.</string>
   <string name="description10">Udostępniany z terenu Wielkiej Brytanii i Szwajcarii przez brytyjską firmę zajmującą się hostingiem i sieciami.</string>
   <string name="description11">Serwer w Londynie (Wielka Brytania) obsługiwany przez brytyjskiego dostawcę usług internetowych.</string>
   <string name="description12">Serwer w Nicei (Francja) obsługiwany przez francuską organizację non-profit promującą wolną kulturę i etykę.</string>

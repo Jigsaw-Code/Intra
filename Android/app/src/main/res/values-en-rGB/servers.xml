@@ -5,11 +5,9 @@
   <string name="description2">Large global resolver from IBM and Packet Clearinghouse.  Blocks malicious domains.</string>
   <string name="description3">Global DNS filtering provider.  Blocks malicious domains.</string>
   <string name="description4">Server in Austria operated by a non-profit privacy group.</string>
-  <string name="description5">Server in the Netherlands, operated by an open-source DNS software company.</string>
   <string name="description6">Operated by xTom and other international hosting providers.  Uses Cloudflare\'s CDN.</string>
   <string name="description7">Server in Japan operated by an ISP.</string>
   <string name="description8">Server in Taiwan operated by the .tw domain registry.</string>
-  <string name="description9">The server is in the UK, operated by a British website hosting company.</string>
   <string name="description10">Served from the UK and Switzerland by a British hosting and networking company.</string>
   <string name="description11">Server in London, UK, operated by a British ISP.</string>
   <string name="description12">Server in Nice, France, operated by a French non-profit promoting free culture and ethics.</string>

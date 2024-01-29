@@ -5,11 +5,9 @@
   <string name="description2">Liels globāls atrisinātājs, ko nodrošina IBM un Packet Clearinghouse.  Bloķē ļaunprātīgus domēnus.</string>
   <string name="description3">Globāls DNS filtrēšanas nodrošinātājs.  Bloķē ļaunprātīgus domēnus.</string>
   <string name="description4">Serveris Austrijā, ko nodrošina bezpeļņas konfidencialitātes grupa.</string>
-  <string name="description5">Serveris Nīderlandē, ko nodrošina atklātā pirmkoda DNS programmatūras uzņēmums.</string>
   <string name="description6">Nodrošina xTom un citi starptautiski mitināšanas sniedzēji.  Tiek izmantots Cloudflare nodrošinātais CDN.</string>
   <string name="description7">Serveris Japānā, ko nodrošina interneta pakalpojumu sniedzējs.</string>
   <string name="description8">Serveris Taivānā, ko nodrošina .tw domēnu reģistrs.</string>
-  <string name="description9">Serveris Apvienotajā Karalistē, ko nodrošina Lielbritānijas vietņu mitināšanas uzņēmums.</string>
   <string name="description10">Nodrošina Lielbritānijas mitināšanas un tīkla pakalpojumu sniegšanas uzņēmuma serveri Apvienotajā Karalistē un Šveicē.</string>
   <string name="description11">Serveris Londonā (Lielbritānijā), ko nodrošina Lielbritānijas interneta pakalpojumu sniedzējs.</string>
   <string name="description12">Serveris Nicā (Francijā), ko nodrošina Francijas bezpeļņas organizācija, kura veicina ideju par brīvu kultūru un ētiku.</string>
