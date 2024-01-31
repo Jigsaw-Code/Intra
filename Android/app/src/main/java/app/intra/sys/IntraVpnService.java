@@ -336,8 +336,14 @@ public class IntraVpnService extends VpnService implements NetworkListener,
 
   private void updateQuickSettingsTile() {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
-      TileService.requestListeningState(this,
-              new ComponentName(this, IntraTileService.class));
+      try {
+        TileService.requestListeningState(this,
+                new ComponentName(this, IntraTileService.class));
+      } catch (SecurityException ignored) {
+      } catch (IllegalArgumentException ignored) {
+        // Starting from API level 33, TileService will throw exceptions from apps in Work Profile
+        // See: https://developer.android.com/reference/android/service/quicksettings/TileService
+      }
     }
   }
 
