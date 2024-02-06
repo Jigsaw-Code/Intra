@@ -19,7 +19,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"net/http/httptrace"
@@ -27,6 +26,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"golang.org/x/net/dns/dnsmessage"
 )
 
@@ -247,7 +247,7 @@ func TestRequest(t *testing.T) {
 	if req.URL.String() != testURL {
 		t.Errorf("URL mismatch: %s != %s", req.URL.String(), testURL)
 	}
-	reqBody, err := ioutil.ReadAll(req.Body)
+	reqBody, err := io.ReadAll(req.Body)
 	if err != nil {
 		t.Error(err)
 	}
@@ -888,4 +888,10 @@ func TestServfail(t *testing.T) {
 	if servfail.Questions[0] != simpleQuery.Questions[0] {
 		t.Errorf("Wrong question: %v", servfail.Questions[0])
 	}
+}
+
+func TestQueryCanBeCancelled(t *testing.T) {
+	server, err := net.ListenTCP("tcp", &net.TCPAddr{IP: net.IPv4(127, 0, 0, 1)})
+	require.NoError(t, err)
+	defer server.Close()
 }
