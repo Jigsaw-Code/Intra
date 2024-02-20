@@ -16,12 +16,12 @@ package doh
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"net"
 	"net/http"
@@ -32,9 +32,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh/ipmap"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
-	"github.com/eycorsican/go-tun2socks/common/log"
+	"localhost/Intra/Android/app/src/go/doh/ipmap"
+	"localhost/Intra/Android/app/src/go/intra/split"
+	"localhost/Intra/Android/app/src/go/logging"
+
 	"golang.org/x/net/dns/dnsmessage"
 )
 
@@ -69,7 +70,7 @@ type Summary struct {
 }
 
 // A Token is an opaque handle used to match responses to queries.
-type Token interface{}
+type Token = interface{}
 
 // Listener receives Summaries.
 type Listener interface {
@@ -77,13 +78,15 @@ type Listener interface {
 	OnResponse(Token, *Summary)
 }
 
-// Transport represents a DNS query transport.  This interface is exported by gobind,
-// so it has to be very simple.
+// Transport represents a DNS query transport.
 type Transport interface {
-	// Given a DNS query (including ID), returns a DNS response with matching
-	// ID, or an error if no response was received.  The error may be accompanied
-	// by a SERVFAIL response if appropriate.
-	Query(q []byte) ([]byte, error)
+	// Query sends a DNS query represented by q (including ID) to this DoH server
+	// (located at GetURL) using the provided context, and returns the correponding
+	//
+	// A non-nil error will be returned if no response was received from the DoH server,
+	// the error may also be accompanied by a SERVFAIL response if appropriate.
+	Query(ctx context.Context, q []byte) ([]byte, error)
+
 	// Return the server URL used to initialize this transport.
 	GetURL() string
 }
@@ -105,8 +108,8 @@ type transport struct {
 // Wait up to three seconds for the TCP handshake to complete.
 const tcpTimeout time.Duration = 3 * time.Second
 
-func (t *transport) dial(network, addr string) (net.Conn, error) {
-	log.Debugf("Dialing %s", addr)
+func (t *transport) dial(ctx context.Context, network, addr string) (net.Conn, error) {
+	logging.Debug.Printf("Dialing %s\n", addr)
 	domain, portStr, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, err
@@ -125,23 +128,23 @@ func (t *transport) dial(network, addr string) (net.Conn, error) {
 	ips := t.ips.Get(domain)
 	confirmed := ips.Confirmed()
 	if confirmed != nil {
-		log.Debugf("Trying confirmed IP %s for addr %s", confirmed.String(), addr)
-		if conn, err = split.DialWithSplitRetry(t.dialer, tcpaddr(confirmed), nil); err == nil {
-			log.Infof("Confirmed IP %s worked", confirmed.String())
+		logging.Debug.Printf("Trying confirmed IP %s for addr %s\n", confirmed.String(), addr)
+		if conn, err = split.DialWithSplitRetry(ctx, t.dialer, tcpaddr(confirmed), nil); err == nil {
+			logging.Info.Printf("Confirmed IP %s worked\n", confirmed.String())
 			return conn, nil
 		}
-		log.Debugf("Confirmed IP %s failed with err %v", confirmed.String(), err)
+		logging.Debug.Printf("Confirmed IP %s failed with err %v\n", confirmed.String(), err)
 		ips.Disconfirm(confirmed)
 	}
 
-	log.Debugf("Trying all IPs")
+	logging.Debug.Println("Trying all IPs")
 	for _, ip := range ips.GetAll() {
 		if ip.Equal(confirmed) {
 			// Don't try this IP twice.
 			continue
 		}
-		if conn, err = split.DialWithSplitRetry(t.dialer, tcpaddr(ip), nil); err == nil {
-			log.Infof("Found working IP: %s", ip.String())
+		if conn, err = split.DialWithSplitRetry(ctx, t.dialer, tcpaddr(ip), nil); err == nil {
+			logging.Info.Printf("Found working IP: %s\n", ip.String())
 			return conn, nil
 		}
 	}
@@ -150,16 +153,17 @@ func (t *transport) dial(network, addr string) (net.Conn, error) {
 
 // NewTransport returns a DoH DNSTransport, ready for use.
 // This is a POST-only DoH implementation, so the DoH template should be a URL.
-// `rawurl` is the DoH template in string form.
-// `addrs` is a list of domains or IP addresses to use as fallback, if the hostname
 //
-//	lookup fails or returns non-working addresses.
+// `rawurl` is the DoH template in string form.
+//
+// `addrs` is a list of domains or IP addresses to use as fallback, if the hostname lookup fails or
+// returns non-working addresses.
 //
 // `dialer` is the dialer that the transport will use.  The transport will modify the dialer's
-//
-//	timeout but will not mutate it otherwise.
+// timeout but will not mutate it otherwise.
 //
 // `auth` will provide a client certificate if required by the TLS server.
+//
 // `listener` will receive the status of each DNS query when it is complete.
 func NewTransport(rawurl string, addrs []string, dialer *net.Dialer, auth ClientAuth, listener Listener) (Transport, error) {
 	if dialer == nil {
@@ -211,7 +215,7 @@ func NewTransport(rawurl string, addrs []string, dialer *net.Dialer, auth Client
 
 	// Override the dial function.
 	t.client.Transport = &http.Transport{
-		Dial:                  t.dial,
+		DialContext:           t.dial,
 		ForceAttemptHTTP2:     true,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ResponseHeaderTimeout: 20 * time.Second, // Same value as Android DNS-over-TLS
@@ -247,7 +251,7 @@ func (e *httpError) Error() string {
 // Independent of the query's success or failure, this function also returns the
 // address of the server on a best-effort basis, or nil if the address could not
 // be determined.
-func (t *transport) doQuery(q []byte) (response []byte, server *net.TCPAddr, qerr *queryError) {
+func (t *transport) doQuery(ctx context.Context, q []byte) (response []byte, server *net.TCPAddr, qerr *queryError) {
 	if len(q) < 2 {
 		qerr = &queryError{BadQuery, fmt.Errorf("Query length is %d", len(q))}
 		return
@@ -272,7 +276,7 @@ func (t *transport) doQuery(q []byte) (response []byte, server *net.TCPAddr, qer
 	// Zero out the query ID.
 	id := binary.BigEndian.Uint16(q)
 	binary.BigEndian.PutUint16(q, 0)
-	req, err := http.NewRequest(http.MethodPost, t.url, bytes.NewBuffer(q))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, t.url, bytes.NewBuffer(q))
 	if err != nil {
 		qerr = &queryError{InternalError, err}
 		return
@@ -324,13 +328,13 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 		if qerr == nil {
 			return
 		}
-		log.Infof("%d Query failed: %v", id, qerr)
+		logging.Info.Printf("%d Query failed: %v\n", id, qerr)
 		if server != nil {
-			log.Debugf("%d Disconfirming %s", id, server.IP.String())
+			logging.Debug.Printf("%d Disconfirming %s\n", id, server.IP.String())
 			t.ips.Get(hostname).Disconfirm(server.IP)
 		}
 		if conn != nil {
-			log.Infof("%d Closing failing DoH socket", id)
+			logging.Info.Printf("%d Closing failing DoH socket\n", id)
 			conn.Close()
 		}
 	}()
@@ -341,10 +345,10 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 	// reading the variables it has set.
 	trace := httptrace.ClientTrace{
 		GetConn: func(hostPort string) {
-			log.Debugf("%d GetConn(%s)", id, hostPort)
+			logging.Debug.Printf("%d GetConn(%s)\n", id, hostPort)
 		},
 		GotConn: func(info httptrace.GotConnInfo) {
-			log.Debugf("%d GotConn(%v)", id, info)
+			logging.Debug.Printf("%d GotConn(%v)\n", id, info)
 			if info.Conn == nil {
 				return
 			}
@@ -353,41 +357,41 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 			server = conn.RemoteAddr().(*net.TCPAddr)
 		},
 		PutIdleConn: func(err error) {
-			log.Debugf("%d PutIdleConn(%v)", id, err)
+			logging.Debug.Printf("%d PutIdleConn(%v)\n", id, err)
 		},
 		GotFirstResponseByte: func() {
-			log.Debugf("%d GotFirstResponseByte()", id)
+			logging.Debug.Printf("%d GotFirstResponseByte()\n", id)
 		},
 		Got100Continue: func() {
-			log.Debugf("%d Got100Continue()", id)
+			logging.Debug.Printf("%d Got100Continue()\n", id)
 		},
 		Got1xxResponse: func(code int, header textproto.MIMEHeader) error {
-			log.Debugf("%d Got1xxResponse(%d, %v)", id, code, header)
+			logging.Debug.Printf("%d Got1xxResponse(%d, %v)\n", id, code, header)
 			return nil
 		},
 		DNSStart: func(info httptrace.DNSStartInfo) {
-			log.Debugf("%d DNSStart(%v)", id, info)
+			logging.Debug.Printf("%d DNSStart(%v)\n", id, info)
 		},
 		DNSDone: func(info httptrace.DNSDoneInfo) {
-			log.Debugf("%d, DNSDone(%v)", id, info)
+			logging.Debug.Printf("%d, DNSDone(%v)\n", id, info)
 		},
 		ConnectStart: func(network, addr string) {
-			log.Debugf("%d ConnectStart(%s, %s)", id, network, addr)
+			logging.Debug.Printf("%d ConnectStart(%s, %s)\n", id, network, addr)
 		},
 		ConnectDone: func(network, addr string, err error) {
-			log.Debugf("%d ConnectDone(%s, %s, %v)", id, network, addr, err)
+			logging.Debug.Printf("%d ConnectDone(%s, %s, %v)\n", id, network, addr, err)
 		},
 		TLSHandshakeStart: func() {
-			log.Debugf("%d TLSHandshakeStart()", id)
+			logging.Debug.Printf("%d TLSHandshakeStart()\n", id)
 		},
 		TLSHandshakeDone: func(state tls.ConnectionState, err error) {
-			log.Debugf("%d TLSHandshakeDone(%v, %v)", id, state, err)
+			logging.Debug.Printf("%d TLSHandshakeDone(%v, %v)\n", id, state, err)
 		},
 		WroteHeaders: func() {
-			log.Debugf("%d WroteHeaders()", id)
+			logging.Debug.Printf("%d WroteHeaders()\n", id)
 		},
 		WroteRequest: func(info httptrace.WroteRequestInfo) {
-			log.Debugf("%d WroteRequest(%v)", id, info)
+			logging.Debug.Printf("%d WroteRequest(%v)\n", id, info)
 		},
 	}
 	req = req.WithContext(httptrace.WithClientTrace(req.Context(), &trace))
@@ -396,20 +400,20 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 	req.Header.Set("Content-Type", mimetype)
 	req.Header.Set("Accept", mimetype)
 	req.Header.Set("User-Agent", "Intra")
-	log.Debugf("%d Sending query", id)
+	logging.Debug.Printf("%d Sending query\n", id)
 	httpResponse, err := t.client.Do(req)
 	if err != nil {
 		qerr = &queryError{SendFailed, err}
 		return
 	}
-	log.Debugf("%d Got response", id)
-	response, err = ioutil.ReadAll(httpResponse.Body)
+	logging.Debug.Printf("%d Got response\n", id)
+	response, err = io.ReadAll(httpResponse.Body)
 	if err != nil {
 		qerr = &queryError{BadResponse, err}
 		return
 	}
 	httpResponse.Body.Close()
-	log.Debugf("%d Closed response", id)
+	logging.Debug.Printf("%d Closed response\n", id)
 
 	// Update the hostname, which could have changed due to a redirect.
 	hostname = httpResponse.Request.URL.Hostname()
@@ -419,7 +423,7 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 		req.Write(reqBuf)
 		respBuf := new(bytes.Buffer)
 		httpResponse.Write(respBuf)
-		log.Debugf("%d request: %s\nresponse: %s", id, reqBuf.String(), respBuf.String())
+		logging.Debug.Printf("%d request: %s\nresponse: %s\n", id, reqBuf.String(), respBuf.String())
 
 		qerr = &queryError{HTTPError, &httpError{httpResponse.StatusCode}}
 		return
@@ -428,14 +432,14 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 	return
 }
 
-func (t *transport) Query(q []byte) ([]byte, error) {
+func (t *transport) Query(ctx context.Context, q []byte) ([]byte, error) {
 	var token Token
 	if t.listener != nil {
 		token = t.listener.OnQuery(t.url)
 	}
 
 	before := time.Now()
-	response, server, qerr := t.doQuery(q)
+	response, server, qerr := t.doQuery(ctx, q)
 	after := time.Now()
 
 	var err error
@@ -477,7 +481,7 @@ func (t *transport) GetURL() string {
 
 // Perform a query using the transport, and send the response to the writer.
 func forwardQuery(t Transport, q []byte, c io.Writer) error {
-	resp, qerr := t.Query(q)
+	resp, qerr := t.Query(context.Background(), q)
 	if resp == nil && qerr != nil {
 		return qerr
 	}
@@ -504,7 +508,7 @@ func forwardQuery(t Transport, q []byte, c io.Writer) error {
 // and close the writer if there was an error.
 func forwardQueryAndCheck(t Transport, q []byte, c io.WriteCloser) {
 	if err := forwardQuery(t, q, c); err != nil {
-		log.Warnf("Query forwarding failed: %v", err)
+		logging.Warn.Printf("Query forwarding failed: %v\n", err)
 		c.Close()
 	}
 }
@@ -516,26 +520,26 @@ func Accept(t Transport, c io.ReadWriteCloser) {
 	for {
 		n, err := c.Read(qlbuf)
 		if n == 0 {
-			log.Debugf("TCP query socket clean shutdown")
+			logging.Debug.Println("TCP query socket clean shutdown")
 			break
 		}
 		if err != nil {
-			log.Warnf("Error reading from TCP query socket: %v", err)
+			logging.Warn.Printf("Error reading from TCP query socket: %v\n", err)
 			break
 		}
 		if n < 2 {
-			log.Warnf("Incomplete query length")
+			logging.Warn.Println("Incomplete query length")
 			break
 		}
 		qlen := binary.BigEndian.Uint16(qlbuf)
 		q := make([]byte, qlen)
 		n, err = c.Read(q)
 		if err != nil {
-			log.Warnf("Error reading query: %v", err)
+			logging.Warn.Printf("Error reading query: %v\n", err)
 			break
 		}
 		if n != int(qlen) {
-			log.Warnf("Incomplete query: %d < %d", n, qlen)
+			logging.Warn.Printf("Incomplete query: %d < %d\n", n, qlen)
 			break
 		}
 		go forwardQueryAndCheck(t, q, c)
@@ -560,7 +564,7 @@ func Servfail(q []byte) ([]byte, error) {
 func tryServfail(q []byte) []byte {
 	response, err := Servfail(q)
 	if err != nil {
-		log.Warnf("Error constructing servfail: %v", err)
+		logging.Warn.Printf("Error constructing servfail: %v\n", err)
 	}
 	return response
 }

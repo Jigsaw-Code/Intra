@@ -21,6 +21,6 @@ import (
 )
 
 var Debug = log.New(io.Discard, "[DEBUG] ", log.LstdFlags)
-var Info = log.New(os.Stdout, "[INFO] ", log.LstdFlags)
+var Info = log.New(io.Discard, "[INFO] ", log.LstdFlags)
 var Warn = log.New(os.Stderr, "[WARN] ", log.LstdFlags)
 var Err = log.New(os.Stderr, "[ERROR] ", log.LstdFlags)

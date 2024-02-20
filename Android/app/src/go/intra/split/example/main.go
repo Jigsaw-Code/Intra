@@ -22,7 +22,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
+	"localhost/Intra/Android/app/src/go/intra/split"
 )
 
 func main() {

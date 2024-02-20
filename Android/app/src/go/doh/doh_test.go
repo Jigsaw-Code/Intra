@@ -16,6 +16,7 @@ package doh
 
 import (
 	"bytes"
+	"context"
 	"encoding/binary"
 	"errors"
 	"io"
@@ -25,18 +26,12 @@ import (
 	"net/url"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 	"golang.org/x/net/dns/dnsmessage"
 )
 
-var testURL = "https://dns.google/dns-query"
-var ips = []string{
-	"8.8.8.8",
-	"8.8.4.4",
-	"2001:4860:4860::8888",
-	"2001:4860:4860::8844",
-}
 var parsedURL *url.URL
 
 var simpleQuery dnsmessage.Message = dnsmessage.Message{
@@ -123,15 +118,12 @@ var uncompressedQueryBytes []byte = []byte{
 }
 
 func init() {
-	parsedURL, _ = url.Parse(testURL)
+	parsedURL, _ = url.Parse(googleDoH.url)
 }
 
 // Check that the constructor works.
 func TestNewTransport(t *testing.T) {
-	_, err := NewTransport(testURL, ips, nil, nil, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
+	makeTestDoHTransport(t, googleDoH)
 }
 
 // Check that the constructor rejects unsupported URLs.
@@ -149,8 +141,8 @@ func TestBadUrl(t *testing.T) {
 // Check for failure when the query is too short to be valid.
 func TestShortQuery(t *testing.T) {
 	var qerr *queryError
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
-	_, err := doh.Query([]byte{})
+	doh := makeTestDoHTransport(t, googleDoH)
+	_, err := doh.Query(context.Background(), []byte{})
 	if err == nil {
 		t.Error("Empty query should fail")
 	} else if !errors.As(err, &qerr) {
@@ -159,7 +151,7 @@ func TestShortQuery(t *testing.T) {
 		t.Errorf("Wrong error status: %d", qerr.status)
 	}
 
-	_, err = doh.Query([]byte{1})
+	_, err = doh.Query(context.Background(), []byte{1})
 	if err == nil {
 		t.Error("One byte query should fail")
 	} else if !errors.As(err, &qerr) {
@@ -187,12 +179,8 @@ func TestQueryIntegration(t *testing.T) {
 	}
 
 	testQuery := func(queryData []byte) {
-
-		doh, err := NewTransport(testURL, ips, nil, nil, nil)
-		if err != nil {
-			t.Fatal(err)
-		}
-		resp, err2 := doh.Query(queryData)
+		doh := makeTestDoHTransport(t, googleDoH)
+		resp, err2 := doh.Query(context.Background(), queryData)
 		if err2 != nil {
 			t.Fatal(err2)
 		}
@@ -238,14 +226,14 @@ func (r *testRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 // Check that a DNS query is converted correctly into an HTTP query.
 func TestRequest(t *testing.T) {
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
+	doh := makeTestDoHTransport(t, googleDoH)
 	transport := doh.(*transport)
 	rt := makeTestRoundTripper()
 	transport.client.Transport = rt
-	go doh.Query(simpleQueryBytes)
+	go doh.Query(context.Background(), simpleQueryBytes)
 	req := <-rt.req
-	if req.URL.String() != testURL {
-		t.Errorf("URL mismatch: %s != %s", req.URL.String(), testURL)
+	if req.URL.String() != googleDoH.url {
+		t.Errorf("URL mismatch: %s != %s", req.URL.String(), googleDoH.url)
 	}
 	reqBody, err := io.ReadAll(req.Body)
 	if err != nil {
@@ -287,7 +275,7 @@ func queriesMostlyEqual(m1 dnsmessage.Message, m2 dnsmessage.Message) bool {
 
 // Check that a DOH response is returned correctly.
 func TestResponse(t *testing.T) {
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
+	doh := makeTestDoHTransport(t, googleDoH)
 	transport := doh.(*transport)
 	rt := makeTestRoundTripper()
 	transport.client.Transport = rt
@@ -308,7 +296,7 @@ func TestResponse(t *testing.T) {
 		w.Close()
 	}()
 
-	resp, err := doh.Query(simpleQueryBytes)
+	resp, err := doh.Query(context.Background(), simpleQueryBytes)
 	if err != nil {
 		t.Error(err)
 	}
@@ -326,7 +314,7 @@ func TestResponse(t *testing.T) {
 // Simulate an empty response.  (This is not a compliant server
 // behavior.)
 func TestEmptyResponse(t *testing.T) {
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
+	doh := makeTestDoHTransport(t, googleDoH)
 	transport := doh.(*transport)
 	rt := makeTestRoundTripper()
 	transport.client.Transport = rt
@@ -344,7 +332,7 @@ func TestEmptyResponse(t *testing.T) {
 		}
 	}()
 
-	_, err := doh.Query(simpleQueryBytes)
+	_, err := doh.Query(context.Background(), simpleQueryBytes)
 	var qerr *queryError
 	if err == nil {
 		t.Error("Empty body should cause an error")
@@ -357,7 +345,7 @@ func TestEmptyResponse(t *testing.T) {
 
 // Simulate a non-200 HTTP response code.
 func TestHTTPError(t *testing.T) {
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
+	doh := makeTestDoHTransport(t, googleDoH)
 	transport := doh.(*transport)
 	rt := makeTestRoundTripper()
 	transport.client.Transport = rt
@@ -374,7 +362,7 @@ func TestHTTPError(t *testing.T) {
 		w.Close()
 	}()
 
-	_, err := doh.Query(simpleQueryBytes)
+	_, err := doh.Query(context.Background(), simpleQueryBytes)
 	var qerr *queryError
 	if err == nil {
 		t.Error("Empty body should cause an error")
@@ -387,13 +375,13 @@ func TestHTTPError(t *testing.T) {
 
 // Simulate an HTTP query error.
 func TestSendFailed(t *testing.T) {
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
+	doh := makeTestDoHTransport(t, googleDoH)
 	transport := doh.(*transport)
 	rt := makeTestRoundTripper()
 	transport.client.Transport = rt
 
 	rt.err = errors.New("test")
-	_, err := doh.Query(simpleQueryBytes)
+	_, err := doh.Query(context.Background(), simpleQueryBytes)
 	var qerr *queryError
 	if err == nil {
 		t.Error("Send failure should be reported")
@@ -409,14 +397,14 @@ func TestSendFailed(t *testing.T) {
 // Test if DoH resolver IPs are confirmed and disconfirmed
 // when queries suceeded and fail, respectively.
 func TestDohIPConfirmDisconfirm(t *testing.T) {
-	u, _ := url.Parse(testURL)
-	doh, _ := NewTransport(testURL, ips, nil, nil, nil)
+	u, _ := url.Parse(googleDoH.url)
+	doh := makeTestDoHTransport(t, googleDoH)
 	transport := doh.(*transport)
 	hostname := u.Hostname()
 	ipmap := transport.ips.Get(hostname)
 
 	// send a valid request to first have confirmed-ip set
-	res, _ := doh.Query(simpleQueryBytes)
+	res, _ := doh.Query(context.Background(), simpleQueryBytes)
 	mustUnpack(res)
 	ip1 := ipmap.Confirmed()
 
@@ -442,25 +430,12 @@ func TestDohIPConfirmDisconfirm(t *testing.T) {
 			Request:    &http.Request{URL: u},
 		}
 	}()
-	doh.Query(simpleQueryBytes)
+	doh.Query(context.Background(), simpleQueryBytes)
 	ip2 := ipmap.Confirmed()
 
 	if ip2 != nil {
 		t.Errorf("IP confirmed (%s) despite err", ip2)
 	}
-}
-
-type fakeListener struct {
-	Listener
-	summary *Summary
-}
-
-func (l *fakeListener) OnQuery(url string) Token {
-	return nil
-}
-
-func (l *fakeListener) OnResponse(tok Token, summ *Summary) {
-	l.summary = summ
 }
 
 type fakeConn struct {
@@ -474,8 +449,7 @@ func (c *fakeConn) RemoteAddr() net.Addr {
 
 // Check that the DNSListener is called with a correct summary.
 func TestListener(t *testing.T) {
-	listener := &fakeListener{}
-	doh, _ := NewTransport(testURL, ips, nil, nil, listener)
+	doh, listener := makeTestDoHTransportWithListener(t, googleDoH)
 	transport := doh.(*transport)
 	rt := makeTestRoundTripper()
 	transport.client.Transport = rt
@@ -500,7 +474,7 @@ func TestListener(t *testing.T) {
 		w.Close()
 	}()
 
-	doh.Query(simpleQueryBytes)
+	doh.Query(context.Background(), simpleQueryBytes)
 	s := listener.summary
 	if s.Latency < 0 {
 		t.Errorf("Negative latency: %f", s.Latency)
@@ -554,7 +528,7 @@ type fakeTransport struct {
 	err      error
 }
 
-func (t *fakeTransport) Query(q []byte) ([]byte, error) {
+func (t *fakeTransport) Query(ctx context.Context, q []byte) ([]byte, error) {
 	t.query <- q
 	if t.err != nil {
 		return nil, t.err
@@ -891,7 +865,75 @@ func TestServfail(t *testing.T) {
 }
 
 func TestQueryCanBeCancelled(t *testing.T) {
-	server, err := net.ListenTCP("tcp", &net.TCPAddr{IP: net.IPv4(127, 0, 0, 1)})
+	expectDoHTimeout := func(server testingDoHServer, msg string) {
+		doh := makeTestDoHTransport(t, server)
+		st := time.Now()
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		defer cancel()
+		doh.Query(ctx, simpleQueryBytes)
+		require.WithinRange(t, time.Now(), st.Add(1700*time.Millisecond), st.Add(2300*time.Millisecond), msg)
+	}
+
+	expectDoHTimeout(unreachableDoH, "unreachable server should timeout within deadline of ctx")
+
+	// Intentionally create a local DoH server that does not accept any requests
+	addr, err := url.Parse(localDoH.url)
 	require.NoError(t, err)
-	defer server.Close()
+	dohAddr, err := net.ResolveTCPAddr("tcp", addr.Host)
+	require.NoError(t, err)
+	svr, err := net.ListenTCP("tcp", dohAddr)
+	require.NoError(t, err)
+	defer svr.Close()
+
+	expectDoHTimeout(localDoH, "unresponsive server should timeout within deadline of ctx")
+}
+
+/******** Test DoH servers ********/
+type testingDoHServer struct {
+	url string
+	ips []string
+}
+
+var unreachableDoH = testingDoHServer{
+	url: "https://1.2.3.4:443",
+	ips: []string{"1.2.3.4"},
+}
+
+var googleDoH = testingDoHServer{
+	url: "https://dns.google/dns-query",
+	ips: []string{
+		"8.8.8.8",
+		"8.8.4.4",
+		"2001:4860:4860::8888",
+		"2001:4860:4860::8844",
+	},
+}
+
+var localDoH = testingDoHServer{
+	url: "https://localhost:34443",
+	ips: []string{"127.0.0.1"},
+}
+
+/********** DoH Transport Test Helpers **********/
+type testingDoHListener struct {
+	Listener
+	summary *Summary
+}
+
+func (l *testingDoHListener) OnQuery(url string) Token         { return nil }
+func (l *testingDoHListener) OnResponse(tok Token, s *Summary) { l.summary = s }
+
+func makeTestDoHTransport(t *testing.T, target testingDoHServer) Transport {
+	doh, err := NewTransport(target.url, target.ips, nil, nil, nil)
+	require.NoError(t, err)
+	require.NotNil(t, doh)
+	return doh
+}
+
+func makeTestDoHTransportWithListener(t *testing.T, target testingDoHServer) (Transport, *testingDoHListener) {
+	listener := &testingDoHListener{}
+	doh, err := NewTransport(target.url, target.ips, nil, nil, listener)
+	require.NoError(t, err)
+	require.NotNil(t, doh)
+	return doh, listener
 }

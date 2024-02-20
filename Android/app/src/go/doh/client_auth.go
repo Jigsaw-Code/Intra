@@ -22,7 +22,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/eycorsican/go-tun2socks/common/log"
+	"localhost/Intra/Android/app/src/go/logging"
 )
 
 // ClientAuth interface for providing TLS certificates and signatures.
@@ -52,12 +52,12 @@ type clientAuthWrapper struct {
 func (ca *clientAuthWrapper) GetClientCertificate(
 	info *tls.CertificateRequestInfo) (*tls.Certificate, error) {
 	if ca.signer == nil {
-		log.Warnf("Client certificate requested but not supported")
+		logging.Warn.Println("Client certificate requested but not supported")
 		return &tls.Certificate{}, nil
 	}
 	cert := ca.signer.GetClientCertificate()
 	if cert == nil {
-		log.Warnf("Unable to fetch client certificate")
+		logging.Warn.Println("Unable to fetch client certificate")
 		return &tls.Certificate{}, nil
 	}
 	chain := [][]byte{cert}
@@ -67,13 +67,13 @@ func (ca *clientAuthWrapper) GetClientCertificate(
 	}
 	leaf, err := x509.ParseCertificate(cert)
 	if err != nil {
-		log.Warnf("Unable to parse client certificate: %v", err)
+		logging.Warn.Printf("Unable to parse client certificate: %v\n", err)
 		return &tls.Certificate{}, nil
 	}
 	_, isECDSA := leaf.PublicKey.(*ecdsa.PublicKey)
 	if !isECDSA {
 		// RSA-PSS and RSA-SSA both need explicit signature generation support.
-		log.Warnf("Only ECDSA client certificates are supported")
+		logging.Warn.Println("Only ECDSA client certificates are supported")
 		return &tls.Certificate{}, nil
 	}
 	return &tls.Certificate{
@@ -91,7 +91,7 @@ func (ca *clientAuthWrapper) Public() crypto.PublicKey {
 	cert := ca.signer.GetClientCertificate()
 	leaf, err := x509.ParseCertificate(cert)
 	if err != nil {
-		log.Warnf("Unable to parse client certificate: %v", err)
+		logging.Warn.Printf("Unable to parse client certificate: %v\n", err)
 		return nil
 	}
 	return leaf.PublicKey

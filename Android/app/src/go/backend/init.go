@@ -1,4 +1,4 @@
-// Copyright 2023 Jigsaw Operations LLC
+// Copyright 2024 Jigsaw Operations LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package doh
+package backend
 
 import (
-	"sync/atomic"
+	"runtime/debug"
 )
 
-// Atomic is atomic.Value, specialized for doh.Transport.
-type Atomic struct {
-	v atomic.Value
-}
-
-// Store a DNSTransport.  d must not be nil.
-func (a *Atomic) Store(t Transport) {
-	a.v.Store(t)
-}
-
-// Load the DNSTransport, or nil if it has not been stored.
-func (a *Atomic) Load() Transport {
-	v := a.v.Load()
-	if v == nil {
-		return nil
-	}
-	return v.(Transport)
+func init() {
+	// Conserve memory by increasing garbage collection frequency.
+	debug.SetGCPercent(10)
 }
