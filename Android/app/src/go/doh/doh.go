@@ -70,7 +70,7 @@ type Summary struct {
 }
 
 // A Token is an opaque handle used to match responses to queries.
-type Token = interface{}
+type Token interface{}
 
 // Listener receives Summaries.
 type Listener interface {

@@ -20,6 +20,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import app.intra.net.doh.Prober;
 import app.intra.sys.VpnController;
+import backend.Backend;
 import backend.DoHServer;
 import protect.Protector;
 
@@ -42,7 +43,7 @@ public class GoProber extends Prober {
         // Protection isn't needed for Lollipop+, or if the VPN is not active.
         Protector protector = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? null :
             VpnController.getInstance().getIntraVpnService();
-        Probe(new DoHServer(url, dohIPs, protector, null));
+        Backend.probe(new DoHServer(url, dohIPs, protector, null));
         callback.onCompleted(true);
       } catch (Exception e) {
         callback.onCompleted(false);

@@ -71,10 +71,10 @@ var dohQuery = []byte{
 	0, 1, // QCLASS = IN (Internet)
 }
 
-// Probe checks if this server can handle DNS-over-HTTPS (DoH) requests.
+// Probe checks whether the [DoHServer] server can handle DNS-over-HTTPS (DoH) requests.
 //
 // If the server responds correctly, the function returns nil. Otherwise, the function returns an error.
-func (s *DoHServer) Probe() error {
+func Probe(s *DoHServer) error {
 	resp, err := s.r.Query(context.Background(), dohQuery)
 	if err != nil {
 		return fmt.Errorf("failed to send query: %w", err)

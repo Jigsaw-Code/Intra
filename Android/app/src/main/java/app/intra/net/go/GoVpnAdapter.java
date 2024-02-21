@@ -88,7 +88,7 @@ public class GoVpnAdapter {
   private ParcelFileDescriptor tunFd;
 
   // The Intra session object from go-tun2socks.  Initially null.
-  private Session tunnel;
+  private Session session;
   private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
@@ -109,7 +109,7 @@ public class GoVpnAdapter {
   }
 
   private void connectTunnel() {
-    if (tunnel != null) {
+    if (session != null) {
       return;
     }
     // VPN parameters
@@ -123,7 +123,7 @@ public class GoVpnAdapter {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
       DoHServer server = makeDoHServer(dohURL);
       // connectIntraTunnel makes a copy of the file descriptor.
-      tunnel = Backend.connectSession(tunFd.getFd(), fakeDns,
+      session = Backend.connectSession(tunFd.getFd(), fakeDns,
           server, getProtector(), listener);
     } catch (Exception e) {
       LogWrapper.logException(e);
@@ -150,7 +150,7 @@ public class GoVpnAdapter {
     }
     String file = vpnService.getFilesDir() + File.separator + CHOIR_FILENAME;
     try {
-      tunnel.enableSNIReporter(file, "intra.metrics.gstatic.com", country);
+      session.enableSNIReporter(file, "intra.metrics.gstatic.com", country);
     } catch (Exception e) {
       // Choir setup failure is logged but otherwise ignored, because it does not prevent Intra
       // from functioning correctly.
@@ -189,8 +189,8 @@ public class GoVpnAdapter {
   }
 
   public synchronized void close() {
-    if (tunnel != null) {
-      tunnel.disconnect();
+    if (session != null) {
+      session.disconnect();
     }
     if (tunFd != null) {
       try {
@@ -229,7 +229,7 @@ public class GoVpnAdapter {
       // Adapter is closed.
       return;
     }
-    if (tunnel == null) {
+    if (session == null) {
       // Attempt to re-create the tunnel.  Creation may have failed originally because the DoH
       // server could not be reached.  This will update the DoH URL as well.
       connectTunnel();
@@ -241,11 +241,11 @@ public class GoVpnAdapter {
     // out.
     String url = PersistentState.getServerUrl(vpnService);
     try {
-      tunnel.setDoHServer(makeDoHServer(url));
+      session.setDoHServer(makeDoHServer(url));
     } catch (Exception e) {
       LogWrapper.logException(e);
-      tunnel.disconnect();
-      tunnel = null;
+      session.disconnect();
+      session = null;
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
     }
   }
