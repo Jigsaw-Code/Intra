@@ -74,8 +74,8 @@ func ConnectSession(
 }
 
 func copyUntilEOF(dst, src io.ReadWriteCloser) {
-	logging.Dbg("IntraSession(copyUntilEOF) - start relaying traffic", "src", src, "dst", dst)
-	defer logging.Dbg("IntraSession(copyUntilEOF) - stop relaying traffic", "src", src, "dst", dst)
+	logging.Debug("IntraSession(copyUntilEOF) - start relaying traffic", "src", src, "dst", dst)
+	defer logging.Debug("IntraSession(copyUntilEOF) - stop relaying traffic", "src", src, "dst", dst)
 
 	const commonMTU = 1500
 	buf := make([]byte, commonMTU)

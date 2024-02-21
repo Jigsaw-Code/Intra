@@ -120,10 +120,10 @@ const DefaultTimeout time.Duration = 0
 // `addr` is the destination.
 // If `stats` is non-nil, it will be populated with retry-related information.
 func DialWithSplitRetry(ctx context.Context, dialer *net.Dialer, addr *net.TCPAddr, stats *RetryStats) (DuplexConn, error) {
-	logging.Dbg("SplitRetry(DialWithSplitRetry) - dialing", "addr", addr)
+	logging.Debug("SplitRetry(DialWithSplitRetry) - dialing", "addr", addr)
 	before := time.Now()
 	conn, err := dialer.DialContext(ctx, addr.Network(), addr.String())
-	logging.Dbg("SplitRetry(DialWithSplitRetry) - dialed", "err", err)
+	logging.Debug("SplitRetry(DialWithSplitRetry) - dialed", "err", err)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (r *retrier) Read(buf []byte) (n int, err error) {
 			// Read failed.  Retry.
 			n, err = r.retry(buf)
 		}
-		logging.Dbg("SplitRetry(retrier.Read) - direct conn succeeded, no need to split")
+		logging.Debug("SplitRetry(retrier.Read) - direct conn succeeded, no need to split")
 		close(r.retryCompleteFlag)
 		// Unset read deadline.
 		r.conn.SetReadDeadline(time.Time{})
@@ -177,8 +177,8 @@ func (r *retrier) Read(buf []byte) (n int, err error) {
 }
 
 func (r *retrier) retry(buf []byte) (n int, err error) {
-	logging.Dbg("SplitRetry(retrier.retry) - retrying...")
-	defer func() { logging.Dbg("SplitRetry(retrier.retry) - retried", "n", n, "err", err) }()
+	logging.Debug("SplitRetry(retrier.retry) - retrying...")
+	defer func() { logging.Debug("SplitRetry(retrier.retry) - retried", "n", n, "err", err) }()
 
 	r.conn.Close()
 	var newConn net.Conn

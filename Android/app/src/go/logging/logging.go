@@ -30,11 +30,11 @@ var logger = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
 	Level: slog.LevelWarn,
 }))
 
-func Dbg(msg string, args ...any) {
+func Debug(msg string, args ...any) {
 	logger.Debug(msg, args...)
 }
 
-func Dbgf(format string, args ...any) {
+func Debugf(format string, args ...any) {
 	if !logger.Enabled(context.Background(), slog.LevelDebug) {
 		return
 	}
@@ -63,11 +63,11 @@ func Warnf(format string, args ...any) {
 	logger.Warn(fmt.Sprintf(format, args...))
 }
 
-func Err(msg string, args ...any) {
+func Error(msg string, args ...any) {
 	logger.Error(msg, args...)
 }
 
-func Errf(format string, args ...any) {
+func Errorf(format string, args ...any) {
 	if !logger.Enabled(context.Background(), slog.LevelError) {
 		return
 	}

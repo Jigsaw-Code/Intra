@@ -109,7 +109,7 @@ type resolver struct {
 const tcpTimeout time.Duration = 3 * time.Second
 
 func (r *resolver) dial(ctx context.Context, network, addr string) (net.Conn, error) {
-	logging.Dbg("DoH(resolver.dial) - dialing", "addr", addr)
+	logging.Debug("DoH(resolver.dial) - dialing", "addr", addr)
 	domain, portStr, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, err
@@ -128,16 +128,16 @@ func (r *resolver) dial(ctx context.Context, network, addr string) (net.Conn, er
 	ips := r.ips.Get(domain)
 	confirmed := ips.Confirmed()
 	if confirmed != nil {
-		logging.Dbg("DoH(resolver.dial) - trying confirmed IP", "confirmedIP", confirmed, "addr", addr)
+		logging.Debug("DoH(resolver.dial) - trying confirmed IP", "confirmedIP", confirmed, "addr", addr)
 		if conn, err = split.DialWithSplitRetry(ctx, r.dialer, tcpaddr(confirmed), nil); err == nil {
 			logging.Info("DoH(resolver.dial) - confirmed IP worked", "confirmedIP", confirmed)
 			return conn, nil
 		}
-		logging.Dbg("DoH(resolver.dial) - confirmed IP failed", "confirmedIP", confirmed, "err", err)
+		logging.Debug("DoH(resolver.dial) - confirmed IP failed", "confirmedIP", confirmed, "err", err)
 		ips.Disconfirm(confirmed)
 	}
 
-	logging.Dbg("DoH(resolver.dial) - trying all IPs")
+	logging.Debug("DoH(resolver.dial) - trying all IPs")
 	for _, ip := range ips.GetAll() {
 		if ip.Equal(confirmed) {
 			// Don't try this IP twice.
@@ -330,7 +330,7 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 		}
 		logging.Info("DoH(resolver.sendRequest) - done", "id", id, "queryError", qerr)
 		if server != nil {
-			logging.Dbg("DoH(resolver.sendRequest) - disconfirming IP", "id", id, "ip", server.IP)
+			logging.Debug("DoH(resolver.sendRequest) - disconfirming IP", "id", id, "ip", server.IP)
 			r.ips.Get(hostname).Disconfirm(server.IP)
 		}
 		if conn != nil {
@@ -345,10 +345,10 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 	// reading the variables it has set.
 	trace := httptrace.ClientTrace{
 		GetConn: func(hostPort string) {
-			logging.Dbgf("%d GetConn(%s)", id, hostPort)
+			logging.Debugf("%d GetConn(%s)", id, hostPort)
 		},
 		GotConn: func(info httptrace.GotConnInfo) {
-			logging.Dbgf("%d GotConn(%v)", id, info)
+			logging.Debugf("%d GotConn(%v)", id, info)
 			if info.Conn == nil {
 				return
 			}
@@ -357,41 +357,41 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 			server = conn.RemoteAddr().(*net.TCPAddr)
 		},
 		PutIdleConn: func(err error) {
-			logging.Dbgf("%d PutIdleConn(%v)", id, err)
+			logging.Debugf("%d PutIdleConn(%v)", id, err)
 		},
 		GotFirstResponseByte: func() {
-			logging.Dbgf("%d GotFirstResponseByte()", id)
+			logging.Debugf("%d GotFirstResponseByte()", id)
 		},
 		Got100Continue: func() {
-			logging.Dbgf("%d Got100Continue()", id)
+			logging.Debugf("%d Got100Continue()", id)
 		},
 		Got1xxResponse: func(code int, header textproto.MIMEHeader) error {
-			logging.Dbgf("%d Got1xxResponse(%d, %v)", id, code, header)
+			logging.Debugf("%d Got1xxResponse(%d, %v)", id, code, header)
 			return nil
 		},
 		DNSStart: func(info httptrace.DNSStartInfo) {
-			logging.Dbgf("%d DNSStart(%v)", id, info)
+			logging.Debugf("%d DNSStart(%v)", id, info)
 		},
 		DNSDone: func(info httptrace.DNSDoneInfo) {
-			logging.Dbgf("%d, DNSDone(%v)", id, info)
+			logging.Debugf("%d, DNSDone(%v)", id, info)
 		},
 		ConnectStart: func(network, addr string) {
-			logging.Dbgf("%d ConnectStart(%s, %s)", id, network, addr)
+			logging.Debugf("%d ConnectStart(%s, %s)", id, network, addr)
 		},
 		ConnectDone: func(network, addr string, err error) {
-			logging.Dbgf("%d ConnectDone(%s, %s, %v)", id, network, addr, err)
+			logging.Debugf("%d ConnectDone(%s, %s, %v)", id, network, addr, err)
 		},
 		TLSHandshakeStart: func() {
-			logging.Dbgf("%d TLSHandshakeStart()", id)
+			logging.Debugf("%d TLSHandshakeStart()", id)
 		},
 		TLSHandshakeDone: func(state tls.ConnectionState, err error) {
-			logging.Dbgf("%d TLSHandshakeDone(%v, %v)", id, state, err)
+			logging.Debugf("%d TLSHandshakeDone(%v, %v)", id, state, err)
 		},
 		WroteHeaders: func() {
-			logging.Dbgf("%d WroteHeaders()", id)
+			logging.Debugf("%d WroteHeaders()", id)
 		},
 		WroteRequest: func(info httptrace.WroteRequestInfo) {
-			logging.Dbgf("%d WroteRequest(%v)", id, info)
+			logging.Debugf("%d WroteRequest(%v)", id, info)
 		},
 	}
 	req = req.WithContext(httptrace.WithClientTrace(req.Context(), &trace))
@@ -400,20 +400,20 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 	req.Header.Set("Content-Type", mimetype)
 	req.Header.Set("Accept", mimetype)
 	req.Header.Set("User-Agent", "Intra")
-	logging.Dbg("DoH(resolver.sendRequest) - sending query", "id", id)
+	logging.Debug("DoH(resolver.sendRequest) - sending query", "id", id)
 	httpResponse, err := r.client.Do(req)
 	if err != nil {
 		qerr = &queryError{SendFailed, err}
 		return
 	}
-	logging.Dbg("DoH(resolver.sendRequest) - got response", "id", id)
+	logging.Debug("DoH(resolver.sendRequest) - got response", "id", id)
 	response, err = io.ReadAll(httpResponse.Body)
 	if err != nil {
 		qerr = &queryError{BadResponse, err}
 		return
 	}
 	httpResponse.Body.Close()
-	logging.Dbg("DoH(resolver.sendRequest) - response closed", "id", id)
+	logging.Debug("DoH(resolver.sendRequest) - response closed", "id", id)
 
 	// Update the hostname, which could have changed due to a redirect.
 	hostname = httpResponse.Request.URL.Hostname()
@@ -423,7 +423,7 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 		req.Write(reqBuf)
 		respBuf := new(bytes.Buffer)
 		httpResponse.Write(respBuf)
-		logging.Dbg("DoH(resolver.sendRequest) - response invalid", "id", id, "req", reqBuf, "resp", respBuf)
+		logging.Debug("DoH(resolver.sendRequest) - response invalid", "id", id, "req", reqBuf, "resp", respBuf)
 
 		qerr = &queryError{HTTPError, &httpError{httpResponse.StatusCode}}
 		return
@@ -532,7 +532,7 @@ func Accept(r Resolver, c io.ReadWriteCloser) {
 	for {
 		n, err := c.Read(qlbuf)
 		if n == 0 {
-			logging.Dbg("DoH(Accept) - TCP query socket clean shutdown")
+			logging.Debug("DoH(Accept) - TCP query socket clean shutdown")
 			break
 		}
 		if err != nil {
@@ -562,7 +562,7 @@ func Accept(r Resolver, c io.ReadWriteCloser) {
 
 // Servfail returns a SERVFAIL response to the query q.
 func Servfail(q []byte) ([]byte, error) {
-	defer logging.Dbg("DoH(SERVFAIL) - response generated")
+	defer logging.Debug("DoH(SERVFAIL) - response generated")
 	var msg dnsmessage.Message
 	if err := msg.Unpack(q); err != nil {
 		return nil, err
