@@ -101,7 +101,7 @@ public class GoIntraListener implements intra.Listener, DoHListener {
     goStatusMap.put(Backend.DoHStatusInternalError, Status.INTERNAL_ERROR);
   }
 
-  // Wrapping HttpMetric into a doh.Token allows us to get paired query and response notifications
+  // Wrapping HttpMetric into a DoHQueryToken allows us to get paired query and response notifications
   // from Go without reverse-binding any Java APIs into Go.  Pairing these notifications is
   // required by the structure of the HttpMetric API (which does not have any other way to record
   // latency), and reverse binding is worth avoiding, especially because it's not compatible with
