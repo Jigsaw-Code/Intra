@@ -442,6 +442,7 @@ func (t *transport) Query(ctx context.Context, q []byte) ([]byte, error) {
 	response, server, qerr := t.doQuery(ctx, q)
 	after := time.Now()
 
+	errIsCancel := false
 	var err error
 	status := Complete
 	httpStatus := http.StatusOK
@@ -449,6 +450,7 @@ func (t *transport) Query(ctx context.Context, q []byte) ([]byte, error) {
 		err = qerr
 		status = qerr.status
 		httpStatus = 0
+		errIsCancel = errors.Is(qerr, context.Canceled)
 
 		var herr *httpError
 		if errors.As(qerr.err, &herr) {
@@ -461,14 +463,13 @@ func (t *transport) Query(ctx context.Context, q []byte) ([]byte, error) {
 	// the following deadlock:
 	//   1. Java - synchronized VpnController.stop()
 	//   2. Go   -   context.Cancel()
-	//   3. Go   -   errors.Is(qerr, context.Cancelled)
-	//   4. Go   -   (if we don't stop sending OnResponse)
-	//   5. Java -   GoIntraListener.onResponse
-	//   6. Java -   synchronized VpnController.onConnectionStateChanged()
+	//   3. Go   -   (if we don't stop sending OnResponse)
+	//   4. Java -   GoIntraListener.onResponse
+	//   5. Java -   synchronized VpnController.onConnectionStateChanged()
 	// Deadlock happens (both Step 1 and Step 6 are marked as synchronized)!
 	//
 	// TODO: make stop() an asynchronized function
-	if t.listener != nil && !errors.Is(qerr, context.Canceled) {
+	if t.listener != nil && !errIsCancel {
 		latency := after.Sub(before)
 		var ip string
 		if server != nil {
