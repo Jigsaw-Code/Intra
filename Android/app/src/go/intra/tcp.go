@@ -23,7 +23,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
+	"localhost/Intra/Android/app/src/go/intra/split"
+
 	"github.com/Jigsaw-Code/outline-sdk/transport"
 )
 

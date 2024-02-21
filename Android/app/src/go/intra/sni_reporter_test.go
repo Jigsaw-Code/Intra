@@ -16,14 +16,15 @@ package intra
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"strings"
 	"testing"
 
 	"golang.org/x/net/dns/dnsmessage"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/intra/split"
 )
 
 type qfunc func(q []byte) ([]byte, error)
@@ -33,7 +34,7 @@ type fakeTransport struct {
 	query qfunc
 }
 
-func (t *fakeTransport) Query(q []byte) ([]byte, error) {
+func (t *fakeTransport) Query(ctx context.Context, q []byte) ([]byte, error) {
 	return t.query(q)
 }
 

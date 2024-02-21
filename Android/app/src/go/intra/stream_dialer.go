@@ -23,9 +23,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/protect"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/intra/protect"
+	"localhost/Intra/Android/app/src/go/intra/split"
+
 	"github.com/Jigsaw-Code/outline-sdk/transport"
 )
 
@@ -99,7 +100,7 @@ func (sd *intraStreamDialer) dial(ctx context.Context, dest netip.AddrPort, stat
 			return split.DialWithSplit(sd.dialer, net.TCPAddrFromAddrPort(dest))
 		} else {
 			stats.Retry = &split.RetryStats{}
-			return split.DialWithSplitRetry(sd.dialer, net.TCPAddrFromAddrPort(dest), stats.Retry)
+			return split.DialWithSplitRetry(ctx, sd.dialer, net.TCPAddrFromAddrPort(dest), stats.Retry)
 		}
 	} else {
 		tcpsd := &transport.TCPStreamDialer{

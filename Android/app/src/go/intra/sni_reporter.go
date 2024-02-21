@@ -15,13 +15,15 @@
 package intra
 
 import (
+	"context"
 	"io"
 	"sync"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/logging"
+
 	"github.com/Jigsaw-Code/choir"
-	"github.com/eycorsican/go-tun2socks/common/log"
 )
 
 // Number of bins to assign reports to.  Should be large enough for
@@ -60,11 +62,11 @@ func (r *tcpSNIReporter) Send(report choir.Report) error {
 	r.mu.RUnlock()
 	q, err := choir.FormatQuery(report, suffix)
 	if err != nil {
-		log.Warnf("Failed to construct query for Choir: %v", err)
+		logging.Warn.Printf("Failed to construct query for Choir: %v\n", err)
 		return nil
 	}
-	if _, err = dns.Query(q); err != nil {
-		log.Infof("Failed to deliver query for Choir: %v", err)
+	if _, err = dns.Query(context.Background(), q); err != nil {
+		logging.Info.Printf("Failed to deliver query for Choir: %v\n", err)
 	}
 	return nil
 }
@@ -104,13 +106,13 @@ func (r *tcpSNIReporter) Report(summary TCPSocketSummary) {
 	}
 	resultValue, err := choir.NewValue(result)
 	if err != nil {
-		log.Fatalf("Bad result %s: %v", result, err)
+		logging.Err.Printf("Bad result %s: %v\n", result, err)
 	}
 	responseValue, err := choir.NewValue(response)
 	if err != nil {
-		log.Fatalf("Bad response %s: %v", response, err)
+		logging.Err.Printf("Bad response %s: %v\n", response, err)
 	}
 	if err := reporter.Report(summary.Retry.SNI, resultValue, responseValue); err != nil {
-		log.Warnf("Choir report failed: %v", err)
+		logging.Warn.Printf("Choir report failed: %v\n", err)
 	}
 }
