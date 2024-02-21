@@ -456,7 +456,19 @@ func (t *transport) Query(ctx context.Context, q []byte) ([]byte, error) {
 		}
 	}
 
-	if t.listener != nil {
+	// Stop sending OnResponse when the error is cancelled because the cancelled
+	// error is typically triggered by a Disconnect() operation, which will cause
+	// the following deadlock:
+	//   1. Java - synchronized VpnController.stop()
+	//   2. Go   -   context.Cancel()
+	//   3. Go   -   errors.Is(qerr, context.Cancelled)
+	//   4. Go   -   (if we don't stop sending OnResponse)
+	//   5. Java -   GoIntraListener.onResponse
+	//   6. Java -   synchronized VpnController.onConnectionStateChanged()
+	// Deadlock happens (both Step 1 and Step 6 are marked as synchronized)!
+	//
+	// TODO: make stop() an asynchronized function
+	if t.listener != nil && !errors.Is(qerr, context.Canceled) {
 		latency := after.Sub(before)
 		var ip string
 		if server != nil {
@@ -550,6 +562,7 @@ func Accept(t Transport, c io.ReadWriteCloser) {
 
 // Servfail returns a SERVFAIL response to the query q.
 func Servfail(q []byte) ([]byte, error) {
+	defer logging.Debug.Println("SERVFAIL response generated")
 	var msg dnsmessage.Message
 	if err := msg.Unpack(q); err != nil {
 		return nil, err

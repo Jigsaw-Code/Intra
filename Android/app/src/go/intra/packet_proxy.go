@@ -15,6 +15,7 @@
 package intra
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net"
@@ -22,8 +23,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/protect"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/intra/protect"
+
 	"github.com/Jigsaw-Code/outline-sdk/network"
 	"github.com/Jigsaw-Code/outline-sdk/transport"
 )
@@ -33,12 +35,13 @@ type intraPacketProxy struct {
 	dns         atomic.Pointer[doh.Transport]
 	proxy       network.PacketProxy
 	listener    UDPListener
+	ctx         context.Context
 }
 
 var _ network.PacketProxy = (*intraPacketProxy)(nil)
 
 func newIntraPacketProxy(
-	fakeDNS netip.AddrPort, dns doh.Transport, protector protect.Protector, listener UDPListener,
+	ctx context.Context, fakeDNS netip.AddrPort, dns doh.Transport, protector protect.Protector, listener UDPListener,
 ) (*intraPacketProxy, error) {
 	if dns == nil {
 		return nil, errors.New("dns is required")
@@ -58,6 +61,7 @@ func newIntraPacketProxy(
 		fakeDNSAddr: fakeDNS,
 		proxy:       pp,
 		listener:    listener,
+		ctx:         ctx,
 	}
 	dohpp.dns.Store(&dns)
 
@@ -122,7 +126,7 @@ func (req *dohPacketReqSender) WriteTo(p []byte, destination netip.AddrPort) (in
 			}
 		}()
 
-		resp, err := (*req.proxy.dns.Load()).Query(p)
+		resp, err := (*req.proxy.dns.Load()).Query(req.proxy.ctx, p)
 		if err != nil {
 			return 0, fmt.Errorf("DoH request error: %w", err)
 		}

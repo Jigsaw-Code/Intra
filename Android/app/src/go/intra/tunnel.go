@@ -15,6 +15,7 @@
 package intra
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -22,8 +23,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/protect"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/intra/protect"
+
 	"github.com/Jigsaw-Code/outline-sdk/network"
 	"github.com/Jigsaw-Code/outline-sdk/network/lwip2transport"
 )
@@ -33,17 +35,18 @@ import (
 type Listener interface {
 	UDPListener
 	TCPListener
-	doh.Listener
 }
 
 // Tunnel represents an Intra session.
 type Tunnel struct {
 	network.IPDevice
 
-	sd  *intraStreamDialer
-	pp  *intraPacketProxy
-	sni *tcpSNIReporter
-	tun io.Closer
+	ctx    context.Context
+	cancel context.CancelFunc
+	sd     *intraStreamDialer
+	pp     *intraPacketProxy
+	sni    *tcpSNIReporter
+	tun    io.Closer
 }
 
 // NewTunnel creates a connected Intra session.
@@ -76,13 +79,14 @@ func NewTunnel(
 		},
 		tun: tun,
 	}
+	t.ctx, t.cancel = context.WithCancel(context.Background())
 
 	t.sd, err = newIntraStreamDialer(fakeDNSAddr.AddrPort(), dohdns, protector, eventListener, t.sni)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create stream dialer: %w", err)
 	}
 
-	t.pp, err = newIntraPacketProxy(fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
+	t.pp, err = newIntraPacketProxy(t.ctx, fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create packet proxy: %w", err)
 	}
@@ -118,6 +122,7 @@ func (t *Tunnel) EnableSNIReporter(filename, suffix, country string) error {
 }
 
 func (t *Tunnel) Disconnect() {
+	t.cancel()
 	t.Close()
 	t.tun.Close()
 }
