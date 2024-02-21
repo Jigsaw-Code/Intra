@@ -923,8 +923,8 @@ type testingDoHListener struct {
 func (l *testingDoHListener) OnQuery(url string) Token         { return nil }
 func (l *testingDoHListener) OnResponse(tok Token, s *Summary) { l.summary = s }
 
-func makeTestDoHTransport(t *testing.T, target testingDoHServer) Transport {
-	doh, err := NewTransport(target.url, target.ips, nil, nil, nil)
+func newTestDOHResolver(t *testing.T, config dohConfig) DOHResolver {
+	doh, err := NewDOHResolver(target.url, target.ips, nil, nil, nil)
 	require.NoError(t, err)
 	require.NotNil(t, doh)
 	return doh
