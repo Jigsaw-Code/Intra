@@ -20,8 +20,8 @@ import (
 	"io/fs"
 	"localhost/Intra/Android/app/src/go/intra"
 	"localhost/Intra/Android/app/src/go/intra/protect"
+	"localhost/Intra/Android/app/src/go/logging"
 	"localhost/Intra/Android/app/src/go/tuntap"
-	"log"
 	"os"
 
 	"github.com/Jigsaw-Code/outline-sdk/network"
@@ -74,8 +74,8 @@ func ConnectSession(
 }
 
 func copyUntilEOF(dst, src io.ReadWriteCloser) {
-	log.Printf("[debug] start relaying traffic [%s] -> [%s]", src, dst)
-	defer log.Printf("[debug] stop relaying traffic [%s] -> [%s]", src, dst)
+	logging.Dbg("IntraSession(copyUntilEOF) - start relaying traffic", "src", src, "dst", dst)
+	defer logging.Dbg("IntraSession(copyUntilEOF) - stop relaying traffic", "src", src, "dst", dst)
 
 	const commonMTU = 1500
 	buf := make([]byte, commonMTU)

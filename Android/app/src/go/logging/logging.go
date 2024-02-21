@@ -12,15 +12,64 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*
+Package logging is a centralized logging system for Intra's Go backend.
+It offers efficient logging methods that save CPU power by only formatting
+messages that need to be logged.
+*/
 package logging
 
 import (
-	"io"
-	"log"
+	"context"
+	"fmt"
+	"log/slog"
 	"os"
 )
 
-var Debug = log.New(io.Discard, "[DEBUG] ", log.LstdFlags)
-var Info = log.New(io.Discard, "[INFO] ", log.LstdFlags)
-var Warn = log.New(os.Stderr, "[WARN] ", log.LstdFlags)
-var Err = log.New(os.Stderr, "[ERROR] ", log.LstdFlags)
+var logger = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+	Level: slog.LevelWarn,
+}))
+
+func Dbg(msg string, args ...any) {
+	logger.Debug(msg, args...)
+}
+
+func Dbgf(format string, args ...any) {
+	if !logger.Enabled(context.Background(), slog.LevelDebug) {
+		return
+	}
+	logger.Debug(fmt.Sprintf(format, args...))
+}
+
+func Info(msg string, args ...any) {
+	logger.Info(msg, args...)
+}
+
+func Infof(format string, args ...any) {
+	if !logger.Enabled(context.Background(), slog.LevelInfo) {
+		return
+	}
+	logger.Info(fmt.Sprintf(format, args...))
+}
+
+func Warn(msg string, args ...any) {
+	logger.Warn(msg, args...)
+}
+
+func Warnf(format string, args ...any) {
+	if !logger.Enabled(context.Background(), slog.LevelWarn) {
+		return
+	}
+	logger.Warn(fmt.Sprintf(format, args...))
+}
+
+func Err(msg string, args ...any) {
+	logger.Error(msg, args...)
+}
+
+func Errf(format string, args ...any) {
+	if !logger.Enabled(context.Background(), slog.LevelError) {
+		return
+	}
+	logger.Error(fmt.Sprintf(format, args...))
+}

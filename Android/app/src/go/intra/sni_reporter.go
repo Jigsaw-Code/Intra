@@ -62,11 +62,11 @@ func (r *tcpSNIReporter) Send(report choir.Report) error {
 	r.mu.RUnlock()
 	q, err := choir.FormatQuery(report, suffix)
 	if err != nil {
-		logging.Warn.Printf("Failed to construct query for Choir: %v\n", err)
+		logging.Warnf("Failed to construct query for Choir: %v", err)
 		return nil
 	}
 	if _, err = dns.Query(context.Background(), q); err != nil {
-		logging.Info.Printf("Failed to deliver query for Choir: %v\n", err)
+		logging.Infof("Failed to deliver query for Choir: %v", err)
 	}
 	return nil
 }
@@ -106,13 +106,13 @@ func (r *tcpSNIReporter) Report(summary TCPSocketSummary) {
 	}
 	resultValue, err := choir.NewValue(result)
 	if err != nil {
-		logging.Err.Printf("Bad result %s: %v\n", result, err)
+		logging.Errf("Bad result %s: %v", result, err)
 	}
 	responseValue, err := choir.NewValue(response)
 	if err != nil {
-		logging.Err.Printf("Bad response %s: %v\n", response, err)
+		logging.Errf("Bad response %s: %v", response, err)
 	}
 	if err := reporter.Report(summary.Retry.SNI, resultValue, responseValue); err != nil {
-		logging.Warn.Printf("Choir report failed: %v\n", err)
+		logging.Warnf("Choir report failed: %v", err)
 	}
 }

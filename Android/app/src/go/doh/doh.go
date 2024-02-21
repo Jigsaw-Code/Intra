@@ -109,7 +109,7 @@ type resolver struct {
 const tcpTimeout time.Duration = 3 * time.Second
 
 func (r *resolver) dial(ctx context.Context, network, addr string) (net.Conn, error) {
-	logging.Debug.Printf("Dialing %s\n", addr)
+	logging.Dbg("DoH(resolver.dial) - dialing", "addr", addr)
 	domain, portStr, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, err
@@ -128,23 +128,23 @@ func (r *resolver) dial(ctx context.Context, network, addr string) (net.Conn, er
 	ips := r.ips.Get(domain)
 	confirmed := ips.Confirmed()
 	if confirmed != nil {
-		logging.Debug.Printf("Trying confirmed IP %s for addr %s\n", confirmed.String(), addr)
+		logging.Dbg("DoH(resolver.dial) - trying confirmed IP", "confirmedIP", confirmed, "addr", addr)
 		if conn, err = split.DialWithSplitRetry(ctx, r.dialer, tcpaddr(confirmed), nil); err == nil {
-			logging.Info.Printf("Confirmed IP %s worked\n", confirmed.String())
+			logging.Info("DoH(resolver.dial) - confirmed IP worked", "confirmedIP", confirmed)
 			return conn, nil
 		}
-		logging.Debug.Printf("Confirmed IP %s failed with err %v\n", confirmed.String(), err)
+		logging.Dbg("DoH(resolver.dial) - confirmed IP failed", "confirmedIP", confirmed, "err", err)
 		ips.Disconfirm(confirmed)
 	}
 
-	logging.Debug.Println("Trying all IPs")
+	logging.Dbg("DoH(resolver.dial) - trying all IPs")
 	for _, ip := range ips.GetAll() {
 		if ip.Equal(confirmed) {
 			// Don't try this IP twice.
 			continue
 		}
 		if conn, err = split.DialWithSplitRetry(ctx, r.dialer, tcpaddr(ip), nil); err == nil {
-			logging.Info.Printf("Found working IP: %s\n", ip.String())
+			logging.Info("DoH(resolver.dial) - found working IP", "ip", ip)
 			return conn, nil
 		}
 	}
@@ -328,13 +328,13 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 		if qerr == nil {
 			return
 		}
-		logging.Info.Printf("%d Query failed: %v\n", id, qerr)
+		logging.Info("DoH(resolver.sendRequest) - done", "id", id, "queryError", qerr)
 		if server != nil {
-			logging.Debug.Printf("%d Disconfirming %s\n", id, server.IP.String())
+			logging.Dbg("DoH(resolver.sendRequest) - disconfirming IP", "id", id, "ip", server.IP)
 			r.ips.Get(hostname).Disconfirm(server.IP)
 		}
 		if conn != nil {
-			logging.Info.Printf("%d Closing failing DoH socket\n", id)
+			logging.Info("DoH(resolver.sendRequest) - closing failing DoH socket", "id", id)
 			conn.Close()
 		}
 	}()
@@ -345,10 +345,10 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 	// reading the variables it has set.
 	trace := httptrace.ClientTrace{
 		GetConn: func(hostPort string) {
-			logging.Debug.Printf("%d GetConn(%s)\n", id, hostPort)
+			logging.Dbgf("%d GetConn(%s)", id, hostPort)
 		},
 		GotConn: func(info httptrace.GotConnInfo) {
-			logging.Debug.Printf("%d GotConn(%v)\n", id, info)
+			logging.Dbgf("%d GotConn(%v)", id, info)
 			if info.Conn == nil {
 				return
 			}
@@ -357,41 +357,41 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 			server = conn.RemoteAddr().(*net.TCPAddr)
 		},
 		PutIdleConn: func(err error) {
-			logging.Debug.Printf("%d PutIdleConn(%v)\n", id, err)
+			logging.Dbgf("%d PutIdleConn(%v)", id, err)
 		},
 		GotFirstResponseByte: func() {
-			logging.Debug.Printf("%d GotFirstResponseByte()\n", id)
+			logging.Dbgf("%d GotFirstResponseByte()", id)
 		},
 		Got100Continue: func() {
-			logging.Debug.Printf("%d Got100Continue()\n", id)
+			logging.Dbgf("%d Got100Continue()", id)
 		},
 		Got1xxResponse: func(code int, header textproto.MIMEHeader) error {
-			logging.Debug.Printf("%d Got1xxResponse(%d, %v)\n", id, code, header)
+			logging.Dbgf("%d Got1xxResponse(%d, %v)", id, code, header)
 			return nil
 		},
 		DNSStart: func(info httptrace.DNSStartInfo) {
-			logging.Debug.Printf("%d DNSStart(%v)\n", id, info)
+			logging.Dbgf("%d DNSStart(%v)", id, info)
 		},
 		DNSDone: func(info httptrace.DNSDoneInfo) {
-			logging.Debug.Printf("%d, DNSDone(%v)\n", id, info)
+			logging.Dbgf("%d, DNSDone(%v)", id, info)
 		},
 		ConnectStart: func(network, addr string) {
-			logging.Debug.Printf("%d ConnectStart(%s, %s)\n", id, network, addr)
+			logging.Dbgf("%d ConnectStart(%s, %s)", id, network, addr)
 		},
 		ConnectDone: func(network, addr string, err error) {
-			logging.Debug.Printf("%d ConnectDone(%s, %s, %v)\n", id, network, addr, err)
+			logging.Dbgf("%d ConnectDone(%s, %s, %v)", id, network, addr, err)
 		},
 		TLSHandshakeStart: func() {
-			logging.Debug.Printf("%d TLSHandshakeStart()\n", id)
+			logging.Dbgf("%d TLSHandshakeStart()", id)
 		},
 		TLSHandshakeDone: func(state tls.ConnectionState, err error) {
-			logging.Debug.Printf("%d TLSHandshakeDone(%v, %v)\n", id, state, err)
+			logging.Dbgf("%d TLSHandshakeDone(%v, %v)", id, state, err)
 		},
 		WroteHeaders: func() {
-			logging.Debug.Printf("%d WroteHeaders()\n", id)
+			logging.Dbgf("%d WroteHeaders()", id)
 		},
 		WroteRequest: func(info httptrace.WroteRequestInfo) {
-			logging.Debug.Printf("%d WroteRequest(%v)\n", id, info)
+			logging.Dbgf("%d WroteRequest(%v)", id, info)
 		},
 	}
 	req = req.WithContext(httptrace.WithClientTrace(req.Context(), &trace))
@@ -400,20 +400,20 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 	req.Header.Set("Content-Type", mimetype)
 	req.Header.Set("Accept", mimetype)
 	req.Header.Set("User-Agent", "Intra")
-	logging.Debug.Printf("%d Sending query\n", id)
+	logging.Dbg("DoH(resolver.sendRequest) - sending query", "id", id)
 	httpResponse, err := r.client.Do(req)
 	if err != nil {
 		qerr = &queryError{SendFailed, err}
 		return
 	}
-	logging.Debug.Printf("%d Got response\n", id)
+	logging.Dbg("DoH(resolver.sendRequest) - got response", "id", id)
 	response, err = io.ReadAll(httpResponse.Body)
 	if err != nil {
 		qerr = &queryError{BadResponse, err}
 		return
 	}
 	httpResponse.Body.Close()
-	logging.Debug.Printf("%d Closed response\n", id)
+	logging.Dbg("DoH(resolver.sendRequest) - response closed", "id", id)
 
 	// Update the hostname, which could have changed due to a redirect.
 	hostname = httpResponse.Request.URL.Hostname()
@@ -423,7 +423,7 @@ func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, h
 		req.Write(reqBuf)
 		respBuf := new(bytes.Buffer)
 		httpResponse.Write(respBuf)
-		logging.Debug.Printf("%d request: %s\nresponse: %s\n", id, reqBuf.String(), respBuf.String())
+		logging.Dbg("DoH(resolver.sendRequest) - response invalid", "id", id, "req", reqBuf, "resp", respBuf)
 
 		qerr = &queryError{HTTPError, &httpError{httpResponse.StatusCode}}
 		return
@@ -521,7 +521,7 @@ func forwardQuery(r Resolver, q []byte, c io.Writer) error {
 // and close the writer if there was an error.
 func forwardQueryAndCheck(r Resolver, q []byte, c io.WriteCloser) {
 	if err := forwardQuery(r, q, c); err != nil {
-		logging.Warn.Printf("Query forwarding failed: %v\n", err)
+		logging.Warn("DoH(forwardQueryAndCheck) - forwarding failed", "err", err)
 		c.Close()
 	}
 }
@@ -532,26 +532,26 @@ func Accept(r Resolver, c io.ReadWriteCloser) {
 	for {
 		n, err := c.Read(qlbuf)
 		if n == 0 {
-			logging.Debug.Println("TCP query socket clean shutdown")
+			logging.Dbg("DoH(Accept) - TCP query socket clean shutdown")
 			break
 		}
 		if err != nil {
-			logging.Warn.Printf("Error reading from TCP query socket: %v\n", err)
+			logging.Warn("DoH(Accept) - failed to read from TCP query socket", "err", err)
 			break
 		}
 		if n < 2 {
-			logging.Warn.Println("Incomplete query length")
+			logging.Warn("DoH(Accept) - incomplete query length")
 			break
 		}
 		qlen := binary.BigEndian.Uint16(qlbuf)
 		q := make([]byte, qlen)
 		n, err = c.Read(q)
 		if err != nil {
-			logging.Warn.Printf("Error reading query: %v\n", err)
+			logging.Warn("DoH(Accept) - failed to read query", "err", err)
 			break
 		}
 		if n != int(qlen) {
-			logging.Warn.Printf("Incomplete query: %d < %d\n", n, qlen)
+			logging.Warn("DoH(Accept) - incomplete query (n < qlen)", "n", n, "qlen", qlen)
 			break
 		}
 		go forwardQueryAndCheck(r, q, c)
@@ -562,7 +562,7 @@ func Accept(r Resolver, c io.ReadWriteCloser) {
 
 // Servfail returns a SERVFAIL response to the query q.
 func Servfail(q []byte) ([]byte, error) {
-	defer logging.Debug.Println("SERVFAIL response generated")
+	defer logging.Dbg("DoH(SERVFAIL) - response generated")
 	var msg dnsmessage.Message
 	if err := msg.Unpack(q); err != nil {
 		return nil, err
@@ -577,7 +577,7 @@ func Servfail(q []byte) ([]byte, error) {
 func tryServfail(q []byte) []byte {
 	response, err := Servfail(q)
 	if err != nil {
-		logging.Warn.Printf("Error constructing servfail: %v\n", err)
+		logging.Warn("DoH(SERVFAIL) - failed to construct response", "err", err)
 	}
 	return response
 }
