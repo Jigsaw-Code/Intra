@@ -32,7 +32,7 @@ import (
 
 type intraPacketProxy struct {
 	fakeDNSAddr netip.AddrPort
-	dns         atomic.Pointer[doh.Transport]
+	dns         atomic.Pointer[doh.Resolver]
 	proxy       network.PacketProxy
 	listener    UDPListener
 	ctx         context.Context
@@ -41,7 +41,7 @@ type intraPacketProxy struct {
 var _ network.PacketProxy = (*intraPacketProxy)(nil)
 
 func newIntraPacketProxy(
-	ctx context.Context, fakeDNS netip.AddrPort, dns doh.Transport, protector protect.Protector, listener UDPListener,
+	ctx context.Context, fakeDNS netip.AddrPort, dns doh.Resolver, protector protect.Protector, listener UDPListener,
 ) (*intraPacketProxy, error) {
 	if dns == nil {
 		return nil, errors.New("dns is required")
@@ -88,7 +88,7 @@ func (p *intraPacketProxy) NewSession(resp network.PacketResponseReceiver) (netw
 	}, nil
 }
 
-func (p *intraPacketProxy) SetDNS(dns doh.Transport) error {
+func (p *intraPacketProxy) SetDNS(dns doh.Resolver) error {
 	if dns == nil {
 		return errors.New("dns is required")
 	}

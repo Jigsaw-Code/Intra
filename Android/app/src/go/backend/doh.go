@@ -26,7 +26,7 @@ import (
 
 // DoHServer represents a DNS-over-HTTPS server.
 type DoHServer struct {
-	tspt doh.Transport
+	r doh.Resolver
 }
 
 // NewDoHServer creates a DoHServer that connects to the specified DoH server.
@@ -47,7 +47,7 @@ func NewDoHServer(
 		ips = strings.Split(ipsStr, ",")
 	}
 	dialer := protect.MakeDialer(protector)
-	t, err := doh.NewTransport(url, ips, dialer, nil, makeInternalDoHListener(listener))
+	t, err := doh.NewResolver(url, ips, dialer, nil, makeInternalDoHListener(listener))
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ var dohQuery = []byte{
 //
 // If the server responds correctly, the function returns nil. Otherwise, the function returns an error.
 func (s *DoHServer) Probe() error {
-	resp, err := s.tspt.Query(context.Background(), dohQuery)
+	resp, err := s.r.Query(context.Background(), dohQuery)
 	if err != nil {
 		return fmt.Errorf("failed to send query: %w", err)
 	}

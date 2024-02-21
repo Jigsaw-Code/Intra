@@ -32,7 +32,7 @@ import (
 
 type intraStreamDialer struct {
 	fakeDNSAddr      netip.AddrPort
-	dns              atomic.Pointer[doh.Transport]
+	dns              atomic.Pointer[doh.Resolver]
 	dialer           *net.Dialer
 	alwaysSplitHTTPS atomic.Bool
 	listener         TCPListener
@@ -43,7 +43,7 @@ var _ transport.StreamDialer = (*intraStreamDialer)(nil)
 
 func newIntraStreamDialer(
 	fakeDNS netip.AddrPort,
-	dns doh.Transport,
+	dns doh.Resolver,
 	protector protect.Protector,
 	listener TCPListener,
 	sniReporter *tcpSNIReporter,
@@ -86,7 +86,7 @@ func (sd *intraStreamDialer) Dial(ctx context.Context, raddr string) (transport.
 	return makeTCPWrapConn(conn, stats, sd.listener, sd.sniReporter), nil
 }
 
-func (sd *intraStreamDialer) SetDNS(dns doh.Transport) error {
+func (sd *intraStreamDialer) SetDNS(dns doh.Resolver) error {
 	if dns == nil {
 		return errors.New("dns is required")
 	}

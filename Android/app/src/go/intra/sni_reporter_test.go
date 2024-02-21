@@ -29,17 +29,17 @@ import (
 
 type qfunc func(q []byte) ([]byte, error)
 
-type fakeTransport struct {
-	doh.Transport
+type fakeResolver struct {
+	doh.Resolver
 	query qfunc
 }
 
-func (t *fakeTransport) Query(ctx context.Context, q []byte) ([]byte, error) {
-	return t.query(q)
+func (r *fakeResolver) Query(ctx context.Context, q []byte) ([]byte, error) {
+	return r.query(q)
 }
 
-func newFakeTransport(query qfunc) *fakeTransport {
-	return &fakeTransport{query: query}
+func newFakeTransport(query qfunc) *fakeResolver {
+	return &fakeResolver{query: query}
 }
 
 func sendReport(t *testing.T, r *tcpSNIReporter, summary TCPSocketSummary, response []byte, responseErr error) string {

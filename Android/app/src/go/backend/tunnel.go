@@ -35,7 +35,7 @@ type Session struct {
 	*intra.Tunnel
 }
 
-func (s *Session) SetDoHServer(svr *DoHServer) { s.SetDNS(svr.tspt) }
+func (s *Session) SetDoHServer(svr *DoHServer) { s.SetDNS(svr.r) }
 
 // ConnectSession reads packets from a TUN device and applies the Intra routing
 // rules. Currently, this only consists of redirecting DNS packets to a specified
@@ -64,7 +64,7 @@ func ConnectSession(
 	if dohdns == nil {
 		return nil, errors.New("dohdns must not be nil")
 	}
-	t, err := intra.NewTunnel(fakedns, dohdns.tspt, tun, protector, listener)
+	t, err := intra.NewTunnel(fakedns, dohdns.r, tun, protector, listener)
 	if err != nil {
 		return nil, err
 	}
