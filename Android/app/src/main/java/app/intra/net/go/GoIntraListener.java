@@ -28,7 +28,7 @@ import app.intra.sys.IntraVpnService;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import backend.Backend;
 import backend.DoHListener;
-import backend.DoHQueryStats;
+import backend.DoHQuerySumary;
 import backend.DoHQueryToken;
 import intra.TCPSocketSummary;
 import intra.UDPSocketSummary;
@@ -125,30 +125,30 @@ public class GoIntraListener implements intra.Listener, DoHListener {
   }
 
   @Override
-  public void onResponse(DoHQueryToken token, DoHQueryStats stats) {
-    if (stats.getHTTPStatus() != 0 && token != null) {
+  public void onResponse(DoHQueryToken token, DoHQuerySumary summary) {
+    if (summary.getHTTPStatus() != 0 && token != null) {
       // HTTP transaction completed.  Report performance metrics.
       Metric m = (Metric)token;
-      m.metric.setRequestPayloadSize(len(stats.getQuery()));
-      m.metric.setHttpResponseCode((int)stats.getHTTPStatus());
-      m.metric.setResponsePayloadSize(len(stats.getResponse()));
+      m.metric.setRequestPayloadSize(len(summary.getQuery()));
+      m.metric.setHttpResponseCode((int)summary.getHTTPStatus());
+      m.metric.setResponsePayloadSize(len(summary.getResponse()));
       m.metric.stop();  // Finalizes the metric and queues it for upload.
     }
 
     final DnsPacket query;
     try {
-      query = new DnsPacket(stats.getQuery());
+      query = new DnsPacket(summary.getQuery());
     } catch (ProtocolException e) {
       return;
     }
-    long latencyMs = (long)(1000 * stats.getLatency());
+    long latencyMs = (long)(1000 * summary.getLatency());
     long nowMs = SystemClock.elapsedRealtime();
     long queryTimeMs = nowMs - latencyMs;
     Transaction transaction = new Transaction(query, queryTimeMs);
-    transaction.response = stats.getResponse();
-    transaction.responseTime = (long)(1000 * stats.getLatency());
-    transaction.serverIp = stats.getServer();
-    transaction.status = goStatusMap.get(stats.getStatus());
+    transaction.response = summary.getResponse();
+    transaction.responseTime = (long)(1000 * summary.getLatency());
+    transaction.serverIp = summary.getServer();
+    transaction.status = goStatusMap.get(summary.getStatus());
     transaction.responseCalendar = Calendar.getInstance();
 
     vpnService.recordTransaction(transaction);

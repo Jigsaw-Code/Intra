@@ -101,7 +101,7 @@ type DoHListener interface {
 	OnQuery(url string) DoHQueryToken
 
 	// OnResponse will be called when a DoH response has been received.
-	OnResponse(DoHQueryToken, *DoHQueryStats)
+	OnResponse(DoHQueryToken, *DoHQuerySumary)
 }
 
 // DoHStatus is an integer representing the status of a DoH transaction.
@@ -116,18 +116,18 @@ const (
 	DoHStatusInternalError DoHStatus = doh.InternalError // This should never happen
 )
 
-// DoHQueryStats is the summary of a DNS transaction.
+// DoHQuerySumary is the summary of a DNS transaction.
 // It will be reported to [DoHListener].OnResponse when it is complete.
-type DoHQueryStats struct {
+type DoHQuerySumary struct {
 	summ *doh.Summary
 }
 
-func (q DoHQueryStats) GetQuery() []byte     { return q.summ.Query }
-func (q DoHQueryStats) GetResponse() []byte  { return q.summ.Response }
-func (q DoHQueryStats) GetServer() string    { return q.summ.Server }
-func (q DoHQueryStats) GetStatus() DoHStatus { return q.summ.Status }
-func (q DoHQueryStats) GetHTTPStatus() int   { return q.summ.HTTPStatus }
-func (q DoHQueryStats) GetLatency() float64  { return q.summ.Latency }
+func (q DoHQuerySumary) GetQuery() []byte     { return q.summ.Query }
+func (q DoHQuerySumary) GetResponse() []byte  { return q.summ.Response }
+func (q DoHQuerySumary) GetServer() string    { return q.summ.Server }
+func (q DoHQuerySumary) GetStatus() DoHStatus { return q.summ.Status }
+func (q DoHQuerySumary) GetHTTPStatus() int   { return q.summ.HTTPStatus }
+func (q DoHQuerySumary) GetLatency() float64  { return q.summ.Latency }
 
 // dohListenerAdapter is an adapter for the internal [doh.Listener].
 type dohListenerAdapter struct {
@@ -148,5 +148,5 @@ func (e dohListenerAdapter) OnQuery(url string) doh.Token {
 }
 
 func (e dohListenerAdapter) OnResponse(t doh.Token, s *doh.Summary) {
-	e.l.OnResponse(t, &DoHQueryStats{s})
+	e.l.OnResponse(t, &DoHQuerySumary{s})
 }
