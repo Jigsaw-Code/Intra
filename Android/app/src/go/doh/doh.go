@@ -466,7 +466,7 @@ func (t *transport) Query(ctx context.Context, q []byte) ([]byte, error) {
 	//   3. Go   -   (if we don't stop sending OnResponse)
 	//   4. Java -   GoIntraListener.onResponse
 	//   5. Java -   synchronized VpnController.onConnectionStateChanged()
-	// Deadlock happens (both Step 1 and Step 6 are marked as synchronized)!
+	// Deadlock happens (both Step 1 and Step 5 are marked as synchronized)!
 	//
 	// TODO: make stop() an asynchronized function
 	if t.listener != nil && !errIsCancel {
