@@ -17,19 +17,21 @@ package app.intra.net.go;
 
 import android.os.SystemClock;
 import androidx.collection.LongSparseArray;
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.HttpMetric;
+import java.net.ProtocolException;
+import java.util.Calendar;
 import app.intra.net.dns.DnsPacket;
 import app.intra.net.doh.Transaction;
 import app.intra.net.doh.Transaction.Status;
-import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.IntraVpnService;
-import com.google.firebase.perf.FirebasePerformance;
-import com.google.firebase.perf.metrics.HttpMetric;
-import doh.Doh;
-import doh.Token;
+import app.intra.sys.firebase.AnalyticsWrapper;
+import backend.Backend;
+import backend.DoHListener;
+import backend.DoHQueryStats;
+import backend.DoHQueryToken;
 import intra.TCPSocketSummary;
 import intra.UDPSocketSummary;
-import java.net.ProtocolException;
-import java.util.Calendar;
 import split.RetryStats;
 
 /**
@@ -37,7 +39,7 @@ import split.RetryStats;
  * when a socket has concluded, with performance metrics for that socket, and this class forwards
  * those metrics to Firebase.
  */
-public class GoIntraListener implements intra.Listener {
+public class GoIntraListener implements intra.Listener, DoHListener {
 
   // UDP is often used for one-off messages and pings.  The relative overhead of reporting metrics
   // on these short messages would be large, so we only report metrics on sockets that transfer at
@@ -91,12 +93,12 @@ public class GoIntraListener implements intra.Listener {
 
   private static final LongSparseArray<Status> goStatusMap = new LongSparseArray<>();
   static {
-    goStatusMap.put(Doh.Complete, Status.COMPLETE);
-    goStatusMap.put(Doh.SendFailed, Status.SEND_FAIL);
-    goStatusMap.put(Doh.HTTPError, Status.HTTP_ERROR);
-    goStatusMap.put(Doh.BadQuery, Status.INTERNAL_ERROR); // TODO: Add a BAD_QUERY Status
-    goStatusMap.put(Doh.BadResponse, Status.BAD_RESPONSE);
-    goStatusMap.put(Doh.InternalError, Status.INTERNAL_ERROR);
+    goStatusMap.put(Backend.DoHStatusComplete, Status.COMPLETE);
+    goStatusMap.put(Backend.DoHStatusSendFailed, Status.SEND_FAIL);
+    goStatusMap.put(Backend.DoHStatusHTTPError, Status.HTTP_ERROR);
+    goStatusMap.put(Backend.DoHStatusBadQuery, Status.INTERNAL_ERROR); // TODO: Add a BAD_QUERY Status
+    goStatusMap.put(Backend.DoHStatusBadResponse, Status.BAD_RESPONSE);
+    goStatusMap.put(Backend.DoHStatusInternalError, Status.INTERNAL_ERROR);
   }
 
   // Wrapping HttpMetric into a doh.Token allows us to get paired query and response notifications
@@ -104,7 +106,7 @@ public class GoIntraListener implements intra.Listener {
   // required by the structure of the HttpMetric API (which does not have any other way to record
   // latency), and reverse binding is worth avoiding, especially because it's not compatible with
   // the Go module system (https://github.com/golang/go/issues/27234).
-  private class Metric implements doh.Token {
+  private static class Metric implements DoHQueryToken {
     final HttpMetric metric;
     Metric(String url) {
       metric = FirebasePerformance.getInstance().newHttpMetric(url, "POST");
@@ -112,7 +114,7 @@ public class GoIntraListener implements intra.Listener {
   }
 
   @Override
-  public Token onQuery(String url) {
+  public DoHQueryToken onQuery(String url) {
     Metric m = new Metric(url);
     m.metric.start();
     return m;
@@ -123,30 +125,30 @@ public class GoIntraListener implements intra.Listener {
   }
 
   @Override
-  public void onResponse(Token token, doh.Summary summary) {
-    if (summary.getHTTPStatus() != 0 && token != null) {
+  public void onResponse(DoHQueryToken token, DoHQueryStats stats) {
+    if (stats.getHTTPStatus() != 0 && token != null) {
       // HTTP transaction completed.  Report performance metrics.
       Metric m = (Metric)token;
-      m.metric.setRequestPayloadSize(len(summary.getQuery()));
-      m.metric.setHttpResponseCode((int)summary.getHTTPStatus());
-      m.metric.setResponsePayloadSize(len(summary.getResponse()));
+      m.metric.setRequestPayloadSize(len(stats.getQuery()));
+      m.metric.setHttpResponseCode((int)stats.getHTTPStatus());
+      m.metric.setResponsePayloadSize(len(stats.getResponse()));
       m.metric.stop();  // Finalizes the metric and queues it for upload.
     }
 
     final DnsPacket query;
     try {
-      query = new DnsPacket(summary.getQuery());
+      query = new DnsPacket(stats.getQuery());
     } catch (ProtocolException e) {
       return;
     }
-    long latencyMs = (long)(1000 * summary.getLatency());
+    long latencyMs = (long)(1000 * stats.getLatency());
     long nowMs = SystemClock.elapsedRealtime();
     long queryTimeMs = nowMs - latencyMs;
     Transaction transaction = new Transaction(query, queryTimeMs);
-    transaction.response = summary.getResponse();
-    transaction.responseTime = (long)(1000 * summary.getLatency());
-    transaction.serverIp = summary.getServer();
-    transaction.status = goStatusMap.get(summary.getStatus());
+    transaction.response = stats.getResponse();
+    transaction.responseTime = (long)(1000 * stats.getLatency());
+    transaction.serverIp = stats.getServer();
+    transaction.status = goStatusMap.get(stats.getStatus());
     transaction.responseCalendar = Calendar.getInstance();
 
     vpnService.recordTransaction(transaction);

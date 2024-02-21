@@ -25,6 +25,11 @@ import android.os.SystemClock;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Locale;
 import app.intra.R;
 import app.intra.sys.CountryCode;
 import app.intra.sys.IntraVpnService;
@@ -33,14 +38,10 @@ import app.intra.sys.VpnController;
 import app.intra.sys.firebase.AnalyticsWrapper;
 import app.intra.sys.firebase.LogWrapper;
 import app.intra.sys.firebase.RemoteConfig;
-import doh.Transport;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Locale;
+import backend.Backend;
+import backend.DoHServer;
+import backend.Session;
 import protect.Protector;
-import tun2socks.Tun2socks;
 
 /**
  * This is a VpnAdapter that captures all traffic and routes it through a go-tun2socks instance with
@@ -87,7 +88,7 @@ public class GoVpnAdapter {
   private ParcelFileDescriptor tunFd;
 
   // The Intra session object from go-tun2socks.  Initially null.
-  private intra.Tunnel tunnel;
+  private Session tunnel;
   private GoIntraListener listener;
 
   public static GoVpnAdapter establish(@NonNull IntraVpnService vpnService) {
@@ -120,10 +121,10 @@ public class GoVpnAdapter {
 
     try {
       LogWrapper.log(Log.INFO, LOG_TAG, "Starting go-tun2socks");
-      Transport transport = makeDohTransport(dohURL);
+      DoHServer server = makeDoHServer(dohURL);
       // connectIntraTunnel makes a copy of the file descriptor.
-      tunnel = Tun2socks.connectIntraTunnel(tunFd.getFd(), fakeDns,
-          transport, getProtector(), listener);
+      tunnel = Backend.connectSession(tunFd.getFd(), fakeDns,
+          server, getProtector(), listener);
     } catch (Exception e) {
       LogWrapper.logException(e);
       VpnController.getInstance().onConnectionStateChanged(vpnService, IntraVpnService.State.FAILING);
@@ -201,21 +202,21 @@ public class GoVpnAdapter {
     tunFd = null;
   }
 
-  private doh.Transport makeDohTransport(@Nullable String url) throws Exception {
+  private DoHServer makeDoHServer(@Nullable String url) throws Exception {
     @NonNull String realUrl = PersistentState.expandUrl(vpnService, url);
     String dohIPs = getIpString(vpnService, realUrl);
     String host = new URL(realUrl).getHost();
     long startTime = SystemClock.elapsedRealtime();
-    final doh.Transport transport;
+    final DoHServer server;
     try {
-      transport = Tun2socks.newDoHTransport(realUrl, dohIPs, getProtector(), null, listener);
+      server = new DoHServer(realUrl, dohIPs, getProtector(), listener);
     } catch (Exception e) {
       AnalyticsWrapper.get(vpnService).logBootstrapFailed(host);
       throw e;
     }
     int delta = (int) (SystemClock.elapsedRealtime() - startTime);
     AnalyticsWrapper.get(vpnService).logBootstrap(host, delta);
-    return transport;
+    return server;
   }
 
   /**
@@ -240,7 +241,7 @@ public class GoVpnAdapter {
     // out.
     String url = PersistentState.getServerUrl(vpnService);
     try {
-      tunnel.setDNS(makeDohTransport(url));
+      tunnel.setDoHServer(makeDoHServer(url));
     } catch (Exception e) {
       LogWrapper.logException(e);
       tunnel.disconnect();

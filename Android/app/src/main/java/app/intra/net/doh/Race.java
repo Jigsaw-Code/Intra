@@ -16,6 +16,8 @@ limitations under the License.
 package app.intra.net.doh;
 
 import android.content.Context;
+import android.util.Log;
+
 import app.intra.net.go.GoProber;
 
 /**
@@ -23,6 +25,7 @@ import app.intra.net.go.GoProber;
  * the fastest probe succeeds or all probes have failed.  Each instance can only be used once.
  */
 public class Race {
+  private static final String TAG = "DoHProbe";  // tag for logging
 
   public interface Listener {
     /**
@@ -64,11 +67,13 @@ public class Race {
 
     synchronized void onCompleted(int index, boolean succeeded) {
       if (succeeded) {
+        Log.i(TAG, "DoH Server No. " + index + ": succeeded");
         if (!reportedSuccess) {
           listener.onResult(index);
           reportedSuccess = true;
         }
       } else {
+        Log.w(TAG, "DoH Server No. " + index + ": failed");
         ++numFailed;
         if (numFailed == numCallbacks) {
           // All probes failed
