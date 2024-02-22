@@ -16,11 +16,10 @@ package ipmap
 
 import (
 	"context"
+	"localhost/Intra/Android/app/src/go/logging"
 	"math/rand"
 	"net"
 	"sync"
-
-	"github.com/eycorsican/go-tun2socks/common/log"
 )
 
 // IPMap maps hostnames to IPSets.
@@ -104,7 +103,7 @@ func (s *IPSet) Add(hostname string) {
 	// Don't hold the ipMap lock during blocking I/O.
 	resolved, err := s.r.LookupIPAddr(context.TODO(), hostname)
 	if err != nil {
-		log.Warnf("Failed to resolve %s: %v", hostname, err)
+		logging.Warnf("Failed to resolve %s: %v", hostname, err)
 	}
 	s.Lock()
 	for _, addr := range resolved {

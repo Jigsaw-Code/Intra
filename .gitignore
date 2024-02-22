@@ -1,6 +1,7 @@
 *.iml
 *.p12
 .gradle
+.vscode/
 /Android/local.properties
 /Android/keystore.properties
 /Android/.idea/

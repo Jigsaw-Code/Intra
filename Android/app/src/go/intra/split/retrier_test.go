@@ -16,6 +16,7 @@ package split
 
 import (
 	"bytes"
+	"context"
 	"io"
 	"net"
 	"testing"
@@ -46,7 +47,7 @@ func makeSetup(t *testing.T) *setup {
 		t.Error("Server isn't TCP?")
 	}
 	var stats RetryStats
-	clientSide, err := DialWithSplitRetry(&net.Dialer{}, serverAddr, &stats)
+	clientSide, err := DialWithSplitRetry(context.Background(), &net.Dialer{}, serverAddr, &stats)
 	if err != nil {
 		t.Error(err)
 	}

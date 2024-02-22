@@ -16,12 +16,12 @@ package doh
 
 import (
 	"bytes"
+	"context"
 	"crypto/tls"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"net"
 	"net/http"
@@ -32,9 +32,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh/ipmap"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/split"
-	"github.com/eycorsican/go-tun2socks/common/log"
+	"localhost/Intra/Android/app/src/go/doh/ipmap"
+	"localhost/Intra/Android/app/src/go/intra/split"
+	"localhost/Intra/Android/app/src/go/logging"
+
 	"golang.org/x/net/dns/dnsmessage"
 )
 
@@ -77,20 +78,22 @@ type Listener interface {
 	OnResponse(Token, *Summary)
 }
 
-// Transport represents a DNS query transport.  This interface is exported by gobind,
-// so it has to be very simple.
-type Transport interface {
-	// Given a DNS query (including ID), returns a DNS response with matching
-	// ID, or an error if no response was received.  The error may be accompanied
-	// by a SERVFAIL response if appropriate.
-	Query(q []byte) ([]byte, error)
-	// Return the server URL used to initialize this transport.
+// Resolver represents a DNS-over-HTTPS (DoH) resolver.
+type Resolver interface {
+	// Query sends a DNS query represented by q (including ID) to this DoH resolver
+	// (located at GetURL) using the provided context, and returns the correponding
+	//
+	// A non-nil error will be returned if no response was received from the DoH resolver,
+	// the error may also be accompanied by a SERVFAIL response if appropriate.
+	Query(ctx context.Context, q []byte) ([]byte, error)
+
+	// Return the server URL used to initialize this DoH resolver.
 	GetURL() string
 }
 
 // TODO: Keep a context here so that queries can be canceled.
-type transport struct {
-	Transport
+type resolver struct {
+	Resolver
 	url                string
 	hostname           string
 	port               int
@@ -105,8 +108,8 @@ type transport struct {
 // Wait up to three seconds for the TCP handshake to complete.
 const tcpTimeout time.Duration = 3 * time.Second
 
-func (t *transport) dial(network, addr string) (net.Conn, error) {
-	log.Debugf("Dialing %s", addr)
+func (r *resolver) dial(ctx context.Context, network, addr string) (net.Conn, error) {
+	logging.Debug("DoH(resolver.dial) - dialing", "addr", addr)
 	domain, portStr, err := net.SplitHostPort(addr)
 	if err != nil {
 		return nil, err
@@ -122,46 +125,47 @@ func (t *transport) dial(network, addr string) (net.Conn, error) {
 
 	// TODO: Improve IP fallback strategy with parallelism and Happy Eyeballs.
 	var conn net.Conn
-	ips := t.ips.Get(domain)
+	ips := r.ips.Get(domain)
 	confirmed := ips.Confirmed()
 	if confirmed != nil {
-		log.Debugf("Trying confirmed IP %s for addr %s", confirmed.String(), addr)
-		if conn, err = split.DialWithSplitRetry(t.dialer, tcpaddr(confirmed), nil); err == nil {
-			log.Infof("Confirmed IP %s worked", confirmed.String())
+		logging.Debug("DoH(resolver.dial) - trying confirmed IP", "confirmedIP", confirmed, "addr", addr)
+		if conn, err = split.DialWithSplitRetry(ctx, r.dialer, tcpaddr(confirmed), nil); err == nil {
+			logging.Info("DoH(resolver.dial) - confirmed IP worked", "confirmedIP", confirmed)
 			return conn, nil
 		}
-		log.Debugf("Confirmed IP %s failed with err %v", confirmed.String(), err)
+		logging.Debug("DoH(resolver.dial) - confirmed IP failed", "confirmedIP", confirmed, "err", err)
 		ips.Disconfirm(confirmed)
 	}
 
-	log.Debugf("Trying all IPs")
+	logging.Debug("DoH(resolver.dial) - trying all IPs")
 	for _, ip := range ips.GetAll() {
 		if ip.Equal(confirmed) {
 			// Don't try this IP twice.
 			continue
 		}
-		if conn, err = split.DialWithSplitRetry(t.dialer, tcpaddr(ip), nil); err == nil {
-			log.Infof("Found working IP: %s", ip.String())
+		if conn, err = split.DialWithSplitRetry(ctx, r.dialer, tcpaddr(ip), nil); err == nil {
+			logging.Info("DoH(resolver.dial) - found working IP", "ip", ip)
 			return conn, nil
 		}
 	}
 	return nil, err
 }
 
-// NewTransport returns a DoH DNSTransport, ready for use.
+// NewResolver returns a DoH [Resolver], ready for use.
 // This is a POST-only DoH implementation, so the DoH template should be a URL.
+//
 // `rawurl` is the DoH template in string form.
-// `addrs` is a list of domains or IP addresses to use as fallback, if the hostname
 //
-//	lookup fails or returns non-working addresses.
+// `addrs` is a list of domains or IP addresses to use as fallback, if the hostname lookup fails or
+// returns non-working addresses.
 //
-// `dialer` is the dialer that the transport will use.  The transport will modify the dialer's
-//
-//	timeout but will not mutate it otherwise.
+// `dialer` is the dialer that the [Resolver] will use.  The [Resolver] will modify the dialer's
+// timeout but will not mutate it otherwise.
 //
 // `auth` will provide a client certificate if required by the TLS server.
+//
 // `listener` will receive the status of each DNS query when it is complete.
-func NewTransport(rawurl string, addrs []string, dialer *net.Dialer, auth ClientAuth, listener Listener) (Transport, error) {
+func NewResolver(rawurl string, addrs []string, dialer *net.Dialer, auth ClientAuth, listener Listener) (Resolver, error) {
 	if dialer == nil {
 		dialer = &net.Dialer{}
 	}
@@ -184,7 +188,7 @@ func NewTransport(rawurl string, addrs []string, dialer *net.Dialer, auth Client
 		port = 443
 	}
 
-	t := &transport{
+	t := &resolver{
 		url:      rawurl,
 		hostname: parsedurl.Hostname(),
 		port:     port,
@@ -211,7 +215,7 @@ func NewTransport(rawurl string, addrs []string, dialer *net.Dialer, auth Client
 
 	// Override the dial function.
 	t.client.Transport = &http.Transport{
-		Dial:                  t.dial,
+		DialContext:           t.dial,
 		ForceAttemptHTTP2:     true,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ResponseHeaderTimeout: 20 * time.Second, // Same value as Android DNS-over-TLS
@@ -247,15 +251,15 @@ func (e *httpError) Error() string {
 // Independent of the query's success or failure, this function also returns the
 // address of the server on a best-effort basis, or nil if the address could not
 // be determined.
-func (t *transport) doQuery(q []byte) (response []byte, server *net.TCPAddr, qerr *queryError) {
+func (r *resolver) doQuery(ctx context.Context, q []byte) (response []byte, server *net.TCPAddr, qerr *queryError) {
 	if len(q) < 2 {
 		qerr = &queryError{BadQuery, fmt.Errorf("Query length is %d", len(q))}
 		return
 	}
 
-	t.hangoverLock.RLock()
-	inHangover := time.Now().Before(t.hangoverExpiration)
-	t.hangoverLock.RUnlock()
+	r.hangoverLock.RLock()
+	inHangover := time.Now().Before(r.hangoverExpiration)
+	r.hangoverLock.RUnlock()
 	if inHangover {
 		response = tryServfail(q)
 		qerr = &queryError{HTTPError, errors.New("Forwarder is in servfail hangover")}
@@ -272,14 +276,14 @@ func (t *transport) doQuery(q []byte) (response []byte, server *net.TCPAddr, qer
 	// Zero out the query ID.
 	id := binary.BigEndian.Uint16(q)
 	binary.BigEndian.PutUint16(q, 0)
-	req, err := http.NewRequest(http.MethodPost, t.url, bytes.NewBuffer(q))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, r.url, bytes.NewBuffer(q))
 	if err != nil {
 		qerr = &queryError{InternalError, err}
 		return
 	}
 
 	var hostname string
-	response, hostname, server, qerr = t.sendRequest(id, req)
+	response, hostname, server, qerr = r.sendRequest(id, req)
 
 	// Restore the query ID.
 	binary.BigEndian.PutUint16(q, id)
@@ -297,21 +301,21 @@ func (t *transport) doQuery(q []byte) (response []byte, server *net.TCPAddr, qer
 
 	if qerr != nil {
 		if qerr.status != SendFailed {
-			t.hangoverLock.Lock()
-			t.hangoverExpiration = time.Now().Add(hangoverDuration)
-			t.hangoverLock.Unlock()
+			r.hangoverLock.Lock()
+			r.hangoverExpiration = time.Now().Add(hangoverDuration)
+			r.hangoverLock.Unlock()
 		}
 
 		response = tryServfail(q)
 	} else if server != nil {
 		// Record a working IP address for this server iff qerr is nil
-		t.ips.Get(hostname).Confirm(server.IP)
+		r.ips.Get(hostname).Confirm(server.IP)
 	}
 	return
 }
 
-func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, hostname string, server *net.TCPAddr, qerr *queryError) {
-	hostname = t.hostname
+func (r *resolver) sendRequest(id uint16, req *http.Request) (response []byte, hostname string, server *net.TCPAddr, qerr *queryError) {
+	hostname = r.hostname
 
 	// The connection used for this request.  If the request fails, we will close
 	// this socket, in case it is no longer functioning.
@@ -324,13 +328,13 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 		if qerr == nil {
 			return
 		}
-		log.Infof("%d Query failed: %v", id, qerr)
+		logging.Info("DoH(resolver.sendRequest) - done", "id", id, "queryError", qerr)
 		if server != nil {
-			log.Debugf("%d Disconfirming %s", id, server.IP.String())
-			t.ips.Get(hostname).Disconfirm(server.IP)
+			logging.Debug("DoH(resolver.sendRequest) - disconfirming IP", "id", id, "ip", server.IP)
+			r.ips.Get(hostname).Disconfirm(server.IP)
 		}
 		if conn != nil {
-			log.Infof("%d Closing failing DoH socket", id)
+			logging.Info("DoH(resolver.sendRequest) - closing failing DoH socket", "id", id)
 			conn.Close()
 		}
 	}()
@@ -341,10 +345,10 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 	// reading the variables it has set.
 	trace := httptrace.ClientTrace{
 		GetConn: func(hostPort string) {
-			log.Debugf("%d GetConn(%s)", id, hostPort)
+			logging.Debugf("%d GetConn(%s)", id, hostPort)
 		},
 		GotConn: func(info httptrace.GotConnInfo) {
-			log.Debugf("%d GotConn(%v)", id, info)
+			logging.Debugf("%d GotConn(%v)", id, info)
 			if info.Conn == nil {
 				return
 			}
@@ -353,41 +357,41 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 			server = conn.RemoteAddr().(*net.TCPAddr)
 		},
 		PutIdleConn: func(err error) {
-			log.Debugf("%d PutIdleConn(%v)", id, err)
+			logging.Debugf("%d PutIdleConn(%v)", id, err)
 		},
 		GotFirstResponseByte: func() {
-			log.Debugf("%d GotFirstResponseByte()", id)
+			logging.Debugf("%d GotFirstResponseByte()", id)
 		},
 		Got100Continue: func() {
-			log.Debugf("%d Got100Continue()", id)
+			logging.Debugf("%d Got100Continue()", id)
 		},
 		Got1xxResponse: func(code int, header textproto.MIMEHeader) error {
-			log.Debugf("%d Got1xxResponse(%d, %v)", id, code, header)
+			logging.Debugf("%d Got1xxResponse(%d, %v)", id, code, header)
 			return nil
 		},
 		DNSStart: func(info httptrace.DNSStartInfo) {
-			log.Debugf("%d DNSStart(%v)", id, info)
+			logging.Debugf("%d DNSStart(%v)", id, info)
 		},
 		DNSDone: func(info httptrace.DNSDoneInfo) {
-			log.Debugf("%d, DNSDone(%v)", id, info)
+			logging.Debugf("%d, DNSDone(%v)", id, info)
 		},
 		ConnectStart: func(network, addr string) {
-			log.Debugf("%d ConnectStart(%s, %s)", id, network, addr)
+			logging.Debugf("%d ConnectStart(%s, %s)", id, network, addr)
 		},
 		ConnectDone: func(network, addr string, err error) {
-			log.Debugf("%d ConnectDone(%s, %s, %v)", id, network, addr, err)
+			logging.Debugf("%d ConnectDone(%s, %s, %v)", id, network, addr, err)
 		},
 		TLSHandshakeStart: func() {
-			log.Debugf("%d TLSHandshakeStart()", id)
+			logging.Debugf("%d TLSHandshakeStart()", id)
 		},
 		TLSHandshakeDone: func(state tls.ConnectionState, err error) {
-			log.Debugf("%d TLSHandshakeDone(%v, %v)", id, state, err)
+			logging.Debugf("%d TLSHandshakeDone(%v, %v)", id, state, err)
 		},
 		WroteHeaders: func() {
-			log.Debugf("%d WroteHeaders()", id)
+			logging.Debugf("%d WroteHeaders()", id)
 		},
 		WroteRequest: func(info httptrace.WroteRequestInfo) {
-			log.Debugf("%d WroteRequest(%v)", id, info)
+			logging.Debugf("%d WroteRequest(%v)", id, info)
 		},
 	}
 	req = req.WithContext(httptrace.WithClientTrace(req.Context(), &trace))
@@ -396,20 +400,20 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 	req.Header.Set("Content-Type", mimetype)
 	req.Header.Set("Accept", mimetype)
 	req.Header.Set("User-Agent", "Intra")
-	log.Debugf("%d Sending query", id)
-	httpResponse, err := t.client.Do(req)
+	logging.Debug("DoH(resolver.sendRequest) - sending query", "id", id)
+	httpResponse, err := r.client.Do(req)
 	if err != nil {
 		qerr = &queryError{SendFailed, err}
 		return
 	}
-	log.Debugf("%d Got response", id)
-	response, err = ioutil.ReadAll(httpResponse.Body)
+	logging.Debug("DoH(resolver.sendRequest) - got response", "id", id)
+	response, err = io.ReadAll(httpResponse.Body)
 	if err != nil {
 		qerr = &queryError{BadResponse, err}
 		return
 	}
 	httpResponse.Body.Close()
-	log.Debugf("%d Closed response", id)
+	logging.Debug("DoH(resolver.sendRequest) - response closed", "id", id)
 
 	// Update the hostname, which could have changed due to a redirect.
 	hostname = httpResponse.Request.URL.Hostname()
@@ -419,7 +423,7 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 		req.Write(reqBuf)
 		respBuf := new(bytes.Buffer)
 		httpResponse.Write(respBuf)
-		log.Debugf("%d request: %s\nresponse: %s", id, reqBuf.String(), respBuf.String())
+		logging.Debug("DoH(resolver.sendRequest) - response invalid", "id", id, "req", reqBuf, "resp", respBuf)
 
 		qerr = &queryError{HTTPError, &httpError{httpResponse.StatusCode}}
 		return
@@ -428,16 +432,17 @@ func (t *transport) sendRequest(id uint16, req *http.Request) (response []byte, 
 	return
 }
 
-func (t *transport) Query(q []byte) ([]byte, error) {
+func (r *resolver) Query(ctx context.Context, q []byte) ([]byte, error) {
 	var token Token
-	if t.listener != nil {
-		token = t.listener.OnQuery(t.url)
+	if r.listener != nil {
+		token = r.listener.OnQuery(r.url)
 	}
 
 	before := time.Now()
-	response, server, qerr := t.doQuery(q)
+	response, server, qerr := r.doQuery(ctx, q)
 	after := time.Now()
 
+	errIsCancel := false
 	var err error
 	status := Complete
 	httpStatus := http.StatusOK
@@ -445,6 +450,7 @@ func (t *transport) Query(q []byte) ([]byte, error) {
 		err = qerr
 		status = qerr.status
 		httpStatus = 0
+		errIsCancel = errors.Is(qerr, context.Canceled)
 
 		var herr *httpError
 		if errors.As(qerr.err, &herr) {
@@ -452,14 +458,25 @@ func (t *transport) Query(q []byte) ([]byte, error) {
 		}
 	}
 
-	if t.listener != nil {
+	// Stop sending OnResponse when the error is cancelled because the cancelled
+	// error is typically triggered by a Disconnect() operation, which will cause
+	// the following deadlock:
+	//   1. Java - synchronized VpnController.stop()
+	//   2. Go   -   context.Cancel()
+	//   3. Go   -   (if we don't stop sending OnResponse)
+	//   4. Java -   GoIntraListener.onResponse
+	//   5. Java -   synchronized VpnController.onConnectionStateChanged()
+	// Deadlock happens (both Step 1 and Step 5 are marked as synchronized)!
+	//
+	// TODO: make stop() an asynchronized function
+	if r.listener != nil && !errIsCancel {
 		latency := after.Sub(before)
 		var ip string
 		if server != nil {
 			ip = server.IP.String()
 		}
 
-		t.listener.OnResponse(token, &Summary{
+		r.listener.OnResponse(token, &Summary{
 			Latency:    latency.Seconds(),
 			Query:      q,
 			Response:   response,
@@ -471,13 +488,13 @@ func (t *transport) Query(q []byte) ([]byte, error) {
 	return response, err
 }
 
-func (t *transport) GetURL() string {
-	return t.url
+func (r *resolver) GetURL() string {
+	return r.url
 }
 
-// Perform a query using the transport, and send the response to the writer.
-func forwardQuery(t Transport, q []byte, c io.Writer) error {
-	resp, qerr := t.Query(q)
+// Perform a query using the Resolver, and send the response to the writer.
+func forwardQuery(r Resolver, q []byte, c io.Writer) error {
+	resp, qerr := r.Query(context.Background(), q)
 	if resp == nil && qerr != nil {
 		return qerr
 	}
@@ -500,45 +517,44 @@ func forwardQuery(t Transport, q []byte, c io.Writer) error {
 	return qerr
 }
 
-// Perform a query using the transport, send the response to the writer,
+// Perform a query using the Resolver, send the response to the writer,
 // and close the writer if there was an error.
-func forwardQueryAndCheck(t Transport, q []byte, c io.WriteCloser) {
-	if err := forwardQuery(t, q, c); err != nil {
-		log.Warnf("Query forwarding failed: %v", err)
+func forwardQueryAndCheck(r Resolver, q []byte, c io.WriteCloser) {
+	if err := forwardQuery(r, q, c); err != nil {
+		logging.Warn("DoH(forwardQueryAndCheck) - forwarding failed", "err", err)
 		c.Close()
 	}
 }
 
-// Accept a DNS-over-TCP socket from a stub resolver, and connect the socket
-// to this DNSTransport.
-func Accept(t Transport, c io.ReadWriteCloser) {
+// Accept a DNS-over-TCP socket, and connect the socket to a DoH Resolver.
+func Accept(r Resolver, c io.ReadWriteCloser) {
 	qlbuf := make([]byte, 2)
 	for {
 		n, err := c.Read(qlbuf)
 		if n == 0 {
-			log.Debugf("TCP query socket clean shutdown")
+			logging.Debug("DoH(Accept) - TCP query socket clean shutdown")
 			break
 		}
 		if err != nil {
-			log.Warnf("Error reading from TCP query socket: %v", err)
+			logging.Warn("DoH(Accept) - failed to read from TCP query socket", "err", err)
 			break
 		}
 		if n < 2 {
-			log.Warnf("Incomplete query length")
+			logging.Warn("DoH(Accept) - incomplete query length")
 			break
 		}
 		qlen := binary.BigEndian.Uint16(qlbuf)
 		q := make([]byte, qlen)
 		n, err = c.Read(q)
 		if err != nil {
-			log.Warnf("Error reading query: %v", err)
+			logging.Warn("DoH(Accept) - failed to read query", "err", err)
 			break
 		}
 		if n != int(qlen) {
-			log.Warnf("Incomplete query: %d < %d", n, qlen)
+			logging.Warn("DoH(Accept) - incomplete query (n < qlen)", "n", n, "qlen", qlen)
 			break
 		}
-		go forwardQueryAndCheck(t, q, c)
+		go forwardQueryAndCheck(r, q, c)
 	}
 	// TODO: Cancel outstanding queries at this point.
 	c.Close()
@@ -546,6 +562,7 @@ func Accept(t Transport, c io.ReadWriteCloser) {
 
 // Servfail returns a SERVFAIL response to the query q.
 func Servfail(q []byte) ([]byte, error) {
+	defer logging.Debug("DoH(SERVFAIL) - response generated")
 	var msg dnsmessage.Message
 	if err := msg.Unpack(q); err != nil {
 		return nil, err
@@ -560,7 +577,7 @@ func Servfail(q []byte) ([]byte, error) {
 func tryServfail(q []byte) []byte {
 	response, err := Servfail(q)
 	if err != nil {
-		log.Warnf("Error constructing servfail: %v", err)
+		logging.Warn("DoH(SERVFAIL) - failed to construct response", "err", err)
 	}
 	return response
 }

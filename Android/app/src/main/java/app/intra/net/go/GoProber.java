@@ -20,9 +20,9 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import app.intra.net.doh.Prober;
 import app.intra.sys.VpnController;
-import doh.Transport;
+import backend.Backend;
+import backend.DoHServer;
 import protect.Protector;
-import tun2socks.Tun2socks;
 
 /**
  * Implements a Probe using the Go-based DoH client.
@@ -43,17 +43,8 @@ public class GoProber extends Prober {
         // Protection isn't needed for Lollipop+, or if the VPN is not active.
         Protector protector = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? null :
             VpnController.getInstance().getIntraVpnService();
-        Transport transport = Tun2socks.newDoHTransport(url, dohIPs, protector, null, null);
-        if (transport == null) {
-          callback.onCompleted(false);
-          return;
-        }
-        byte[] response = transport.query(QUERY_DATA);
-        if (response != null && response.length > 0) {
-          callback.onCompleted(true);
-          return;
-        }
-        callback.onCompleted(false);
+        Backend.probe(new DoHServer(url, dohIPs, protector, null));
+        callback.onCompleted(true);
       } catch (Exception e) {
         callback.onCompleted(false);
       }

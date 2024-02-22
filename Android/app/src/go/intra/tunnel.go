@@ -15,6 +15,7 @@
 package intra
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -22,8 +23,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/protect"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/intra/protect"
+
 	"github.com/Jigsaw-Code/outline-sdk/network"
 	"github.com/Jigsaw-Code/outline-sdk/network/lwip2transport"
 )
@@ -33,17 +35,18 @@ import (
 type Listener interface {
 	UDPListener
 	TCPListener
-	doh.Listener
 }
 
 // Tunnel represents an Intra session.
 type Tunnel struct {
 	network.IPDevice
 
-	sd  *intraStreamDialer
-	pp  *intraPacketProxy
-	sni *tcpSNIReporter
-	tun io.Closer
+	ctx    context.Context
+	cancel context.CancelFunc
+	sd     *intraStreamDialer
+	pp     *intraPacketProxy
+	sni    *tcpSNIReporter
+	tun    io.Closer
 }
 
 // NewTunnel creates a connected Intra session.
@@ -56,10 +59,11 @@ type Tunnel struct {
 //
 //	These will normally be localhost with a high-numbered port.
 //
-// `dohdns` is the initial DOH transport.
+// `dohdns` is the initial [Resolver].
+//
 // `eventListener` will be notified at the completion of every tunneled socket.
 func NewTunnel(
-	fakedns string, dohdns doh.Transport, tun io.Closer, protector protect.Protector, eventListener Listener,
+	fakedns string, dohdns doh.Resolver, tun io.Closer, protector protect.Protector, eventListener Listener,
 ) (t *Tunnel, err error) {
 	if eventListener == nil {
 		return nil, errors.New("eventListener is required")
@@ -76,13 +80,14 @@ func NewTunnel(
 		},
 		tun: tun,
 	}
+	t.ctx, t.cancel = context.WithCancel(context.Background())
 
 	t.sd, err = newIntraStreamDialer(fakeDNSAddr.AddrPort(), dohdns, protector, eventListener, t.sni)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create stream dialer: %w", err)
 	}
 
-	t.pp, err = newIntraPacketProxy(fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
+	t.pp, err = newIntraPacketProxy(t.ctx, fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create packet proxy: %w", err)
 	}
@@ -95,10 +100,10 @@ func NewTunnel(
 	return
 }
 
-// Set the DNSTransport.  This method must be called before connecting the transport
-// to the TUN device.  The transport can be changed at any time during operation, but
+// Set the DNS Resolver. This method must be called before connecting the transport
+// to the TUN device. The transport can be changed at any time during operation, but
 // must not be nil.
-func (t *Tunnel) SetDNS(dns doh.Transport) {
+func (t *Tunnel) SetDNS(dns doh.Resolver) {
 	t.sd.SetDNS(dns)
 	t.pp.SetDNS(dns)
 	t.sni.SetDNS(dns)
@@ -118,6 +123,7 @@ func (t *Tunnel) EnableSNIReporter(filename, suffix, country string) error {
 }
 
 func (t *Tunnel) Disconnect() {
+	t.cancel()
 	t.Close()
 	t.tun.Close()
 }

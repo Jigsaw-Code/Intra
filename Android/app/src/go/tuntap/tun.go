@@ -1,4 +1,4 @@
-// Copyright 2023 Jigsaw Operations LLC
+// Copyright 2024 Jigsaw Operations LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,16 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package tun2socks
+package tuntap
 
 import (
-	"runtime/debug"
+	"errors"
+	"os"
 
-	"github.com/eycorsican/go-tun2socks/common/log"
+	"golang.org/x/sys/unix"
 )
 
-func init() {
-	// Conserve memory by increasing garbage collection frequency.
-	debug.SetGCPercent(10)
-	log.SetLevel(log.WARN)
+func MakeTunDeviceFromFD(fd int) (*os.File, error) {
+	if fd < 0 {
+		return nil, errors.New("must provide a valid TUN file descriptor")
+	}
+	// Make a copy of `fd` so that os.File's finalizer doesn't close `fd`.
+	newfd, err := unix.Dup(fd)
+	if err != nil {
+		return nil, err
+	}
+	file := os.NewFile(uintptr(newfd), "")
+	if file == nil {
+		return nil, errors.New("failed to open TUN file descriptor")
+	}
+	return file, nil
 }

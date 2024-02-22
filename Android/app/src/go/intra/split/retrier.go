@@ -15,8 +15,10 @@
 package split
 
 import (
+	"context"
 	"errors"
 	"io"
+	"localhost/Intra/Android/app/src/go/logging"
 	"math/rand"
 	"net"
 	"sync"
@@ -117,9 +119,11 @@ const DefaultTimeout time.Duration = 0
 // `dialer` will be used to establish the connection.
 // `addr` is the destination.
 // If `stats` is non-nil, it will be populated with retry-related information.
-func DialWithSplitRetry(dialer *net.Dialer, addr *net.TCPAddr, stats *RetryStats) (DuplexConn, error) {
+func DialWithSplitRetry(ctx context.Context, dialer *net.Dialer, addr *net.TCPAddr, stats *RetryStats) (DuplexConn, error) {
+	logging.Debug("SplitRetry(DialWithSplitRetry) - dialing", "addr", addr)
 	before := time.Now()
-	conn, err := dialer.Dial(addr.Network(), addr.String())
+	conn, err := dialer.DialContext(ctx, addr.Network(), addr.String())
+	logging.Debug("SplitRetry(DialWithSplitRetry) - dialed", "err", err)
 	if err != nil {
 		return nil, err
 	}
@@ -162,6 +166,7 @@ func (r *retrier) Read(buf []byte) (n int, err error) {
 			// Read failed.  Retry.
 			n, err = r.retry(buf)
 		}
+		logging.Debug("SplitRetry(retrier.Read) - direct conn succeeded, no need to split")
 		close(r.retryCompleteFlag)
 		// Unset read deadline.
 		r.conn.SetReadDeadline(time.Time{})
@@ -172,6 +177,9 @@ func (r *retrier) Read(buf []byte) (n int, err error) {
 }
 
 func (r *retrier) retry(buf []byte) (n int, err error) {
+	logging.Debug("SplitRetry(retrier.retry) - retrying...")
+	defer func() { logging.Debug("SplitRetry(retrier.retry) - retried", "n", n, "err", err) }()
+
 	r.conn.Close()
 	var newConn net.Conn
 	if newConn, err = r.dialer.Dial(r.addr.Network(), r.addr.String()); err != nil {

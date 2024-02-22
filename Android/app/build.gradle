@@ -17,9 +17,8 @@ try {
 
 // Go backend build constants
 def goSourceDir = "${projectDir}/src/go"
-def goSourcePackages = ["${goSourceDir}/intra",
-                        "${goSourceDir}/intra/android",
-                        "${goSourceDir}/intra/doh",
+def goSourcePackages = ["${goSourceDir}/backend",
+                        "${goSourceDir}/intra",
                         "${goSourceDir}/intra/split",
                         "${goSourceDir}/intra/protect"]
 def goBuildDir = file("${buildDir}/go")

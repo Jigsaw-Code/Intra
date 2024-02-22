@@ -15,13 +15,15 @@
 package intra
 
 import (
+	"context"
 	"io"
 	"sync"
 	"time"
 
-	"github.com/Jigsaw-Code/Intra/Android/app/src/go/intra/doh"
+	"localhost/Intra/Android/app/src/go/doh"
+	"localhost/Intra/Android/app/src/go/logging"
+
 	"github.com/Jigsaw-Code/choir"
-	"github.com/eycorsican/go-tun2socks/common/log"
 )
 
 // Number of bins to assign reports to.  Should be large enough for
@@ -40,13 +42,13 @@ const burst = 10 * time.Second
 // tcpSNIReporter is a thread-safe wrapper around choir.Reporter
 type tcpSNIReporter struct {
 	mu     sync.RWMutex // Protects dns, suffix, and r.
-	dns    doh.Transport
+	dns    doh.Resolver
 	suffix string
 	r      choir.Reporter
 }
 
 // SetDNS changes the DNS transport used for uploading reports.
-func (r *tcpSNIReporter) SetDNS(dns doh.Transport) {
+func (r *tcpSNIReporter) SetDNS(dns doh.Resolver) {
 	r.mu.Lock()
 	r.dns = dns
 	r.mu.Unlock()
@@ -60,11 +62,11 @@ func (r *tcpSNIReporter) Send(report choir.Report) error {
 	r.mu.RUnlock()
 	q, err := choir.FormatQuery(report, suffix)
 	if err != nil {
-		log.Warnf("Failed to construct query for Choir: %v", err)
+		logging.Warnf("Failed to construct query for Choir: %v", err)
 		return nil
 	}
-	if _, err = dns.Query(q); err != nil {
-		log.Infof("Failed to deliver query for Choir: %v", err)
+	if _, err = dns.Query(context.Background(), q); err != nil {
+		logging.Infof("Failed to deliver query for Choir: %v", err)
 	}
 	return nil
 }
@@ -104,13 +106,13 @@ func (r *tcpSNIReporter) Report(summary TCPSocketSummary) {
 	}
 	resultValue, err := choir.NewValue(result)
 	if err != nil {
-		log.Fatalf("Bad result %s: %v", result, err)
+		logging.Errorf("Bad result %s: %v", result, err)
 	}
 	responseValue, err := choir.NewValue(response)
 	if err != nil {
-		log.Fatalf("Bad response %s: %v", response, err)
+		logging.Errorf("Bad response %s: %v", response, err)
 	}
 	if err := reporter.Report(summary.Retry.SNI, resultValue, responseValue); err != nil {
-		log.Warnf("Choir report failed: %v", err)
+		logging.Warnf("Choir report failed: %v", err)
 	}
 }
