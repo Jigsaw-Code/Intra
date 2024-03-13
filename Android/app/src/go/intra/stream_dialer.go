@@ -31,12 +31,11 @@ import (
 )
 
 type intraStreamDialer struct {
-	fakeDNSAddr      netip.AddrPort
-	dns              atomic.Pointer[doh.Resolver]
-	dialer           *net.Dialer
-	alwaysSplitHTTPS atomic.Bool
-	listener         TCPListener
-	sniReporter      *tcpSNIReporter
+	fakeDNSAddr netip.AddrPort
+	dns         atomic.Pointer[doh.Resolver]
+	dialer      *net.Dialer
+	listener    TCPListener
+	sniReporter *tcpSNIReporter
 }
 
 var _ transport.StreamDialer = (*intraStreamDialer)(nil)
@@ -96,12 +95,8 @@ func (sd *intraStreamDialer) SetDNS(dns doh.Resolver) error {
 
 func (sd *intraStreamDialer) dial(ctx context.Context, dest netip.AddrPort, stats *TCPSocketSummary) (transport.StreamConn, error) {
 	if dest.Port() == 443 {
-		if sd.alwaysSplitHTTPS.Load() {
-			return split.DialWithSplit(sd.dialer, net.TCPAddrFromAddrPort(dest))
-		} else {
-			stats.Retry = &split.RetryStats{}
-			return split.DialWithSplitRetry(ctx, sd.dialer, net.TCPAddrFromAddrPort(dest), stats.Retry)
-		}
+		stats.Retry = &split.RetryStats{}
+		return split.DialWithSplitRetry(ctx, sd.dialer, net.TCPAddrFromAddrPort(dest), stats.Retry)
 	} else {
 		tcpsd := &transport.TCPStreamDialer{
 			Dialer: *sd.dialer,
