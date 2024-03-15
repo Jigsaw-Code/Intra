@@ -16,6 +16,7 @@ package split
 
 import (
 	"context"
+	"encoding/binary"
 	"errors"
 	"io"
 	"localhost/Intra/Android/app/src/go/logging"
@@ -165,8 +166,9 @@ func (r *retrier) Read(buf []byte) (n int, err error) {
 			}
 			// Read failed.  Retry.
 			n, err = r.retry(buf)
+		} else {
+			logging.Debug("SplitRetry(retrier.Read) - direct conn succeeded, no need to split")
 		}
-		logging.Debug("SplitRetry(retrier.Read) - direct conn succeeded, no need to split")
 		close(r.retryCompleteFlag)
 		// Unset read deadline.
 		r.conn.SetReadDeadline(time.Time{})
@@ -186,14 +188,18 @@ func (r *retrier) retry(buf []byte) (n int, err error) {
 		return
 	}
 	r.conn = newConn.(*net.TCPConn)
-	first, second := splitHello(r.hello)
-	r.stats.Split = int16(len(first))
-	if _, err = r.conn.Write(first); err != nil {
-		return
+	pkts, split := splitHello(r.hello)
+	r.stats.Split = split
+
+	// We did not use pkts.WriteTo(r.conn), because under the hood, the connection
+	// will use writev system call to write buffers, and writev may combine these
+	// buffers into one single write.
+	for _, pkt := range pkts {
+		if _, err = r.conn.Write(pkt); err != nil {
+			return
+		}
 	}
-	if _, err = r.conn.Write(second); err != nil {
-		return
-	}
+
 	// While we were creating the new socket, the caller might have called CloseRead
 	// or CloseWrite on the old socket.  Copy that state to the new socket.
 	// CloseRead and CloseWrite are idempotent, so this is safe even if the user's
@@ -219,13 +225,20 @@ func (r *retrier) CloseRead() error {
 	return r.conn.CloseRead()
 }
 
-func splitHello(hello []byte) ([]byte, []byte) {
+func splitHello(hello []byte) (pkts net.Buffers, splitLen int16) {
 	if len(hello) == 0 {
-		return hello, hello
+		return net.Buffers{hello}, 0
 	}
 	const (
-		MIN_SPLIT int = 32
-		MAX_SPLIT int = 64
+		MIN_SPLIT         int = 32
+		MAX_SPLIT         int = 64
+		MIN_TLS_HELLO_LEN int = 6
+
+		TYPE_HANDSHAKE byte   = 22
+		VERSION_TLS10  uint16 = 0x0301
+		VERSION_TLS11  uint16 = 0x0302
+		VERSION_TLS12  uint16 = 0x0303
+		VERSION_TLS13  uint16 = 0x0304
 	)
 
 	// Random number in the range [MIN_SPLIT, MAX_SPLIT]
@@ -234,7 +247,55 @@ func splitHello(hello []byte) ([]byte, []byte) {
 	if s > limit {
 		s = limit
 	}
-	return hello[:s], hello[s:]
+	splitLen = int16(s)
+	pkts = net.Buffers{hello[:s], hello[s:]}
+
+	if len(pkts[0]) > MIN_TLS_HELLO_LEN {
+		// todo: Replace the following TLS fragmentation logic with tlsfrag.StreamDialer
+		//
+		// TLS record layout from RFC 8446:
+		//   [RecordType:1B][Ver:2B][Len:2B][Data...]
+		// RecordType := ... | handshake(22) | ...
+		//        Ver := 0x0301 ("TLS 1.0") | 0x0302 ("TLS 1.1") | 0x0303 ("TLS 1.2")
+		//
+		// Now we have already TCP-splitted into pkts0 (len >= 6) and pkts1.
+		// We just need to deal with pkts0 and fragment it:
+		//
+		//   original:   pkts[0]=[Header][data0],
+		//               pkts[1]=[data1]
+		//   fragmented: pkts[0]=[Header]
+		//               pkts[1]=[data0_0],
+		//               pkts[2]=[Header],
+		//               pkts[3]=[data0_1],
+		//               pkts[4]=[data1]
+
+		h1 := make([]byte, 5)
+		copy(h1, pkts[0][:5])
+		payload := pkts[0][5:] // len(payload) > 1 is guaranteed
+
+		typ := h1[0]
+		ver := binary.BigEndian.Uint16(h1[1:3])
+		recordLen := binary.BigEndian.Uint16(h1[3:5])
+
+		if typ == TYPE_HANDSHAKE && int(recordLen) >= len(payload) &&
+			(ver == VERSION_TLS10 || ver == VERSION_TLS11 ||
+				ver == VERSION_TLS12 || ver == VERSION_TLS13) {
+			rest := pkts[1]
+			frag := uint16(1 + rand.Intn(len(payload)-1)) // 1 <= frag <= len(payload)-1
+
+			binary.BigEndian.PutUint16(h1[3:5], frag)
+			payload1 := payload[:frag]
+
+			h2 := make([]byte, 5)
+			copy(h2, h1)
+			binary.BigEndian.PutUint16(h2[3:5], recordLen-frag) // recordLen >= len(payload) > frag
+			payload2 := payload[frag:]
+
+			pkts = net.Buffers{h1, payload1, h2, payload2, rest}
+		}
+	}
+
+	return
 }
 
 // Write-related functions
