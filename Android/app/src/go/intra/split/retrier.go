@@ -277,15 +277,17 @@ func splitHello(hello []byte, w io.Writer) (n int, splitLen int, err error) {
 		return
 	}
 
-	binary.BigEndian.PutUint16(hello[3:5], uint16(recordSplitLen))
-	if n, err = w.Write(hello[:splitLen]); err != nil {
+	pkt := hello[:splitLen]
+	binary.BigEndian.PutUint16(pkt[3:5], uint16(recordSplitLen))
+	if n, err = w.Write(pkt); err != nil {
 		return
 	}
 
-	copy(hello[splitLen-5:splitLen], hello[:5])
-	binary.BigEndian.PutUint16(hello[splitLen-2:splitLen], recordLen-uint16(recordSplitLen))
+	pkt = hello[splitLen-5:]
+	copy(pkt, hello[:5])
+ 	binary.BigEndian.PutUint16(pkt[3:5], recordLen-uint16(recordSplitLen))
 	var m int
-	m, err = w.Write(hello[splitLen-5:])
+	m, err = w.Write(pkt)
 	n += m
 	return
 }
