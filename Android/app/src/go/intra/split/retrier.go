@@ -266,7 +266,7 @@ func splitHello(hello []byte, w io.Writer) (n int, splitLen int, err error) {
 
 	recordLen, ok := getTLSClientHelloRecordLen(hello)
 	recordSplitLen := splitLen - 5
-	if !ok || recordSplitLen >= int(recordLen) {
+	if !ok || recordSplitLen <= 0 || recordSplitLen >= int(recordLen) {
 		// Do TCP split if hello is not a valid TLS Client Hello, or cannot be fragmented
 		n, err = w.Write(hello[:splitLen])
 		if err == nil {
