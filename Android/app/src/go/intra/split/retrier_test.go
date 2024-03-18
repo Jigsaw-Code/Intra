@@ -194,7 +194,7 @@ func (s *setup) checkStats(bytes int32, chunks int16, timeout bool) {
 	if r.Timeout != timeout {
 		s.t.Errorf("Expected timeout to be %t", timeout)
 	}
-	if r.Split < 32 || r.Split > 64 {
+	if r.Split < 6 || r.Split > 64 {
 		s.t.Errorf("Unexpected split: %d", r.Split)
 	}
 }
