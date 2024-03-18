@@ -188,16 +188,10 @@ func (r *retrier) retry(buf []byte) (n int, err error) {
 		return
 	}
 	r.conn = newConn.(*net.TCPConn)
-	pkts, split := splitHello(r.hello)
-	r.stats.Split = split
-
-	// We did not use pkts.WriteTo(r.conn), because under the hood, the connection
-	// will use writev system call to write buffers, and writev may combine these
-	// buffers into one single write.
-	for _, pkt := range pkts {
-		if _, err = r.conn.Write(pkt); err != nil {
-			return
-		}
+	_, split, err := splitHello(r.hello, r.conn)
+	r.stats.Split = int16(split)
+	if err != nil {
+		return
 	}
 
 	// While we were creating the new socket, the caller might have called CloseRead
@@ -225,15 +219,12 @@ func (r *retrier) CloseRead() error {
 	return r.conn.CloseRead()
 }
 
-func splitHello(hello []byte) (pkts net.Buffers, splitLen int16) {
-	if len(hello) == 0 {
-		return net.Buffers{hello}, 0
+func getTLSClientHelloRecordLen(h []byte) (uint16, bool) {
+	if len(h) < 5 {
+		return 0, false
 	}
-	const (
-		MIN_SPLIT         int = 32
-		MAX_SPLIT         int = 64
-		MIN_TLS_HELLO_LEN int = 6
 
+	const (
 		TYPE_HANDSHAKE byte   = 22
 		VERSION_TLS10  uint16 = 0x0301
 		VERSION_TLS11  uint16 = 0x0302
@@ -241,60 +232,61 @@ func splitHello(hello []byte) (pkts net.Buffers, splitLen int16) {
 		VERSION_TLS13  uint16 = 0x0304
 	)
 
+	if h[0] != TYPE_HANDSHAKE {
+		return 0, false
+	}
+
+	ver := binary.BigEndian.Uint16(h[1:3])
+	if ver != VERSION_TLS10 && ver != VERSION_TLS11 &&
+		ver != VERSION_TLS12 && ver != VERSION_TLS13 {
+		return 0, false
+	}
+
+	return binary.BigEndian.Uint16(h[3:5]), true
+}
+
+func splitHello(hello []byte, w io.Writer) (n int, splitLen int, err error) {
+	if len(hello) <= 1 {
+		n, err = w.Write(hello)
+		return
+	}
+
+	const (
+		MIN_SPLIT int = 6
+		MAX_SPLIT int = 64
+	)
+
 	// Random number in the range [MIN_SPLIT, MAX_SPLIT]
-	s := MIN_SPLIT + rand.Intn(MAX_SPLIT+1-MIN_SPLIT)
+	// splitLen includes 5 bytes of TLS header
+	splitLen = MIN_SPLIT + rand.Intn(MAX_SPLIT+1-MIN_SPLIT)
 	limit := len(hello) / 2
-	if s > limit {
-		s = limit
+	if splitLen > limit {
+		splitLen = limit
 	}
-	splitLen = int16(s)
-	pkts = net.Buffers{hello[:s], hello[s:]}
 
-	if len(pkts[0]) > MIN_TLS_HELLO_LEN {
-		// todo: Replace the following TLS fragmentation logic with tlsfrag.StreamDialer
-		//
-		// TLS record layout from RFC 8446:
-		//   [RecordType:1B][Ver:2B][Len:2B][Data...]
-		// RecordType := ... | handshake(22) | ...
-		//        Ver := 0x0301 ("TLS 1.0") | 0x0302 ("TLS 1.1") | 0x0303 ("TLS 1.2")
-		//
-		// Now we have already TCP-splitted into pkts0 (len >= 6) and pkts1.
-		// We just need to deal with pkts0 and fragment it:
-		//
-		//   original:   pkts[0]=[Header][data0],
-		//               pkts[1]=[data1]
-		//   fragmented: pkts[0]=[Header]
-		//               pkts[1]=[data0_0],
-		//               pkts[2]=[Header],
-		//               pkts[3]=[data0_1],
-		//               pkts[4]=[data1]
-
-		h1 := make([]byte, 5)
-		copy(h1, pkts[0][:5])
-		payload := pkts[0][5:] // len(payload) > 1 is guaranteed
-
-		typ := h1[0]
-		ver := binary.BigEndian.Uint16(h1[1:3])
-		recordLen := binary.BigEndian.Uint16(h1[3:5])
-
-		if typ == TYPE_HANDSHAKE && int(recordLen) >= len(payload) &&
-			(ver == VERSION_TLS10 || ver == VERSION_TLS11 ||
-				ver == VERSION_TLS12 || ver == VERSION_TLS13) {
-			rest := pkts[1]
-			frag := uint16(1 + rand.Intn(len(payload)-1)) // 1 <= frag <= len(payload)-1
-
-			binary.BigEndian.PutUint16(h1[3:5], frag)
-			payload1 := payload[:frag]
-
-			h2 := make([]byte, 5)
-			copy(h2, h1)
-			binary.BigEndian.PutUint16(h2[3:5], recordLen-frag) // recordLen >= len(payload) > frag
-			payload2 := payload[frag:]
-
-			pkts = net.Buffers{h1, payload1, h2, payload2, rest}
+	recordLen, ok := getTLSClientHelloRecordLen(hello)
+	recordSplitLen := splitLen - 5
+	if !ok || recordSplitLen >= int(recordLen) {
+		// Do TCP split if hello is not a valid TLS Client Hello, or cannot be fragmented
+		n, err = w.Write(hello[:splitLen])
+		if err == nil {
+			var m int
+			m, err = w.Write(hello[splitLen:])
+			n += m
 		}
+		return
 	}
 
+	binary.BigEndian.PutUint16(hello[3:5], uint16(recordSplitLen))
+	if n, err = w.Write(hello[:splitLen]); err != nil {
+		return
+	}
+
+	copy(hello[splitLen-5:splitLen], hello[:5])
+	binary.BigEndian.PutUint16(hello[splitLen-2:splitLen], recordLen-uint16(recordSplitLen))
+	var m int
+	m, err = w.Write(hello[splitLen-5:])
+	n += m
 	return
 }
 

@@ -54,20 +54,8 @@ func (s *splitter) Write(b []byte) (int, error) {
 
 	// Setting `used` to true ensures that this code only runs once per socket.
 	s.used = true
-	pkts, _ := splitHello(b)
-
-	// We did not use pkts.WriteTo(conn), because under the hood, the connection
-	// will use writev system call to write buffers, and writev may combine these
-	// buffers into one single write
-	n := 0
-	for _, pkt := range pkts {
-		nn, err := conn.Write(pkt)
-		n += nn
-		if err != nil {
-			return n, err
-		}
-	}
-	return n, nil
+	n, _, err := splitHello(b, conn)
+	return n, err
 }
 
 func (s *splitter) ReadFrom(reader io.Reader) (bytes int64, err error) {
