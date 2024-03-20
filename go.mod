@@ -8,7 +8,7 @@ require (
 	github.com/Jigsaw-Code/outline-sdk v0.0.7
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/mobile v0.0.0-20231006135142-2b44d11868fe
-	golang.org/x/net v0.16.0
+	golang.org/x/net v0.17.0
 	golang.org/x/sys v0.13.0
 )
 
