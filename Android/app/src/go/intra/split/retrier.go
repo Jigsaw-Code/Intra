@@ -62,8 +62,8 @@ type retrier struct {
 	// Flag indicating when retry is finished or unnecessary.
 	retryCompleteFlag chan struct{}
 	// Flags indicating whether the caller has called CloseRead and CloseWrite.
-	readCloseFlag  chan struct{}
-	writeCloseFlag chan struct{}
+	readCloseFlag  atomic.Bool
+	writeCloseFlag atomic.Bool
 	stats          *RetryStats
 }
 
@@ -87,11 +87,11 @@ func closed(c chan struct{}) bool {
 }
 
 func (r *retrier) readClosed() bool {
-	return closed(r.readCloseFlag)
+	return r.readCloseFlag.Load()
 }
 
 func (r *retrier) writeClosed() bool {
-	return closed(r.writeCloseFlag)
+	return r.writeCloseFlag.Load()
 }
 
 func (r *retrier) retryCompleted() bool {
@@ -142,8 +142,6 @@ func DialWithSplitRetry(ctx context.Context, dialer *net.Dialer, addr *net.TCPAd
 		conn:              conn.(*net.TCPConn),
 		timeout:           timeout(before, after),
 		retryCompleteFlag: make(chan struct{}),
-		readCloseFlag:     make(chan struct{}),
-		writeCloseFlag:    make(chan struct{}),
 		stats:             stats,
 	}
 
@@ -211,12 +209,12 @@ func (r *retrier) retry(buf []byte) (n int, err error) {
 }
 
 func (r *retrier) CloseRead() error {
-	if !r.readClosed() {
-		close(r.readCloseFlag)
+	if r.readCloseFlag.CompareAndSwap(false, true) {
+		r.mutex.Lock()
+		defer r.mutex.Unlock()
+		return r.conn.CloseRead()
 	}
-	r.mutex.Lock()
-	defer r.mutex.Unlock()
-	return r.conn.CloseRead()
+	return nil
 }
 
 func getTLSClientHelloRecordLen(h []byte) (uint16, bool) {
@@ -363,12 +361,12 @@ func (r *retrier) ReadFrom(reader io.Reader) (bytes int64, err error) {
 }
 
 func (r *retrier) CloseWrite() error {
-	if !r.writeClosed() {
-		close(r.writeCloseFlag)
+	if r.writeCloseFlag.CompareAndSwap(false, true) {
+		r.mutex.Lock()
+		defer r.mutex.Unlock()
+		return r.conn.CloseWrite()
 	}
-	r.mutex.Lock()
-	defer r.mutex.Unlock()
-	return r.conn.CloseWrite()
+	return nil
 }
 
 func (r *retrier) Close() error {
