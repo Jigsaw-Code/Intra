@@ -209,12 +209,10 @@ func (r *retrier) retry(buf []byte) (n int, err error) {
 }
 
 func (r *retrier) CloseRead() error {
-	if r.readCloseFlag.CompareAndSwap(false, true) {
-		r.mutex.Lock()
-		defer r.mutex.Unlock()
-		return r.conn.CloseRead()
-	}
-	return nil
+	r.readCloseFlag.Store(true)
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+	return r.conn.CloseRead()
 }
 
 func getTLSClientHelloRecordLen(h []byte) (uint16, bool) {
@@ -361,12 +359,10 @@ func (r *retrier) ReadFrom(reader io.Reader) (bytes int64, err error) {
 }
 
 func (r *retrier) CloseWrite() error {
-	if r.writeCloseFlag.CompareAndSwap(false, true) {
-		r.mutex.Lock()
-		defer r.mutex.Unlock()
-		return r.conn.CloseWrite()
-	}
-	return nil
+	r.writeCloseFlag.Store(true)
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+	return r.conn.CloseWrite()
 }
 
 func (r *retrier) Close() error {
