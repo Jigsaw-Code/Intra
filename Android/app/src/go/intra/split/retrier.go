@@ -351,9 +351,11 @@ func copyOnce(dst io.Writer, src io.Reader) (int64, error) {
 
 func (r *retrier) ReadFrom(reader io.Reader) (bytes int64, err error) {
 	for !r.retryCompleted() {
-		if bytes, err = copyOnce(r, reader); err != nil {
+		var b int64
+		if b, err = copyOnce(r, reader); err != nil {
 			return
 		}
+		bytes += b
 	}
 
 	var b int64
