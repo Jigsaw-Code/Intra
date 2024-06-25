@@ -326,8 +326,9 @@ func (r *retrier) Write(b []byte) (int, error) {
 			// already have replayed b[:n]), and retry.
 			<-r.retryCompleteFlag
 			r.mutex.Lock()
+			c := r.conn
 			r.mutex.Unlock()
-			m, err := r.conn.Write(b[n:])
+			m, err := c.Write(b[n:])
 			return n + m, err
 		}
 	}
