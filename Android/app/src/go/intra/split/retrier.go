@@ -23,6 +23,7 @@ import (
 	"math/rand"
 	"net"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Jigsaw-Code/getsni"
