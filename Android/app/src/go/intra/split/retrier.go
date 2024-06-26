@@ -60,6 +60,8 @@ type retrier struct {
 	// hello is the contents written before the first read.  It is initially empty,
 	// and is cleared when the first byte is received.
 	hello []byte
+	// total len(hello) rewritten over a split socket
+	retried int
 	// Flag indicating when retry is finished or unnecessary.
 	retryCompleteFlag chan struct{}
 	// Flags indicating whether the caller has called CloseRead and CloseWrite.
@@ -165,6 +167,7 @@ func (r *retrier) Read(buf []byte) (n int, err error) {
 			}
 			// Read failed.  Retry.
 			n, err = r.retry(buf)
+			r.retried = n
 		} else {
 			logging.Debug("SplitRetry(retrier.Read) - direct conn succeeded, no need to split")
 		}
@@ -318,13 +321,19 @@ func (r *retrier) Write(b []byte) (int, error) {
 			if err == nil {
 				return n, nil
 			}
+
+			leftover := b[n:]
 			// A write error occurred on the provisional socket.  This should be handled
 			// by the retry procedure.  Block until we have a final socket (which will
 			// already have replayed b[:n]), and retry.
 			<-r.retryCompleteFlag
+	
 			r.mutex.Lock()
+			if n.retried > 0 {
+				n = r.retried
+			}
 			r.mutex.Unlock()
-			leftover := b[n:]
+	
 			if len(leftover) > 0 {
 				m, err := r.conn.Write(leftover)
 				return n + m, err
