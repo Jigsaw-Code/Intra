@@ -324,8 +324,12 @@ func (r *retrier) Write(b []byte) (int, error) {
 			<-r.retryCompleteFlag
 			r.mutex.Lock()
 			r.mutex.Unlock()
-			m, err := r.conn.Write(b[n:])
-			return n + m, err
+			leftover := b[n:]
+			if len(leftover) > 0 {
+				m, err := r.conn.Write(leftover)
+				return n + m, err
+			}
+			return n, nil
 		}
 	}
 
