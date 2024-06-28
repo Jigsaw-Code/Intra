@@ -328,11 +328,12 @@ func (r *retrier) Write(b []byte) (int, error) {
 			r.mutex.Lock()
 			r.mutex.Unlock()
 	
-			if len(leftover) > 0 {
-				m, err := r.conn.Write(leftover)
-				return n + m, err
+			if buf := b[n:]; len(buf) > 0 {
+				m, e := r.conn.Write(buf)
+				n += m
+				err = e
 			}
-			return n, nil
+			return n, err
 		}
 	}
 
