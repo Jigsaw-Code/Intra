@@ -314,7 +314,8 @@ func (r *retrier) Write(b []byte) (int, error) {
 			r.conn.SetReadDeadline(time.Now().Add(r.timeout))
 		}
 		r.mutex.Unlock()
-		if attempted {
+
+    if attempted {
 			if err == nil {
 				return n, nil
 			}
