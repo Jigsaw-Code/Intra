@@ -325,7 +325,9 @@ func (r *retrier) Write(b []byte) (int, error) {
 	
 			r.mutex.Lock()
 			r.mutex.Unlock()
-	
+
+			// zero len writes are no-ops, but Quad9 servers
+			// are observed to respond better when these are skipped.
 			if buf := b[n:]; len(buf) > 0 {
 				m, e := r.conn.Write(buf)
 				n += m
