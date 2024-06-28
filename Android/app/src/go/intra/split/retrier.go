@@ -318,8 +318,6 @@ func (r *retrier) Write(b []byte) (int, error) {
 			if err == nil {
 				return n, nil
 			}
-
-			leftover := b[n:]
 			// A write error occurred on the provisional socket.  This should be handled
 			// by the retry procedure.  Block until we have a final socket (which will
 			// already have replayed b[:n]), and retry.
