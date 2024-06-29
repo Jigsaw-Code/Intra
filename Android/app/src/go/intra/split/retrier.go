@@ -315,7 +315,7 @@ func (r *retrier) Write(b []byte) (int, error) {
 		}
 		r.mutex.Unlock()
 
-    if attempted {
+		if attempted {
 			if err == nil {
 				return n, nil
 			}
