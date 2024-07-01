@@ -314,6 +314,7 @@ func (r *retrier) Write(b []byte) (int, error) {
 			r.conn.SetReadDeadline(time.Now().Add(r.timeout))
 		}
 		r.mutex.Unlock()
+
 		if attempted {
 			if err == nil {
 				return n, nil
@@ -322,11 +323,19 @@ func (r *retrier) Write(b []byte) (int, error) {
 			// by the retry procedure.  Block until we have a final socket (which will
 			// already have replayed b[:n]), and retry.
 			<-r.retryCompleteFlag
+	
 			r.mutex.Lock()
 			c := r.conn
 			r.mutex.Unlock()
-			m, err := c.Write(b[n:])
-			return n + m, err
+
+			// zero len writes are no-ops, but Quad9 servers
+			// are observed to respond better when these are skipped.
+			if buf := b[n:]; len(buf) > 0 {
+				m, e := c.Write(buf)
+				n += m
+				err = e
+			}
+			return n, err
 		}
 	}
 
