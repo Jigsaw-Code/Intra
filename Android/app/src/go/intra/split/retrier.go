@@ -283,9 +283,11 @@ func splitHello(hello []byte, w io.Writer) (n int, splitLen int, err error) {
 	pkt = hello[splitLen-5:]
 	copy(pkt, hello[:5])
  	binary.BigEndian.PutUint16(pkt[3:5], recordLen-uint16(recordSplitLen))
-	var m int
-	m, err = w.Write(pkt)
-	n += m
+	_, err = w.Write(pkt)
+
+	// total written bytes after fragmentation will always be greater than the length
+	// of the input buffer, which may break clients expecting to not exceed it.
+	n = len(hello)
 	return
 }
 
