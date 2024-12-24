@@ -204,13 +204,13 @@ func NewResolver(rawurl string, addrs []string, dialer *net.Dialer, auth ClientA
 		return nil, fmt.Errorf("No IP addresses for %s", t.hostname)
 	}
 
-	// Supply a client certificate during TLS handshakes.
-	var tlsconfig *tls.Config
+	// Use session cache to minimize repeat TLS handshake overhead.
+	tlsconfig := &tls.Config{
+		ClientSessionCache: tls.NewLRUClientSessionCache(64),
+	}
 	if auth != nil {
 		signer := newClientAuthWrapper(auth)
-		tlsconfig = &tls.Config{
-			GetClientCertificate: signer.GetClientCertificate,
-		}
+		tlsconfig.GetClientCertificate = signer.GetClientCertificate
 	}
 
 	// Override the dial function.
