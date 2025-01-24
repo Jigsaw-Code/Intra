@@ -129,7 +129,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     // For Firebase Analytics, etc.
-    implementation 'com.google.firebase:firebase-analytics:22.1.2'  // Last version for API <19
+    implementation 'com.google.firebase:firebase-analytics:22.1.2'
     implementation 'com.google.firebase:firebase-perf:21.0.2'
     implementation 'com.google.firebase:firebase-crashlytics:19.2.1'
     implementation 'com.google.firebase:firebase-crashlytics-ndk:19.2.1'
