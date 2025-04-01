@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 // See https://developer.android.com/studio/publish/app-signing#secure-shared-keystore
@@ -94,6 +93,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'app.intra'
 }
 
 repositories {
@@ -139,8 +139,8 @@ dependencies {
 }
 
 // For Firebase Analytics
-apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.gms.google-services'
 
 // Go backend build tasks
 tasks.register('compileGoBackend', Exec) {
