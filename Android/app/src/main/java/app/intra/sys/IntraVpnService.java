@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
@@ -190,7 +191,13 @@ public class IntraVpnService extends VpnService implements NetworkListener,
         builder = builder.setVisibility(Notification.VISIBILITY_SECRET);
       }
 
-      startForeground(SERVICE_ID, builder.getNotification());
+      if (Build.VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+        // https://developer.android.com/about/versions/14/changes/fgs-types-required
+        startForeground(SERVICE_ID, builder.build(),
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+      } else {
+        startForeground(SERVICE_ID, builder.build());
+      }
 
       updateQuickSettingsTile();
 
