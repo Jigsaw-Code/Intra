@@ -389,9 +389,12 @@ public class IntraVpnService extends VpnService implements NetworkListener,
   public VpnService.Builder newBuilder() {
     VpnService.Builder builder = new VpnService.Builder();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      // Some WebRTC apps rely on the ability to bind to specific interfaces, which is only
-      // possible if we allow bypass.
-      builder = builder.allowBypass();
+      // unprivileged apps cannot bind to interfaces outside of the vpn when in lockdown mode
+      if (!isVpnLockdown()) {
+        // Some WebRTC apps rely on the ability to bind to specific interfaces, which is only
+        // possible if we allow bypass.
+        builder = builder.allowBypass();
+      }
 
       try {
         // Workaround for any app incompatibility bugs.
@@ -486,5 +489,13 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       }
     }
     return TextUtils.join(",", ips);
+  }
+
+  private boolean isVpnLockdown() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      return this.isLockdownEnabled();
+    } else {
+      return false;
+    }
   }
 }
