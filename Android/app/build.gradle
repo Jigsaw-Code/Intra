@@ -55,7 +55,7 @@ android {
         // Firebase Crashlytics requires SDK version 16.
         minSdkVersion ANDROID_MIN_SDK_VERSION as int
         targetSdkVersion ANDROID_TARGET_SDK_VERSION as int
-        versionCode 71
+        versionCode 72
         versionName "1.4.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
