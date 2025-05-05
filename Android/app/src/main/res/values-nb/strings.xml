@@ -1,0 +1,409 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+  <!-- Intro text -->
+  <string name="intro_benefit_headline" description="Headline for intro page describing key benefit">
+    Mer åpen internettilgang
+  </string>
+
+  <string name="intro_benefit_body" description="Body text for intro page describing key benefit">
+    Intra beskytter deg fra DNS-manipulering, et cyberangrep som brukes til å blokkere tilgang til nettsteder, sosiale medier og meldingsapper.\n\nSelv om Intra beskytter deg mot DNS-manipulering, er det andre og mer kompliserte blokkerings-teknikker og -angrep som Intra ikke beskytter mot.
+  </string>
+
+  <string name="intro_manipulation_headline" description="Headline for intro page describing manipulation">
+    Beskyttelse mot DNS-manipulering
+  </string>
+
+  <string name="intro_manipulation_body" description="Body text for intro page describing manipulation">
+    Intra beskytter tilkoblingen din til Domain Name System (DNS), som sørger for å ordne de nøyaktige adressene du trenger for å besøke et nettsted eller åpne de fleste apper.\n\nIntra bruker kryptering for å sikre at resultatene ikke kan bli manipulert, og hjelper deg med å ha trygg tilgang til internettet.
+  </string>
+
+  <string name="intro_details_headline" description="Headline for intro page describing permissions and privacy">
+    En siste ting …
+  </string>
+
+  <string name="intro_details_body" description="Body text for intro page describing permissions and privacy">
+    Trykk på OK for å la Intra beskytte dine DNS-forespørsler. Som standard vil de bli dirigert gjennom Google Public DNS (<a href="https://developers.google.com/speed/public-dns/privacy">Privatlivsretningslinjer</a>). Du kan velge en annen tjeneste i appinnstillingene.
+  </string>
+
+  <string name="intro_back" description="Button label to see the previous page of introduction">
+    tilbake
+  </string>
+
+  <string name="intro_next" description="Button label to see the next page of introduction">
+    neste
+  </string>
+
+  <string name="intro_accept"
+          description="Button label to acknowledge legal terms and VPN access permission request">
+    aksepter
+  </string>
+
+  <string name="drawer_open"
+          description="Hint for visually impaired users to access the menu.">
+    Åone navigasjonsskuffen
+  </string>
+
+  <string name="drawer_close"
+          description="Hint for visually impaired users to leave the menu.">
+    Lukk navigasjonsskuffen
+  </string>
+
+  <string name="home"
+          description="Menu label to return to the app's main screen.">
+    Hjem
+  </string>
+
+  <string name="settings"
+          description="Menu label to access the Settings page.">
+    Innstillinger
+  </string>
+
+  <string name="support"
+          description="Menu entry that links to documentation and interactive support.">
+    Støtte
+  </string>
+
+  <string name="privacy_link"
+          description="Link to the privacy policy.">
+    Privatlivsretningslinjer
+  </string>
+
+  <string name="tos_link"
+          description="Link to the terms of service.">
+    Bruksvilkår
+  </string>
+
+  <string name="source_code"
+          description="Link to the source code for this app.">
+    Kildekode
+  </string>
+
+  <string name="credits_text"
+          description="Credits to contributing parties. 'Jigsaw' and 'Intra' are not translatable.">
+    Intra ble laget av <a href="https://jigsaw.google.com">Jigsaw</a>. IP-posisjoner er basert på data fra DB-IP.com.
+  </string>
+
+  <string name="indicator_on"
+          description="This is a large message at the top of the main screen.">
+    På
+  </string>
+
+  <string name="indicator_off"
+          description="This is a large message at the top of the main screen.">
+    Av
+  </string>
+
+  <string name="status_exposed"
+          description="This is a large message in a scary color.  It indicates that DNS queries can be surveilled or modified in transit.">
+    Utsatt for fare
+  </string>
+
+  <string name="explanation_exposed"
+          description="Expanded form of status_exposed">
+    Tilkoblingen din er utsatt for DNS-angrep.
+  </string>
+
+  <string name="status_protected"
+          description="This is a large message in a reassuring color.  It indicates that DNS queries can't be surveilled or modified in transit.">
+    Beskyttet
+  </string>
+
+  <string name="explanation_protected"
+          description="Expanded form of status_protected">
+    Tilkoblingen din er beskyttet fra DNS-angrep.
+  </string>
+
+  <string name="status_upgraded"
+          description="This is similar to status_exposed, and indicates weak protection that an attacker could disable.">
+    Sårbar
+  </string>
+
+  <string name="explanation_upgraded"
+          description="Corresponds to status_upgraded.">
+    Tilkoblingen din er for øyeblikket beskyttet av Androids «Privat DNS»-funksjon, men en angriper kan skru av eller underminere denne beskyttelsen.
+  </string>
+
+  <string name="status_strict"
+          description="This is similar to dns_on, but the protection is being provided by the operating system, not by Intra.  It is not color-highlighted.">
+    Beskyttet av Android
+  </string>
+
+  <string name="explanation_strict"
+          description="Explanation on the main screen for users who have Private DNS strict mode enabled at the OS level.">
+    Intra har oppdaget at Android sin «Privat DNS»-innstilling er skrudd på. Dette betyr at DNS-forespørslene dine allerede er skrudd på, så det er ikke noe behov for å skru på Intra.
+  </string>
+
+  <string name="status_starting"
+          description="This text briefly appears while starting.">
+    Starter opp …
+  </string>
+
+  <string name="explanation_starting"
+          description="Corresponds to status_starting">
+    Hold fast. Intra forsøker å koble seg til tjeneren.
+  </string>
+
+  <string name="status_waiting"
+      description="This text appears during the connection process if Intra needs user permission or the phone is offline.">
+    Venter …
+  </string>
+
+  <string name="status_failing"
+      description="This text appears if the connection is currently not working correctly. [CHAR_LIMIT=NONE]">
+    Mislykkes
+  </string>
+
+  <string name="explanation_offline"
+          description="Status indicator shown when there is no network connection.">
+    Enheten din er ikke på nett. Intra venter på en internettilkobling.
+  </string>
+
+  <string name="explanation_vpn"
+          description="Warning text shown on the main screen before the user starts Intra">
+    Intra har oppdaget en annen VPN på enheten din. Dersom du skrur på Intra, vil den VPN-en bli skrudd av. Intra er ikke like sikker som en troverdig VPN.
+  </string>
+
+  <string name="explanation_failing">
+    Advarsel: Forespørsler mislykkes. Kanskje du vil velge en annen tjener eller restarte Intra?
+  </string>
+
+  <string name="system_details"
+          description="This is the title of a section containing information on the system configuration and
+  status.">
+    Systemdetaljer
+  </string>
+
+  <string name="num_requests"
+          description="This text appears under the number of queries protected so far.">
+    Forespørsler så langt
+  </string>
+
+  <string name="num_requests_headline">
+    DNS-forespørsler skjer når enheten din søker opp IP-adressen til et domenenavn
+  </string>
+
+  <string name="num_requests_body">
+    Denne verdien viser antall DNS-forespørsler som enheten din har foretatt mens Intra var aktiv. Intra krypterer disse forespørslene og sender dem til en troverdig tjener for å sørge for at du får autentiske resultater.
+  </string>
+
+  <string name="queries_per_minute"
+          description="This text appears under the number of queries protected in the past minute.">
+    Nylige forespørsler
+  </string>
+
+  <string name="queries_per_minute_headline">
+    DNS-forespørsler skjer ved begynnelsen av hver tilkobling
+  </string>
+
+  <string name="queries_per_minute_body">
+    Denne verdien viser antall DNS-forespørsler som enheten din har foretatt det siste minuttet. Å laste inn et komplekst nettsted kan kreve over 100 DNS-forespørsler.
+  </string>
+
+  <string name="transport_label"
+          description="This text appears under the name of the secure protocol currently in use.  Currently, that
+   is always 'https'.">
+    Kryptert transport
+  </string>
+
+  <string name="transport_headline">
+    Kryptering beskytter forespørslene dine fra spionerende øyne
+  </string>
+
+  <string name="transport_body">
+    Når du bruker Intra, er DNS-forespørslene dine kryptert, slik at bare du og DNS-tjeneren din kan se hvilke DNS-forespørsler du utfører. Intra benytter «DNS-over-HTTPS»-protokollen for kryptering.
+  </string>
+
+  <string name="default_transport_label"
+          description="This text appears under the name of the DNS protocol in use when Intra is off.  Currently,
+  that is usually 'unencrypted'.">
+    Standard transportmetode
+  </string>
+
+  <string name="insecure_transport" description="Indicates that normal, insecure DNS is in use.">
+    ukryptert
+  </string>
+
+  <string name="insecure_transport_headline">
+    Grunnleggende DNS er ukryptert
+  </string>
+
+  <string name="insecure_transport_body">
+    De fleste enheter og nettverk bruker grunnleggende DNS, som er ukryptert. Dermed kan dine DNS-forespørsler bli observert eller modifisert av alle på nettverket. Noen nye enheter støtter DNS-over-TLS, som krypterer forespørslene din, men som ikke kan beskytte deg hvis tjeneren er skadelig.
+  </string>
+
+  <string name="server_label"
+          description="This text appears under the domain name of the secure server currently in use, e.g. 'dns.google.com'.">
+    Sikker DNS-tjener
+  </string>
+
+  <string name="server_headline">
+    Du fortjener å bruke en troverdig DNS-tjener
+  </string>
+
+  <string name="server_body">
+    Dette feltet viser navnet til den sikre DNS-tjeneren du bruker. Du kan også bytte over til en annen tjener i «Innstillinger»-menyen.
+  </string>
+
+  <string name="default_server_label"
+          description="This text appears under the name of the insecure server currently in use.">
+    Nåværende DNS-tjener
+  </string>
+
+  <string name="insecure_server_headline">
+    Du kan velge din egen DNS-tjener
+  </string>
+
+  <string name="insecure_server_body">
+    Når Intra er skrudd av, er de fleste enheter forhåndsoppsatt til å bruke DNS-tjeneren som nettverksleverandøren din har valgt ut. Dette feltet viser IP-adressen til DNS-tjeneren som enheten din bruker for øyeblikket. Med Intra eller Android Pie kan du enkelt velge en tjener selv.
+  </string>
+
+  <string name="strict_mode_server_headline">
+    Du har valgt en sikker tjener
+  </string>
+
+  <string name="strict_mode_server_body">
+    Dette feltet viser navnet til DNS-tjeneren som du satte opp i Androids «Privat DNS»-innstilling. Når Intra er skrudd av, skal appene dine i utgangspunktet sende DNS-forespørsler til denne tjeneren.
+  </string>
+
+  <string name="unknown_server"
+          description="This is a placeholder, used when the server address is unknown.">
+    (ukjent tjener)
+  </string>
+
+  <string name="show_history"
+          description="This label appears next to a checkbox.  When the box is checked, recent queries will start
+  being shown.">
+    Vis nylige forespørsler
+  </string>
+
+  <string name="query_label"
+          description="This text appears under the domain name for which a DNS query was issued.">
+    Forespørsel
+  </string>
+
+  <string name="type_label"
+          description="This text appears under the type of query that was issued ('A' or 'AAAA').">
+    Type
+  </string>
+
+  <string name="latency_label"
+          description="This text appears under a measurement of network latency, like '923 ms'.">
+    Forsinkelse
+  </string>
+
+  <string name="resolver_label"
+          description="This text appears under a two-letter ISO country code, indicating the country where the
+  DNS resolver is located.">
+    Tjenerens posisjon
+  </string>
+
+  <string name="destination_label"
+          description="This text appears under a two-letter ISO country code, indicating the country where the
+  resolved domain's IP address is located.">
+    Ankomsttjener
+  </string>
+
+  <string name="server_choice" description="Title of the setting to choose your server">
+    Velg «DNS-over-HTTPS»-tjener
+  </string>
+
+  <string name="server_choice_summary"
+          description="Template for text that appears under the server choice option">
+    For øyeblikket <xliff:g example="dns.google.com" id="server_name">%s</xliff:g>
+  </string>
+
+  <string name="server_choice_builtin" description="Label for option to select from a short list of servers. [CHAR_LIMIT=NONE]">
+    Innebygd tjener
+  </string>
+
+  <string name="server_choice_website_notice" description="Warning text about a DNS server, with a hyperlink. [CHAR_LIMIT=NONE]">
+    Vennligst besøk <a href="https://www.example.com/">nettstedet deres</a> for å gå i gjennom privatlivsretningslinjene deres og relevante bruksvilkår.
+  </string>
+
+  <string name="server_website_button" description="Label for a button that will open the website. [CHAR_LIMIT=NONE]">
+    Besøk nettstedet
+  </string>
+
+  <string name="try_all_servers" description="Label for a button to check all known servers to find one that is working. [CHAR_LIMIT=NONE]">
+    Prøv med alle innebygde tjenere
+  </string>
+
+  <string name="checking_servers" description="Text shown on a deactivated button while the checks are in progress. [CHAR_LIMIT=NONE]">
+    Sjekker alle tjenerne
+  </string>
+
+  <string name="found_fastest" description="Template for success indication, shown when the fastest server for you is found. [CHAR_LIMIT=NONE]">
+    Den raskeste tjeneren din er <xliff:g example="Google Public DNS">%s</xliff:g>.
+  </string>
+
+  <string name="all_servers_failed" description="Notification shown briefly if all known servers were unreachable. [CHAR_LIMIT=NONE]">
+    Mislyktes i å finne en fungerende tjener: tilkoblingen til alle innebygde tjenere mislyktes.
+  </string>
+
+  <string name="server_choice_custom"
+          description="Label for option to type in your own server URL">
+    Selvvalgt tjener-URL
+  </string>
+
+  <string name="server_choice_warning"
+          description="Warning shown if the URL is invalid or does not start with https://">
+    Den selvvalgte tjeneren må ha en gyldig «https://»-URL
+  </string>
+
+  <string name="excluded_apps"
+          description="Title of the 'Excluded apps' setting, which allows the user to select apps that will not use Intra.">
+    Ekskluderte apper
+  </string>
+
+  <string name="excluded_apps_summary"
+          description="Summary of how the Excluded apps' setting works">
+    DNS-forespørsler fra enhver valgt app vil ikke bli ført gjennom Intra. Dersom en app virker som den er inkompatibel med Intra, kan du legge den til her.
+  </string>
+
+  <string name="excluded_apps_title"
+          description="Title to appear over the 'Excluded apps' selection list.  Must be short.">
+    Merk apper som skal ekskluderes fra Intra
+  </string>
+
+  <string name="old_android"
+          description="Shown when a user-interface element requires a newer OS version">
+    Denne funksjonen er ikke tilgjengelig på din Android-versjon.
+  </string>
+
+  <string name="notification_title"
+          description="Status indicator text shown in a persistent notification.">
+    DNS-beskyttelsen er aktiv
+  </string>
+
+  <string name="notification_content"
+          description="Indicates what will happen if the user taps the notification.">
+    Trykk for å endre DNS-beskyttelsesinnstillingen
+  </string>
+
+  <string name="channel_name"
+          description="Description of the notification, as shown in the system's advanced notifications settings
+  page.">
+    Aktivt varsel for DNS-beskyttelse
+  </string>
+
+  <string name="channel_description">
+    Dette varslet dukker opp mens DNS-beskyttelsen er aktiv.
+  </string>
+
+  <string name="warning_title" description="Status indicator text shown in a warning notification.">
+    Advarsel: Intra har blitt skrudd av
+  </string>
+
+  <string name="warning_channel_name"
+          description="This is the name of the class of notifications that show warnings.  It's only
+  visible in the system's advanced notifications settings page.">
+    Advarsel
+  </string>
+
+  <string name="warning_channel_description"
+          description="This is the explanatory text describing the 'Warning' notification class.  It's
+  only visible in the system's advanced notifications settings page.">
+    Vises dersom Intra har støtt på et problem.
+  </string>
+
+</resources>
