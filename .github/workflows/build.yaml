@@ -1,0 +1,97 @@
+name: Android Automatic Release Pipeline
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  APP_SLUG_NAME: MyApp 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code and Fetch History
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 
+
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '24'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Get App Version and Commit SHA
+      id: get_info
+      run: |
+        VERSION_NAME=$(grep 'versionName' app/build.gradle | head -1 | awk '{print $2}' | tr -d '"')
+        if [ -z "$VERSION_NAME" ]; then
+          echo "ERROR: Could not find versionName in app/build.gradle."
+          exit 1
+        fi
+        echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+
+        COMMIT_SHA=$(git rev-parse --short "$GITHUB_SHA")
+        echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+        
+        RELEASE_TAG="release-${VERSION_NAME}-${COMMIT_SHA}"
+        echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+
+        NEW_APK_NAME="${{ env.APP_SLUG_NAME }}-${VERSION_NAME}-${COMMIT_SHA}.apk"
+        echo "new_apk_name=$NEW_APK_NAME" >> $GITHUB_OUTPUT
+
+    - name: Run Debug Build and Tests
+      run: ./gradlew build
+
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+
+    - name: Rename APK File to Desired Format
+      run: |
+        APK_PATH="app/build/outputs/apk/release/app-release-unsigned.apk"
+        NEW_NAME="${{ steps.get_info.outputs.new_apk_name }}"
+        
+        if [ -f "$APK_PATH" ]; then
+          echo "Renaming APK: $APK_PATH -> $NEW_NAME"
+          mv "$APK_PATH" "app/build/outputs/apk/release/$NEW_NAME"
+        else
+          echo "ERROR: Expected unsigned APK file not found at: $APK_PATH"
+          exit 1
+        fi
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_info.outputs.release_tag }} 
+        release_name: Automatic Release | v${{ steps.get_info.outputs.version_name }}
+        body: |
+          # Automatic Release Details
+          
+          **App Version:** v${{ steps.get_info.outputs.version_name }}
+          **Short Commit SHA:** `${{ steps.get_info.outputs.commit_sha }}`
+          **Filename Format:** `${{ steps.get_info.outputs.new_apk_name }}`
+          
+          Find the APK file attached below.
+        draft: false
+        prerelease: false
+
+    - name: Upload APK to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: app/build/outputs/apk/release/${{ steps.get_info.outputs.new_apk_name }}
+        asset_name: ${{ steps.get_info.outputs.new_apk_name }}
+        asset_content_type: application/vnd.android.package-archive
