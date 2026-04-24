@@ -4,6 +4,13 @@
             android:key="@string/server_choice_key"
             android:title="@string/server_choice"
             android:dialogTitle="@string/server_choice"/>
+    <ListPreference
+            android:key="@string/route_mode_key"
+            android:title="@string/route_mode"
+            android:entries="@array/route_mode_entries"
+            android:entryValues="@array/route_mode_values"
+            android:defaultValue="@string/route_mode_compatibility_value"
+            android:dialogTitle="@string/route_mode"/>
     <MultiSelectListPreference
             android:key="pref_apps"
             android:title="@string/excluded_apps"
