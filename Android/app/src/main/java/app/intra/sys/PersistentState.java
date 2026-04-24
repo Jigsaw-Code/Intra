@@ -40,18 +40,11 @@ public class PersistentState {
   private static final String LOG_TAG = "PersistentState";
 
   public static final String APPS_KEY = "pref_apps";
-  public static final String ROUTE_MODE_KEY = "pref_route_mode";
   public static final String URL_KEY = "pref_server_url";
-
-  public enum RouteMode {
-    FULL_TUNNEL,
-    DNS_ONLY
-  }
 
   private static final String APPROVED_KEY = "approved";
   private static final String ENABLED_KEY = "enabled";
   private static final String SERVER_KEY = "server";
-  private static final RouteMode DEFAULT_ROUTE_MODE = RouteMode.FULL_TUNNEL;
 
   private static final String INTERNAL_STATE_NAME = "MainActivity";
 
@@ -131,17 +124,6 @@ public class PersistentState {
       return null;
     }
     return Untemplate.strip(urlTemplate);
-  }
-
-  public static RouteMode getRouteMode(Context context) {
-    String routeMode = getUserPreferences(context).getString(
-        ROUTE_MODE_KEY, DEFAULT_ROUTE_MODE.name());
-    try {
-      return RouteMode.valueOf(routeMode);
-    } catch (IllegalArgumentException | NullPointerException e) {
-      LogWrapper.log(Log.WARN, LOG_TAG, "Route mode is corrupted");
-      return DEFAULT_ROUTE_MODE;
-    }
   }
 
   private static String extractHost(String url) {

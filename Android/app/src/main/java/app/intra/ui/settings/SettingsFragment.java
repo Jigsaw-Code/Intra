@@ -22,7 +22,6 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.MainThread;
 import androidx.fragment.app.DialogFragment;
-import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -99,8 +98,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     // Load the preferences from an XML resource
     addPreferencesFromResource(R.xml.preferences);
-    ListPreference routeModePref = (ListPreference)findPreference(PersistentState.ROUTE_MODE_KEY);
-    routeModePref.setSummaryProvider(ListPreference.SimpleSummaryProvider.getInstance());
     appPref = (MultiSelectListPreference)findPreference(PersistentState.APPS_KEY);
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
       // App exclusion relies on VpnService.Builder.addDisallowedApplication, which was added in L.

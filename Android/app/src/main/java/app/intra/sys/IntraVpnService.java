@@ -112,10 +112,6 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       // Restart the VPN so the new app exclusion choices take effect immediately.
       restartVpn();
     }
-    if (PersistentState.ROUTE_MODE_KEY.equals(key) && vpnAdapter != null) {
-      // Restart the VPN so the selected route mode takes effect immediately.
-      restartVpn();
-    }
     if (PersistentState.URL_KEY.equals(key)) {
       url = PersistentState.getServerUrl(this);
       spawnServerUpdate();

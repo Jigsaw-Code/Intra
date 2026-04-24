@@ -377,36 +377,6 @@
     Custom server must be a valid https:// URL
   </string>
 
-  <string name="route_mode_key" translatable="false">pref_route_mode</string>
-
-  <string name="route_mode"
-          description="Title of the setting to choose how Intra routes traffic.">
-    Performance mode
-  </string>
-
-  <string name="route_mode_compatibility"
-          description="Label for the route mode that sends traffic through the full VPN tunnel.">
-    Compatibility
-  </string>
-
-  <string name="route_mode_high_speed"
-          description="Label for the route mode that routes only DNS traffic through Intra.">
-    High speed
-  </string>
-
-  <string name="route_mode_compatibility_value" translatable="false">FULL_TUNNEL</string>
-  <string name="route_mode_high_speed_value" translatable="false">DNS_ONLY</string>
-
-  <string-array name="route_mode_entries">
-    <item>@string/route_mode_compatibility</item>
-    <item>@string/route_mode_high_speed</item>
-  </string-array>
-
-  <string-array name="route_mode_values">
-    <item>@string/route_mode_compatibility_value</item>
-    <item>@string/route_mode_high_speed_value</item>
-  </string-array>
-
   <string name="excluded_apps"
           description="Title of the 'Excluded apps' setting, which allows the user to select apps that will not use Intra.">
     Excluded apps

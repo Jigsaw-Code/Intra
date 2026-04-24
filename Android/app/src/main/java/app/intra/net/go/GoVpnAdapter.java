@@ -160,18 +160,12 @@ public class GoVpnAdapter {
 
   private static ParcelFileDescriptor establishVpn(IntraVpnService vpnService) {
     try {
-      PersistentState.RouteMode routeMode = PersistentState.getRouteMode(vpnService);
       VpnService.Builder builder = vpnService.newBuilder()
           .setSession("Intra go-tun2socks VPN")
           .setMtu(VPN_INTERFACE_MTU)
           .addAddress(LanIp.GATEWAY.make(IPV4_TEMPLATE), IPV4_PREFIX_LENGTH)
-          .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE));
-      if (routeMode == PersistentState.RouteMode.DNS_ONLY) {
-        builder = builder.addRoute(FAKE_DNS_IP, 32);
-      } else {
-        builder = builder.addRoute("0.0.0.0", 0);
-      }
-      LogWrapper.log(Log.INFO, LOG_TAG, "VPN route mode: " + routeMode.name());
+          .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE))
+          .addRoute("0.0.0.0", 0);
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
         builder.addDisallowedApplication(vpnService.getPackageName());
       }
