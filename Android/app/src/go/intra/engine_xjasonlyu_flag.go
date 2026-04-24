@@ -12,21 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build xjasonlyu_experiment
+
 package intra
 
-import (
-	"context"
-
-	"localhost/Intra/Android/app/src/go/logging"
-
-	"github.com/Jigsaw-Code/outline-sdk/network"
-)
-
-func newTunnelEngine(ctx context.Context, sd *intraStreamDialer, pp *intraPacketProxy) (network.IPDevice, error) {
-	if useXJasonlyuEngine {
-		logging.Debug("Intra tunnel engine selected", "engine", "xjasonlyu")
-		return newXJasonlyuEngine(ctx, sd, pp)
-	}
-	logging.Debug("Intra tunnel engine selected", "engine", "lwip")
-	return newLWIPTunnelEngine(sd, pp)
-}
+const useXJasonlyuEngine = true
