@@ -7,6 +7,8 @@ behavior.
 Build:
 
 ```powershell
+$env:GOCACHE="D:\intra\.go-cache"
+go run ./tools/windowsresource -ico .\cmd\intra-windows-ui\assets\intra.ico -out .\cmd\intra-windows-ui\intra_windows_ui_icon_windows_amd64.syso
 $env:GOOS="windows"; $env:GOARCH="amd64"; go build -tags "desktop,production" -o D:\intra\.go-build\intra-windows-ui.exe ./cmd/intra-windows-ui
 ```
 
@@ -29,9 +31,7 @@ used. Query counters are stored in `%ProgramData%\Intra\windows-query-history.js
 Excluded apps is shown disabled because Windows per-app bypass has not been
 implemented.
 
-Close hides the UI window so the tray can reopen it later. Native minimize still
-uses the Windows taskbar in this direct Wails build; use the close button or the
-tray's Open Intra command for tray-style behavior.
+Close and minimize hide the UI window so the tray can reopen it later.
 
 Logo assets are derived from the existing Android launcher icon:
 
@@ -40,7 +40,8 @@ Android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
 ```
 
 The PNG is embedded in the Wails UI header. A Windows `.ico` generated from the
-same source is embedded by the tray app.
+same source is embedded by the tray app and linked into the Wails UI executable
+through `cmd/intra-windows-ui/intra_windows_ui_icon_windows_amd64.syso`.
 
 Package:
 

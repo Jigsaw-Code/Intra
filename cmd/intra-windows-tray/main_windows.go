@@ -335,8 +335,8 @@ func showMenu(hwnd windows.Handle) {
 	}
 	defer procDestroyMenu.Call(menu)
 	appendMenu(menu, menuOpen, "Open Intra")
-	appendMenu(menu, menuStart, "Start Intra")
-	appendMenu(menu, menuStop, "Stop Intra")
+	appendMenu(menu, menuStart, "Turn on")
+	appendMenu(menu, menuStop, "Turn off")
 	appendMenu(menu, menuStatus, "Status")
 	appendMenu(menu, menuLogs, "Open diagnostics")
 	appendMenu(menu, menuExit, "Exit tray")
