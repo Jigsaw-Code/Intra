@@ -18,11 +18,13 @@ D:\intra\.go-build\intra-windows-tray.exe
 
 Tray menu:
 
+- Open Intra
+- Turn on
+- Turn off
 - Status
-- Start Intra
-- Stop Intra
 - Open diagnostics
 - Exit tray
 
-The diagnostics item opens `%ProgramData%\Intra`, where the service journal is
-stored while the tunnel is active.
+`Open Intra` launches or restores the Wails UI. The diagnostics item opens
+`%ProgramData%\Intra`, where the service journal, logs, settings, and query
+history are stored.

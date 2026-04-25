@@ -44,6 +44,14 @@ to pick up permission or service-host changes.
 
 Service lifecycle logs are written to `%ProgramData%\Intra\windows-service.log`.
 
+## Limitations
+
 The backend currently targets IPv4 full-tunnel behavior only. IPv6 routing,
 native IP Helper API route/DNS management, a named-pipe control API, and a tray
 UI are intentionally left for later hardening phases.
+
+Per-app exclusion is not implemented on Windows. A WFP feasibility spike
+confirmed that user-mode WFP can identify and block apps by executable path, but
+user-mode WFP cannot provide Android-like bypass around the Wintun full-tunnel
+route. Real Excluded apps support likely requires a signed WFP redirect/callout
+driver.

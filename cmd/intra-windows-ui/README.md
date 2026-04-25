@@ -28,8 +28,21 @@ built-in providers from Android resources and custom `https://` DoH URL
 validation. Saving the DNS server writes `%ProgramData%\Intra\windows-settings.json`.
 If `IntraTunnel` is running, the UI restarts the service so the new server is
 used. Query counters are stored in `%ProgramData%\Intra\windows-query-history.json`.
-Excluded apps is shown disabled because Windows per-app bypass has not been
-implemented.
+Excluded apps remains disabled. Per-app exclusion on Windows requires a WFP
+redirect/callout driver and is not available in this build.
+
+## Limitations
+
+- IPv4 full-tunnel only; IPv6 routing is not implemented yet.
+- Per-app exclusion is not implemented on Windows. A WFP feasibility spike
+  confirmed that user-mode WFP can identify and block apps by executable path,
+  but user-mode WFP cannot provide Android-like bypass around the Wintun
+  full-tunnel route.
+- Real Excluded apps support likely requires a signed WFP redirect/callout
+  driver.
+- The UI does not yet port Android's query history graph.
+- Recent query details do not yet include DNS response destination parsing or
+  geolocation flags.
 
 Close and minimize hide the UI window so the tray can reopen it later.
 
