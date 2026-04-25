@@ -1,3 +1,5 @@
+//go:build !windows
+
 // Copyright 2026 Jigsaw Operations LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

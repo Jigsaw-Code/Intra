@@ -1,4 +1,4 @@
-//go:build xjasonlyu_experiment
+//go:build xjasonlyu_experiment || windows
 
 // Copyright 2026 Jigsaw Operations LLC
 //

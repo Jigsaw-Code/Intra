@@ -1,3 +1,5 @@
+//go:build windows
+
 // Copyright 2026 Jigsaw Operations LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,8 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build xjasonlyu_experiment || windows
-
 package intra
 
-const useXJasonlyuEngine = true
+import (
+	"errors"
+
+	"github.com/Jigsaw-Code/outline-sdk/network"
+)
+
+func newLWIPTunnelEngine(*intraStreamDialer, *intraPacketProxy) (network.IPDevice, error) {
+	return nil, errors.New("lwIP tunnel engine is not supported on Windows")
+}
