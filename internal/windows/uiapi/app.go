@@ -31,10 +31,9 @@ const (
 )
 
 type App struct {
-	mu             sync.Mutex
-	ctx            context.Context
-	allowQuit      bool
-	minimiseCancel context.CancelFunc
+	mu        sync.Mutex
+	ctx       context.Context
+	allowQuit bool
 }
 
 type Status struct {
@@ -72,15 +71,9 @@ func NewApp() *App {
 
 func (a *App) Startup(ctx context.Context) {
 	a.mu.Lock()
-	if a.minimiseCancel != nil {
-		a.minimiseCancel()
-	}
-	minimiseCtx, cancel := context.WithCancel(context.Background())
 	defer a.mu.Unlock()
 	a.ctx = ctx
 	a.allowQuit = false
-	a.minimiseCancel = cancel
-	go a.watchMinimiseToTray(minimiseCtx, ctx)
 	go a.SetWindowIcon()
 }
 
@@ -120,37 +113,12 @@ func (a *App) HideToTray() {
 func (a *App) ExitApp() {
 	a.mu.Lock()
 	a.allowQuit = true
-	if a.minimiseCancel != nil {
-		a.minimiseCancel()
-		a.minimiseCancel = nil
-	}
 	ctx := a.ctx
 	a.mu.Unlock()
 	if ctx == nil {
 		return
 	}
 	runtime.Quit(ctx)
-}
-
-func (a *App) watchMinimiseToTray(done context.Context, ctx context.Context) {
-	ticker := time.NewTicker(500 * time.Millisecond)
-	defer ticker.Stop()
-	for {
-		select {
-		case <-done.Done():
-			return
-		case <-ticker.C:
-			a.mu.Lock()
-			allowQuit := a.allowQuit
-			a.mu.Unlock()
-			if allowQuit {
-				return
-			}
-			if runtime.WindowIsMinimised(ctx) {
-				runtime.WindowHide(ctx)
-			}
-		}
-	}
 }
 
 func (a *App) GetStatus() Status {

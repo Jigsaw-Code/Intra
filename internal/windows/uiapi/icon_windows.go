@@ -26,6 +26,8 @@ const (
 	wmSetIcon      = 0x0080
 	iconSmall      = 0
 	iconBig        = 1
+	smallIconSize  = 16
+	bigIconSize    = 32
 )
 
 var (
@@ -55,15 +57,20 @@ func (a *App) SetWindowIcon() {
 	if hwnd == 0 {
 		return
 	}
-	icon := loadWindowIcon()
-	if icon == 0 {
+	smallIcon := loadWindowIcon(smallIconSize)
+	bigIcon := loadWindowIcon(bigIconSize)
+	if smallIcon == 0 && bigIcon == 0 {
 		return
 	}
-	procSendMessage.Call(uintptr(hwnd), wmSetIcon, iconSmall, icon)
-	procSendMessage.Call(uintptr(hwnd), wmSetIcon, iconBig, icon)
+	if smallIcon != 0 {
+		procSendMessage.Call(uintptr(hwnd), wmSetIcon, iconSmall, smallIcon)
+	}
+	if bigIcon != 0 {
+		procSendMessage.Call(uintptr(hwnd), wmSetIcon, iconBig, bigIcon)
+	}
 }
 
-func loadWindowIcon() uintptr {
+func loadWindowIcon(size uintptr) uintptr {
 	path := filepath.Join(filepath.Dir(state.LogPath()), "intra-window.ico")
 	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
 		log.Printf("create icon cache dir failed: %v", err)
@@ -77,12 +84,12 @@ func loadWindowIcon() uintptr {
 		0,
 		uintptr(unsafe.Pointer(windows.StringToUTF16Ptr(path))),
 		imageIcon,
-		0,
-		0,
+		size,
+		size,
 		lrLoadFromFile,
 	)
 	if icon == 0 {
-		log.Printf("LoadImageW window icon failed: %v", err)
+		log.Printf("LoadImageW window icon failed for size %d: %v", size, err)
 	}
 	return icon
 }

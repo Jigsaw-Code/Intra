@@ -136,6 +136,12 @@ button {
   padding: 0 4px;
 }
 
+.toolbar-brand {
+  align-items: center;
+  display: inline-flex;
+  min-width: 0;
+}
+
 .nav-button {
   align-items: center;
   background: transparent;
@@ -157,9 +163,16 @@ button {
 }
 
 .toolbar-logo {
-  height: 32px;
+  background: #1f1f1f;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(83, 109, 254, 0.22);
+  display: block;
+  height: 36px;
   margin-left: 8px;
-  width: 32px;
+  object-fit: contain;
+  padding: 2px;
+  width: 36px;
 }
 
 .toolbar-title {

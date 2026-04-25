@@ -28,8 +28,9 @@ built-in providers from Android resources and custom `https://` DoH URL
 validation. Saving the DNS server writes `%ProgramData%\Intra\windows-settings.json`.
 If `IntraTunnel` is running, the UI restarts the service so the new server is
 used. Query counters are stored in `%ProgramData%\Intra\windows-query-history.json`.
-Excluded apps remains disabled. Per-app exclusion on Windows requires a WFP
-redirect/callout driver and is not available in this build.
+Excluded apps is not shown as a configurable Windows setting. The drawer notes
+that per-app exclusion on Windows requires a WFP redirect/callout driver and is
+not available in this build.
 
 ## Limitations
 
@@ -44,7 +45,9 @@ redirect/callout driver and is not available in this build.
 - Recent query details do not yet include DNS response destination parsing or
   geolocation flags.
 
-Close and minimize hide the UI window so the tray can reopen it later.
+Closing the UI hides it so the tray can reopen it later. Minimize keeps the UI
+as a normal taskbar window because minimize-to-tray restore is unreliable in the
+current Wails shell.
 
 Logo assets are derived from the existing Android launcher icon:
 

@@ -14,6 +14,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 	"unsafe"
@@ -53,6 +54,7 @@ const (
 	iconApplication    = 32512
 	imageIcon          = 1
 	lrLoadFromFile     = 0x00000010
+	swRestore          = 9
 
 	menuOpen   = 1001
 	menuStart  = 1002
@@ -72,8 +74,12 @@ var (
 	procCreateWindowEx      = user32.NewProc("CreateWindowExW")
 	procDefWindowProc       = user32.NewProc("DefWindowProcW")
 	procDestroyWindow       = user32.NewProc("DestroyWindow")
+	procEnumWindows         = user32.NewProc("EnumWindows")
 	procPostMessage         = user32.NewProc("PostMessageW")
 	procGetMessage          = user32.NewProc("GetMessageW")
+	procGetWindowText       = user32.NewProc("GetWindowTextW")
+	procGetWindowTextLength = user32.NewProc("GetWindowTextLengthW")
+	procGetWindowPID        = user32.NewProc("GetWindowThreadProcessId")
 	procTranslateMessage    = user32.NewProc("TranslateMessage")
 	procDispatchMessage     = user32.NewProc("DispatchMessageW")
 	procPostQuitMessage     = user32.NewProc("PostQuitMessage")
@@ -84,6 +90,7 @@ var (
 	procTrackPopupMenu      = user32.NewProc("TrackPopupMenu")
 	procDestroyMenu         = user32.NewProc("DestroyMenu")
 	procSetForegroundWindow = user32.NewProc("SetForegroundWindow")
+	procShowWindow          = user32.NewProc("ShowWindow")
 	procGetCursorPos        = user32.NewProc("GetCursorPos")
 	procMessageBox          = user32.NewProc("MessageBoxW")
 
@@ -307,8 +314,13 @@ func windowProc(hwnd uintptr, message uint32, wparam, lparam uintptr) uintptr {
 		event := trayEvent(lparam)
 		log.Printf("tray callback received: hwnd=%#x wparam=%#x lparam=%#x event=%#x", hwnd, wparam, lparam, event)
 		switch event {
-		case wmContextMenu, ninSelect, ninKeySelect, wmRButtonUp, wmLButtonDbl, wmLButtonUp:
+		case wmContextMenu, wmRButtonUp:
 			showMenu(windows.Handle(hwnd))
+			return 0
+		case ninSelect, ninKeySelect, wmLButtonDbl, wmLButtonUp:
+			if err := openIntraUI(); err != nil {
+				log.Printf("open UI from tray click failed: %v", err)
+			}
 			return 0
 		}
 	case wmCommand:
@@ -375,13 +387,13 @@ func handleCommand(id uint32) {
 			message("Start Intra", err.Error())
 			return
 		}
-		message("Start Intra", "Start requested.")
+		log.Printf("start requested")
 	case menuStop:
 		if err := stopService(); err != nil {
 			message("Stop Intra", err.Error())
 			return
 		}
-		message("Stop Intra", "Stop requested.")
+		log.Printf("stop requested")
 	case menuLogs:
 		openDiagnostics()
 	case menuExit:
@@ -503,6 +515,9 @@ func openIntraUI() error {
 	if _, err := os.Stat(uiPath); err != nil {
 		return fmt.Errorf("find UI executable: %w", err)
 	}
+	if restoreExistingUI(uiPath) {
+		return nil
+	}
 	verb := windows.StringToUTF16Ptr("open")
 	target := windows.StringToUTF16Ptr(uiPath)
 	workingDir := windows.StringToUTF16Ptr(filepath.Dir(uiPath))
@@ -511,6 +526,59 @@ func openIntraUI() error {
 		return fmt.Errorf("open UI failed: %w", callErr)
 	}
 	return nil
+}
+
+func restoreExistingUI(uiPath string) bool {
+	expected, err := filepath.Abs(uiPath)
+	if err != nil {
+		expected = uiPath
+	}
+	var found uintptr
+	cb := syscall.NewCallback(func(hwnd uintptr, _ uintptr) uintptr {
+		if sameExecutable(hwnd, expected) {
+			found = hwnd
+			return 0
+		}
+		return 1
+	})
+	procEnumWindows.Call(cb, 0)
+	if found == 0 {
+		return false
+	}
+	log.Printf("restoring existing UI window: hwnd=%#x", found)
+	procShowWindow.Call(found, swRestore)
+	procSetForegroundWindow.Call(found)
+	return true
+}
+
+func sameExecutable(hwnd uintptr, expected string) bool {
+	var pid uint32
+	procGetWindowPID.Call(hwnd, uintptr(unsafe.Pointer(&pid)))
+	if pid == 0 {
+		return false
+	}
+	handle, err := windows.OpenProcess(windows.PROCESS_QUERY_LIMITED_INFORMATION, false, pid)
+	if err != nil {
+		return false
+	}
+	defer windows.CloseHandle(handle)
+	buf := make([]uint16, windows.MAX_PATH)
+	size := uint32(len(buf))
+	if err := windows.QueryFullProcessImageName(handle, 0, &buf[0], &size); err != nil {
+		return false
+	}
+	path := windows.UTF16ToString(buf[:size])
+	return strings.EqualFold(path, expected)
+}
+
+func windowText(hwnd uintptr) string {
+	n, _, _ := procGetWindowTextLength.Call(hwnd)
+	if n == 0 {
+		return ""
+	}
+	buf := make([]uint16, n+1)
+	procGetWindowText.Call(hwnd, uintptr(unsafe.Pointer(&buf[0])), n+1)
+	return windows.UTF16ToString(buf)
 }
 
 func message(title, text string) {
