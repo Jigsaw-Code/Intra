@@ -424,4 +424,8 @@ el.showRecentQueries.addEventListener("change", saveRecentQuerySetting);
 
 loadSettings();
 refresh();
+api()?.SetWindowIcon?.();
+[1000, 3000, 6000].forEach((delay) => {
+  setTimeout(() => api()?.SetWindowIcon?.(), delay);
+});
 setInterval(refresh, 5000);

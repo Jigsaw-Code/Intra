@@ -54,6 +54,7 @@ const (
 	iconApplication    = 32512
 	imageIcon          = 1
 	lrLoadFromFile     = 0x00000010
+	swShow             = 5
 	swRestore          = 9
 
 	menuOpen   = 1001
@@ -507,6 +508,7 @@ func openDiagnostics() {
 }
 
 func openIntraUI() error {
+	log.Printf("Open Intra requested")
 	exe, err := os.Executable()
 	if err != nil {
 		return err
@@ -515,8 +517,15 @@ func openIntraUI() error {
 	if _, err := os.Stat(uiPath); err != nil {
 		return fmt.Errorf("find UI executable: %w", err)
 	}
+	uiProcessAlive := processForExecutable(uiPath)
 	if restoreExistingUI(uiPath) {
+		log.Printf("Open Intra restored existing UI")
 		return nil
+	}
+	if uiProcessAlive {
+		log.Printf("Open Intra found running UI process but no restorable window; launching second instance to trigger Wails single-instance restore")
+	} else {
+		log.Printf("Open Intra did not find running UI process; launching UI")
 	}
 	verb := windows.StringToUTF16Ptr("open")
 	target := windows.StringToUTF16Ptr(uiPath)
@@ -525,6 +534,7 @@ func openIntraUI() error {
 	if ret <= 32 {
 		return fmt.Errorf("open UI failed: %w", callErr)
 	}
+	log.Printf("Open Intra ShellExecute returned %#x", ret)
 	return nil
 }
 
@@ -533,22 +543,62 @@ func restoreExistingUI(uiPath string) bool {
 	if err != nil {
 		expected = uiPath
 	}
-	var found uintptr
+	var found []uintptr
 	cb := syscall.NewCallback(func(hwnd uintptr, _ uintptr) uintptr {
 		if sameExecutable(hwnd, expected) {
-			found = hwnd
-			return 0
+			found = append(found, hwnd)
 		}
 		return 1
 	})
 	procEnumWindows.Call(cb, 0)
-	if found == 0 {
+	if len(found) == 0 {
+		log.Printf("restoreExistingUI found no hwnd for %s", expected)
 		return false
 	}
-	log.Printf("restoring existing UI window: hwnd=%#x", found)
-	procShowWindow.Call(found, swRestore)
-	procSetForegroundWindow.Call(found)
+	log.Printf("restoreExistingUI found %d hwnd(s) for %s", len(found), expected)
+	for _, hwnd := range found {
+		title := windowText(hwnd)
+		log.Printf("restoreExistingUI trying hwnd=%#x title=%q", hwnd, title)
+		procShowWindow.Call(hwnd, swShow)
+		procShowWindow.Call(hwnd, swRestore)
+		procSetForegroundWindow.Call(hwnd)
+	}
 	return true
+}
+
+func processForExecutable(exePath string) bool {
+	expected, err := filepath.Abs(exePath)
+	if err != nil {
+		expected = exePath
+	}
+	snapshot, err := windows.CreateToolhelp32Snapshot(windows.TH32CS_SNAPPROCESS, 0)
+	if err != nil {
+		log.Printf("processForExecutable snapshot failed: %v", err)
+		return false
+	}
+	defer windows.CloseHandle(snapshot)
+	entry := windows.ProcessEntry32{Size: uint32(unsafe.Sizeof(windows.ProcessEntry32{}))}
+	for err = windows.Process32First(snapshot, &entry); err == nil; err = windows.Process32Next(snapshot, &entry) {
+		if processPath(entry.ProcessID, expected) {
+			log.Printf("processForExecutable found UI process pid=%d", entry.ProcessID)
+			return true
+		}
+	}
+	return false
+}
+
+func processPath(pid uint32, expected string) bool {
+	handle, err := windows.OpenProcess(windows.PROCESS_QUERY_LIMITED_INFORMATION, false, pid)
+	if err != nil {
+		return false
+	}
+	defer windows.CloseHandle(handle)
+	buf := make([]uint16, windows.MAX_PATH)
+	size := uint32(len(buf))
+	if err := windows.QueryFullProcessImageName(handle, 0, &buf[0], &size); err != nil {
+		return false
+	}
+	return strings.EqualFold(windows.UTF16ToString(buf[:size]), expected)
 }
 
 func sameExecutable(hwnd uintptr, expected string) bool {
