@@ -9,6 +9,7 @@ package uiapi
 
 import (
 	"context"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -74,7 +75,11 @@ func (a *App) Startup(ctx context.Context) {
 	defer a.mu.Unlock()
 	a.ctx = ctx
 	a.allowQuit = false
+	if err := ensureTrayRunning(); err != nil {
+		log.Printf("ensure tray running failed: %v", err)
+	}
 	go a.SetWindowIcon()
+	go a.InstallWindowLifecycleHooks()
 }
 
 func (a *App) BeforeClose(ctx context.Context) bool {

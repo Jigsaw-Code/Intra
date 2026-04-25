@@ -24,22 +24,34 @@ const (
 	imageIcon      = 1
 	lrLoadFromFile = 0x00000010
 	wmSetIcon      = 0x0080
+	wmSize         = 0x0005
+	wmSysCommand   = 0x0112
 	iconSmall      = 0
 	iconBig        = 1
 	iconSmall2     = 2
 	smallIconSize  = 16
 	bigIconSize    = 32
+	gwlpWndProc    = ^uintptr(3)
+	scMinimize     = 0xf020
+	sizeMinimized  = 1
+	swHide         = 0
 )
 
 var (
 	user32              = windows.NewLazySystemDLL("user32.dll")
 	kernel32            = windows.NewLazySystemDLL("kernel32.dll")
+	procCallWindowProc  = user32.NewProc("CallWindowProcW")
 	procEnumWindows     = user32.NewProc("EnumWindows")
 	procGetWindowPID    = user32.NewProc("GetWindowThreadProcessId")
 	procIsWindowVisible = user32.NewProc("IsWindowVisible")
 	procLoadImage       = user32.NewProc("LoadImageW")
 	procSendMessage     = user32.NewProc("SendMessageW")
+	procSetWindowLong   = user32.NewProc("SetWindowLongPtrW")
+	procShowWindow      = user32.NewProc("ShowWindow")
 	procGetModuleHandle = kernel32.NewProc("GetModuleHandleW")
+
+	windowProcOriginal uintptr
+	windowProcCallback = windows.NewCallback(uiWindowProc)
 )
 
 //go:embed assets/intra.ico
@@ -76,6 +88,50 @@ func (a *App) SetWindowIcon() {
 		retBig, _, _ := procSendMessage.Call(uintptr(hwnd), wmSetIcon, iconBig, bigIcon)
 		log.Printf("SetWindowIcon hwnd=%#x ICON_BIG=%#x previous=%#x", hwnd, bigIcon, retBig)
 	}
+}
+
+// InstallWindowLifecycleHooks hides the Wails window when the native minimize
+// button is clicked. Close-to-tray is handled by OnBeforeClose in app.go.
+func (a *App) InstallWindowLifecycleHooks() {
+	var hwnd windows.Handle
+	for i := 0; i < 80; i++ {
+		time.Sleep(250 * time.Millisecond)
+		hwnd = windowForCurrentProcess()
+		if hwnd != 0 && windowIsVisible(hwnd) {
+			break
+		}
+	}
+	if hwnd == 0 {
+		log.Printf("InstallWindowLifecycleHooks skipped: Wails window handle not found")
+		return
+	}
+	if windowProcOriginal != 0 {
+		return
+	}
+	old, _, err := procSetWindowLong.Call(uintptr(hwnd), gwlpWndProc, windowProcCallback)
+	if old == 0 {
+		log.Printf("InstallWindowLifecycleHooks failed: %v", err)
+		return
+	}
+	windowProcOriginal = old
+	log.Printf("InstallWindowLifecycleHooks installed hwnd=%#x oldProc=%#x", hwnd, old)
+}
+
+func uiWindowProc(hwnd uintptr, msg uint32, wparam, lparam uintptr) uintptr {
+	switch msg {
+	case wmSysCommand:
+		if wparam&0xfff0 == scMinimize {
+			procShowWindow.Call(hwnd, swHide)
+			return 0
+		}
+	case wmSize:
+		if wparam == sizeMinimized {
+			procShowWindow.Call(hwnd, swHide)
+			return 0
+		}
+	}
+	ret, _, _ := procCallWindowProc.Call(windowProcOriginal, hwnd, uintptr(msg), wparam, lparam)
+	return ret
 }
 
 func windowIsVisible(hwnd windows.Handle) bool {

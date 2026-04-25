@@ -45,9 +45,9 @@ not available in this build.
 - Recent query details do not yet include DNS response destination parsing or
   geolocation flags.
 
-Closing the UI hides it so the tray can reopen it later. Minimize keeps the UI
-as a normal taskbar window because minimize-to-tray restore is unreliable in the
-current Wails shell.
+Launching the UI starts the tray helper from the same install directory if it is
+not already running. Closing or minimizing the UI hides it to the tray so the
+tray can reopen it later.
 
 Logo assets are derived from the existing Android launcher icon:
 
