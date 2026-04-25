@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intra</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero">
+        <div class="brand">Intra</div>
+        <div id="protectionState" class="state">Checking...</div>
+        <p id="stateMessage" class="message">Secure DNS protection status</p>
+        <button id="toggleButton" class="primary" disabled>Turn on</button>
+      </section>
+
+      <section class="section">
+        <h2>Secure DNS</h2>
+        <div class="row">
+          <span>Currently</span>
+          <strong>Service default</strong>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Diagnostics</h2>
+        <div class="row">
+          <span>Service</span>
+          <strong id="serviceState">unknown</strong>
+        </div>
+        <div class="row">
+          <span>Journal</span>
+          <strong id="journalState">unknown</strong>
+        </div>
+        <div class="row">
+          <span>Wintun DLL</span>
+          <strong id="wintunState">unknown</strong>
+        </div>
+        <div class="log-path" id="logPath"></div>
+        <button id="diagnosticsButton" class="secondary">Open diagnostics</button>
+      </section>
+    </main>
+    <script src="./main.js"></script>
+  </body>
+</html>

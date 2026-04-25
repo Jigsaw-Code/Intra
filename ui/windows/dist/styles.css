@@ -1,0 +1,109 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #f6f8fb;
+  color: #16212f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.hero {
+  background: #ffffff;
+  border: 1px solid #d8e0ea;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.brand {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.state {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.message {
+  color: #546274;
+  min-height: 22px;
+}
+
+button {
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  min-height: 42px;
+  padding: 0 18px;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.primary {
+  background: #155eef;
+  color: white;
+  margin-top: 10px;
+}
+
+.secondary {
+  background: #e8edf5;
+  color: #16212f;
+  width: 100%;
+}
+
+.section {
+  margin-top: 16px;
+  background: #ffffff;
+  border: 1px solid #d8e0ea;
+  border-radius: 8px;
+  padding: 18px;
+}
+
+h2 {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid #edf1f6;
+  padding: 12px 0;
+}
+
+.row:first-of-type {
+  border-top: 0;
+}
+
+.row span,
+.log-path {
+  color: #667386;
+}
+
+.row strong {
+  text-align: right;
+}
+
+.log-path {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+  margin: 8px 0 14px;
+}
