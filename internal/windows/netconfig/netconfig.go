@@ -150,6 +150,11 @@ func routeExists(name, prefix string) bool {
 	return err == nil && strings.TrimSpace(string(out)) != ""
 }
 
+func InterfaceExists(name string) bool {
+	_, err := net.InterfaceByName(name)
+	return err == nil
+}
+
 func parseIPFields(out string) []string {
 	var servers []string
 	for _, line := range strings.Fields(out) {

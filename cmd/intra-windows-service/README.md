@@ -1,18 +1,48 @@
 # Intra Windows Service Prototype
 
-This command is the first Windows full-tunnel backend milestone. It creates a
+This command hosts and controls the Windows full-tunnel backend. It creates a
 Wintun adapter, routes IPv4 traffic into it, sets the adapter DNS server to
 Intra's fake DNS address, and connects the adapter to the existing Go Intra
 tunnel.
 
-Run from an elevated shell:
+Build from the repo:
 
 ```powershell
 go build ./cmd/intra-windows-service
-.\intra-windows-service.exe
 ```
 
-The process keeps the tunnel active until Ctrl+C.
+Copy the amd64 `wintun.dll` beside the built exe. For local development, an
+existing WireGuard-compatible install may already provide one, or use the
+official Wintun release from https://www.wintun.net/.
+
+Development foreground mode, from an elevated shell:
+
+```powershell
+.\intra-windows-service.exe run-debug
+```
+
+Service control commands, from an elevated shell:
+
+```powershell
+.\intra-windows-service.exe install
+.\intra-windows-service.exe start
+.\intra-windows-service.exe status
+.\intra-windows-service.exe stop
+.\intra-windows-service.exe uninstall
+```
+
+The service runs as LocalSystem. On start it writes a journal under
+`%ProgramData%\Intra\windows-tunnel-journal.json` before modifying routes or
+DNS. If the previous run crashed while marked active, the next service/debug
+start restores the journaled route/DNS state before applying a new tunnel
+configuration. Clean stop removes the journal after route/DNS restore succeeds.
+
+The install command also grants authenticated interactive users enough service
+rights for the tray app to query, start, and stop `IntraTunnel` without asking
+for full service-control access. Reinstall the service after rebuilding the exe
+to pick up permission or service-host changes.
+
+Service lifecycle logs are written to `%ProgramData%\Intra\windows-service.log`.
 
 The backend currently targets IPv4 full-tunnel behavior only. IPv6 routing,
 native IP Helper API route/DNS management, a named-pipe control API, and a tray
