@@ -7,7 +7,7 @@ tunnel engine, route/DNS logic, or Android behavior.
 Build:
 
 ```powershell
-go build -o D:\intra\.go-build\intra-windows-tray.exe ./cmd/intra-windows-tray
+go build -ldflags "-H=windowsgui" -o D:\intra\.go-build\intra-windows-tray.exe ./cmd/intra-windows-tray
 ```
 
 Run after installing the service backend:

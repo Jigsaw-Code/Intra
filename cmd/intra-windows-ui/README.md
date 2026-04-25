@@ -9,7 +9,7 @@ Build:
 ```powershell
 $env:GOCACHE="D:\intra\.go-cache"
 go run ./tools/windowsresource -ico .\cmd\intra-windows-ui\assets\intra.ico -out .\cmd\intra-windows-ui\intra_windows_ui_icon_windows_amd64.syso
-$env:GOOS="windows"; $env:GOARCH="amd64"; go build -tags "desktop,production" -o D:\intra\.go-build\intra-windows-ui.exe ./cmd/intra-windows-ui
+$env:GOOS="windows"; $env:GOARCH="amd64"; go build -ldflags "-H=windowsgui" -tags "desktop,production" -o D:\intra\.go-build\intra-windows-ui.exe ./cmd/intra-windows-ui
 ```
 
 Run:

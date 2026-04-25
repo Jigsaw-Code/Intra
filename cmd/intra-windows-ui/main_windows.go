@@ -8,6 +8,11 @@
 package main
 
 import (
+	"log"
+	"os"
+	"path/filepath"
+
+	"localhost/Intra/internal/windows/state"
 	"localhost/Intra/internal/windows/uiapi"
 	windowsui "localhost/Intra/ui/windows"
 
@@ -18,6 +23,7 @@ import (
 )
 
 func main() {
+	initUILog()
 	app := uiapi.NewApp()
 	err := wails.Run(&options.App{
 		Title:  "Intra",
@@ -44,6 +50,17 @@ func main() {
 		},
 	})
 	if err != nil {
-		println("Intra UI failed:", err.Error())
+		log.Printf("Intra UI failed: %v", err)
 	}
+}
+
+func initUILog() {
+	if err := os.MkdirAll(filepath.Dir(state.LogPath()), 0700); err != nil {
+		return
+	}
+	f, err := os.OpenFile(filepath.Join(filepath.Dir(state.LogPath()), "windows-ui.log"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+	if err != nil {
+		return
+	}
+	log.SetOutput(f)
 }
