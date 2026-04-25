@@ -23,6 +23,7 @@ import (
 	"localhost/Intra/internal/windows/netconfig"
 	winservice "localhost/Intra/internal/windows/service"
 	"localhost/Intra/internal/windows/servicecontrol"
+	winsettings "localhost/Intra/internal/windows/settings"
 	"localhost/Intra/internal/windows/state"
 
 	"golang.org/x/sys/windows"
@@ -78,6 +79,11 @@ func parseConfig(command string, args []string) winservice.Config {
 	dohURL := fs.String("doh", "", "DoH server URL")
 	dohIPs := fs.String("doh-ips", "", "comma-separated DoH bootstrap IPs")
 	_ = fs.Parse(args)
+	if *dohURL == "" && *dohIPs == "" {
+		if cfg, err := winsettings.Load(); err == nil {
+			return winservice.Config{DoHURL: cfg.DoHURL, DoHIPs: cfg.DoHIPs}
+		}
+	}
 	return winservice.Config{DoHURL: *dohURL, DoHIPs: *dohIPs}
 }
 

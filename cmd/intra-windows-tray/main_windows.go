@@ -8,6 +8,7 @@
 package main
 
 import (
+	_ "embed"
 	"errors"
 	"fmt"
 	"log"
@@ -50,12 +51,15 @@ const (
 	tpmReturnCmd       = 0x0100
 	notifyIconVersion4 = 4
 	iconApplication    = 32512
+	imageIcon          = 1
+	lrLoadFromFile     = 0x00000010
 
-	menuStatus = 1001
+	menuOpen   = 1001
 	menuStart  = 1002
 	menuStop   = 1003
-	menuLogs   = 1004
-	menuExit   = 1005
+	menuStatus = 1004
+	menuLogs   = 1005
+	menuExit   = 1006
 )
 
 var (
@@ -74,6 +78,7 @@ var (
 	procDispatchMessage     = user32.NewProc("DispatchMessageW")
 	procPostQuitMessage     = user32.NewProc("PostQuitMessage")
 	procLoadIcon            = user32.NewProc("LoadIconW")
+	procLoadImage           = user32.NewProc("LoadImageW")
 	procCreatePopupMenu     = user32.NewProc("CreatePopupMenu")
 	procAppendMenu          = user32.NewProc("AppendMenuW")
 	procTrackPopupMenu      = user32.NewProc("TrackPopupMenu")
@@ -89,6 +94,9 @@ var (
 	trayIcon         notifyIconData
 	wmTaskbarCreated uint32
 )
+
+//go:embed assets/intra.ico
+var intraIcon []byte
 
 type point struct {
 	X int32
@@ -186,7 +194,10 @@ func createHiddenWindow() (windows.Handle, error) {
 		Instance:  windows.Handle(instance),
 		ClassName: className,
 	}
-	icon, _, _ := procLoadIcon.Call(0, uintptr(unsafe.Pointer(uintptr(iconApplication))))
+	icon := loadIntraIcon()
+	if icon == 0 {
+		icon, _, _ = procLoadIcon.Call(0, uintptr(unsafe.Pointer(uintptr(iconApplication))))
+	}
 	wc.Icon = windows.Handle(icon)
 	wc.IconSm = windows.Handle(icon)
 	atom, _, err := procRegisterClassEx.Call(uintptr(unsafe.Pointer(&wc)))
@@ -210,7 +221,11 @@ func createHiddenWindow() (windows.Handle, error) {
 }
 
 func addTrayIcon(hwnd windows.Handle) error {
-	icon, _, err := procLoadIcon.Call(0, uintptr(unsafe.Pointer(uintptr(iconApplication))))
+	icon := loadIntraIcon()
+	var err error
+	if icon == 0 {
+		icon, _, err = procLoadIcon.Call(0, uintptr(unsafe.Pointer(uintptr(iconApplication))))
+	}
 	if icon == 0 {
 		return fmt.Errorf("LoadIconW failed: %w", err)
 	}
@@ -234,6 +249,30 @@ func addTrayIcon(hwnd windows.Handle) error {
 		log.Printf("Shell_NotifyIconW(NIM_SETVERSION) failed: %v", err)
 	}
 	return nil
+}
+
+func loadIntraIcon() uintptr {
+	path := filepath.Join(filepath.Dir(state.LogPath()), "intra-tray.ico")
+	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
+		log.Printf("create icon cache dir failed: %v", err)
+		return 0
+	}
+	if err := os.WriteFile(path, intraIcon, 0600); err != nil {
+		log.Printf("write icon cache failed: %v", err)
+		return 0
+	}
+	icon, _, err := procLoadImage.Call(
+		0,
+		uintptr(unsafe.Pointer(windows.StringToUTF16Ptr(path))),
+		imageIcon,
+		0,
+		0,
+		lrLoadFromFile,
+	)
+	if icon == 0 {
+		log.Printf("LoadImageW icon failed: %v", err)
+	}
+	return icon
 }
 
 func removeTrayIcon() {
@@ -295,9 +334,10 @@ func showMenu(hwnd windows.Handle) {
 		return
 	}
 	defer procDestroyMenu.Call(menu)
-	appendMenu(menu, menuStatus, "Status")
+	appendMenu(menu, menuOpen, "Open Intra")
 	appendMenu(menu, menuStart, "Start Intra")
 	appendMenu(menu, menuStop, "Stop Intra")
+	appendMenu(menu, menuStatus, "Status")
 	appendMenu(menu, menuLogs, "Open diagnostics")
 	appendMenu(menu, menuExit, "Exit tray")
 
@@ -319,6 +359,10 @@ func appendMenu(menu uintptr, id uint32, label string) {
 func handleCommand(id uint32) {
 	log.Printf("handle menu command: %d", id)
 	switch id {
+	case menuOpen:
+		if err := openIntraUI(); err != nil {
+			message("Open Intra", err.Error())
+		}
 	case menuStatus:
 		st, err := queryService()
 		if err != nil {
@@ -448,6 +492,25 @@ func openDiagnostics() {
 	verb := windows.StringToUTF16Ptr("open")
 	target := windows.StringToUTF16Ptr(dir)
 	procShellExecute.Call(0, uintptr(unsafe.Pointer(verb)), uintptr(unsafe.Pointer(target)), 0, 0, 1)
+}
+
+func openIntraUI() error {
+	exe, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	uiPath := filepath.Join(filepath.Dir(exe), "intra-windows-ui.exe")
+	if _, err := os.Stat(uiPath); err != nil {
+		return fmt.Errorf("find UI executable: %w", err)
+	}
+	verb := windows.StringToUTF16Ptr("open")
+	target := windows.StringToUTF16Ptr(uiPath)
+	workingDir := windows.StringToUTF16Ptr(filepath.Dir(uiPath))
+	ret, _, callErr := procShellExecute.Call(0, uintptr(unsafe.Pointer(verb)), uintptr(unsafe.Pointer(target)), 0, uintptr(unsafe.Pointer(workingDir)), 1)
+	if ret <= 32 {
+		return fmt.Errorf("open UI failed: %w", callErr)
+	}
+	return nil
 }
 
 func message(title, text string) {

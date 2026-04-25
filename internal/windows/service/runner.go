@@ -17,6 +17,7 @@ import (
 	"localhost/Intra/Android/app/src/go/intra"
 	"localhost/Intra/internal/windows/netconfig"
 	winprotect "localhost/Intra/internal/windows/protect"
+	"localhost/Intra/internal/windows/queryhistory"
 	"localhost/Intra/internal/windows/state"
 	wintun "localhost/Intra/internal/windows/tun"
 )
@@ -46,9 +47,9 @@ type Runner struct {
 func NewRunner(cfg Config) *Runner {
 	if cfg.DoHURL == "" {
 		cfg.DoHURL = "https://dns.google/dns-query"
-	}
-	if cfg.DoHIPs == "" {
-		cfg.DoHIPs = "8.8.8.8,8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844"
+		if cfg.DoHIPs == "" {
+			cfg.DoHIPs = "8.8.8.8,8.8.4.4,2001:4860:4860::8888,2001:4860:4860::8844"
+		}
 	}
 	return &Runner{cfg: cfg}
 }
@@ -88,7 +89,11 @@ func (r *Runner) Start() error {
 		InterfaceIndex: snapshot.PhysicalInterfaceIndex,
 		Resolvers:      snapshot.PhysicalResolvers,
 	}
-	listener := noopListener{}
+	tracker := queryhistory.DefaultTracker()
+	if err := tracker.Load(); err != nil {
+		log.Printf("query history load failed: %v", err)
+	}
+	listener := windowsListener{tracker: tracker}
 
 	if err := state.SaveActive(netCfg, snapshot); err != nil {
 		_ = tun.Close()
@@ -159,6 +164,9 @@ func (r *Runner) Stop() error {
 		log.Printf("closing wintun without active session")
 		err = errors.Join(err, r.tun.Close())
 	}
+	if err := queryhistory.DefaultTracker().Save(); err != nil {
+		log.Printf("query history save failed: %v", err)
+	}
 	r.tun = nil
 	r.snapshot = netconfig.Snapshot{}
 	log.Printf("stop complete")
@@ -179,9 +187,15 @@ func logRestoreErrors(context string, errs []error) bool {
 	return len(errs) == 0
 }
 
-type noopListener struct{}
+type windowsListener struct {
+	tracker *queryhistory.Tracker
+}
 
-func (noopListener) OnQuery(string) backend.DoHQueryToken                      { return nil }
-func (noopListener) OnResponse(backend.DoHQueryToken, *backend.DoHQuerySumary) {}
-func (noopListener) OnUDPSocketClosed(*intra.UDPSocketSummary)                 {}
-func (noopListener) OnTCPSocketClosed(*intra.TCPSocketSummary)                 {}
+func (windowsListener) OnQuery(string) backend.DoHQueryToken { return nil }
+func (l windowsListener) OnResponse(_ backend.DoHQueryToken, summary *backend.DoHQuerySumary) {
+	if l.tracker != nil {
+		l.tracker.RecordSummary(summary)
+	}
+}
+func (windowsListener) OnUDPSocketClosed(*intra.UDPSocketSummary) {}
+func (windowsListener) OnTCPSocketClosed(*intra.TCPSocketSummary) {}

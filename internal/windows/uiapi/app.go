@@ -12,11 +12,15 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sync"
 	"time"
 
+	"localhost/Intra/internal/windows/queryhistory"
 	"localhost/Intra/internal/windows/servicecontrol"
+	winsettings "localhost/Intra/internal/windows/settings"
 	"localhost/Intra/internal/windows/state"
 
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/svc"
 )
@@ -27,16 +31,38 @@ const (
 )
 
 type App struct {
-	ctx context.Context
+	mu        sync.Mutex
+	ctx       context.Context
+	allowQuit bool
 }
 
 type Status struct {
-	ProtectionState string `json:"protectionState"`
-	ServiceState    string `json:"serviceState"`
-	JournalPresent  bool   `json:"journalPresent"`
-	WintunPresent   bool   `json:"wintunPresent"`
-	LogPath         string `json:"logPath"`
-	Message         string `json:"message"`
+	ProtectionState    string                     `json:"protectionState"`
+	ServiceState       string                     `json:"serviceState"`
+	JournalPresent     bool                       `json:"journalPresent"`
+	WintunPresent      bool                       `json:"wintunPresent"`
+	LogPath            string                     `json:"logPath"`
+	ServerName         string                     `json:"serverName"`
+	ServerURL          string                     `json:"serverUrl"`
+	LifetimeQueries    int64                      `json:"lifetimeQueries"`
+	RecentQueries      int                        `json:"recentQueries"`
+	RecentTransactions []queryhistory.Transaction `json:"recentTransactions"`
+	Message            string                     `json:"message"`
+}
+
+type UISettings struct {
+	Servers           []winsettings.Server `json:"servers"`
+	SelectedURL       string               `json:"selectedUrl"`
+	SelectedIPs       string               `json:"selectedIps"`
+	ServerName        string               `json:"serverName"`
+	ShowRecentQueries bool                 `json:"showRecentQueries"`
+	SettingsPath      string               `json:"settingsPath"`
+}
+
+type SaveSettingsRequest struct {
+	DoHURL            string `json:"dohUrl"`
+	DoHIPs            string `json:"dohIps"`
+	ShowRecentQueries bool   `json:"showRecentQueries"`
 }
 
 func NewApp() *App {
@@ -44,19 +70,72 @@ func NewApp() *App {
 }
 
 func (a *App) Startup(ctx context.Context) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
 	a.ctx = ctx
+	a.allowQuit = false
+}
+
+func (a *App) BeforeClose(ctx context.Context) bool {
+	a.mu.Lock()
+	allowQuit := a.allowQuit
+	a.mu.Unlock()
+	if allowQuit {
+		return false
+	}
+	runtime.WindowHide(ctx)
+	return true
+}
+
+func (a *App) ShowWindow() {
+	a.mu.Lock()
+	ctx := a.ctx
+	a.mu.Unlock()
+	if ctx == nil {
+		return
+	}
+	runtime.WindowShow(ctx)
+	runtime.WindowUnminimise(ctx)
+	runtime.WindowCenter(ctx)
+}
+
+func (a *App) HideToTray() {
+	a.mu.Lock()
+	ctx := a.ctx
+	a.mu.Unlock()
+	if ctx == nil {
+		return
+	}
+	runtime.WindowHide(ctx)
+}
+
+func (a *App) ExitApp() {
+	a.mu.Lock()
+	a.allowQuit = true
+	ctx := a.ctx
+	a.mu.Unlock()
+	if ctx == nil {
+		return
+	}
+	runtime.Quit(ctx)
 }
 
 func (a *App) GetStatus() Status {
 	st, err := queryService()
 	if err != nil {
+		queryStats := queryhistory.LoadStats()
 		return Status{
-			ProtectionState: "Needs attention",
-			ServiceState:    "unavailable",
-			JournalPresent:  fileExists(state.Path()),
-			WintunPresent:   wintunPresent(),
-			LogPath:         state.LogPath(),
-			Message:         err.Error(),
+			ProtectionState:    "Needs attention",
+			ServiceState:       "unavailable",
+			JournalPresent:     fileExists(state.Path()),
+			WintunPresent:      wintunPresent(),
+			LogPath:            state.LogPath(),
+			ServerName:         currentServerName(),
+			ServerURL:          currentServerURL(),
+			LifetimeQueries:    queryStats.LifetimeQueries,
+			RecentQueries:      queryStats.RecentQueries,
+			RecentTransactions: queryStats.RecentTransactions,
+			Message:            err.Error(),
 		}
 	}
 	return makeStatus(st, "")
@@ -92,15 +171,71 @@ func (a *App) OpenDiagnostics() error {
 	return exec.Command("explorer.exe", dir).Start()
 }
 
-func makeStatus(st svc.Status, message string) Status {
-	return Status{
-		ProtectionState: protectionState(st.State),
-		ServiceState:    serviceState(st.State),
-		JournalPresent:  fileExists(state.Path()),
-		WintunPresent:   wintunPresent(),
-		LogPath:         state.LogPath(),
-		Message:         message,
+func (a *App) GetSettings() (UISettings, error) {
+	cfg, err := winsettings.Load()
+	if err != nil {
+		return UISettings{}, err
 	}
+	return UISettings{
+		Servers:           winsettings.BuiltInServers,
+		SelectedURL:       cfg.DoHURL,
+		SelectedIPs:       cfg.DoHIPs,
+		ServerName:        winsettings.ServerName(cfg),
+		ShowRecentQueries: cfg.ShowRecentQueries,
+		SettingsPath:      winsettings.Path(),
+	}, nil
+}
+
+func (a *App) SaveSettings(req SaveSettingsRequest) (Status, error) {
+	cfg := winsettings.Config{
+		DoHURL:            req.DoHURL,
+		DoHIPs:            req.DoHIPs,
+		ShowRecentQueries: req.ShowRecentQueries,
+	}
+	if err := winsettings.Save(cfg); err != nil {
+		return a.GetStatus(), err
+	}
+	st, err := queryService()
+	if err != nil {
+		return a.GetStatus(), nil
+	}
+	if st.State == svc.Running {
+		if _, err := stopService(); err != nil {
+			return a.GetStatus(), err
+		}
+		if _, err := startService(); err != nil {
+			return a.GetStatus(), err
+		}
+	}
+	return a.GetStatus(), nil
+}
+
+func makeStatus(st svc.Status, message string) Status {
+	cfg, _ := winsettings.Load()
+	queryStats := queryhistory.LoadStats()
+	return Status{
+		ProtectionState:    protectionState(st.State),
+		ServiceState:       serviceState(st.State),
+		JournalPresent:     fileExists(state.Path()),
+		WintunPresent:      wintunPresent(),
+		LogPath:            state.LogPath(),
+		ServerName:         winsettings.ServerName(cfg),
+		ServerURL:          cfg.DoHURL,
+		LifetimeQueries:    queryStats.LifetimeQueries,
+		RecentQueries:      queryStats.RecentQueries,
+		RecentTransactions: queryStats.RecentTransactions,
+		Message:            message,
+	}
+}
+
+func currentServerName() string {
+	cfg, _ := winsettings.Load()
+	return winsettings.ServerName(cfg)
+}
+
+func currentServerURL() string {
+	cfg, _ := winsettings.Load()
+	return cfg.DoHURL
 }
 
 func queryService() (svc.Status, error) {

@@ -7,38 +7,178 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div id="drawerOverlay" class="drawer-overlay hidden"></div>
+    <aside id="drawer" class="drawer" aria-label="Navigation">
+      <div class="drawer-brand">
+        <img src="./assets/intra-logo.png" alt="" />
+        <div>
+          <strong>Intra</strong>
+          <span>Windows</span>
+        </div>
+      </div>
+      <nav class="drawer-nav">
+        <button class="nav-item active" data-view="home">Home</button>
+        <button class="nav-item" data-view="settings">Settings</button>
+        <button class="nav-link" data-url="https://support.getintra.org/">Support</button>
+        <button class="nav-link" data-url="https://getintra.org/privacy">Privacy Policy</button>
+        <button class="nav-link" data-url="https://jigsaw.google.com/jigsaw-tos.html">Terms of Service</button>
+        <button class="nav-link" data-url="https://github.com/Jigsaw-Code/intra">Source code</button>
+        <button id="exitAppButton" class="nav-item exit">Exit</button>
+      </nav>
+      <div class="drawer-footer">
+        <p>Intra was made by Jigsaw.</p>
+        <img src="./assets/intra-logo.png" alt="" />
+      </div>
+    </aside>
+
     <main class="app">
-      <section class="hero">
-        <div class="brand">Intra</div>
-        <div id="protectionState" class="state">Checking...</div>
-        <p id="stateMessage" class="message">Secure DNS protection status</p>
-        <button id="toggleButton" class="primary" disabled>Turn on</button>
+      <header class="topbar">
+        <button id="drawerButton" class="icon-button" aria-label="Open navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="brand">
+          <img src="./assets/intra-logo.png" alt="" />
+          <div>
+            <div class="brand-name">Intra</div>
+            <div class="brand-copy">Internet protection by Jigsaw</div>
+          </div>
+        </div>
+        <div id="headerStatus" class="header-status">
+          <span class="status-dot"></span>
+          <span id="headerStatusText">Checking</span>
+        </div>
+      </header>
+
+      <section id="homeView" class="view active">
+        <section class="protection-card">
+          <div class="protection-copy">
+            <div id="indicator" class="indicator">Off</div>
+            <div id="protectionState" class="state">Checking...</div>
+            <p id="stateMessage" class="message">Checking Secure DNS protection...</p>
+          </div>
+          <label class="switch">
+            <input id="toggleSwitch" type="checkbox" />
+            <span></span>
+          </label>
+        </section>
+
+        <h2 class="block-title">System details</h2>
+        <div class="detail-grid">
+          <section class="summary-card">
+            <div id="lifetimeQueriesValue" class="card-icon">0</div>
+            <p class="card-copy">Lifetime queries</p>
+          </section>
+          <section class="summary-card">
+            <div id="recentQueriesValue" class="card-icon">0</div>
+            <p class="card-copy">Recent queries</p>
+          </section>
+          <section class="summary-card">
+            <div class="card-icon transport-icon">https</div>
+            <p class="card-copy">Encrypted transport</p>
+          </section>
+          <section class="summary-card">
+            <div id="serverCardValue" class="card-icon dns-server">dns.google</div>
+            <p class="card-copy">Secure DNS server</p>
+          </section>
+        </div>
+
+        <label class="check-row">
+          <input id="showRecentQueries" type="checkbox" />
+          <span>
+            <strong>Show recent queries</strong>
+            <small>Show the most recent DNS queries handled by Intra.</small>
+          </span>
+        </label>
+        <section id="recentTransactionsCard" class="list-card hidden">
+          <div class="section-title">
+            <div>
+              <h2>Recent queries</h2>
+              <p>Recent DNS requests recorded by the Windows service</p>
+            </div>
+          </div>
+          <div id="recentTransactionsList" class="transaction-list"></div>
+        </section>
+
+        <section id="diagnosticsCard" class="list-card">
+          <div class="section-title">
+            <div>
+              <h2>Diagnostics</h2>
+              <p>Windows equivalents for Intra system details</p>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div>
+              <span>Service</span>
+              <small>Current tunnel backend state</small>
+            </div>
+            <strong id="serviceState">unknown</strong>
+          </div>
+          <div class="setting-row">
+            <div>
+              <span>Journal</span>
+              <small>Crash recovery snapshot</small>
+            </div>
+            <strong id="journalState">unknown</strong>
+          </div>
+          <div class="setting-row">
+            <div>
+              <span>Wintun DLL</span>
+              <small>Runtime tunnel adapter dependency</small>
+            </div>
+            <strong id="wintunState">unknown</strong>
+          </div>
+          <p id="wintunHelp" class="help hidden"></p>
+          <div class="setting-row log-row">
+            <div>
+              <span>Log path</span>
+              <small id="logPath"></small>
+            </div>
+          </div>
+          <button id="diagnosticsButton" class="secondary">Open diagnostics</button>
+        </section>
       </section>
 
-      <section class="section">
-        <h2>Secure DNS</h2>
-        <div class="row">
-          <span>Currently</span>
-          <strong>Service default</strong>
-        </div>
-      </section>
+      <section id="settingsView" class="view">
+        <section class="list-card">
+          <div class="section-title">
+            <div>
+              <h2>Settings</h2>
+              <p>Matches Android settings where Windows support exists</p>
+            </div>
+          </div>
+          <div class="setting-row editable">
+            <div>
+              <span>Select DNS over HTTPS Server</span>
+              <small id="serverSummary">Currently dns.google</small>
+            </div>
+          </div>
+          <div class="server-choice">
+            <label>
+              <input name="serverMode" type="radio" value="builtin" checked />
+              Built-in server
+            </label>
+            <select id="serverSelect"></select>
+            <p id="serverDescription" class="choice-help"></p>
+            <button id="serverWebsiteButton" class="secondary compact">Visit Website</button>
 
-      <section class="section">
-        <h2>Diagnostics</h2>
-        <div class="row">
-          <span>Service</span>
-          <strong id="serviceState">unknown</strong>
-        </div>
-        <div class="row">
-          <span>Journal</span>
-          <strong id="journalState">unknown</strong>
-        </div>
-        <div class="row">
-          <span>Wintun DLL</span>
-          <strong id="wintunState">unknown</strong>
-        </div>
-        <div class="log-path" id="logPath"></div>
-        <button id="diagnosticsButton" class="secondary">Open diagnostics</button>
+            <label>
+              <input name="serverMode" type="radio" value="custom" />
+              Custom server URL
+            </label>
+            <input id="customServerUrl" class="text-input" type="url" placeholder="https://example.com/dns-query" />
+            <p id="urlWarning" class="warning hidden">Custom server must be a valid https:// URL</p>
+            <button id="saveSettingsButton" class="primary">Save DNS server</button>
+          </div>
+          <div class="setting-row disabled">
+            <div>
+              <span>Excluded apps</span>
+              <small>Android can exclude apps from its VPN. Windows per-app bypass is not implemented yet.</small>
+            </div>
+            <strong>Unavailable</strong>
+          </div>
+        </section>
       </section>
     </main>
     <script src="./main.js"></script>

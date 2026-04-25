@@ -14,6 +14,7 @@ import (
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	wailswindows "github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
 func main() {
@@ -25,7 +26,19 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: windowsui.Assets,
 		},
-		OnStartup: app.Startup,
+		BackgroundColour: options.NewRGB(17, 19, 24),
+		Windows: &wailswindows.Options{
+			Theme:        wailswindows.Dark,
+			BackdropType: wailswindows.Mica,
+		},
+		OnStartup:     app.Startup,
+		OnBeforeClose: app.BeforeClose,
+		SingleInstanceLock: &options.SingleInstanceLock{
+			UniqueId: "intra-windows-ui",
+			OnSecondInstanceLaunch: func(_ options.SecondInstanceData) {
+				app.ShowWindow()
+			},
+		},
 		Bind: []interface{}{
 			app,
 		},
