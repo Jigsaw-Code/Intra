@@ -2,16 +2,17 @@ const el = {
   drawer: document.getElementById("drawer"),
   drawerOverlay: document.getElementById("drawerOverlay"),
   drawerButton: document.getElementById("drawerButton"),
-  navItems: [...document.querySelectorAll(".nav-item[data-view]")],
-  navLinks: [...document.querySelectorAll(".nav-link[data-url]")],
+  navItems: [...document.querySelectorAll(".drawer-item[data-view]")],
+  navLinks: [...document.querySelectorAll(".drawer-link[data-url]")],
   views: [...document.querySelectorAll(".view")],
   exitAppButton: document.getElementById("exitAppButton"),
   indicator: document.getElementById("indicator"),
   protectionState: document.getElementById("protectionState"),
-  headerStatus: document.getElementById("headerStatus"),
-  headerStatusText: document.getElementById("headerStatusText"),
+  statusHero: document.getElementById("statusHero"),
   stateMessage: document.getElementById("stateMessage"),
   toggleSwitch: document.getElementById("toggleSwitch"),
+  transportIcon: document.getElementById("transportIcon"),
+  transportValue: document.getElementById("transportValue"),
   serviceState: document.getElementById("serviceState"),
   journalState: document.getElementById("journalState"),
   wintunState: document.getElementById("wintunState"),
@@ -68,10 +69,11 @@ async function loadSettings() {
 function render(status) {
   currentStatus = status;
   const on = status.protectionState === "Protected" || status.protectionState === "Starting";
+  const displayState = androidStatus(status.protectionState);
   el.indicator.textContent = on ? "On" : "Off";
-  el.protectionState.textContent = androidStatus(status.protectionState);
-  el.headerStatus.dataset.state = status.protectionState;
-  el.headerStatusText.textContent = androidStatus(status.protectionState);
+  el.protectionState.textContent = displayState;
+  el.protectionState.dataset.state = status.protectionState;
+  el.statusHero.dataset.state = status.protectionState;
   el.serviceState.textContent = status.serviceState;
   el.journalState.textContent = status.journalPresent ? "present" : "absent";
   el.wintunState.textContent = status.wintunPresent ? "present" : "missing";
@@ -79,13 +81,14 @@ function render(status) {
   el.lifetimeQueriesValue.textContent = formatCount(status.lifetimeQueries || 0);
   el.recentQueriesValue.textContent = formatCount(status.recentQueries || 0);
   el.stateMessage.textContent = status.message || stateMessage(status);
-  el.protectionState.dataset.state = status.protectionState;
   el.serverCardValue.textContent = status.serverName || "dns.google";
   el.serverSummary.textContent = `Currently ${status.serverName || "dns.google"}`;
+  el.transportIcon.src = on ? "./assets/ic_lock.svg" : "./assets/ic_lock_open.svg";
+  el.transportValue.textContent = on ? "https" : "unknown";
 
   const busy = status.protectionState === "Starting" || status.protectionState === "Stopping";
   el.toggleSwitch.disabled = busy;
-  el.toggleSwitch.checked = status.protectionState === "Protected" || status.protectionState === "Starting";
+  el.toggleSwitch.checked = on;
 
   el.wintunHelp.classList.toggle("hidden", status.wintunPresent);
   el.wintunHelp.textContent = status.wintunPresent
@@ -128,17 +131,67 @@ function renderRecentTransactions(transactions) {
     return;
   }
   [...transactions].reverse().forEach((tx) => {
-    const row = document.createElement("div");
+    const row = document.createElement("article");
     row.className = "transaction-row";
-    const title = document.createElement("div");
-    title.className = "transaction-title";
-    title.textContent = tx.name || "(unknown query)";
-    const meta = document.createElement("div");
-    meta.className = "transaction-meta";
-    meta.textContent = `${formatTime(tx.responseTime)} · ${typeName(tx.type)} · ${formatLatency(tx.latencyMs)} · ${statusName(tx.status)}`;
-    row.append(title, meta);
+
+    const condensed = document.createElement("button");
+    condensed.type = "button";
+    condensed.className = "transaction-condensed";
+    condensed.setAttribute("aria-expanded", "false");
+
+    const marker = document.createElement("span");
+    marker.className = "transaction-marker";
+    marker.textContent = statusMarker(tx.status);
+
+    const hostname = document.createElement("span");
+    hostname.className = "transaction-hostname";
+    hostname.textContent = displayHostname(tx.name);
+    hostname.title = tx.name || "";
+
+    const time = document.createElement("span");
+    time.className = "transaction-time";
+    time.textContent = formatTime(tx.responseTime);
+
+    const expander = document.createElement("span");
+    expander.className = "transaction-expander";
+
+    const details = document.createElement("div");
+    details.className = "transaction-details";
+    details.hidden = true;
+    details.append(
+      detailRow("./assets/ic_pageview.svg", "Query", tx.name || "(unknown query)"),
+      detailRow("./assets/ic_dns.svg", "Type", typeName(tx.type)),
+      detailRow("./assets/ic_access_time.svg", "Latency", formatLatency(tx.latencyMs)),
+      detailRow("./assets/ic_location_on.svg", "Resolver location", tx.server || "(unknown server)"),
+      detailRow("./assets/ic_server.svg", "Destination server", destinationValue(tx)),
+    );
+
+    condensed.addEventListener("click", () => {
+      const expanded = row.classList.toggle("expanded");
+      details.hidden = !expanded;
+      condensed.setAttribute("aria-expanded", String(expanded));
+    });
+
+    condensed.append(marker, hostname, time, expander);
+    row.append(condensed, details);
     el.recentTransactionsList.appendChild(row);
   });
+}
+
+function detailRow(icon, label, value) {
+  const row = document.createElement("div");
+  row.className = "transaction-detail-row";
+  const iconEl = document.createElement("img");
+  iconEl.src = icon;
+  iconEl.alt = "";
+  const copy = document.createElement("div");
+  const labelEl = document.createElement("span");
+  labelEl.textContent = label;
+  const valueEl = document.createElement("strong");
+  valueEl.textContent = value;
+  copy.append(labelEl, valueEl);
+  row.append(iconEl, copy);
+  return row;
 }
 
 function updateServerChoice() {
@@ -267,6 +320,16 @@ function formatTime(value) {
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }
 
+function displayHostname(name) {
+  if (!name) return "(unknown query)";
+  const trimmed = name.endsWith(".") ? name.slice(0, -1) : name;
+  const parts = trimmed.split(".").filter(Boolean);
+  if (parts.length >= 2) {
+    return parts.slice(-2).join(".");
+  }
+  return trimmed;
+}
+
 function typeName(value) {
   switch (value) {
     case 1:
@@ -285,7 +348,31 @@ function typeName(value) {
 }
 
 function statusName(value) {
-  return value === 0 ? "Complete" : `Status ${value}`;
+  switch (value) {
+    case 0:
+      return "Complete";
+    case 1:
+      return "Send failed";
+    case 2:
+      return "HTTP error";
+    case 3:
+      return "Bad query";
+    case 4:
+      return "Bad response";
+    case 5:
+      return "Internal error";
+    default:
+      return `Status ${value}`;
+  }
+}
+
+function statusMarker(value) {
+  return value === 0 ? "OK" : "!";
+}
+
+function destinationValue(tx) {
+  if (tx.status === 0) return tx.server || "(available after DNS response parsing)";
+  return statusName(tx.status);
 }
 
 function androidStatus(state) {
@@ -314,7 +401,7 @@ function stateMessage(status) {
     case "Not protected":
       return "Your connection is exposed to DNS attacks.";
     default:
-      return "Warning: Queries may be failing. You may want to choose a different server or restart Intra.";
+      return "Warning: Queries are failing. You may want to choose a different server or restart Intra.";
   }
 }
 

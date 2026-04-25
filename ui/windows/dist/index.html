@@ -7,180 +7,156 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div id="drawerOverlay" class="drawer-overlay hidden"></div>
-    <aside id="drawer" class="drawer" aria-label="Navigation">
-      <div class="drawer-brand">
-        <img src="./assets/intra-logo.png" alt="" />
-        <div>
-          <strong>Intra</strong>
-          <span>Windows</span>
-        </div>
-      </div>
-      <nav class="drawer-nav">
-        <button class="nav-item active" data-view="home">Home</button>
-        <button class="nav-item" data-view="settings">Settings</button>
-        <button class="nav-link" data-url="https://support.getintra.org/">Support</button>
-        <button class="nav-link" data-url="https://getintra.org/privacy">Privacy Policy</button>
-        <button class="nav-link" data-url="https://jigsaw.google.com/jigsaw-tos.html">Terms of Service</button>
-        <button class="nav-link" data-url="https://github.com/Jigsaw-Code/intra">Source code</button>
-        <button id="exitAppButton" class="nav-item exit">Exit</button>
-      </nav>
-      <div class="drawer-footer">
-        <p>Intra was made by Jigsaw.</p>
-        <img src="./assets/intra-logo.png" alt="" />
+    <div id="drawerOverlay" class="drawer-scrim hidden"></div>
+    <aside id="drawer" class="drawer" aria-label="Navigation drawer">
+      <div class="drawer-scroll">
+        <nav class="drawer-nav" aria-label="Intra navigation">
+          <button class="drawer-item active" data-view="home">Home</button>
+          <button class="drawer-item" data-view="settings">Settings</button>
+          <button class="drawer-link" data-url="https://support.getintra.org/">Support</button>
+          <button class="drawer-link" data-url="https://getintra.org/privacy">Privacy Policy</button>
+          <button class="drawer-link" data-url="https://jigsaw.google.com/jigsaw-tos.html">Terms of Service</button>
+          <button class="drawer-link" data-url="https://github.com/Jigsaw-Code/intra">Source code</button>
+        </nav>
+        <div class="drawer-spacer"></div>
+        <footer class="drawer-footer">
+          <p>Intra was made by <a href="https://jigsaw.google.com">Jigsaw</a>.</p>
+          <img src="./assets/logo_backdrop.png" alt="" />
+          <button id="exitAppButton" class="drawer-exit">Exit</button>
+        </footer>
       </div>
     </aside>
 
-    <main class="app">
-      <header class="topbar">
-        <button id="drawerButton" class="icon-button" aria-label="Open navigation">
+    <div class="app-shell">
+      <header class="toolbar">
+        <button id="drawerButton" class="nav-button" aria-label="Open navigation drawer">
           <span></span>
           <span></span>
           <span></span>
         </button>
-        <div class="brand">
-          <img src="./assets/intra-logo.png" alt="" />
-          <div>
-            <div class="brand-name">Intra</div>
-            <div class="brand-copy">Internet protection by Jigsaw</div>
-          </div>
-        </div>
-        <div id="headerStatus" class="header-status">
-          <span class="status-dot"></span>
-          <span id="headerStatusText">Checking</span>
-        </div>
+        <img class="toolbar-logo" src="./assets/intra-logo.png" alt="" />
+        <div id="toolbarTitle" class="toolbar-title">Intra</div>
       </header>
 
-      <section id="homeView" class="view active">
-        <section class="protection-card">
-          <div class="protection-copy">
-            <div id="indicator" class="indicator">Off</div>
-            <div id="protectionState" class="state">Checking...</div>
-            <p id="stateMessage" class="message">Checking Secure DNS protection...</p>
-          </div>
-          <label class="switch">
-            <input id="toggleSwitch" type="checkbox" />
-            <span></span>
+      <main class="content">
+        <section id="homeView" class="view active">
+          <section id="statusHero" class="status-hero">
+            <div class="status-copy">
+              <div id="indicator" class="indicator">Off</div>
+              <div id="protectionState" class="protection-state">Checking...</div>
+              <p id="stateMessage" class="state-message">Checking Secure DNS protection...</p>
+            </div>
+            <label class="android-switch" aria-label="Turn DNS protection on or off">
+              <input id="toggleSwitch" type="checkbox" />
+              <span></span>
+            </label>
+          </section>
+
+          <div class="android-divider"></div>
+
+          <section class="system-section" aria-labelledby="systemDetailsTitle">
+            <h2 id="systemDetailsTitle" class="section-heading">System details</h2>
+            <div class="system-grid">
+              <article class="system-card">
+                <img src="./assets/ic_dns.svg" alt="" />
+                <strong id="lifetimeQueriesValue">0</strong>
+                <span>Lifetime queries</span>
+              </article>
+              <article class="system-card">
+                <img src="./assets/ic_trending_up.svg" alt="" />
+                <strong id="recentQueriesValue">0</strong>
+                <span>Recent queries</span>
+              </article>
+              <article class="system-card">
+                <img id="transportIcon" src="./assets/ic_lock.svg" alt="" />
+                <strong id="transportValue">https</strong>
+                <span>Encrypted transport</span>
+              </article>
+              <article class="system-card">
+                <img src="./assets/ic_server.svg" alt="" />
+                <strong id="serverCardValue">dns.google</strong>
+                <span>Secure DNS server</span>
+              </article>
+            </div>
+          </section>
+
+          <div class="android-divider"></div>
+
+          <label class="show-history">
+            <input id="showRecentQueries" type="checkbox" />
+            <span>Show recent queries</span>
           </label>
+
+          <section id="recentTransactionsCard" class="transactions hidden" aria-label="Recent queries">
+            <div id="recentTransactionsList" class="transaction-list"></div>
+          </section>
+
+          <section id="windowsDiagnostics" class="windows-diagnostics">
+            <h2 class="section-heading">Windows diagnostics</h2>
+            <div class="diagnostic-list">
+              <div class="diagnostic-row">
+                <span>Service</span>
+                <strong id="serviceState">unknown</strong>
+              </div>
+              <div class="diagnostic-row">
+                <span>Journal</span>
+                <strong id="journalState">unknown</strong>
+              </div>
+              <div class="diagnostic-row">
+                <span>Wintun DLL</span>
+                <strong id="wintunState">unknown</strong>
+              </div>
+              <p id="wintunHelp" class="wintun-help hidden"></p>
+              <div class="diagnostic-row log-row">
+                <span>Log path</span>
+                <strong id="logPath"></strong>
+              </div>
+              <button id="diagnosticsButton" class="android-button secondary">Open diagnostics</button>
+            </div>
+          </section>
         </section>
 
-        <h2 class="block-title">System details</h2>
-        <div class="detail-grid">
-          <section class="summary-card">
-            <div id="lifetimeQueriesValue" class="card-icon">0</div>
-            <p class="card-copy">Lifetime queries</p>
-          </section>
-          <section class="summary-card">
-            <div id="recentQueriesValue" class="card-icon">0</div>
-            <p class="card-copy">Recent queries</p>
-          </section>
-          <section class="summary-card">
-            <div class="card-icon transport-icon">https</div>
-            <p class="card-copy">Encrypted transport</p>
-          </section>
-          <section class="summary-card">
-            <div id="serverCardValue" class="card-icon dns-server">dns.google</div>
-            <p class="card-copy">Secure DNS server</p>
-          </section>
-        </div>
+        <section id="settingsView" class="view">
+          <section class="settings-screen">
+            <h1 class="screen-title">Settings</h1>
+            <div class="preference-list">
+              <section class="preference-item">
+                <div class="preference-head">
+                  <h2>Select DNS over HTTPS Server</h2>
+                  <p id="serverSummary">Currently dns.google</p>
+                </div>
+                <div class="server-choice">
+                  <label class="radio-row">
+                    <input name="serverMode" type="radio" value="builtin" checked />
+                    <span>Choose from built-in server list</span>
+                  </label>
+                  <select id="serverSelect"></select>
+                  <p id="serverDescription" class="choice-help"></p>
+                  <button id="serverWebsiteButton" class="android-button secondary compact">Visit Website</button>
 
-        <label class="check-row">
-          <input id="showRecentQueries" type="checkbox" />
-          <span>
-            <strong>Show recent queries</strong>
-            <small>Show the most recent DNS queries handled by Intra.</small>
-          </span>
-        </label>
-        <section id="recentTransactionsCard" class="list-card hidden">
-          <div class="section-title">
-            <div>
-              <h2>Recent queries</h2>
-              <p>Recent DNS requests recorded by the Windows service</p>
+                  <label class="radio-row">
+                    <input name="serverMode" type="radio" value="custom" />
+                    <span>Custom server URL</span>
+                  </label>
+                  <input id="customServerUrl" class="text-input" type="url" placeholder="https://example.com/dns-query" />
+                  <p id="urlWarning" class="warning hidden">Custom server URL is invalid. URLs must start with https://</p>
+                  <button id="saveSettingsButton" class="android-button primary">Save DNS server</button>
+                </div>
+              </section>
+
+              <section class="preference-item disabled">
+                <div class="preference-head">
+                  <h2>Excluded apps</h2>
+                  <p>DNS queries from selected apps will not go through Intra. Windows per-app exclusion is not implemented yet.</p>
+                </div>
+                <strong>Unavailable</strong>
+              </section>
             </div>
-          </div>
-          <div id="recentTransactionsList" class="transaction-list"></div>
+          </section>
         </section>
+      </main>
+    </div>
 
-        <section id="diagnosticsCard" class="list-card">
-          <div class="section-title">
-            <div>
-              <h2>Diagnostics</h2>
-              <p>Windows equivalents for Intra system details</p>
-            </div>
-          </div>
-          <div class="setting-row">
-            <div>
-              <span>Service</span>
-              <small>Current tunnel backend state</small>
-            </div>
-            <strong id="serviceState">unknown</strong>
-          </div>
-          <div class="setting-row">
-            <div>
-              <span>Journal</span>
-              <small>Crash recovery snapshot</small>
-            </div>
-            <strong id="journalState">unknown</strong>
-          </div>
-          <div class="setting-row">
-            <div>
-              <span>Wintun DLL</span>
-              <small>Runtime tunnel adapter dependency</small>
-            </div>
-            <strong id="wintunState">unknown</strong>
-          </div>
-          <p id="wintunHelp" class="help hidden"></p>
-          <div class="setting-row log-row">
-            <div>
-              <span>Log path</span>
-              <small id="logPath"></small>
-            </div>
-          </div>
-          <button id="diagnosticsButton" class="secondary">Open diagnostics</button>
-        </section>
-      </section>
-
-      <section id="settingsView" class="view">
-        <section class="list-card">
-          <div class="section-title">
-            <div>
-              <h2>Settings</h2>
-              <p>Matches Android settings where Windows support exists</p>
-            </div>
-          </div>
-          <div class="setting-row editable">
-            <div>
-              <span>Select DNS over HTTPS Server</span>
-              <small id="serverSummary">Currently dns.google</small>
-            </div>
-          </div>
-          <div class="server-choice">
-            <label>
-              <input name="serverMode" type="radio" value="builtin" checked />
-              Built-in server
-            </label>
-            <select id="serverSelect"></select>
-            <p id="serverDescription" class="choice-help"></p>
-            <button id="serverWebsiteButton" class="secondary compact">Visit Website</button>
-
-            <label>
-              <input name="serverMode" type="radio" value="custom" />
-              Custom server URL
-            </label>
-            <input id="customServerUrl" class="text-input" type="url" placeholder="https://example.com/dns-query" />
-            <p id="urlWarning" class="warning hidden">Custom server must be a valid https:// URL</p>
-            <button id="saveSettingsButton" class="primary">Save DNS server</button>
-          </div>
-          <div class="setting-row disabled">
-            <div>
-              <span>Excluded apps</span>
-              <small>Android can exclude apps from its VPN. Windows per-app bypass is not implemented yet.</small>
-            </div>
-            <strong>Unavailable</strong>
-          </div>
-        </section>
-      </section>
-    </main>
     <script src="./main.js"></script>
   </body>
 </html>
