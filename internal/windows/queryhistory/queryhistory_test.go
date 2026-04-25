@@ -101,3 +101,39 @@ func TestPersistenceRoundTrip(t *testing.T) {
 		t.Fatalf("LifetimeQueries = %d, want 2", got)
 	}
 }
+
+func TestTransactionPersistenceWhenHistoryEnabled(t *testing.T) {
+	t.Setenv("ProgramData", t.TempDir())
+	cfg := winsettings.Default()
+	cfg.ShowRecentQueries = true
+	if err := winsettings.Save(cfg); err != nil {
+		t.Fatal(err)
+	}
+	now := time.Unix(1000, 0)
+	path := filepath.Join(t.TempDir(), "history.json")
+	tracker := New(path)
+	tracker.SetClock(func() time.Time { return now })
+	tracker.Record(Transaction{
+		Name:      "www.example.com",
+		Type:      1,
+		LatencyMS: 25,
+		Server:    "8.8.8.8",
+		Status:    backend.DoHStatusComplete,
+	})
+	reloaded := New(path)
+	reloaded.SetClock(func() time.Time { return now })
+	if err := reloaded.Load(); err != nil {
+		t.Fatal(err)
+	}
+	stats := reloaded.Stats()
+	if stats.RecentQueries != 1 {
+		t.Fatalf("RecentQueries = %d, want 1", stats.RecentQueries)
+	}
+	if got := len(stats.RecentTransactions); got != 1 {
+		t.Fatalf("RecentTransactions = %d, want 1", got)
+	}
+	tx := stats.RecentTransactions[0]
+	if tx.Name != "www.example.com" || tx.Type != 1 || tx.LatencyMS != 25 || tx.Server != "8.8.8.8" {
+		t.Fatalf("unexpected transaction: %+v", tx)
+	}
+}
