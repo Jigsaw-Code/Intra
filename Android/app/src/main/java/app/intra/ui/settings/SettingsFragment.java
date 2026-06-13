@@ -112,7 +112,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
       DialogFragment dialogFragment = ServerChooserFragment.newInstance(preference.getKey());
       dialogFragment.setTargetFragment(this, 0);
       dialogFragment.show(getFragmentManager(), null);
-    } else {
+    } else if (preference == appPref) {
       // This is the app exclusion dialog.
       final ArrayList<AppInfo> appList = getAppList();
       if (appList != null) {
@@ -128,6 +128,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         appPref.setEntryValues(packageNames);
       }
 
+      super.onDisplayPreferenceDialog(preference);
+    } else {
       super.onDisplayPreferenceDialog(preference);
     }
   }

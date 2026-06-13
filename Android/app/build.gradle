@@ -21,6 +21,10 @@ def goSourcePackages = ["${goSourceDir}/backend",
                         "${goSourceDir}/intra/split",
                         "${goSourceDir}/intra/protect"]
 def goBuildDir = file("${buildDir}/go")
+def goExecutableSuffix = System.getProperty('os.name').toLowerCase().contains('windows') ?
+                         '.exe' : ''
+def goMobileExecutable = file("${goBuildDir}/gomobile${goExecutableSuffix}")
+def goBindExecutable = file("${goBuildDir}/gobind${goExecutableSuffix}")
 def goBackendAAR = file("${goBuildDir}/backend.aar")
 
 // gomobile won't use the Go version in go.mod. So we need to manually read it from go.mod and
@@ -156,7 +160,7 @@ tasks.register('compileGoBackend', Exec) {
                         System.getProperty('path.separator') +
                         System.getenv('PATH')
 
-    commandLine("${goBuildDir}/gomobile", 'bind',
+    commandLine(goMobileExecutable, 'bind',
                 '-ldflags=-s -w',
                 '-target=android',
                 "-androidapi=${android.defaultConfig.minSdk}",
@@ -166,8 +170,8 @@ tasks.register('compileGoBackend', Exec) {
 
 tasks.register('ensureGoMobile', Exec) {
     // install gomobile and gobind into the build folder
-    outputs.file("${goBuildDir}/gomobile")
-    outputs.file("${goBuildDir}/gobind")
+    outputs.file(goMobileExecutable)
+    outputs.file(goBindExecutable)
 
     doFirst { goBuildDir.mkdirs() }
 
