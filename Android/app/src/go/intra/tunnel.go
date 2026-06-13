@@ -27,7 +27,6 @@ import (
 	"localhost/Intra/Android/app/src/go/intra/protect"
 
 	"github.com/Jigsaw-Code/outline-sdk/network"
-	"github.com/Jigsaw-Code/outline-sdk/network/lwip2transport"
 )
 
 // Listener receives usage statistics when a UDP or TCP socket is closed,
@@ -92,8 +91,8 @@ func NewTunnel(
 		return nil, fmt.Errorf("failed to create packet proxy: %w", err)
 	}
 
-	if t.IPDevice, err = lwip2transport.ConfigureDevice(t.sd, t.pp); err != nil {
-		return nil, fmt.Errorf("failed to configure lwIP stack: %w", err)
+	if t.IPDevice, err = newTunnelEngine(t.ctx, t.sd, t.pp); err != nil {
+		return nil, fmt.Errorf("failed to configure tunnel engine: %w", err)
 	}
 
 	t.SetDNS(dohdns)

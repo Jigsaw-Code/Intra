@@ -1,6 +1,4 @@
-//go:build !windows
-
-// Copyright 2024 Jigsaw Operations LLC
+// Copyright 2026 Jigsaw Operations LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,45 +21,27 @@ import (
 	"localhost/Intra/Android/app/src/go/intra"
 	"localhost/Intra/Android/app/src/go/intra/protect"
 	"localhost/Intra/Android/app/src/go/logging"
-	"localhost/Intra/Android/app/src/go/tuntap"
 	"os"
 
 	"github.com/Jigsaw-Code/outline-sdk/network"
 )
 
 // Session represents an Intra communication session.
-//
-// TODO: copy methods of intra.Tunnel here and do not expose intra package
 type Session struct {
-	// TODO: hide this internal Tunnel when finished moving everything to backend
 	*intra.Tunnel
 }
 
 func (s *Session) SetDoHServer(svr *DoHServer) { s.SetDNS(svr.r) }
 
-// ConnectSession reads packets from a TUN device and applies the Intra routing
-// rules. Currently, this only consists of redirecting DNS packets to a specified
-// server; all other data flows directly to its destination.
+// ConnectReadWriteCloser connects an already-created TUN device to Intra.
 //
-// fd is the TUN device. The intra [Session] acquires an additional reference to it,
-// which is released by [Session].Disconnect(), so the caller must close `fd` _and_ call
-// Disconnect() in order to close the TUN device.
-//
-// fakedns is the DNS server that the system believes it is using, in "host:port" style.
-// The port is normally 53.
-//
-// dohdns is the initial DoH transport and must not be nil.
-//
-// protector is a wrapper for Android's VpnService.protect() method.
-//
-// eventListener will be provided with a summary of each TCP and UDP socket when it is closed.
-func ConnectSession(
-	fd int, fakedns string, dohdns *DoHServer, protector protect.Protector, listener intra.Listener,
+// Windows Wintun does not expose a Unix file descriptor, so the Windows backend
+// uses this path instead of ConnectSession.
+func ConnectReadWriteCloser(
+	tun io.ReadWriteCloser, fakedns string, dohdns *DoHServer, protector protect.Protector, listener intra.Listener,
 ) (*Session, error) {
-	// TODO: define Tunnel type in this backend package, and do not export intra package
-	tun, err := tuntap.MakeTunDeviceFromFD(fd)
-	if err != nil {
-		return nil, err
+	if tun == nil {
+		return nil, errors.New("tun must not be nil")
 	}
 	if dohdns == nil {
 		return nil, errors.New("dohdns must not be nil")
