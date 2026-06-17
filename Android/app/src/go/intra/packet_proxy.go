@@ -26,8 +26,8 @@ import (
 	"localhost/Intra/Android/app/src/go/doh"
 	"localhost/Intra/Android/app/src/go/intra/protect"
 
-	"github.com/Jigsaw-Code/outline-sdk/network"
-	"github.com/Jigsaw-Code/outline-sdk/transport"
+	"golang.getoutline.org/sdk/network"
+	"golang.getoutline.org/sdk/transport"
 )
 
 type intraPacketProxy struct {
@@ -47,7 +47,7 @@ func newIntraPacketProxy(
 		return nil, errors.New("dns is required")
 	}
 
-	pl := &transport.UDPPacketListener{
+	pl := &transport.UDPListener{
 		ListenConfig: *protect.MakeListenConfig(protector),
 	}
 

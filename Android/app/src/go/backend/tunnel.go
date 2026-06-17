@@ -24,7 +24,7 @@ import (
 	"localhost/Intra/Android/app/src/go/tuntap"
 	"os"
 
-	"github.com/Jigsaw-Code/outline-sdk/network"
+	"golang.getoutline.org/sdk/network"
 )
 
 // Session represents an Intra communication session.

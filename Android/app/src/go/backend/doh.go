@@ -107,13 +107,16 @@ type DoHListener interface {
 // DoHStatus is an integer representing the status of a DoH transaction.
 type DoHStatus = int
 
+// gomobile bind does not support exporting constants defined with type aliases
+// under Go 1.23+. We use basic 'int' type here as a workaround.
+// See: https://github.com/golang/go/issues/71827
 const (
-	DoHStatusComplete      DoHStatus = doh.Complete      // Transaction completed successfully
-	DoHStatusSendFailed    DoHStatus = doh.SendFailed    // Failed to send query
-	DoHStatusHTTPError     DoHStatus = doh.HTTPError     // Got a non-200 HTTP status
-	DoHStatusBadQuery      DoHStatus = doh.BadQuery      // Malformed input
-	DoHStatusBadResponse   DoHStatus = doh.BadResponse   // Response was invalid
-	DoHStatusInternalError DoHStatus = doh.InternalError // This should never happen
+	DoHStatusComplete      int = doh.Complete      // Transaction completed successfully
+	DoHStatusSendFailed    int = doh.SendFailed    // Failed to send query
+	DoHStatusHTTPError     int = doh.HTTPError     // Got a non-200 HTTP status
+	DoHStatusBadQuery      int = doh.BadQuery      // Malformed input
+	DoHStatusBadResponse   int = doh.BadResponse   // Response was invalid
+	DoHStatusInternalError int = doh.InternalError // This should never happen
 )
 
 // DoHQuerySumary is the summary of a DNS transaction.

@@ -27,7 +27,7 @@ import (
 	"localhost/Intra/Android/app/src/go/intra/protect"
 	"localhost/Intra/Android/app/src/go/intra/split"
 
-	"github.com/Jigsaw-Code/outline-sdk/transport"
+	"golang.getoutline.org/sdk/transport"
 )
 
 type intraStreamDialer struct {
@@ -61,8 +61,8 @@ func newIntraStreamDialer(
 	return dohsd, nil
 }
 
-// Dial implements StreamDialer.Dial.
-func (sd *intraStreamDialer) Dial(ctx context.Context, raddr string) (transport.StreamConn, error) {
+// DialStream implements StreamDialer.DialStream.
+func (sd *intraStreamDialer) DialStream(ctx context.Context, raddr string) (transport.StreamConn, error) {
 	dest, err := netip.ParseAddrPort(raddr)
 	if err != nil {
 		return nil, fmt.Errorf("invalid raddr (%v): %w", raddr, err)
@@ -98,10 +98,10 @@ func (sd *intraStreamDialer) dial(ctx context.Context, dest netip.AddrPort, stat
 		stats.Retry = &split.RetryStats{}
 		return split.DialWithSplitRetry(ctx, sd.dialer, net.TCPAddrFromAddrPort(dest), stats.Retry)
 	} else {
-		tcpsd := &transport.TCPStreamDialer{
+		tcpsd := &transport.TCPDialer{
 			Dialer: *sd.dialer,
 		}
-		return tcpsd.Dial(ctx, dest.String())
+		return tcpsd.DialStream(ctx, dest.String())
 	}
 }
 

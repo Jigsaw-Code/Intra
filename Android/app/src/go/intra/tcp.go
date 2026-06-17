@@ -25,7 +25,7 @@ import (
 
 	"localhost/Intra/Android/app/src/go/intra/split"
 
-	"github.com/Jigsaw-Code/outline-sdk/transport"
+	"golang.getoutline.org/sdk/transport"
 )
 
 // TCPSocketSummary provides information about each TCP socket, reported when it is closed.
