@@ -157,6 +157,11 @@ tasks.register('compileGoBackend', Exec) {
                         System.getenv('PATH')
 
     commandLine("${goBuildDir}/gomobile", 'bind',
+                // -s -w: Omit symbol table and debug info to reduce binary size.
+                // -extldflags: Pass flags to the external linker (e.g., Clang):
+                //   * -Wl: Pass the subsequent option to the linker.
+                //   * -z: Pass a keyword option to the linker.
+                //   * max-page-size=16384: Align ELF to 16KB page for Android 15+.
                 '-ldflags=-s -w -extldflags=-Wl,-z,max-page-size=16384',
                 '-target=android',
                 "-androidapi=${android.defaultConfig.minSdk}",
