@@ -157,8 +157,9 @@ tasks.register('compileGoBackend', Exec) {
                         System.getenv('PATH')
 
     commandLine("${goBuildDir}/gomobile", 'bind',
-                '-ldflags=-s -w',
+                '-ldflags=-s -w -buildid=',
                 '-target=android',
+                '-trimpath',
                 "-androidapi=${android.defaultConfig.minSdk}",
                 '-o', goBackendAAR,
                 *goSourcePackages)
