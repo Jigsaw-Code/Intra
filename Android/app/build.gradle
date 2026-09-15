@@ -60,6 +60,15 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
+    buildFeatures {
+        // LogWrapper reads BuildConfig.DEBUG.  AGP 9 removed the
+        // android.defaults.buildfeatures.buildconfig property, so this must be
+        // requested per-module now.
+        buildConfig = true
+        // The build types below declare the FIREBASE_ENABLED resValue, which
+        // AGP 9 likewise requires to be enabled explicitly.
+        resValues = true
+    }
     lintOptions {
         // Ignore lint errors that we believe are safe to ignore.
         baseline file("lint-baseline.xml")
@@ -151,7 +160,9 @@ tasks.register('compileGoBackend', Exec) {
     outputs.file(goBackendAAR)
 
     environment 'GOTOOLCHAIN', goToolchain
-    environment 'ANDROID_HOME', android.sdkDirectory
+    // AGP 9 removed android.sdkDirectory; the SDK location is now exposed as a
+    // provider on the androidComponents extension.
+    environment 'ANDROID_HOME', androidComponents.sdkComponents.sdkDirectory.get().asFile
     environment 'PATH', goBuildDir.getPath() +
                         System.getProperty('path.separator') +
                         System.getenv('PATH')

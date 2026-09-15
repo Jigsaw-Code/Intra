@@ -207,29 +207,31 @@ public class MainActivity extends AppCompatActivity
     drawer.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
       @Override
       public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-          case R.id.up:
-          case R.id.home:
-            chooseView(R.id.frame_main);
-            return true;
-          case R.id.settings:
-            chooseView(R.id.settings);
-            return true;
-          case R.id.support:
-            openUrl("https://support.getintra.org/");
-            return true;
-          case R.id.privacy:
-            openUrl("https://getintra.org/privacy");
-            return true;
-          case R.id.tos:
-            openUrl("https://policies.google.com/terms");
-            return true;
-          case R.id.source_code:
-            openUrl("https://github.com/Jigsaw-Code/intra");
-            return true;
-          default:
-            return false;
+        // Resource IDs are not compile-time constants, so they cannot be used
+        // as switch labels.
+        final int itemId = item.getItemId();
+        // "up" and "home" are declared by AppCompat, not by this app, so with
+        // non-transitive R classes they are not part of app.intra.R.
+        if (itemId == androidx.appcompat.R.id.up || itemId == androidx.appcompat.R.id.home) {
+          chooseView(R.id.frame_main);
+          return true;
+        } else if (itemId == R.id.settings) {
+          chooseView(R.id.settings);
+          return true;
+        } else if (itemId == R.id.support) {
+          openUrl("https://support.getintra.org/");
+          return true;
+        } else if (itemId == R.id.privacy) {
+          openUrl("https://getintra.org/privacy");
+          return true;
+        } else if (itemId == R.id.tos) {
+          openUrl("https://policies.google.com/terms");
+          return true;
+        } else if (itemId == R.id.source_code) {
+          openUrl("https://github.com/Jigsaw-Code/intra");
+          return true;
         }
+        return false;
       }
     });
 
@@ -759,14 +761,11 @@ public class MainActivity extends AppCompatActivity
     selected.setVisibility(View.VISIBLE);
 
     ActionBar actionBar = getSupportActionBar();
-    switch (id) {
-      case R.id.frame_main:
-        actionBar.setTitle(R.string.app_name);
-        break;
-      case R.id.settings:
-        actionBar.setTitle(R.string.settings);
-        showSettings();
-        break;
+    if (id == R.id.frame_main) {
+      actionBar.setTitle(R.string.app_name);
+    } else if (id == R.id.settings) {
+      actionBar.setTitle(R.string.settings);
+      showSettings();
     }
 
     // Close the drawer
