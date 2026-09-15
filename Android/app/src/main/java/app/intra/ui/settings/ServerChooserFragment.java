@@ -35,8 +35,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceDialogFragmentCompat;
 import app.intra.R;
 import app.intra.sys.PersistentState;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 /**
@@ -73,7 +73,7 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
     private String getUrl() {
         int checkedId = buttons.getCheckedRadioButtonId();
         if (checkedId == R.id.pref_server_custom) {
-            return customServerUrl.getText().toString();
+            return normalizeCustomUrl(customServerUrl.getText().toString());
         }
 
         return urls[spinner.getSelectedItemPosition()];
@@ -87,7 +87,7 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         description.setEnabled(!custom);
         serverWebsite.setEnabled(!custom);
         if (custom) {
-            setValid(checkUrl(Untemplate.strip(getUrl())));
+            setValid(isValidCustomUrl(getUrl()));
         } else {
             setValid(true);
         }
@@ -111,14 +111,18 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         updateUI();
     }
 
-    // Check that the URL is a plausible DOH server: https with a domain, a path (at least "/"),
-    // and no query parameters or fragment.
-    private boolean checkUrl(String url) {
+    static String normalizeCustomUrl(String url) {
+        return url == null ? "" : url.trim();
+    }
+
+    // Check that the URL is a plausible DoH server: https with a domain, a path (at least "/"),
+    // and no query parameters or fragment after removing URI-template variables.
+    static boolean isValidCustomUrl(String url) {
         try {
-            URL parsed = new URL(url);
-            return parsed.getProtocol().equals("https") && !parsed.getHost().isEmpty() &&
-                !parsed.getPath().isEmpty() && parsed.getQuery() == null && parsed.getRef() == null;
-        } catch (MalformedURLException e) {
+            URI parsed = new URI(Untemplate.strip(normalizeCustomUrl(url)));
+            return "https".equals(parsed.getScheme()) && parsed.getHost() != null &&
+                !parsed.getPath().isEmpty() && parsed.getQuery() == null && parsed.getFragment() == null;
+        } catch (URISyntaxException e) {
             return false;
         }
     }
@@ -128,7 +132,7 @@ public class ServerChooserFragment extends PreferenceDialogFragmentCompat
         // Usability optimization:
         // If the user is typing in the free text field and presses "enter" or "go" on the keyboard
         // while the URL is valid, treat that the same as closing the keyboard and pressing "OK".
-        if (checkUrl(Untemplate.strip(v.getText().toString()))) {
+        if (isValidCustomUrl(v.getText().toString())) {
             Dialog dialog = getDialog();
             if (dialog instanceof AlertDialog) {
                 Button ok = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);

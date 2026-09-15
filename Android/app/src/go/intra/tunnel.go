@@ -92,8 +92,8 @@ func NewTunnel(
 		return nil, fmt.Errorf("failed to create packet proxy: %w", err)
 	}
 
-	if t.IPDevice, err = lwip2transport.ConfigureDevice(t.sd, t.pp); err != nil {
-		return nil, fmt.Errorf("failed to configure lwIP stack: %w", err)
+	if t.IPDevice, err = newTunnelEngine(t.ctx, t.sd, t.pp); err != nil {
+		return nil, fmt.Errorf("failed to configure tunnel engine: %w", err)
 	}
 
 	t.SetDNS(dohdns)

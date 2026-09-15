@@ -164,8 +164,8 @@ public class GoVpnAdapter {
           .setSession("Intra go-tun2socks VPN")
           .setMtu(VPN_INTERFACE_MTU)
           .addAddress(LanIp.GATEWAY.make(IPV4_TEMPLATE), IPV4_PREFIX_LENGTH)
-          .addRoute("0.0.0.0", 0)
-          .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE));
+          .addDnsServer(LanIp.DNS.make(IPV4_TEMPLATE))
+          .addRoute("0.0.0.0", 0);
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
         builder.addDisallowedApplication(vpnService.getPackageName());
       }

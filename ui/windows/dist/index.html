@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intra</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="drawerOverlay" class="drawer-scrim hidden"></div>
+    <aside id="drawer" class="drawer" aria-label="Navigation drawer">
+      <div class="drawer-scroll">
+        <nav class="drawer-nav" aria-label="Intra navigation">
+          <button class="drawer-item active" data-view="home">Home</button>
+          <button class="drawer-item" data-view="settings">Settings</button>
+          <button class="drawer-link" data-url="https://support.getintra.org/">Support</button>
+          <button class="drawer-link" data-url="https://getintra.org/privacy">Privacy Policy</button>
+          <button class="drawer-link" data-url="https://jigsaw.google.com/jigsaw-tos.html">Terms of Service</button>
+          <button class="drawer-link" data-url="https://github.com/Jigsaw-Code/intra">Source code</button>
+        </nav>
+        <div class="drawer-spacer"></div>
+        <footer class="drawer-footer">
+          <p>Intra was made by <a href="https://jigsaw.google.com">Jigsaw</a>.</p>
+          <img src="./assets/logo_backdrop.png" alt="" />
+          <button id="exitAppButton" class="drawer-exit">Exit</button>
+        </footer>
+      </div>
+    </aside>
+
+    <div class="app-shell">
+      <header class="toolbar">
+        <button id="drawerButton" class="nav-button" aria-label="Open navigation drawer">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="toolbar-brand">
+          <img class="toolbar-logo" src="./assets/intra-logo.png" alt="" />
+          <div id="toolbarTitle" class="toolbar-title">Intra</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section id="homeView" class="view active">
+          <section id="statusHero" class="status-hero">
+            <div class="status-copy">
+              <div id="indicator" class="indicator">Off</div>
+              <div id="protectionState" class="protection-state">Checking...</div>
+              <p id="stateMessage" class="state-message">Checking Secure DNS protection...</p>
+            </div>
+            <label class="android-switch" aria-label="Turn DNS protection on or off">
+              <input id="toggleSwitch" type="checkbox" />
+              <span></span>
+            </label>
+          </section>
+
+          <div class="android-divider"></div>
+
+          <section class="system-section" aria-labelledby="systemDetailsTitle">
+            <h2 id="systemDetailsTitle" class="section-heading">System details</h2>
+            <div class="system-grid">
+              <article class="system-card">
+                <img src="./assets/ic_dns.svg" alt="" />
+                <strong id="lifetimeQueriesValue">0</strong>
+                <span>Lifetime queries</span>
+              </article>
+              <article class="system-card">
+                <img src="./assets/ic_trending_up.svg" alt="" />
+                <strong id="recentQueriesValue">0</strong>
+                <span>Recent queries</span>
+              </article>
+              <article class="system-card">
+                <img id="transportIcon" src="./assets/ic_lock.svg" alt="" />
+                <strong id="transportValue">https</strong>
+                <span>Encrypted transport</span>
+              </article>
+              <article class="system-card">
+                <img src="./assets/ic_server.svg" alt="" />
+                <strong id="serverCardValue">dns.google</strong>
+                <span>Secure DNS server</span>
+              </article>
+            </div>
+          </section>
+
+          <div class="android-divider"></div>
+
+          <label class="show-history">
+            <input id="showRecentQueries" type="checkbox" />
+            <span>Show recent queries</span>
+          </label>
+
+          <section id="recentTransactionsCard" class="transactions hidden" aria-label="Recent queries">
+            <div id="recentTransactionsList" class="transaction-list"></div>
+          </section>
+
+          <section id="windowsDiagnostics" class="windows-diagnostics">
+            <h2 class="section-heading">Windows diagnostics</h2>
+            <div class="diagnostic-list">
+              <div class="diagnostic-row">
+                <span>Service</span>
+                <strong id="serviceState">unknown</strong>
+              </div>
+              <div class="diagnostic-row">
+                <span>Journal</span>
+                <strong id="journalState">unknown</strong>
+              </div>
+              <div class="diagnostic-row">
+                <span>Wintun DLL</span>
+                <strong id="wintunState">unknown</strong>
+              </div>
+              <p id="wintunHelp" class="wintun-help hidden"></p>
+              <div class="diagnostic-row log-row">
+                <span>Log path</span>
+                <strong id="logPath"></strong>
+              </div>
+              <button id="diagnosticsButton" class="android-button secondary">Open diagnostics</button>
+            </div>
+          </section>
+        </section>
+
+        <section id="settingsView" class="view">
+          <section class="settings-screen">
+            <h1 class="screen-title">Settings</h1>
+            <div class="preference-list">
+              <section class="preference-item">
+                <div class="preference-head">
+                  <h2>Select DNS over HTTPS Server</h2>
+                  <p id="serverSummary">Currently dns.google</p>
+                </div>
+                <div class="server-choice">
+                  <label class="radio-row">
+                    <input name="serverMode" type="radio" value="builtin" checked />
+                    <span>Choose from built-in server list</span>
+                  </label>
+                  <select id="serverSelect"></select>
+                  <p id="serverDescription" class="choice-help"></p>
+                  <button id="serverWebsiteButton" class="android-button secondary compact">Visit Website</button>
+
+                  <label class="radio-row">
+                    <input name="serverMode" type="radio" value="custom" />
+                    <span>Custom server URL</span>
+                  </label>
+                  <input id="customServerUrl" class="text-input" type="url" placeholder="https://example.com/dns-query" />
+                  <p id="urlWarning" class="warning hidden">Custom server URL is invalid. URLs must start with https://</p>
+                  <button id="saveSettingsButton" class="android-button primary">Save DNS server</button>
+                </div>
+              </section>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="./main.js"></script>
+  </body>
+</html>

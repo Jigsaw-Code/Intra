@@ -125,12 +125,12 @@ type DoHQuerySumary struct {
 	summ *doh.Summary
 }
 
-func (q DoHQuerySumary) GetQuery() []byte     { return q.summ.Query }
-func (q DoHQuerySumary) GetResponse() []byte  { return q.summ.Response }
-func (q DoHQuerySumary) GetServer() string    { return q.summ.Server }
-func (q DoHQuerySumary) GetStatus() DoHStatus { return q.summ.Status }
-func (q DoHQuerySumary) GetHTTPStatus() int   { return q.summ.HTTPStatus }
-func (q DoHQuerySumary) GetLatency() float64  { return q.summ.Latency }
+func (q DoHQuerySumary) GetQuery() []byte    { return q.summ.Query }
+func (q DoHQuerySumary) GetResponse() []byte { return q.summ.Response }
+func (q DoHQuerySumary) GetServer() string   { return q.summ.Server }
+func (q DoHQuerySumary) GetStatus() int      { return q.summ.Status }
+func (q DoHQuerySumary) GetHTTPStatus() int  { return q.summ.HTTPStatus }
+func (q DoHQuerySumary) GetLatency() float64 { return q.summ.Latency }
 
 // dohListenerAdapter is an adapter for the internal [doh.Listener].
 type dohListenerAdapter struct {

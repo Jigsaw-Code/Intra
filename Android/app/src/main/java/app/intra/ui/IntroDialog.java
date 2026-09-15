@@ -114,8 +114,15 @@ public class IntroDialog extends DialogFragment {
       }
     });
 
-    pager.registerOnPageChangeCallback(
-            new ButtonVisibilityUpdater(backButton, nextButton, acceptButton));
+    final ButtonVisibilityUpdater buttonVisibilityUpdater =
+        new ButtonVisibilityUpdater(backButton, nextButton, acceptButton);
+    pager.registerOnPageChangeCallback(buttonVisibilityUpdater);
+    pager.post(new Runnable() {
+      @Override
+      public void run() {
+        buttonVisibilityUpdater.update(pager.getCurrentItem());
+      }
+    });
 
     // Register the dots for actions and updates.
     TabLayout dots = welcomeView.findViewById(R.id.intro_dots);
@@ -207,6 +214,10 @@ public class IntroDialog extends DialogFragment {
     @Override
     public void onPageSelected(int position) {
       super.onPageSelected(position);
+      update(position);
+    }
+
+    void update(int position) {
       backButton.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
       nextButton.setVisibility(position == NUM_PAGES - 1 ? View.GONE : View.VISIBLE);
       acceptButton.setVisibility(position == NUM_PAGES - 1 ? View.VISIBLE : View.GONE);
