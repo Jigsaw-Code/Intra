@@ -44,7 +44,7 @@ type Tunnel struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	sd     *intraStreamDialer
-	pp     *intraPacketProxy
+	pr     *intraPacketRelay
 	sni    *tcpSNIReporter
 	tun    io.Closer
 }
@@ -87,12 +87,12 @@ func NewTunnel(
 		return nil, fmt.Errorf("failed to create stream dialer: %w", err)
 	}
 
-	t.pp, err = newIntraPacketProxy(t.ctx, fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
+	t.pr, err = newIntraPacketRelay(t.ctx, fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create packet proxy: %w", err)
+		return nil, fmt.Errorf("failed to create packet relay: %w", err)
 	}
 
-	if t.IPDevice, err = lwip2transport.ConfigureDevice(t.sd, t.pp); err != nil {
+	if t.IPDevice, err = lwip2transport.ConfigureDeviceWithRelay(t.sd, t.pr); err != nil {
 		return nil, fmt.Errorf("failed to configure lwIP stack: %w", err)
 	}
 
@@ -105,7 +105,7 @@ func NewTunnel(
 // must not be nil.
 func (t *Tunnel) SetDNS(dns doh.Resolver) {
 	t.sd.SetDNS(dns)
-	t.pp.SetDNS(dns)
+	t.pr.SetDNS(dns)
 	t.sni.SetDNS(dns)
 }
 
