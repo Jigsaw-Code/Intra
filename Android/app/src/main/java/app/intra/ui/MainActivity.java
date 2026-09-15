@@ -210,7 +210,9 @@ public class MainActivity extends AppCompatActivity
         // Resource IDs are not compile-time constants, so they cannot be used
         // as switch labels.
         final int itemId = item.getItemId();
-        if (itemId == R.id.up || itemId == R.id.home) {
+        // "up" and "home" are declared by AppCompat, not by this app, so with
+        // non-transitive R classes they are not part of app.intra.R.
+        if (itemId == androidx.appcompat.R.id.up || itemId == androidx.appcompat.R.id.home) {
           chooseView(R.id.frame_main);
           return true;
         } else if (itemId == R.id.settings) {
