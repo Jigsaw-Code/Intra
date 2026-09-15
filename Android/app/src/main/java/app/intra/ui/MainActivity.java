@@ -51,6 +51,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
@@ -176,6 +177,8 @@ public class MainActivity extends AppCompatActivity
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
     setContentView(R.layout.activity_main);
+
+    getOnBackPressedDispatcher().addCallback(this, backToHomeCallback);
 
     // Set up the toolbar
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -724,20 +727,23 @@ public class MainActivity extends AppCompatActivity
       }
   }
 
-  @Override
-  public void onBackPressed() {
-    if (isShowingHomeView()) {
-      // Back button should leave the app if we are currently looking at the home view.
-      super.onBackPressed();
-      return;
+  /**
+   * Handles the back button on the settings and info views by returning to the home view.
+   *
+   * <p>This must not be an {@code onBackPressed()} override.  Apps targeting SDK 36 can no
+   * longer opt out of predictive back, and the platform routes back gestures through
+   * {@link androidx.activity.OnBackPressedDispatcher} instead of calling
+   * {@code onBackPressed()}.
+   *
+   * <p>The callback stays disabled while the home view is showing, so that back exits the
+   * app as usual.  {@link #chooseView} keeps that state in sync.
+   */
+  private final OnBackPressedCallback backToHomeCallback = new OnBackPressedCallback(false) {
+    @Override
+    public void handleOnBackPressed() {
+      chooseView(R.id.frame_main);
     }
-    chooseView(R.id.frame_main);
-  }
-
-  private boolean isShowingHomeView() {
-    View home = findViewById(R.id.frame_main);
-    return home.getVisibility() == View.VISIBLE;
-  }
+  };
 
   private void showSettings() {
     settingsFragment = new SettingsFragment();
@@ -780,6 +786,10 @@ public class MainActivity extends AppCompatActivity
       drawerToggle.setDrawerIndicatorEnabled(false);
       actionBar.setDisplayHomeAsUpEnabled(true);
     }
+
+    // Intercept back only on the screens the arrow points away from.  On the home view the
+    // callback is disabled, so back falls through to the system and leaves the app.
+    backToHomeCallback.setEnabled(id != R.id.frame_main);
     return selected;
   }
 
