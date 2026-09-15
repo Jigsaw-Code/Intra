@@ -8,7 +8,7 @@ require (
 	github.com/Jigsaw-Code/choir v1.0.1
 	github.com/Jigsaw-Code/getsni v1.0.0
 	github.com/stretchr/testify v1.8.4
-	golang.getoutline.org/sdk v0.0.23
+	golang.getoutline.org/sdk v0.1.0-rc1
 	golang.org/x/mobile v0.0.0-20260908204917-8b95e45f8d3e
 	golang.org/x/net v0.59.0
 	golang.org/x/sys v0.48.0

@@ -13,8 +13,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/songgao/water v0.0.0-20190725173103-fd331bda3f4b/go.mod h1:P5HUIBuIWKbyjl083/loAegFkfbFNx5i2qEP4CNbm7E=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-golang.getoutline.org/sdk v0.0.23 h1:UKoKCrRH3Ed6Jpg8ODYwOo6O1B1lvfIHPreMrTkSTcc=
-golang.getoutline.org/sdk v0.0.23/go.mod h1:nKZlO//e/sRFk+rp8gm8EJ5RasDSyY+fGDNSd3I2iaA=
+golang.getoutline.org/sdk v0.1.0-rc1 h1:soeTFOQCsR/2vIUFgbEGHbRRykpC3XOxL7+AlLCOdt0=
+golang.getoutline.org/sdk v0.1.0-rc1/go.mod h1:nKZlO//e/sRFk+rp8gm8EJ5RasDSyY+fGDNSd3I2iaA=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/crypto v0.57.0 h1:3ZVCjf8Ggz7zneR/EHRVx68Ctf+2pmIMP2UFhh9cC6M=
