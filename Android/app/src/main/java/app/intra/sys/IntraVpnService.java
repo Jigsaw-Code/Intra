@@ -296,7 +296,14 @@ public class IntraVpnService extends VpnService implements NetworkListener,
       builder.setSmallIcon(R.drawable.ic_status_bar)
           .setContentTitle(getResources().getText(R.string.warning_title))
           .setContentText(getResources().getText(R.string.notification_content))
-          .setFullScreenIntent(mainActivityIntent, true)  // Open the main UI if possible.
+          // This used to be a full-screen intent, which launched the main UI directly.  That has
+          // not worked for years: Android 10 restricts background activity starts, and Android 14
+          // only grants USE_FULL_SCREEN_INTENT to calling and alarm apps, so the system silently
+          // downgrades the notification to a heads-up notification.  Since no content intent was
+          // set, the result was a warning that could not be tapped at all.  A content intent gives
+          // the same "open the main UI" behavior on every supported version, without requiring a
+          // permission this app is not eligible for.
+          .setContentIntent(mainActivityIntent)
           .setAutoCancel(true);
 
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
