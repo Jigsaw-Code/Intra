@@ -22,11 +22,15 @@ import (
 	"net"
 	"os"
 	"strings"
+	"sync/atomic"
 
 	"localhost/Intra/Android/app/src/go/doh"
 	"localhost/Intra/Android/app/src/go/intra/protect"
+	"localhost/Intra/Android/app/src/go/logging"
 
+	"golang.getoutline.org/sdk/dns"
 	"golang.getoutline.org/sdk/network"
+	"golang.getoutline.org/sdk/network/dnsintercept"
 	"golang.getoutline.org/sdk/network/lwip2transport"
 )
 
@@ -44,7 +48,7 @@ type Tunnel struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	sd     *intraStreamDialer
-	pr     *intraPacketRelay
+	dns    atomic.Pointer[doh.Resolver]
 	sni    *tcpSNIReporter
 	tun    io.Closer
 }
@@ -68,6 +72,9 @@ func NewTunnel(
 	if eventListener == nil {
 		return nil, errors.New("eventListener is required")
 	}
+	if dohdns == nil {
+		return nil, errors.New("dohdns is required")
+	}
 
 	fakeDNSAddr, err := net.ResolveUDPAddr("udp", fakedns)
 	if err != nil {
@@ -81,18 +88,26 @@ func NewTunnel(
 		tun: tun,
 	}
 	t.ctx, t.cancel = context.WithCancel(context.Background())
+	t.dns.Store(&dohdns)
 
 	t.sd, err = newIntraStreamDialer(fakeDNSAddr.AddrPort(), dohdns, protector, eventListener, t.sni)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create stream dialer: %w", err)
 	}
 
-	t.pr, err = newIntraPacketRelay(t.ctx, fakeDNSAddr.AddrPort(), dohdns, protector, eventListener)
+	pr, err := newIntraPacketRelay(protector, eventListener)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create packet relay: %w", err)
 	}
 
-	if t.IPDevice, err = lwip2transport.ConfigureDeviceWithRelay(t.sd, t.pr); err != nil {
+	// Queries addressed to the fake DNS server are answered by the DoH resolver. Everything
+	// else is relayed to its destination, and is the only traffic reported to eventListener.
+	dnsRelay := dnsintercept.New(pr, fakeDNSAddr.AddrPort(), dns.FuncExchanger(t.queryDNS),
+		dnsintercept.WithErrorHandler(func(err error) {
+			logging.Warnf("Failed to answer DNS query: %v", err)
+		}))
+
+	if t.IPDevice, err = lwip2transport.ConfigureDeviceWithRelay(t.sd, dnsRelay); err != nil {
 		return nil, fmt.Errorf("failed to configure lwIP stack: %w", err)
 	}
 
@@ -100,13 +115,31 @@ func NewTunnel(
 	return
 }
 
+// queryDNS resolves a wire-format DNS query with the current DoH resolver. It is the
+// [dns.Exchanger] that answers the intercepted queries.
+func (t *Tunnel) queryDNS(ctx context.Context, query []byte) ([]byte, error) {
+	resolver := t.dns.Load()
+	if resolver == nil {
+		return nil, errors.New("no DNS resolver is configured")
+	}
+
+	// ctx is canceled when the association is closed. Also cancel the query when the tunnel
+	// is disconnected.
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+	stopOnDisconnect := context.AfterFunc(t.ctx, cancel)
+	defer stopOnDisconnect()
+
+	return (*resolver).Query(ctx, query)
+}
+
 // Set the DNS Resolver. This method must be called before connecting the transport
 // to the TUN device. The transport can be changed at any time during operation, but
 // must not be nil.
-func (t *Tunnel) SetDNS(dns doh.Resolver) {
-	t.sd.SetDNS(dns)
-	t.pr.SetDNS(dns)
-	t.sni.SetDNS(dns)
+func (t *Tunnel) SetDNS(resolver doh.Resolver) {
+	t.sd.SetDNS(resolver)
+	t.dns.Store(&resolver)
+	t.sni.SetDNS(resolver)
 }
 
 // Enable reporting of SNIs that resulted in connection failures, using the

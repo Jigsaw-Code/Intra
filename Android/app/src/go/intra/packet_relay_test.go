@@ -16,12 +16,13 @@ package intra
 
 import (
 	"context"
-	"errors"
 	"net"
 	"net/netip"
 	"testing"
 	"time"
 
+	"golang.getoutline.org/sdk/dns"
+	"golang.getoutline.org/sdk/network/dnsintercept"
 	"golang.getoutline.org/sdk/network/packetrelay"
 
 	"github.com/stretchr/testify/require"
@@ -70,20 +71,13 @@ type udpListenerFunc func(*UDPSocketSummary)
 
 func (f udpListenerFunc) OnUDPSocketClosed(s *UDPSocketSummary) { f(s) }
 
-// startAssociation creates a relay and one association, running the receive loop in the
-// background. It returns the association halves, the captured packets, and the summary
-// reported when the association concludes.
-func startAssociation(t *testing.T, query qfunc) (
-	packetrelay.PacketSender, *captureHandler, <-chan *UDPSocketSummary, <-chan error,
+// startAssociation creates one association on relay and runs its receive loop in the
+// background. It returns the sender half, the captured packets, and the error returned by the
+// receive loop.
+func startAssociation(t *testing.T, relay packetrelay.PacketRelay) (
+	packetrelay.PacketSender, *captureHandler, <-chan error,
 ) {
 	t.Helper()
-
-	summaries := make(chan *UDPSocketSummary, 1)
-	relay, err := newIntraPacketRelay(
-		context.Background(), testFakeDNSAddr, newFakeTransport(query), nil,
-		udpListenerFunc(func(s *UDPSocketSummary) { summaries <- s }),
-	)
-	require.NoError(t, err)
 
 	sender, receiver, err := relay.NewAssociation()
 	require.NoError(t, err)
@@ -93,61 +87,26 @@ func startAssociation(t *testing.T, query qfunc) (
 	received := make(chan error, 1)
 	go func() { received <- receiver.ReceivePackets(handler) }()
 
-	return sender, handler, summaries, received
+	return sender, handler, received
 }
 
-// TestAssociationAnswersDNSLocally verifies that queries to the fake DNS server are answered
-// by the resolver, that the response appears to come from the fake DNS server, and that the
-// DNS-only association is torn down immediately afterwards without reporting any traffic.
-func TestAssociationAnswersDNSLocally(t *testing.T) {
-	response := []byte("fake-dns-response")
-	queries := make(chan []byte, 1)
-	sender, handler, summaries, received := startAssociation(t, func(q []byte) ([]byte, error) {
-		queries <- q
-		return response, nil
-	})
+// newTestPacketRelay creates the Intra packet relay, and the summaries it reports.
+func newTestPacketRelay(t *testing.T) (packetrelay.PacketRelay, <-chan *UDPSocketSummary) {
+	t.Helper()
 
-	require.NoError(t, sender.SendPacket([]byte("dns-query"), testFakeDNSAddr))
-	require.Equal(t, []byte("dns-query"), <-queries)
+	summaries := make(chan *UDPSocketSummary, 1)
+	relay, err := newIntraPacketRelay(nil, udpListenerFunc(func(s *UDPSocketSummary) { summaries <- s }))
+	require.NoError(t, err)
 
-	packet := handler.next(t)
-	require.Equal(t, response, packet.payload)
-	require.Equal(t, testFakeDNSAddr, packet.source)
-
-	// The association was only used for this DNS query, so it is closed right away.
-	select {
-	case <-received:
-	case <-time.After(testTimeout):
-		t.Fatal("the DNS-only association was not closed")
-	}
-
-	summary := <-summaries
-	require.Zero(t, summary.UploadBytes, "DNS queries must not be counted")
-	require.Zero(t, summary.DownloadBytes, "DNS responses must not be counted")
+	return relay, summaries
 }
 
-// TestAssociationReportsDNSErrors verifies that resolution failures are reported to the caller.
-func TestAssociationReportsDNSErrors(t *testing.T) {
-	t.Run("query error", func(t *testing.T) {
-		sender, _, _, _ := startAssociation(t, func([]byte) ([]byte, error) {
-			return nil, errors.New("no service")
-		})
-		require.Error(t, sender.SendPacket([]byte("dns-query"), testFakeDNSAddr))
-	})
-
-	t.Run("empty response", func(t *testing.T) {
-		sender, _, _, _ := startAssociation(t, func([]byte) ([]byte, error) {
-			return nil, nil
-		})
-		require.Error(t, sender.SendPacket([]byte("dns-query"), testFakeDNSAddr))
-	})
-}
-
-// TestAssociationRelaysPackets verifies that non-DNS packets reach their destination, that
-// responses are delivered back to the network stack, and that both directions are counted.
+// TestAssociationRelaysPackets verifies that packets reach their destination, that responses
+// are delivered back to the network stack, and that both directions are counted.
 func TestAssociationRelaysPackets(t *testing.T) {
 	echo := startEchoServer(t)
-	sender, handler, summaries, _ := startAssociation(t, failingQuery(t))
+	relay, summaries := newTestPacketRelay(t)
+	sender, handler, _ := startAssociation(t, relay)
 
 	require.NoError(t, sender.SendPacket([]byte("ping"), echo))
 
@@ -165,13 +124,12 @@ func TestAssociationRelaysPackets(t *testing.T) {
 // TestAssociationCloseIsIdempotent verifies the [packetrelay.PacketSender] close semantics.
 func TestAssociationCloseIsIdempotent(t *testing.T) {
 	echo := startEchoServer(t)
-	sender, _, _, received := startAssociation(t, failingQuery(t))
+	relay, _ := newTestPacketRelay(t)
+	sender, _, received := startAssociation(t, relay)
 
 	require.NoError(t, sender.Close())
 	require.ErrorIs(t, sender.Close(), packetrelay.ErrClosed)
 	require.ErrorIs(t, sender.SendPacket([]byte("ping"), echo), packetrelay.ErrClosed)
-	// A closed association must not issue DNS queries either.
-	require.ErrorIs(t, sender.SendPacket([]byte("dns-query"), testFakeDNSAddr), packetrelay.ErrClosed)
 
 	// Closing the sender must terminate ReceivePackets.
 	select {
@@ -181,10 +139,40 @@ func TestAssociationCloseIsIdempotent(t *testing.T) {
 	}
 }
 
-func failingQuery(t *testing.T) qfunc {
-	return func([]byte) ([]byte, error) {
-		t.Error("unexpected DNS query")
-		return nil, errors.New("unexpected DNS query")
+// TestInterceptedDNSIsNotRelayed verifies the composition used by [NewTunnel]: queries to the
+// fake DNS server are answered by the resolver, never reach the relay, and are therefore not
+// counted nor reported.
+func TestInterceptedDNSIsNotRelayed(t *testing.T) {
+	response := []byte("fake-dns-response")
+	queries := make(chan []byte, 1)
+	exchanger := dns.FuncExchanger(func(_ context.Context, q []byte) ([]byte, error) {
+		queries <- q
+		return response, nil
+	})
+
+	relay, summaries := newTestPacketRelay(t)
+	sender, handler, received := startAssociation(
+		t, dnsintercept.New(relay, testFakeDNSAddr, exchanger))
+
+	require.NoError(t, sender.SendPacket([]byte("dns-query"), testFakeDNSAddr))
+	require.Equal(t, []byte("dns-query"), <-queries)
+
+	packet := handler.next(t)
+	require.Equal(t, response, packet.payload)
+	require.Equal(t, testFakeDNSAddr, packet.source)
+
+	// The association was only used for this DNS query, so it is closed right away.
+	select {
+	case <-received:
+	case <-time.After(testTimeout):
+		t.Fatal("the DNS-only association was not closed")
+	}
+
+	// No UDP socket was ever opened, so there is nothing to report.
+	select {
+	case summary := <-summaries:
+		t.Fatalf("unexpected summary for a DNS-only association: %+v", summary)
+	default:
 	}
 }
 
