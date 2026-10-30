@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Each DOH server is defined by a URL (which is the actual DOH endpoint).  However, Google DNS
+   was previously configured by domain, in early versions of Intra.-->
+  <string name="description0" description="Describes Google's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
+    Stor global tjener drevet av Google.
+  </string>
+
+  <string name="description1" description="Describes Cloudflare's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
+    Stor global tjener drevet av Cloudflare.
+  </string>
+
+  <string name="description2" description="Describes the Quad9 DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
+    Stor global tjener fra IBM og Packet Clearinghouse. Blokkerer skadelige domener.
+  </string>
+
+  <string name="description3" description="Describes CleanBrowsing's filtered DNS server. [CHAR_LIMIT=NONE]">
+    Global DNS-filtreringstilbyder. Blokkerer skadelige domener.
+  </string>
+
+  <string name="description4" description="Describes a DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
+    Tjener i Østerrike, drevet av en non-profit privatlivsgruppe.
+  </string>
+
+  <string name="description5" description="Describes PowerDNS's DNS resolver (i.e. DNS server). [CHAR_LIMIT=NONE]">
+    Tjener i Nederland, drevet av et åpen-kildet DNS-programvarefirma.
+  </string>
+
+  <string name="description6" description="Describes the DNS.SB server, which is hosted on Cloudflare. [CHAR_LIMIT=NONE]">
+    Drevet av xTom og andre internasjonale datatjenertilbydere. Bruker Cloudflare sin CDN.
+  </string>
+
+  <string name="description7" description="Internet Initiative Japan is an Internet Service Provider (ISP).  [CHAR_LIMIT=NONE]">
+    Tjener i Japan drevet av en internettleverandør.
+  </string>
+
+  <string name="description8" description="See https://101.101.101.101/ [CHAR_LIMIT=NONE]">
+    Tjener i Taiwan drevet av .tw-domeneregistratet.
+  </string>
+
+  <string name="description9" description="See https://www.netweaver.uk/labs/ [CHAR_LIMIT=NONE]">
+    Tjener i Storbritannia, drevet av et britisk nettstedstjenerfirma.
+  </string>
+
+  <string name="description10" description="See https://faelix.net/ref/dns/ [CHAR_LIMIT=NONE]">
+    Drevet fra Storbritannia og Sveits av et britisk datatjener- og nettverksfirma.
+  </string>
+
+  <string name="description11" description="See https://www.aa.net.uk/dns/ [CHAR_LIMIT=NONE]">
+    Tjener i London, drevet av en britisk internettleverandør.
+  </string>
+
+  <string name="description12" description="See https://42l.fr/DoH-service [CHAR_LIMIT=NONE]">
+    Tjener i Nanterre, Frankrike, drevet av en fransk non-profitgruppe so, fremhever fri kultur og etikk.
+  </string>
+
+  <string name="description13" description="See https://www.digitale-gesellschaft.ch/dns/ [CHAR_LIMIT=NONE]">
+    Drevet av en sveitsisk-tysk forening for borgerrettigheter på nettet, som benytter tjenere i Sveits, Tyskland eller Østerrike.
+  </string>
+
+  <string name="description14" description="See https://snopyta.org/ [CHAR_LIMIT=NONE]">
+    Tjener i Helsinki, Finland, drevet av en tysk non-profit tjenesteleverandør.
+  </string>
+
+  <string name="description15" description="See https://www.opendns.com/about/ [CHAR_LIMIT=NONE]">
+    Stor global tjener drevet av Cisco.
+  </string>
+
+  <string name="description16" description="See https://www.dnslify.com/services/doh/ [CHAR_LIMIT=NONE]">
+    Drevet av et IT-tjenestefirma i London og Bulgaria.
+  </string>
+
+  <string name="description17" description="See https://www.cira.ca/cybersecurity-services/canadian-shield [CHAR_LIMIT=NONE]">
+    Drevet av \'Canadian Internet Registration Authority\'.
+  </string>
+
+</resources>
